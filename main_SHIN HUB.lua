@@ -130,7 +130,8 @@ end
 -- janela com menu lateral (estilo hub): abas à esquerda, conteúdo à direita
 local ICONS = {
 	["Scripts"] = "◆", ["Brookhaven"] = "◇", ["Natural Disaster"] = "▲", ["Mod"] = "★", ["Efeitos"] = "●",
-	["Extras"] = "■", ["Conexão"] = "▼", ["Créditos"] = "☆", ["Admin"] = "◀",
+	["Extras"] = "■", ["Conexão"] = "▼", ["Créditos"] = "☆", ["Admin"] = "◀", ["Proteções"] = "◈", ["Movimento"] = "▶",
+	["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
 }
 local function buildWindow(w, h, title, sub, tabNames, onClose)
 	local win = panel(w, h, UDim2.new(0.5, -w / 2, 0.5, -h / 2))
@@ -152,7 +153,7 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 		Position = UDim2.fromOffset(10, 46), Size = UDim2.new(0, 150, 1, -56), BackgroundTransparency = 1,
 		BorderSizePixel = 0, ScrollBarThickness = 2, AutomaticCanvasSize = Enum.AutomaticSize.Y, CanvasSize = UDim2.new(),
 	}, win)
-	mk("UIListLayout", { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, side)
+	mk("UIListLayout", { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, side)
 	mk("UIPadding", { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 4), PaddingBottom = UDim.new(0, 4) }, side)
 
 	local pages, tabBtns, bars = {}, {}, {}
@@ -165,20 +166,20 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 	end
 	for _, name in ipairs(tabNames) do
 		local b = mk("TextButton", {
-			Text = "", Size = UDim2.new(1, 0, 0, 38),
+			Text = "", Size = UDim2.new(1, 0, 0, 28),
 			BackgroundColor3 = PANEL, BackgroundTransparency = 0.1,
 		}, side)
-		round(b, 19); stroke(b, 2)
+		round(b, 14); stroke(b, 1.5)
 		mk("TextLabel", {
-			Text = ICONS[name] or "◆", Size = UDim2.fromOffset(22, 38), Position = UDim2.fromOffset(14, 0),
-			BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 16,
+			Text = ICONS[name] or "◆", Size = UDim2.fromOffset(22, 28), Position = UDim2.fromOffset(12, 0),
+			BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14,
 		}, b)
 		mk("TextLabel", {
-			Text = name, Size = UDim2.new(1, -46, 1, 0), Position = UDim2.fromOffset(42, 0),
-			BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12,
+			Text = name, Size = UDim2.new(1, -46, 1, 0), Position = UDim2.fromOffset(38, 0),
+			BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11,
 			TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 		}, b)
-		local bar = mk("Frame", { Size = UDim2.fromOffset(4, 18), Position = UDim2.new(0, 3, 0.5, -9), BackgroundColor3 = RED, Visible = false }, b)
+		local bar = mk("Frame", { Size = UDim2.fromOffset(3, 14), Position = UDim2.new(0, 3, 0.5, -7), BackgroundColor3 = RED, Visible = false }, b)
 		round(bar, 2)
 		local p = mk("ScrollingFrame", {
 			Position = UDim2.fromOffset(170, 46), Size = UDim2.new(1, -182, 1, -76), BackgroundTransparency = 1,
@@ -211,13 +212,14 @@ end
 -- botão flutuante pequeno (clica = abre/minimiza o menu)
 local function floatButton(onTap)
 	local b = mk("ImageButton", {
-		Size = UDim2.fromOffset(46, 46), Position = UDim2.fromOffset(10, 8),
+		Size = UDim2.fromOffset(36, 36), Position = UDim2.fromOffset(10, 8),
 		BackgroundColor3 = PANEL, AutoButtonColor = false, ScaleType = Enum.ScaleType.Crop, Image = "",
 	}, gui)
-	round(b, 12); stroke(b, 2, Color3.fromRGB(70, 150, 255))
+	mk("UICorner", { CornerRadius = UDim.new(1, 0) }, b) -- redondo
+	stroke(b, 2, RED)
 	local fallback = mk("TextLabel", {
 		Text = "M", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1,
-		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 22,
+		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 17,
 	}, b)
 	if ICON_URL:find("^http") then
 		task.spawn(function()
@@ -252,9 +254,9 @@ local function rowBtn(par, text, cb, compact)
 	return b
 end
 local DARK = Color3.fromRGB(40, 8, 10)
-local function toggleRow(par, text, desc, onChange)
-	if type(desc) == "function" then onChange, desc = desc, nil end
-	local state = false
+local function toggleRow(par, text, desc, onChange, initial)
+	if type(desc) == "function" then initial = onChange; onChange, desc = desc, nil end
+	local state = initial and true or false
 	local b = mk("TextButton", { Text = "", Size = UDim2.new(1, 0, 0, desc and 50 or 42), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, par)
 	round(b, 21); stroke(b, 2)
 	mk("TextLabel", {
@@ -272,15 +274,19 @@ local function toggleRow(par, text, desc, onChange)
 	local knob = mk("Frame", { Size = UDim2.fromOffset(20, 20), Position = UDim2.fromOffset(3, 3), BackgroundColor3 = WHITE, BackgroundTransparency = 1 }, sw)
 	round(knob, 10)
 	local ks = mk("UIStroke", { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, knob)
-	b.MouseButton1Click:Connect(function()
-		state = not state
+	local function paint()
 		knob.Position = state and UDim2.fromOffset(25, 3) or UDim2.fromOffset(3, 3)
 		knob.BackgroundTransparency = state and 0 or 1
 		ks.Color = state and WHITE or RED
 		sw.BackgroundColor3 = state and RED or DARK
+	end
+	paint()
+	b.MouseButton1Click:Connect(function()
+		state = not state
+		paint()
 		pcall(onChange, state)
 	end)
-	return b
+	return b, function(v) state = v and true or false; paint() end
 end
 local function sliderRow(par, text, desc, minV, maxV, defV, onChange)
 	local b = mk("Frame", { Size = UDim2.new(1, 0, 0, 50), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, par)
@@ -454,12 +460,12 @@ local function buildMods(page, say)
 	local fxConn = RunService.Heartbeat:Connect(fxTick)
 
 	local function publish()
-		if #mine.ids == 0 and not mine.headless and not mine.fx then
+		if #mine.ids == 0 and not mine.headless and not mine.fx and not mine.tag then
 			http("DELETE", "/mods/" .. uid .. ".json")
 		else
 			http("PUT", "/mods/" .. uid .. ".json", {
 				name = lp.Name, ids = table.concat(mine.ids, ","), headless = mine.headless,
-				fx = mine.fx or "", fc = mine.fc or 1,
+				fx = mine.fx or "", fc = mine.fc or 1, tag = mine.tag,
 			})
 		end
 	end
@@ -664,6 +670,7 @@ local function buildMods(page, say)
 					end
 					char:SetAttribute("DsSig", want)
 				end
+				if pl ~= lp then pcall(tagDraw, char, d and type(d.tag) == "table" and d.tag or nil, "DsTagB") end
 			end
 		end
 	end
@@ -721,6 +728,11 @@ local function buildMods(page, say)
 		alive = false
 		fxConn:Disconnect()
 		fxClearAll()
+		for _, pl in ipairs(Players:GetPlayers()) do
+			local hd = pl.Character and pl.Character:FindFirstChild("Head")
+			local o = hd and hd:FindFirstChild("DsTagB")
+			if o then o:Destroy() end
+		end
 		http("DELETE", "/mods/" .. uid .. ".json")
 	end
 end
@@ -730,6 +742,74 @@ local function hrp() return lp.Character and lp.Character:FindFirstChild("Humano
 local function hum() return lp.Character and lp.Character:FindFirstChildOfClass("Humanoid") end
 
 local selfCleanup
+-- ===== Tag grande em cima da cabeça (quem usa o hub vê a própria; o ADM vê a de todos os membros) =====
+local TAG_FONTS = { "GothamBlack", "FredokaOne", "Bangers", "Creepster", "Arcade", "Fantasy", "SciFi", "LuckiestGuy", "PermanentMarker", "Cartoon", "Code" }
+local TAG_ROLES = {
+	{ "Membro", Color3.fromRGB(235, 235, 235) },
+	{ "ADM", Color3.fromRGB(255, 70, 80) },
+	{ "Dono", Color3.fromRGB(255, 205, 60) },
+}
+local TAG = { avail = false, on = true, text = "0DS", font = "GothamBlack", role = "Membro" }
+local function tagRoleColor(name)
+	for _, r in ipairs(TAG_ROLES) do
+		if r[1] == name then return r[2] end
+	end
+	return TAG_ROLES[1][2]
+end
+-- desenha (ou atualiza / remove) o letreiro na cabeça de "char". d = { on, text, font, role }
+local function tagDraw(char, d, nm)
+	nm = nm or "DsTag"
+	local head = char and char:FindFirstChild("Head")
+	if not head then return end
+	local old = head:FindFirstChild(nm)
+	if not (type(d) == "table" and d.on) then
+		if old then old:Destroy() end
+		return
+	end
+	local text = tostring(d.text or "0DS"):sub(1, 16)
+	local role = tostring(d.role or "Membro"):sub(1, 10)
+	local fontName = table.find(TAG_FONTS, d.font) and d.font or "GothamBlack"
+	local g = old
+	if not g then
+		g = mk("BillboardGui", {
+			Name = nm, Size = UDim2.fromOffset(320, 110), StudsOffset = Vector3.new(0, 3.8, 0),
+			AlwaysOnTop = true, LightInfluence = 0, MaxDistance = 1500,
+		}, nil)
+		g:SetAttribute("DsFx", true)
+		mk("TextLabel", {
+			Name = "N", Size = UDim2.new(1, 0, 0.62, 0), BackgroundTransparency = 1, TextScaled = true,
+			TextColor3 = WHITE, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
+		}, g)
+		mk("TextLabel", {
+			Name = "R", Size = UDim2.new(1, 0, 0.3, 0), Position = UDim2.new(0, 0, 0.66, 0), BackgroundTransparency = 1,
+			TextScaled = true, Font = Enum.Font.GothamBold, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
+		}, g)
+		g.Parent = head
+	end
+	local n, r = g:FindFirstChild("N"), g:FindFirstChild("R")
+	if n then n.Text = text; n.Font = Enum.Font[fontName] end
+	if r then r.Text = role; r.TextColor3 = tagRoleColor(role) end
+end
+function TAG.refresh()
+	if TAG.avail then pcall(tagDraw, lp.Character, TAG) end
+end
+function TAG.start()
+	if TAG.running then return end
+	TAG.running = true
+	task.spawn(function()
+		while TAG.running do
+			TAG.refresh()
+			task.wait(1)
+		end
+		pcall(function()
+			local hd = lp.Character and lp.Character:FindFirstChild("Head")
+			local o = hd and hd:FindFirstChild("DsTag")
+			if o then o:Destroy() end
+		end)
+	end)
+end
+function TAG.stop() TAG.running = false end
+
 local function buildSelf(pages, say)
 	-- aba Scripts
 	local sp = pages["Scripts"]
@@ -769,14 +849,23 @@ local function buildSelf(pages, say)
 	end, true)
 
 	-- aba Natural Disaster
-	local dp = pages["Natural Disaster"]
-	local S = { fly = false, speed = false, jump = false, noclip = false, infjump = false, nofall = false, waterwalk = false, antifling = false, antivoid = false, flingVal = 150, speedVal = 50, flyVal = 50 }
-	local selfBV, wwPart, lastSafe
+	local dp = pages["Natural Disaster"] or mk("Frame", {}) -- fora do Natural Disaster fica solto (invisível)
+	local S = { fly = false, speed = false, jump = false, noclip = false, infjump = false, nofall = false, waterwalk = false, antifling = false, antivoid = false, antisit = false, tfling = false, flingVal = 150, speedVal = 50, flyVal = 50 }
+	local selfBV, wwPart, lastSafe, flyGui
 	local function stopSelfFly() if selfBV then selfBV:Destroy(); selfBV = nil end end
 
 	local loopConn = RunService.Stepped:Connect(function()
 		local c, h, r = lp.Character, hum(), hrp()
 		if not (c and h and r) then return end
+		if S.antisit then
+			if h:GetStateEnabled(Enum.HumanoidStateType.Seated) then h:SetStateEnabled(Enum.HumanoidStateType.Seated, false) end
+			if h.Sit or h.SeatPart then
+				local sp = h.SeatPart
+				local w = sp and sp:FindFirstChild("SeatWeld")
+				if w then w:Destroy() end
+				h.Sit = false
+			end
+		end
 		if S.noclip then
 			for _, p in ipairs(c:GetDescendants()) do
 				if p:IsA("BasePart") and p.CanCollide then p.CanCollide = false end
@@ -838,6 +927,7 @@ local function buildSelf(pages, say)
 				wwPart.CFrame = CFrame.new(0, -5000, 0)
 			end
 		end
+		if flyGui then flyGui.Visible = (S.fly and S.flyBtns) and true or false end
 		if S.fly then
 			if not selfBV or selfBV.Parent ~= r then
 				stopSelfFly()
@@ -849,6 +939,9 @@ local function buildSelf(pages, say)
 			local up = 0
 			if mv.Magnitude > 0 and flat.Magnitude > 0 then
 				up = look.Y * math.clamp(mv:Dot(flat.Unit), -1, 1)
+			end
+			if S.flyBtns then
+				up = ((S.flyUp and 1 or 0) - (S.flyDown and 1 or 0)) -- botões: sobe/desce, solto = parado
 			end
 			selfBV.Velocity = mv * S.flyVal + Vector3.new(0, up * S.flyVal, 0)
 		else
@@ -862,6 +955,233 @@ local function buildSelf(pages, say)
 		end
 	end)
 
+	-- ===== Anti-lag: segura flood de partículas, sons e explosões feitos por scripts de lag =====
+	-- (só protege o SEU aparelho; lag causado no servidor não dá pra bloquear daqui)
+	local LAG_LIMITS = { ParticleEmitter = 40, Sound = 25, Explosion = 15, Fire = 25, Smoke = 25, Sparkles = 25, Beam = 50, Trail = 50 }
+	local lag = { on = false, cnt = {}, t0 = 0, bad = 0, lastClean = 0, started = 0 }
+	local function lagOwn(o)
+		return o:GetAttribute("DsFx") or o.Name == "ShinFire" or o.Name == "AdmFxFire"
+	end
+	local function lagAdded(o)
+		if not lag.on then return end
+		local lim = LAG_LIMITS[o.ClassName]
+		if not lim or lagOwn(o) then return end
+		local now = os.clock()
+		if now - lag.t0 >= 1 then lag.t0 = now; lag.cnt = {} end
+		local n = (lag.cnt[o.ClassName] or 0) + 1
+		lag.cnt[o.ClassName] = n
+		if n > lim then
+			task.defer(function() pcall(function() o:Destroy() end) end)
+		elseif o:IsA("ParticleEmitter") and o.Rate > 50 then
+			o.Rate = 50
+		end
+	end
+	local function lagEmergency()
+		for _, o in ipairs(workspace:GetDescendants()) do
+			if LAG_LIMITS[o.ClassName] and not lagOwn(o) then
+				if o:IsA("Sound") then pcall(function() o:Stop() end)
+				else pcall(function() o:Destroy() end) end
+			end
+		end
+	end
+	local lagConn, lagHB
+	local function lagStop()
+		lag.on = false
+		if lagConn then lagConn:Disconnect(); lagConn = nil end
+		if lagHB then lagHB:Disconnect(); lagHB = nil end
+	end
+	local function lagStart()
+		lagStop()
+		lag.on, lag.cnt, lag.t0, lag.bad, lag.started = true, {}, os.clock(), 0, os.clock()
+		lagConn = workspace.DescendantAdded:Connect(lagAdded)
+		lagHB = RunService.Heartbeat:Connect(function(dt)
+			-- travou feio (menos de ~3 fps por 3 frames seguidos): limpa o que costuma causar lag
+			if os.clock() - lag.started < 15 then return end
+			if dt > 0.35 then lag.bad = lag.bad + 1 else lag.bad = 0 end
+			if lag.bad >= 3 and os.clock() - lag.lastClean > 4 then
+				lag.bad, lag.lastClean = 0, os.clock()
+				task.spawn(lagEmergency)
+			end
+		end)
+	end
+
+	-- ===== Fling nos outros: gira rápido; quem encostar em você sai voando e VOCÊ fica no lugar =====
+	local tfTok, tfBAV, tfOld = 0, nil, {}
+	local startTFling
+	local function stopTFling()
+		tfTok = tfTok + 1
+		if tfBAV then tfBAV:Destroy(); tfBAV = nil end
+		for p, o in pairs(tfOld) do
+			if p.Parent then pcall(function() p.CustomPhysicalProperties = o or nil end) end
+		end
+		tfOld = {}
+		local r = hrp()
+		if r then r.AssemblyAngularVelocity = Vector3.zero end
+	end
+	function startTFling()
+		stopTFling()
+		local my = tfTok
+		local c, r = lp.Character, hrp()
+		if not (c and r) then return end
+		for _, p in ipairs(c:GetDescendants()) do
+			if p:IsA("BasePart") then
+				tfOld[p] = p.CustomPhysicalProperties or false
+				p.CustomPhysicalProperties = PhysicalProperties.new(100, 0.3, 0.5, 1, 1)
+			end
+		end
+		tfBAV = mk("BodyAngularVelocity", { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, S.flingVal * 2, 0), P = 1e5 }, r)
+		task.spawn(function()
+			while tfTok == my do
+				RunService.Heartbeat:Wait()
+				local root = hrp()
+				if not root then
+					task.wait(0.5)
+				elseif not tfBAV or tfBAV.Parent ~= root then
+					startTFling() -- renasceu: refaz tudo
+					return
+				else
+					local v = root.AssemblyLinearVelocity
+					if v.Magnitude > 50 then v = v.Unit * 50 end
+					root.AssemblyLinearVelocity = v * 10000 + Vector3.new(0, 10000, 0)
+					RunService.RenderStepped:Wait()
+					if root.Parent then root.AssemblyLinearVelocity = v end
+					RunService.Stepped:Wait()
+					if root.Parent then root.AssemblyLinearVelocity = v + Vector3.new(0, 0.1, 0) end
+				end
+			end
+		end)
+	end
+
+	-- ===== Blocos soltos (desancorados): telecinese e fling parts =====
+	local function claimSim()
+		pcall(function() sethiddenproperty(lp, "SimulationRadius", 1e9) end)
+		pcall(function() lp.MaximumSimulationRadius = 1e9 end)
+	end
+	local function isLoose(p)
+		if not (p and p:IsA("BasePart")) or p.Anchored then return false end
+		if p.Name == "HumanoidRootPart" or p.Name == "MeuHubWater" or p:GetAttribute("DsFx") then return false end
+		if p:FindFirstAncestorOfClass("Accessory") or p:FindFirstAncestorOfClass("Tool") then return false end
+		local root = p.AssemblyRootPart
+		if root and root.Anchored then return false end
+		for _, pl in ipairs(Players:GetPlayers()) do
+			if pl.Character and p:IsDescendantOf(pl.Character) then return false end
+		end
+		return true
+	end
+
+	local tk = { part = nil, bp = nil, bg = nil, y = 0, armed = false, cc = nil, t = 0 }
+	local function tkRelease()
+		if tk.bp then tk.bp:Destroy() end
+		if tk.bg then tk.bg:Destroy() end
+		tk.part, tk.bp, tk.bg = nil, nil, nil
+	end
+	local function tkGrab(part)
+		tkRelease()
+		claimSim()
+		tk.part = part
+		part.CanCollide = true
+		tk.bp = mk("BodyPosition", { MaxForce = Vector3.new(1e9, 1e9, 1e9), P = 1e5, D = 2e3, Position = part.Position }, part)
+		tk.bg = mk("BodyGyro", { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 1e4, D = 500, CFrame = CFrame.new() }, part)
+		local r, h = hrp(), hum()
+		if r and h then
+			tk.y = r.Position.Y - (h.HipHeight + r.Size.Y / 2) - part.Size.Y / 2
+		else
+			tk.y = part.Position.Y
+		end
+	end
+	local tkConn = RunService.Heartbeat:Connect(function(dt)
+		local part, r, h = tk.part, hrp(), hum()
+		if not part then return end
+		if not part.Parent then tkRelease(); return end
+		if not (r and h) then return end
+		tk.t = tk.t + dt
+		if tk.t > 1 then tk.t = 0; claimSim() end
+		-- olhando pra cima/baixo e andando = o bloco sobe/desce (voo em cima do bloco)
+		local mv = h.MoveDirection
+		local look = workspace.CurrentCamera.CFrame.LookVector
+		local flat = Vector3.new(look.X, 0, look.Z)
+		if mv.Magnitude > 0 and flat.Magnitude > 0 then
+			tk.y = tk.y + look.Y * math.clamp(mv:Dot(flat.Unit), -1, 1) * S.flyVal * dt
+		end
+		tk.bp.Position = Vector3.new(r.Position.X, tk.y, r.Position.Z)
+		part.AssemblyAngularVelocity = Vector3.zero
+	end)
+	local tkInput = UIS.InputBegan:Connect(function(i, gp)
+		if not tk.armed or gp or not isPress(i) then return end
+		tk.armed = false
+		local cam = workspace.CurrentCamera
+		local ray = cam:ScreenPointToRay(i.Position.X, i.Position.Y)
+		local rp = RaycastParams.new()
+		rp.FilterType = Enum.RaycastFilterType.Exclude
+		rp.FilterDescendantsInstances = { lp.Character }
+		local res = workspace:Raycast(ray.Origin, ray.Direction * 1000, rp)
+		local part = res and res.Instance
+		if part and isLoose(part) and part.Size.Magnitude < 300 then
+			tkGrab(part)
+			say("Bloco pego! Ande em cima dele. Olhe pra cima/baixo e ande pra voar.")
+		else
+			say("Isso não é um bloco solto (desancorado).")
+		end
+	end)
+
+	local fp = { on = false, parts = {}, ang = 0, radius = 14, tok = 0 }
+	local function fpScan()
+		local r = hrp()
+		if not r then return end
+		local list, n = {}, 0
+		for _, d in ipairs(workspace:GetDescendants()) do
+			n = n + 1
+			if n % 3000 == 0 then task.wait() end
+			if d:IsA("BasePart") and not d.Anchored and d.Size.Magnitude < 60 and d ~= tk.part and isLoose(d) then
+				table.insert(list, d)
+			end
+		end
+		table.sort(list, function(a, b) return (a.Position - r.Position).Magnitude < (b.Position - r.Position).Magnitude end)
+		local out = {}
+		for i = 1, math.min(#list, 120) do
+			out[i] = list[i]
+			list[i].CanCollide = true
+		end
+		fp.parts = out
+	end
+	local fpConn = RunService.Heartbeat:Connect(function(dt)
+		if not fp.on then return end
+		local r = hrp()
+		if not r then return end
+		fp.ang = fp.ang + dt * 4
+		local n = #fp.parts
+		for i, p in ipairs(fp.parts) do
+			if p.Parent and not p.Anchored then
+				local a = fp.ang + (i / n) * math.pi * 2
+				local target = r.Position + Vector3.new(math.cos(a) * fp.radius, (i % 3 - 1) * 4 + 1, math.sin(a) * fp.radius)
+				local v = (target - p.Position) * 12
+				if v.Magnitude > 250 then v = v.Unit * 250 end
+				p.AssemblyLinearVelocity = v
+				p.AssemblyAngularVelocity = Vector3.new(0, 20, 0)
+			end
+		end
+	end)
+	local function fpSet(v)
+		fp.tok = fp.tok + 1
+		fp.on = v
+		if v then
+			local my = fp.tok
+			claimSim()
+			task.spawn(function()
+				while fp.on and fp.tok == my do
+					fpScan()
+					claimSim()
+					task.wait(5)
+				end
+			end)
+		else
+			for _, p in ipairs(fp.parts) do
+				if p.Parent and not p.Anchored then p.AssemblyLinearVelocity = Vector3.zero end
+			end
+			fp.parts = {}
+		end
+	end
+
 	section(dp, "Sobreviver")
 	toggleRow(dp, "Voar", "Olhe pra cima + joystick = sobe", function(v) S.fly = v end)
 	toggleRow(dp, "Anti-queda", "Limita a velocidade da queda", function(v) S.nofall = v end)
@@ -869,24 +1189,138 @@ local function buildSelf(pages, say)
 		local r = hrp()
 		if r then r.CFrame = r.CFrame + Vector3.new(0, 100, 0); say("Subiu 100 studs.") end
 	end)
-	rowBtn(dp, "Fling (me lançar pra longe)", function()
-		local r = hrp()
-		if not r then return end
-		local look = workspace.CurrentCamera.CFrame.LookVector
-		local flat = Vector3.new(look.X, 0, look.Z)
-		if flat.Magnitude < 0.01 then flat = Vector3.new(0, 0, -1) end
-		r.AssemblyLinearVelocity = flat.Unit * S.flingVal * 2 + Vector3.new(0, S.flingVal, 0)
-		say("Fling!")
+	toggleRow(dp, "Fling (girar e lançar os outros)", "Você gira; quem encostar sai voando. Você não é lançado", function(v)
+		S.tfling = v
+		if v then startTFling() else stopTFling() end
 	end)
-	sliderRow(dp, "Força do fling", "Distância do lançamento", 50, 300, 150, function(v) S.flingVal = v end)
+	sliderRow(dp, "Giro do fling", "Velocidade do giro", 50, 300, 150, function(v)
+		S.flingVal = v
+		if tfBAV then tfBAV.AngularVelocity = Vector3.new(0, v * 2, 0) end
+	end)
 	toggleRow(dp, "Anti-void", "Volta pro último lugar seguro se cair no vazio", function(v) S.antivoid = v end)
 	toggleRow(dp, "Pulo infinito", "Pula no ar quantas vezes quiser", function(v) S.infjump = v end)
 	toggleRow(dp, "Andar sobre a água", "Plataforma invisível na superfície", function(v)
 		S.waterwalk = v
 		if not v and wwPart then wwPart:Destroy(); wwPart = nil end
 	end)
+	local island, islandBack
+	rowBtn(dp, "Ilha segura (plataforma no céu)", function()
+		local r = hrp()
+		if not r then return end
+		if not island or not island.Parent then
+			island = mk("Part", {
+				Name = "MeuHubIlha", Size = Vector3.new(40, 2, 40), Anchored = true, CanCollide = true,
+				Material = Enum.Material.SmoothPlastic, Color = Color3.fromRGB(60, 8, 12),
+				Position = Vector3.new(r.Position.X, 3500, r.Position.Z),
+			}, workspace)
+		end
+		islandBack = r.CFrame
+		r.AssemblyLinearVelocity = Vector3.zero
+		r.CFrame = CFrame.new(island.Position + Vector3.new(0, 4, 0))
+		say("Na ilha segura. Use \"Voltar da ilha\" quando passar.")
+	end)
+	rowBtn(dp, "Voltar da ilha", function()
+		local r = hrp()
+		if r and islandBack then
+			r.AssemblyLinearVelocity = Vector3.zero
+			r.CFrame = islandBack
+			say("De volta.")
+		else
+			say("Você ainda não foi pra ilha.")
+		end
+	end, true)
+	section(dp, "Blocos soltos")
+	rowBtn(dp, "Telecinese: escolher bloco", function()
+		tk.armed = true
+		say("Toque num bloco solto (desancorado) do mapa, fora do menu.")
+	end)
+	rowBtn(dp, "Telecinese: soltar bloco", function() tkRelease(); say("Bloco solto.") end, true)
+	rowBtn(dp, "Bloco: subir 10", function() tk.y = tk.y + 10 end, true)
+	rowBtn(dp, "Bloco: descer 10", function() tk.y = tk.y - 10 end, true)
+	toggleRow(dp, "Fling Parts", "Peças soltas giram em volta de você", function(v)
+		fpSet(v)
+		say(v and "Procurando peças soltas..." or "Fling Parts desligado.")
+	end)
+	sliderRow(dp, "Raio das peças", "Distância do círculo", 8, 40, 14, function(v) fp.radius = v end)
 	section(dp, "Proteção")
 	toggleRow(dp, "Anti-fling", "Ignora colisão de outros jogadores e zera giro/arremesso", function(v) S.antifling = v end)
+	-- aba Proteções (Brookhaven)
+	local pp = pages["Proteções"]
+	if pp then
+		section(pp, "Proteções")
+		toggleRow(pp, "Anti-fling", "Ignora colisão de outros jogadores e zera giro/arremesso", function(v) S.antifling = v end)
+		toggleRow(pp, "Anti-void", "Volta pro último lugar seguro se cair do mapa", function(v) S.antivoid = v end)
+		toggleRow(pp, "Sem dano de queda", "Reduz a velocidade da queda", function(v) S.nofall = v end)
+		toggleRow(pp, "Anti-sentar", "Não deixa sentar em carro, cadeira nem banco", function(v)
+			S.antisit = v
+			if not v then
+				local h = hum()
+				if h then h:SetStateEnabled(Enum.HumanoidStateType.Seated, true) end
+			end
+		end)
+		toggleRow(pp, "Anti-lag", "Segura flood de partículas, sons e explosões de scripts de lag", function(v)
+			if v then lagStart() else lagStop() end
+			say(v and "Anti-lag ligado." or "Anti-lag desligado.")
+		end)
+	end
+	-- aba Movimento (Brookhaven): mesmos controles do Natural Disaster
+	local mp = pages["Movimento"]
+	if mp then
+		section(mp, "Movimento")
+		toggleRow(mp, "Voar", "Olhe pra cima + joystick = sobe", function(v) S.fly = v end)
+		toggleRow(mp, "Velocidade", "Liga a velocidade escolhida abaixo", function(v)
+			S.speed = v
+			if not v then local h = hum(); if h then h.WalkSpeed = 16 end end
+		end)
+		sliderRow(mp, "Valor da velocidade", "Corrida", 16, 120, 50, function(v) S.speedVal = v end)
+		sliderRow(mp, "Velocidade do voo", "Voar", 20, 150, 50, function(v) S.flyVal = v end)
+		-- botões ▲ ▼ na tela (segurar): aparecem só com "Voar" + "Botões de voo" ligados
+		flyGui = mk("Frame", { Size = UDim2.fromOffset(60, 124), Position = UDim2.new(0, 24, 0.55, -62), BackgroundTransparency = 1, Visible = false, ZIndex = 20 }, gui)
+		local function holdBtn(txt, y, key)
+			local b = mk("TextButton", {
+				Text = txt, Size = UDim2.fromOffset(60, 56), Position = UDim2.fromOffset(0, y),
+				BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
+				Font = Enum.Font.GothamBold, TextSize = 24, ZIndex = 21,
+			}, flyGui)
+			round(b, 28); stroke(b, 2)
+			local function isHold(i) return i.UserInputType == Enum.UserInputType.Touch or i.UserInputType == Enum.UserInputType.MouseButton1 end
+			b.InputBegan:Connect(function(i) if isHold(i) then S[key] = true end end)
+			b.InputEnded:Connect(function(i) if isHold(i) then S[key] = false end end)
+		end
+		holdBtn("▲", 0, "flyUp")
+		holdBtn("▼", 68, "flyDown")
+		toggleRow(mp, "Botões de voo (subir/descer)", "Com o Voar ligado, mostra ▲ ▼ na tela: segure pra subir ou descer; solto = fica parado no ar", function(v)
+			S.flyBtns = v
+			if not v then S.flyUp = false; S.flyDown = false end
+		end)
+		toggleRow(mp, "Pulo alto", "JumpPower 90", function(v)
+			S.jump = v
+			if not v then local h = hum(); if h then h.JumpPower = 50 end end
+		end)
+		toggleRow(mp, "Pulo infinito", "Pula no ar quantas vezes quiser", function(v) S.infjump = v end)
+		toggleRow(mp, "Atravessar paredes", "Noclip", function(v) S.noclip = v end)
+	end
+	-- teleporte por toque/clique (aba Extras)
+	local ctp = { on = false }
+	local ctpInput = UIS.InputBegan:Connect(function(i, gp)
+		if not ctp.on or gp or not isPress(i) then return end
+		local r = hrp()
+		if not r then return end
+		local ray = workspace.CurrentCamera:ScreenPointToRay(i.Position.X, i.Position.Y)
+		local rp = RaycastParams.new()
+		rp.FilterType = Enum.RaycastFilterType.Exclude
+		rp.FilterDescendantsInstances = { lp.Character }
+		local res = workspace:Raycast(ray.Origin, ray.Direction * 2000, rp)
+		if res then
+			r.AssemblyLinearVelocity = Vector3.zero
+			r.CFrame = CFrame.new(res.Position + Vector3.new(0, 4, 0))
+		end
+	end)
+	local ep = pages["Extras"]
+	if ep then
+		section(ep, "Teleporte")
+		toggleRow(ep, "Teleporte por toque", "Toque/clique num lugar e você vai pra lá", function(v) ctp.on = v end)
+	end
 	section(dp, "Movimento")
 	toggleRow(dp, "Velocidade", "Liga a velocidade escolhida abaixo", function(v)
 		S.speed = v
@@ -902,6 +1336,10 @@ local function buildSelf(pages, say)
 
 	return function()
 		loopConn:Disconnect(); jumpConn:Disconnect()
+		tkConn:Disconnect(); tkInput:Disconnect(); fpConn:Disconnect(); ctpInput:Disconnect()
+		if island then island:Destroy(); island = nil end
+		fpSet(false); tkRelease(); stopTFling(); lagStop()
+		local hh = hum(); if hh then hh:SetStateEnabled(Enum.HumanoidStateType.Seated, true) end
 		if wwPart then wwPart:Destroy(); wwPart = nil end
 		stopSelfFly()
 		local h = hum()
@@ -951,9 +1389,16 @@ local toast
 local spinBAV
 local function unspin() if spinBAV then spinBAV:Destroy(); spinBAV = nil end end
 local rocketing = false
+-- estado visual dos comandos do admin (fogo, foguete, caixa, explosão): vai junto com a presença
+-- pro Firebase, e o painel ADM desenha igual no aparelho dele
+local FXS = { rocket = false, jail = nil, boom = nil }
+local pushPresence -- definida lá embaixo (precisa do uid/beat)
 local function boom(r, radius)
+	FXS.boom = { id = HttpService:GenerateGUID(false), x = r.Position.X, y = r.Position.Y, z = r.Position.Z, r = radius }
+	if pushPresence then task.spawn(pushPresence) end
 	local ex = Instance.new("Explosion")
 	ex.Position = r.Position; ex.BlastRadius = radius; ex.BlastPressure = 0; ex.DestroyJointRadiusPercent = 0
+	ex:SetAttribute("DsFx", true)
 	ex.Parent = workspace
 end
 local ACTIONS = {
@@ -983,6 +1428,8 @@ local ACTIONS = {
 		local r, h = hrp(), hum()
 		if not (r and h) then return end
 		rocketing = true
+		FXS.rocket = true
+		if pushPresence then task.spawn(pushPresence) end
 		unfly()
 		r.Anchored = false
 		local bv = mk("BodyVelocity", { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.new(0, 20, 0) }, r)
@@ -995,6 +1442,8 @@ local ACTIONS = {
 			end
 			if r.Parent then boom(r, 14) end
 			bv:Destroy(); fire:Destroy()
+			FXS.rocket = false
+			if pushPresence then task.spawn(pushPresence) end
 			if h then h.Health = 0 end
 			rocketing = false
 		end)
@@ -1027,9 +1476,13 @@ do
 	local function clearJail()
 		for _, p in ipairs(jailParts) do pcall(function() p:Destroy() end) end
 		jailParts = {}
+		FXS.jail = nil
+		if pushPresence then task.spawn(pushPresence) end
 	end
 	local function buildBox(center, size, color)
 		local half = size / 2
+		FXS.jail = { x = center.X, y = center.Y, z = center.Z, s = size, cr = math.floor(color.R * 255), cg = math.floor(color.G * 255), cb = math.floor(color.B * 255) }
+		if pushPresence then task.spawn(pushPresence) end
 		local function wall(pos, sz)
 			table.insert(jailParts, mk("Part", {
 				Anchored = true, CanCollide = true, Size = sz, Position = pos,
@@ -1094,12 +1547,15 @@ do
 	ACTIONS.unjail = releaseFromRoom
 	ACTIONS.fire = function()
 		local r = hrp()
-		if r and not r:FindFirstChild("ShinFire") then mk("Fire", { Name = "ShinFire", Size = 8, Heat = 10 }, r) end
+		if r and not r:FindFirstChild("ShinFire") then
+			mk("Fire", { Name = "ShinFire", Size = 8, Heat = 10 }, r)
+			if pushPresence then task.spawn(pushPresence) end
+		end
 	end
 	ACTIONS.unfire = function()
 		local r = hrp()
 		local f = r and r:FindFirstChild("ShinFire")
-		if f then f:Destroy() end
+		if f then f:Destroy(); if pushPresence then task.spawn(pushPresence) end end
 	end
 	ACTIONS.castigo = function() loopOn("castigo") end
 	ACTIONS.descastigo = function()
@@ -1141,6 +1597,21 @@ do
 		task.delay(120, function() if trollTok == my then trollOff() end end)
 	end
 	ACTIONS.untroll = trollOff
+	-- tag: o ADM muda nome / fonte / cargo / mostrar-esconder (só vale no Brookhaven)
+	ACTIONS.tag = function(c)
+		if not (c and TAG.avail) then return end
+		if type(c.text) == "string" and c.text ~= "" then TAG.text = c.text:sub(1, 16) end
+		if type(c.font) == "string" and table.find(TAG_FONTS, c.font) then TAG.font = c.font end
+		if type(c.role) == "string" then
+			for _, r in ipairs(TAG_ROLES) do
+				if r[1] == c.role then TAG.role = c.role end
+			end
+		end
+		if type(c.on) == "boolean" then TAG.on = c.on end
+		TAG.refresh()
+		if TAG.onChanged then pcall(TAG.onChanged) end
+		if pushPresence then task.spawn(pushPresence) end
+	end
 
 	cleanupActions = function()
 		trollOff()
@@ -1297,7 +1768,7 @@ local function buildEffects(page, say)
 end
 
 -- ===== Seletor em aba (abre/fecha, igual às categorias de música) =====
-local function dropdown(par, title, getItems, onPick)
+local function dropdown(par, title, getItems, onPick, onRefresh)
 	local wrap = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, par)
 	mk("UIListLayout", { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
 	local head = mk("TextButton", { Text = "", Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
@@ -1317,16 +1788,27 @@ local function dropdown(par, title, getItems, onPick)
 	local obj = {}
 	function obj.rebuild()
 		for _, c in ipairs(body:GetChildren()) do if c:IsA("TextButton") or c:IsA("TextLabel") then c:Destroy() end end
+		-- botão de atualizar a lista (sempre no topo)
+		local rf = mk("TextButton", {
+			Text = "↻ Atualizar lista", LayoutOrder = 0, Size = UDim2.new(1, 0, 0, 28),
+			BackgroundColor3 = Color3.fromRGB(70, 10, 14), BackgroundTransparency = 0.2,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12,
+		}, body)
+		round(rf, 14); stroke(rf, 1.2)
+		rf.MouseButton1Click:Connect(function()
+			if onRefresh then pcall(onRefresh) end
+			obj.rebuild()
+		end)
 		local items = getItems()
 		if #items == 0 then
 			mk("TextLabel", {
-				Text = "Ninguém disponível agora.", Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1,
+				Text = "Ninguém disponível agora.", LayoutOrder = 1, Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1,
 				TextColor3 = Color3.fromRGB(170, 130, 130), Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 			}, body)
 		end
 		for _, it in ipairs(items) do
 			local row = mk("TextButton", {
-				Text = it.label, Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2,
+				Text = it.label, LayoutOrder = 2, Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2,
 				TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12,
 			}, body)
 			round(row, 15); stroke(row, 1.2)
@@ -1337,6 +1819,10 @@ local function dropdown(par, title, getItems, onPick)
 		end
 	end
 	function obj.setText(t) lbl.Text = t end
+	-- se a lista estiver aberta e alguém entrar/sair, atualiza sozinha
+	local function auto() if body.Parent and body.Visible then task.defer(obj.rebuild) end end
+	Players.PlayerAdded:Connect(auto)
+	Players.PlayerRemoving:Connect(auto)
 	head.MouseButton1Click:Connect(function()
 		if not body.Visible then obj.rebuild() end
 		body.Visible = not body.Visible
@@ -1535,7 +2021,8 @@ end
 
 -- ===== aba Brookhaven: nome/bio RP (com RGB) + rádio por ID =====
 -- Os remotes ficam dentro da função (nomes podem mudar se o jogo atualizar).
-local function buildBrookhaven(page, say)
+local function buildBrookhaven(pages, say)
+	local page = pages["Nome"]
 	local RS = game:GetService("ReplicatedStorage")
 	local NAME_REMOTES = { "1RPNam1eTex1t" }   -- RolePlayName / RolePlayBio
 	local COLOR_REMOTES = { "1RPNam1eColo1r" } -- PickingRPNameColor / PickingRPBioColor
@@ -1609,6 +2096,7 @@ local function buildBrookhaven(page, say)
 	end)
 
 	-- ===== Música: rádio e hoverboard (precisa ter o item/gamepass) =====
+	page = pages["Música"]
 	section(page, "Música (rádio e hoverboard)")
 	local idBox = inputRow("ID da música")
 
@@ -1892,19 +2380,118 @@ local function buildBrookhaven(page, say)
 		end
 	end)
 
+	-- ===== Tag em cima da cabeça (só você e o ADM veem) =====
+	page = pages["Tag"]
+	TAG.avail = true
+	TAG.start()
+	section(page, "Tag em cima da cabeça")
+	mk("TextLabel", {
+		Text = "Letreiro grande em cima de você, visível pra você e pro ADM. O cargo embaixo (Membro / ADM / Dono) é o ADM quem define.",
+		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+	}, page)
+	local _, setTagOn = toggleRow(page, "Mostrar tag", "Liga/desliga o letreiro", function(v)
+		TAG.on = v; TAG.refresh()
+		if TAG.push then TAG.push() end
+	end, TAG.on)
+	local tagBox = inputRow("Nome da tag (máx. 16 letras)")
+	tagBox.Text = TAG.text
+	local fontBtn, roleLbl
+	fontBtn = rowBtn(page, "Fonte: " .. TAG.font, function()
+		local i = table.find(TAG_FONTS, TAG.font) or 1
+		TAG.font = TAG_FONTS[i % #TAG_FONTS + 1]
+		fontBtn:FindFirstChildOfClass("TextLabel").Text = "Fonte: " .. TAG.font
+		TAG.refresh()
+		if TAG.push then TAG.push() end
+	end, true)
+	rowBtn(page, "Aplicar nome da tag", function()
+		local t = (tagBox.Text:gsub("^%s+", ""))
+		t = (t:gsub("%s+$", ""))
+		if t == "" then say("Digite o nome da tag."); return end
+		TAG.text = t:sub(1, 16)
+		TAG.refresh()
+		if TAG.push then TAG.push() end
+		say("Tag: " .. TAG.text)
+	end, true)
+	roleLbl = mk("TextLabel", {
+		Text = "Cargo: " .. TAG.role .. " (definido pelo ADM)", Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1,
+		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
+	}, page)
+	TAG.onChanged = function()
+		tagBox.Text = TAG.text
+		fontBtn:FindFirstChildOfClass("TextLabel").Text = "Fonte: " .. TAG.font
+		roleLbl.Text = "Cargo: " .. TAG.role .. " (definido pelo ADM)"
+		setTagOn(TAG.on)
+	end
+
 	table.insert(conns, { Disconnect = function() alive = false end })
 end
 
-local win, pages, say = buildWindow(560, 330, "Shin Hub", "Membro", { "Scripts", "Brookhaven", "Natural Disaster", "Mod", "Efeitos", "Extras", "Conexão", "Créditos" })
+-- ===== Detecta o jogo: cada jogo só mostra as abas dele =====
+local GAMES = {
+	Brookhaven = { 4924922222 },
+	["Natural Disaster"] = { 189707 },
+}
+local function inGame(name)
+	for _, id in ipairs(GAMES[name] or {}) do
+		if game.PlaceId == id then return true end
+	end
+	return false
+end
+local function buildTabs(last)
+	local t = { "Scripts" }
+	if inGame("Brookhaven") then table.insert(t, "Brookhaven") end
+	if inGame("Natural Disaster") then table.insert(t, "Natural Disaster") end
+	for _, n in ipairs({ "Mod", "Efeitos", "Extras" }) do table.insert(t, n) end -- comuns aos dois jogos
+	for _, n in ipairs(last) do table.insert(t, n) end
+	return t
+end
+
+-- ===== Menu Brookhaven: UMA aba só, com sub-abas (Nome, Música, Tag, Avatar, Proteções, Movimento) =====
+local function addSubTabs(host, names)
+	local bar = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, LayoutOrder = 1 }, host)
+	mk("UIGridLayout", { CellSize = UDim2.new(0.333, -5, 0, 26), CellPadding = UDim2.fromOffset(5, 5), SortOrder = Enum.SortOrder.LayoutOrder }, bar)
+	local subs, chips = {}, {}
+	local function pick(n)
+		for k, f in pairs(subs) do f.Visible = (k == n) end
+		for k, c in pairs(chips) do c.BackgroundColor3 = (k == n) and Color3.fromRGB(70, 10, 14) or PANEL end
+	end
+	for i, n in ipairs(names) do
+		local c = mk("TextButton", {
+			Text = n, LayoutOrder = i, BackgroundColor3 = PANEL, BackgroundTransparency = 0.1,
+			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11,
+		}, bar)
+		round(c, 13); stroke(c, 1.5)
+		local f = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, host)
+		mk("UIListLayout", { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, f)
+		subs[n], chips[n] = f, c
+		c.MouseButton1Click:Connect(function() pick(n) end)
+	end
+	pick(names[1])
+	return subs
+end
+
+local win, pages, say = buildWindow(560, 330, "Shin Hub", "Membro", buildTabs({ "Conexão", "Créditos" }))
+-- sub-abas do Brookhaven (as funções do Brookhaven ficam todas dentro do menu Brookhaven)
+do
+	local real = pages
+	pages = {}
+	for k, v in pairs(real) do pages[k] = v end
+	if real["Brookhaven"] then
+		local subs = addSubTabs(real["Brookhaven"], { "Nome", "Música", "Tag", "Proteções", "Movimento" })
+		for n, f in pairs(subs) do pages[n] = f end
+	end
+end
 selfCleanup = buildSelf(pages, say)
-buildBrookhaven(pages["Brookhaven"], say)
+if pages["Nome"] then buildBrookhaven(pages, say) end
 buildCredits(pages["Créditos"])
 local stopMods = buildMods(pages["Mod"], say)
 local stopFx = buildEffects(pages["Efeitos"], say)
 local stopExtras = buildExtras(pages["Extras"], say)
 do
 	local base = selfCleanup
-	selfCleanup = function() if base then base() end; stopMods(); stopFx(); stopExtras() end
+	selfCleanup = function() if base then base() end; stopMods(); stopFx(); stopExtras(); if TAG.stop then TAG.stop() end end
 end
 
 -- ===== Aba Conexão (status + Desativar ficam dentro do menu) =====
@@ -1929,6 +2516,10 @@ function toast(t)
 end
 
 floatButton(function() win.Visible = not win.Visible end)
+table.insert(conns, UIS.InputBegan:Connect(function(i, gp)
+	-- atalho do teclado: RightShift abre/fecha o menu
+	if not gp and i.KeyCode == Enum.KeyCode.RightShift then win.Visible = not win.Visible end
+end))
 
 local alive = true
 local uid = tostring(lp.UserId)
@@ -1944,14 +2535,28 @@ function shutdown()
 	gui:Destroy()
 end
 
--- presença (a cada 5s)
+-- presença (a cada 5s) + estado dos efeitos do admin (também enviado na hora que muda)
 local beat = 0
+local function presenceBody()
+	local root = hrp()
+	return {
+		name = lp.Name, uid = lp.UserId, place = game.PlaceId, job = game.JobId, beat = beat,
+		fire = (root and root:FindFirstChild("ShinFire") ~= nil) or nil,
+		rocket = FXS.rocket or nil,
+		jail = FXS.jail,
+		boom = FXS.boom,
+		tag = TAG.avail and { on = TAG.on, text = TAG.text, font = TAG.font, role = TAG.role } or nil,
+	}
+end
+function pushPresence()
+	if alive then http("PUT", "/members/" .. uid .. ".json", presenceBody()) end
+end
+TAG.push = function() task.spawn(pushPresence) end
+table.insert(conns, lp.CharacterAdded:Connect(function() task.wait(1); pushPresence() end))
 task.spawn(function()
 	while alive do
 		beat = beat + 1
-		local r = http("PUT", "/members/" .. uid .. ".json", {
-			name = lp.Name, uid = lp.UserId, place = game.PlaceId, job = game.JobId, beat = beat,
-		})
+		local r = http("PUT", "/members/" .. uid .. ".json", presenceBody())
 		if r ~= nil then
 			if not info.Text:find("Admin usou") then info.Text = "● Conectado ao painel" end
 		else
