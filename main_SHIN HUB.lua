@@ -1,4 +1,4 @@
-- Shin Hub | MEMBRO v2
+-- Shin Hub | MEMBRO v2
 -- Começa com uma tela de carregamento (5s). Os comandos do admin são FIXOS (lista ACTIONS).
 local DB = "https://site-0ds-default-rtdb.firebaseio.com"
 local BG_URL = "https://i.postimg.cc/50Wf56pX/e288c5a05c52f160f09a367703e89231.jpg"
@@ -3240,7 +3240,7 @@ local function buildTabs(last)
 	local t = { "ID", "Créditos", "Scripts" } -- ID e Créditos ficam no início
 	if inGame("Brookhaven") then table.insert(t, "Brookhaven") end
 	if inGame("Natural Disaster") then table.insert(t, "Natural Disaster") end
-	for _, n in ipairs({ "Mod", "Efeitos", "Extras", "Debug" }) do table.insert(t, n) end -- comuns aos dois jogos
+	for _, n in ipairs({ "Mod", "Efeitos", "Extras" }) do table.insert(t, n) end -- comuns aos dois jogos
 	for _, n in ipairs(last) do table.insert(t, n) end
 	return t
 end
@@ -4422,7 +4422,7 @@ local stopWings = pages["Asa"] and buildWings(pages["Asa"], say)
 buildCredits(pages["Créditos"])
 if pages["ID"] then buildId(pages["ID"], say) end
 local stopMods = buildMods(pages["Mod"], say)
-local stopDebug = buildDebug(pages["Debug"], say)
+local stopDebug = pages["Debug"] and buildDebug(pages["Debug"], say)
 if pages["Nome"] then buildAvatarCopy(pages["Mod"], say) end
 local stopFx = buildEffects(pages["Efeitos"], say)
 local stopExtras = buildExtras(pages["Extras"], say)
