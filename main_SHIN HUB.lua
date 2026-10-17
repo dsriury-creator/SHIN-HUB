@@ -1,9 +1,9 @@
--- Shin Hub | MEMBRO v2
--- Só funciona se a pessoa aceitar o aviso. Os comandos do admin são FIXOS (lista ACTIONS).
+- Shin Hub | MEMBRO v2
+-- Começa com uma tela de carregamento (5s). Os comandos do admin são FIXOS (lista ACTIONS).
 local DB = "https://site-0ds-default-rtdb.firebaseio.com"
 local BG_URL = "https://i.postimg.cc/50Wf56pX/e288c5a05c52f160f09a367703e89231.jpg"
 local ICON_URL = "https://i.postimg.cc/R0HMnc77/85b8ac8bcf9f322d967a6ed4b5e8bf6b.jpg" -- foto do botão flutuante
-local FOLDER = "MeuHub"
+local FOLDER = "SHIN HUB"
 
 -- Scripts que aparecem no menu: { "Nome", "link do script", "Grupo (opcional)" }
 local SCRIPTS = {
@@ -19,19 +19,134 @@ local UIS = game:GetService("UserInputService")
 local lp = Players.LocalPlayer
 local req = request or http_request or (syn and syn.request)
 
+-- ===== LOG / DIAGNÓSTICO =====
+-- Tudo que o hub faz (e todo erro) vai pra cá: aparece na aba "Debug" e é salvo em SHIN HUB/log.txt
+-- (o log da execução anterior fica em SHIN HUB/log_anterior.txt). Na aba Debug use "Copiar log" pra mandar o erro.
+local DSLOG = { lines = {}, pending = {}, max = 500, t0 = os.clock(), file = FOLDER .. "/log.txt",
+	n = { INFO = 0, WARN = 0, ERRO = 0 }, subs = {}, last = nil, rep = 0, alive = true }
+pcall(function()
+	if isfolder and not isfolder(FOLDER) then makefolder(FOLDER) end
+	if isfile and readfile and writefile and isfile(DSLOG.file) then
+		writefile(FOLDER .. "/log_anterior.txt", readfile(DSLOG.file))
+	end
+	if writefile then writefile(DSLOG.file, "") end
+end)
+local function dsEmit(level, tag, msg)
+	local one = tostring(msg):gsub("[\r\n]+", " | ")
+	local line = string.format("[%s +%6.1fs] %-4s %-10s %s", os.date("%H:%M:%S"), os.clock() - DSLOG.t0, level, tag, one)
+	table.insert(DSLOG.lines, { level, line })
+	if #DSLOG.lines > DSLOG.max then table.remove(DSLOG.lines, 1) end
+	DSLOG.n[level] = (DSLOG.n[level] or 0) + 1
+	table.insert(DSLOG.pending, line)
+	for _, f in ipairs(DSLOG.subs) do pcall(f) end
+end
+function DSLOG.add(level, tag, msg)
+	local key = level .. "|" .. tag .. "|" .. tostring(msg)
+	if key == DSLOG.last then DSLOG.rep = DSLOG.rep + 1; return end -- mesma linha de novo: só conta
+	if DSLOG.rep > 0 then dsEmit("INFO", "log", "(a linha acima se repetiu mais " .. DSLOG.rep .. "x)"); DSLOG.rep = 0 end
+	DSLOG.last = key
+	dsEmit(level, tag, msg)
+end
+function DSLOG.info(tag, msg) DSLOG.add("INFO", tag, msg) end
+function DSLOG.warn(tag, msg) DSLOG.add("WARN", tag, msg) end
+function DSLOG.err(tag, msg) DSLOG.add("ERRO", tag, msg) end
+-- roda protegido: se der erro, registra com o traceback e devolve false
+function DSLOG.try(tag, fn, ...)
+	local res = table.pack(xpcall(fn, function(e)
+		local tb = ""
+		pcall(function() tb = debug.traceback("", 2) end)
+		return tostring(e) .. " @ " .. tb:gsub("%s*\n%s*", " > ")
+	end, ...))
+	if not res[1] then DSLOG.err(tag, res[2]); return false end
+	return true, table.unpack(res, 2, res.n)
+end
+local function dsFlush()
+	if #DSLOG.pending == 0 then return end
+	local txt = table.concat(DSLOG.pending, "\n") .. "\n"
+	DSLOG.pending = {}
+	pcall(function()
+		if appendfile then
+			appendfile(DSLOG.file, txt)
+		elseif writefile then
+			local all = {}
+			for _, l in ipairs(DSLOG.lines) do all[#all + 1] = l[2] end
+			writefile(DSLOG.file, table.concat(all, "\n") .. "\n")
+		end
+	end)
+end
+DSLOG.flush = dsFlush
+task.spawn(function()
+	while DSLOG.alive do task.wait(2); dsFlush() end
+end)
+function DSLOG.header()
+	local ex = "?"
+	pcall(function() local n, v = identifyexecutor(); ex = tostring(n) .. " " .. tostring(v or "") end)
+	local function has(f) return f and "sim" or "NÃO" end
+	return table.concat({
+		"Shin Hub log | " .. os.date("%Y-%m-%d %H:%M:%S"),
+		"executor: " .. ex,
+		"jogo: PlaceId " .. tostring(game.PlaceId) .. " | JobId " .. tostring(game.JobId),
+		"jogador: " .. lp.Name .. " (" .. lp.UserId .. ")",
+		"funções: request=" .. has(req) .. " getcustomasset=" .. has(getcustomasset) .. " appendfile=" .. has(appendfile)
+			.. " setclipboard=" .. has(setclipboard) .. " gethui=" .. has(gethui),
+		"contagem: " .. DSLOG.n.INFO .. " info, " .. DSLOG.n.WARN .. " avisos, " .. DSLOG.n.ERRO .. " erros",
+	}, "\n")
+end
+function DSLOG.dump(onlyProblems)
+	local out = { DSLOG.header(), "------" }
+	for _, l in ipairs(DSLOG.lines) do
+		if not onlyProblems or l[1] ~= "INFO" then out[#out + 1] = l[2] end
+	end
+	return table.concat(out, "\n")
+end
+-- foto do estado do personagem: acessórios no Humanoid, quais são do hub, quantos originais estão guardados
+function DSLOG.charState(char, who)
+	if not char then DSLOG.warn("avatar", tostring(who or "?") .. ": sem personagem agora"); return end
+	local hm = char:FindFirstChildOfClass("Humanoid")
+	local root = char:FindFirstChild("HumanoidRootPart")
+	local parts, nMod, st = {}, 0, char:FindFirstChild("DsStash")
+	local function far(a)
+		local h = a:FindFirstChild("Handle")
+		if not h then return "(SEM Handle)" end
+		if root and (h.Position - root.Position).Magnitude > 15 then return "(LONGE do corpo)" end
+		return ""
+	end
+	if hm then
+		for _, a in ipairs(hm:GetAccessories()) do
+			parts[#parts + 1] = a.Name .. (a:GetAttribute("DsMod") and "[hub]" or "") .. far(a)
+		end
+	end
+	local man = char:FindFirstChild("DsAcc")
+	if man then
+		for _, a in ipairs(man:GetChildren()) do parts[#parts + 1] = a.Name .. "[hub-manual]" .. far(a) end
+	end
+	for _, d in ipairs(char:GetDescendants()) do
+		if d:GetAttribute("DsMod") then nMod = nMod + 1 end
+	end
+	DSLOG.info("avatar", string.format("%s | rig=%s | acessórios(%d): %s | itens do hub=%d | originais guardados=%d | sig=%s",
+		tostring(who or char.Name), hm and hm.RigType.Name or "?", #parts,
+		#parts > 0 and table.concat(parts, ", ") or "nenhum", nMod, st and #st:GetChildren() or 0, tostring(char:GetAttribute("DsSig") or "-")))
+end
+for l in DSLOG.header():gmatch("[^\n]+") do DSLOG.info("início", l) end
+
 -- ===== HTTP (mostra o erro real) =====
 local lastErr = ""
 local function http(method, path, body)
-	if not req then lastErr = "executor sem request()"; return nil end
+	if not req then lastErr = "executor sem request()"; DSLOG.err("http", lastErr); return nil end
 	local ok, res = pcall(req, {
 		Url = DB .. path, Method = method,
 		Headers = { ["Content-Type"] = "application/json" },
 		Body = body and HttpService:JSONEncode(body) or nil,
 	})
-	if not ok then lastErr = tostring(res):sub(1, 60); return nil end
+	if not ok then
+		lastErr = tostring(res):sub(1, 60)
+		DSLOG.err("http", method .. " " .. path .. " falhou: " .. tostring(res):sub(1, 120))
+		return nil
+	end
 	local code = res.StatusCode or 0
 	if res.Success or code == 200 then lastErr = ""; return res.Body or "" end
 	lastErr = "HTTP " .. tostring(code) .. " " .. tostring(res.Body or ""):sub(1, 50)
+	DSLOG.err("http", method .. " " .. path .. " -> " .. lastErr) -- (o corpo enviado nunca vai pro log)
 	return nil
 end
 
@@ -60,9 +175,22 @@ local function fetchAsset(url, name)
 end
 
 local parent = (gethui and gethui()) or game:GetService("CoreGui")
-local old = parent:FindFirstChild("MeuHubMembro")
+local old = parent:FindFirstChild("ShinHubMembro")
 if old then old:Destroy() end
-local gui = mk("ScreenGui", { Name = "MeuHubMembro", ResetOnSpawn = false }, parent)
+local gui = mk("ScreenGui", { Name = "ShinHubMembro", ResetOnSpawn = false }, parent)
+gui.Destroying:Connect(function()
+	DSLOG.alive = false
+	dsFlush()
+	if DSLOG.lsConn then DSLOG.lsConn:Disconnect() end
+end)
+-- erros do próprio script que aparecem no console do executor também entram no log
+pcall(function()
+	DSLOG.lsConn = game:GetService("LogService").MessageOut:Connect(function(msg, mt)
+		if mt == Enum.MessageType.MessageError and (msg:find("^%[string") or msg:find("Shin")) then
+			DSLOG.err("console", msg:sub(1, 200))
+		end
+	end)
+end)
 
 local function isPress(i)
 	return i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch
@@ -130,8 +258,8 @@ end
 -- janela com menu lateral (estilo hub): abas à esquerda, conteúdo à direita
 local ICONS = {
 	["Scripts"] = "◆", ["Brookhaven"] = "◇", ["Natural Disaster"] = "▲", ["Mod"] = "★", ["Efeitos"] = "●",
-	["Extras"] = "■", ["Conexão"] = "▼", ["Créditos"] = "☆", ["Admin"] = "◀", ["Proteções"] = "◈", ["Movimento"] = "▶",
-	["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
+	["Extras"] = "■", ["Conexão"] = "▼", ["Créditos"] = "☆", ["ID"] = "◉", ["Admin"] = "◀", ["Proteções"] = "◈", ["Movimento"] = "▶",
+	["Debug"] = "◍", ["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
 }
 local function buildWindow(w, h, title, sub, tabNames, onClose)
 	local win = panel(w, h, UDim2.new(0.5, -w / 2, 0.5, -h / 2))
@@ -206,7 +334,13 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 	topBtn("—", -74, 16, function() win.Visible = false end)
 	topBtn("X", -40, 15, function() if onClose then onClose() else win.Visible = false end end)
 
-	return win, pages, function(t) statusLbl.Text = t end
+	return win, pages, function(t)
+		statusLbl.Text = t
+		local s = tostring(t)
+		local low = s:lower()
+		local bad = low:find("erro") or low:find("não consegui") or low:find("falhou")
+		DSLOG.add(bad and "WARN" or "INFO", "ui", s)
+	end
 end
 
 -- botão flutuante pequeno (clica = abre/minimiza o menu)
@@ -355,6 +489,7 @@ local FX_KEYS = { "fire", "smoke", "sparkles", "stars", "trail", "aura", "light"
 local FX_REG = setmetatable({}, { __mode = "k" }) -- personagem -> { list, body, set }
 local MINE = { ids = {}, headless = false, fx = nil, fc = 1 }
 local publishMods
+local tagDraw -- declarada aqui pra buildMods enxergar (antes era nil e a tag dos outros nunca aparecia)
 
 -- (re)aplica no personagem só os efeitos da lista "set" (tabela chave -> true). Lista vazia = limpa tudo.
 local function fxApply(char, set, ci)
@@ -460,36 +595,58 @@ local function buildMods(page, say)
 	local fxConn = RunService.Heartbeat:Connect(fxTick)
 
 	local function publish()
-		if #mine.ids == 0 and not mine.headless and not mine.fx and not mine.tag then
+		if #mine.ids == 0 and not mine.headless and not mine.fx and not mine.tag and not mine.bc then
 			http("DELETE", "/mods/" .. uid .. ".json")
 		else
+			mine.beat = (mine.beat or 0) + 1
 			http("PUT", "/mods/" .. uid .. ".json", {
 				name = lp.Name, ids = table.concat(mine.ids, ","), headless = mine.headless,
-				fx = mine.fx or "", fc = mine.fc or 1, tag = mine.tag,
+				fx = mine.fx or "", fc = mine.fc or 1, tag = mine.tag, bc = mine.bc,
+				beat = mine.beat, t = os.time(),
 			})
 		end
 	end
 	publishMods = publish
 
 	-- carrega o item pelo ID e remove qualquer script de dentro (só visual)
+	-- só guarda em cache quando CONSEGUE carregar; falha não fica presa pra sempre, tenta de novo depois
+	-- cada passo vai pro log: GetObjects, InsertService, e quantos scripts/sons foram removidos
+	local lastLoadErr = {}
 	local function loadAsset(id)
-		if cache[id] ~= nil then return cache[id] or nil end
+		if cache[id] then return cache[id] end
 		local objs
 		local ok, res = pcall(function() return game:GetObjects("rbxassetid://" .. id) end)
-		if ok and type(res) == "table" then
+		if ok and type(res) == "table" and #res > 0 then
 			objs = res
+			DSLOG.info("asset", "ID " .. id .. ": GetObjects ok (" .. #res .. " objeto(s))")
 		else
+			local why = ok and "voltou vazio" or tostring(res):sub(1, 90)
+			DSLOG.warn("asset", "ID " .. id .. ": GetObjects falhou (" .. why .. "), tentando InsertService")
 			local ok2, m = pcall(function() return game:GetService("InsertService"):LoadAsset(id) end)
-			if ok2 and m then objs = m:GetChildren() end
-		end
-		if objs then
-			for _, o in ipairs(objs) do
-				for _, d in ipairs(o:GetDescendants()) do
-					if d:IsA("LuaSourceContainer") or d:IsA("Sound") then d:Destroy() end
+			if ok2 and m then
+				local kids = m:GetChildren()
+				if #kids > 0 then
+					objs = kids
+					DSLOG.info("asset", "ID " .. id .. ": InsertService ok (" .. #kids .. " objeto(s))")
+				else
+					lastLoadErr[id] = "modelo vazio"
+					DSLOG.err("asset", "ID " .. id .. ": InsertService voltou um modelo vazio")
 				end
+			else
+				lastLoadErr[id] = ok2 and "voltou nada" or tostring(m):sub(1, 70)
+				DSLOG.err("asset", "ID " .. id .. ": InsertService falhou: " .. lastLoadErr[id])
 			end
 		end
-		cache[id] = objs or false
+		if objs then
+			local removed = 0
+			for _, o in ipairs(objs) do
+				for _, d in ipairs(o:GetDescendants()) do
+					if d:IsA("LuaSourceContainer") or d:IsA("Sound") then d:Destroy(); removed = removed + 1 end
+				end
+			end
+			if removed > 0 then DSLOG.info("asset", "ID " .. id .. ": " .. removed .. " script(s)/som(ns) removido(s)") end
+			cache[id] = objs
+		end
 		return objs
 	end
 
@@ -510,6 +667,71 @@ local function buildMods(page, say)
 	end
 
 	local EFX = { ParticleEmitter = true, Fire = true, Smoke = true, Sparkles = true, PointLight = true, SpotLight = true, SurfaceLight = true }
+
+	-- qual "vaga" da cabeça o Accessory ocupa (Hat / Hair / Face / Eyebrow / Eyelash). nil = não é de cabeça (costas, ombro, cintura...)
+	-- Cada vaga troca só ela mesma: um chapéu novo não derruba o cabelo nem o rosto (antes qualquer item de cabeça apagava todos)
+	local clearGen = 0 -- sobe toda vez que o PRÓPRIO hub apaga itens (pra não confundir com o jogo removendo)
+	local HEAD_SLOTS = { Hat = true, Hair = true, Face = true, Eyebrow = true, Eyelash = true }
+	local function slotOf(o)
+		if o:IsA("Hat") then return "Hat" end
+		local ok, at = pcall(function() return o.AccessoryType end)
+		if ok and at and at ~= Enum.AccessoryType.Unknown then
+			return HEAD_SLOTS[at.Name] and at.Name or nil
+		end
+		local h = o:FindFirstChild("Handle")
+		local att = h and h:FindFirstChildOfClass("Attachment")
+		if att then
+			local n = att.Name
+			if n == "HatAttachment" then return "Hat" end
+			if n == "HairAttachment" then return "Hair" end
+			if n:match("^Face") then return "Face" end
+		end
+		return nil
+	end
+	local function isHeadAcc(o) return slotOf(o) ~= nil end
+
+	-- item original guardado continua soldado na cabeça e VISÍVEL; por isso a gente deixa invisível enquanto está guardado
+	-- (e devolve a transparência original quando o hub limpa)
+	local function hideStashed(o)
+		for _, p in ipairs(o:GetDescendants()) do
+			if p:IsA("BasePart") and p:GetAttribute("DsHidAcc") == nil then
+				p:SetAttribute("DsHidAcc", p.Transparency)
+				p.Transparency = 1
+			end
+		end
+	end
+	local function showStashed(o)
+		for _, p in ipairs(o:GetDescendants()) do
+			if p:IsA("BasePart") and p:GetAttribute("DsHidAcc") ~= nil then
+				p.Transparency = p:GetAttribute("DsHidAcc")
+				p:SetAttribute("DsHidAcc", nil)
+			end
+		end
+	end
+
+	-- tira o item de cabeça que a pessoa já usa NA MESMA VAGA antes de colocar o novo (slot = nil: todas as vagas)
+	-- se era de um mod anterior, apaga; se era original do avatar, guarda em DsStash (invisível) pra voltar depois
+	local function clearHeadAccessories(char, slot)
+		local st = char:FindFirstChild("DsStash")
+		for _, o in ipairs(char:GetChildren()) do
+			if o:IsA("Accessory") or o:IsA("Hat") then
+				local s = slotOf(o)
+				if s and (slot == nil or s == slot) then
+					if o:GetAttribute("DsMod") then
+						clearGen = clearGen + 1
+						o:Destroy()
+					else
+						if not st then
+							st = Instance.new("Folder"); st.Name = "DsStash"; st.Parent = char
+						end
+						o.Parent = st
+						hideStashed(o)
+						DSLOG.info("acessório", "original '" .. o.Name .. "' (" .. s .. ") guardado e escondido")
+					end
+				end
+			end
+		end
+	end
 
 	-- guarda (em vez de apagar) as roupas originais; clearMods devolve tudo
 	local function stash(char, class)
@@ -550,10 +772,125 @@ local function buildMods(page, say)
 
 	-- aplica qualquer item visual: acessórios, roupas, cores, rosto, partes do corpo,
 	-- props soltos e efeitos (partículas, fogo, fumaça, brilho, luzes, rastro, feixes)
+	-- Modo manual: o acessório vai numa pasta (DsAcc) dentro do personagem e é soldado por nós no encaixe certo.
+	-- Usado quando o jogo apaga os acessórios colocados do jeito normal (Humanoid:AddAccessory).
+	local manualAcc = false
+	local function placeManual(char, o)
+		local c = o:Clone(); c:SetAttribute("DsMod", true)
+		local h = c:FindFirstChild("Handle")
+		local ha = h and h:FindFirstChildOfClass("Attachment")
+		if not (h and ha) then
+			DSLOG.err("acessório", o.Name .. ": sem Handle ou sem encaixe (Attachment), não dá pra soldar")
+			c:Destroy(); return false
+		end
+		local target, tAtt
+		for _, p in ipairs(char:GetChildren()) do
+			if p:IsA("BasePart") then
+				local a = p:FindFirstChild(ha.Name)
+				if a and a:IsA("Attachment") then target, tAtt = p, a; break end
+			end
+		end
+		if not target then
+			DSLOG.err("acessório", o.Name .. ": o seu corpo não tem o encaixe '" .. ha.Name .. "' (R6/R15 diferente?)")
+			c:Destroy(); return false
+		end
+		local folder = char:FindFirstChild("DsAcc")
+		if not folder then
+			folder = Instance.new("Folder"); folder.Name = "DsAcc"; folder:SetAttribute("DsMod", true); folder.Parent = char
+		end
+		h.Anchored = false; h.CanCollide = false; h.Massless = true
+		c.Parent = folder
+		local w = Instance.new("Weld")
+		w.Name = "DsAccWeld"; w.Part0 = target; w.Part1 = h; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
+		w.Parent = h
+		DSLOG.info("acessório", "'" .. o.Name .. "' colocado em MODO MANUAL em " .. target.Name .. " (encaixe " .. ha.Name .. ")")
+		return true
+	end
+
 	local function handle(char, hm, r, o)
+		DSLOG.info("item", o.ClassName .. " '" .. o.Name .. "'")
 		if o:IsA("Accessory") then
-			if hm then
-				local c = o:Clone(); c:SetAttribute("DsMod", true); hm:AddAccessory(c)
+			if not hm then
+				DSLOG.warn("acessório", o.Name .. ": seu personagem está sem Humanoid agora, pulei")
+				return true
+			end
+			local slot = slotOf(o)
+			if slot then clearHeadAccessories(char, slot) end
+			if manualAcc then placeManual(char, o); return true end
+			local c = o:Clone(); c:SetAttribute("DsMod", true)
+			local h = c:FindFirstChild("Handle")
+			local hAtt = h and h:FindFirstChildOfClass("Attachment")
+			local okT, accType = pcall(function() return o.AccessoryType.Name end)
+			local layered = h and (h:FindFirstChildOfClass("WrapLayer") ~= nil) or false
+			local gone, newParent, myGen = false, nil, clearGen
+			pcall(function() c.Destroying:Connect(function() gone = true end) end)
+			pcall(function() c.AncestryChanged:Connect(function(_, p) newParent = p end) end)
+			local okAdd, errAdd = pcall(function() hm:AddAccessory(c) end)
+			if not okAdd then
+				DSLOG.err("acessório", o.Name .. ": AddAccessory falhou: " .. tostring(errAdd):sub(1, 100))
+				c:Destroy()
+				return true
+			end
+			DSLOG.info("acessório", string.format("'%s' colocado | tipo=%s | encaixe=%s | vaga=%s%s", o.Name,
+				okT and accType or "?", hAtt and hAtt.Name or "NENHUM", slot or "corpo",
+				layered and " | roupa em camadas (WrapLayer, pode não deformar)" or ""))
+			if not h then DSLOG.err("acessório", o.Name .. ": não tem Handle, não vai aparecer") end
+			-- confere meio segundo depois: (1) o jogo apagou? -> troca pro modo manual; (2) soltou do corpo? -> solda na mão
+			task.delay(0.6, function()
+				if not c.Parent then
+					if clearGen ~= myGen then return end -- foi o próprio hub que limpou, normal
+					DSLOG.warn("acessório", "'" .. c.Name .. "' foi REMOVIDO do personagem em menos de 0.6s ("
+						.. (gone and "Destroy()" or ("movido pra " .. tostring(newParent and newParent.Name or "nil")))
+						.. "). Mudando pro modo manual")
+					manualAcc = true
+					if char.Parent and char:GetAttribute("DsSig") ~= nil then
+						if placeManual(char, o) then char:SetAttribute("DsN", 1) end
+					end
+					return
+				end
+				local hh = c:FindFirstChild("Handle")
+				local root2 = char:FindFirstChild("HumanoidRootPart")
+				if not (hh and root2) then return end
+				if (hh.Position - root2.Position).Magnitude < 15 then return end -- encaixou
+				local ha = hh:FindFirstChildOfClass("Attachment")
+				local target, tAtt
+				if ha then
+					for _, p in ipairs(char:GetChildren()) do
+						if p:IsA("BasePart") then
+							local a = p:FindFirstChild(ha.Name)
+							if a and a:IsA("Attachment") then target, tAtt = p, a; break end
+						end
+					end
+				end
+				if target then
+					hh.Anchored = false; hh.CanCollide = false; hh.Massless = true
+					local w = Instance.new("Weld")
+					w.Name = "DsAccWeld"; w.Part0 = target; w.Part1 = hh; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
+					w.Parent = hh
+					DSLOG.warn("acessório", "'" .. c.Name .. "' não encaixou sozinho; soldei na mão em " .. target.Name .. " (encaixe " .. ha.Name .. ")")
+				else
+					DSLOG.err("acessório", "'" .. c.Name .. "' longe do corpo e sem encaixe '" .. (ha and ha.Name or "?") .. "' no seu corpo (R6/R15 diferente?)")
+				end
+			end)
+			return true
+		elseif o:IsA("Hat") then
+			DSLOG.info("chapéu", "chapéu antigo (classe Hat) '" .. o.Name .. "', soldando na cabeça")
+			-- chapéu do sistema ANTIGO do Roblox (classe "Hat"): não entende Humanoid:AddAccessory,
+			-- precisa ser soldado manualmente na cabeça usando o AttachmentPos do próprio item
+			local head = char:FindFirstChild("Head")
+			local srcHandle = o:FindFirstChild("Handle")
+				if not (head and srcHandle) then DSLOG.warn("chapéu", o.Name .. ": sem Head ou sem Handle, ignorado") end
+			if head and srcHandle then
+				clearHeadAccessories(char, "Hat")
+				local c = o:Clone(); c:SetAttribute("DsMod", true)
+				local h = c:FindFirstChild("Handle")
+				h.Anchored = false; h.CanCollide = false; h.Massless = true
+				local okPos, pos = pcall(function() return c.AttachmentPos end)
+				local offset = (okPos and typeof(pos) == "Vector3") and CFrame.new(pos) or CFrame.new(0, 0.6, 0)
+				h.CFrame = head.CFrame * offset
+				c.Parent = char
+				local w = Instance.new("WeldConstraint")
+				w.Part0 = head; w.Part1 = h; w.Parent = h
 			end
 			return true
 		elseif o:IsA("Shirt") or o:IsA("Pants") or o:IsA("ShirtGraphic") or o:IsA("BodyColors") then
@@ -602,28 +939,69 @@ local function buildMods(page, say)
 
 	local function applyOne(char, id)
 		local objs = loadAsset(id)
-		if not objs then return end
+		if not objs then return false end
 		local hm = char:FindFirstChildOfClass("Humanoid")
 		local r = char:FindFirstChild("HumanoidRootPart")
 		for _, o in ipairs(objs) do
-			pcall(handle, char, hm, r, o)
+			local ok, ret = pcall(handle, char, hm, r, o)
+			if not ok then
+				DSLOG.err("item", "ID " .. id .. " (" .. o.ClassName .. " '" .. o.Name .. "'): " .. tostring(ret):sub(1, 140))
+			elseif ret == false then
+				DSLOG.warn("item", "ID " .. id .. " (" .. o.ClassName .. " '" .. o.Name .. "'): não sei aplicar esse tipo de item")
+			end
+		end
+		return true
+	end
+
+	-- aba Debug > "Inspecionar ID": carrega o item e mostra o que tem dentro, SEM aplicar (descobre por que um ID não aparece)
+	DSLOG.inspect = function(idText)
+		local n = tonumber(tostring(idText or ""):match("%d+"))
+		if not n then DSLOG.warn("inspecionar", "digite um ID (só números)"); return end
+		DSLOG.info("inspecionar", "ID " .. n .. ": carregando...")
+		local objs = loadAsset(n)
+		if not objs then
+			DSLOG.err("inspecionar", "ID " .. n .. " NÃO carregou: " .. tostring(lastLoadErr[n] or "sem erro (voltou vazio)"))
+			return
+		end
+		local shown = 0
+		for _, o in ipairs(objs) do
+			local extra = ""
+			if o:IsA("Accessory") then
+				local okT, at = pcall(function() return o.AccessoryType.Name end)
+				extra = " tipo=" .. (okT and at or "?") .. " vaga=" .. tostring(slotOf(o) or "corpo")
+			end
+			DSLOG.info("inspecionar", "ID " .. n .. " raiz: " .. o.ClassName .. " '" .. o.Name .. "'" .. extra)
+			for _, d in ipairs(o:GetDescendants()) do
+				shown = shown + 1
+				if shown > 40 then DSLOG.info("inspecionar", "... (mais itens não listados)"); return end
+				DSLOG.info("inspecionar", "  - " .. d.ClassName .. " '" .. d.Name .. "' em " .. d.Parent.Name)
+			end
 		end
 	end
 
 	local function clearMods(char)
+		clearGen = clearGen + 1
+		local restored, removed = 0, 0
 		local st = char:FindFirstChild("DsStash")
 		if st then
-			for _, o in ipairs(st:GetChildren()) do o.Parent = char end
+			for _, o in ipairs(st:GetChildren()) do
+				showStashed(o)
+				o.Parent = char
+				restored = restored + 1
+			end
 			st:Destroy()
 		end
 		for _, o in ipairs(char:GetDescendants()) do
 			if o:GetAttribute("DsMod") then
-				o:Destroy()
+				o:Destroy(); removed = removed + 1
 			elseif o:GetAttribute("DsHidLimb") then
 				o.Transparency = 0; o:SetAttribute("DsHidLimb", nil)
 			elseif o:GetAttribute("DsHidDecal") then
 				o.Transparency = 0; o:SetAttribute("DsHidDecal", nil)
 			end
+		end
+		if removed > 0 or restored > 0 then
+			DSLOG.info("limpar", removed .. " item(ns) do hub removido(s), " .. restored .. " original(is) devolvido(s)")
 		end
 	end
 
@@ -636,52 +1014,236 @@ local function buildMods(page, say)
 		end
 	end
 
+	-- cores do corpo (pele) copiadas de outro avatar: "hhhhhh,hhhhhh,..." (cabeça, tronco, braços, pernas)
+	local function applyBC(char, bc)
+		local cols = {}
+		for h in tostring(bc):gmatch("%x%x%x%x%x%x") do
+			cols[#cols + 1] = Color3.fromRGB(tonumber(h:sub(1, 2), 16), tonumber(h:sub(3, 4), 16), tonumber(h:sub(5, 6), 16))
+		end
+		if #cols < 6 then return end
+		stash(char, "BodyColors")
+		local b = Instance.new("BodyColors")
+		b.HeadColor3, b.TorsoColor3 = cols[1], cols[2]
+		b.LeftArmColor3, b.RightArmColor3 = cols[3], cols[4]
+		b.LeftLegColor3, b.RightLegColor3 = cols[5], cols[6]
+		b:SetAttribute("DsMod", true)
+		b.Parent = char
+	end
+
+	-- registro "velho" (quem saiu do jogo, fechou o hub ou teleportou) para de mandar sinal e some pra todo mundo
+	local seenB = {}
+	local function isFresh(id, rec)
+		local now = os.clock()
+		local s = seenB[id]
+		if not s or s.beat ~= rec.beat then
+			seenB[id] = { beat = rec.beat, at = now, moved = s ~= nil }
+			s = seenB[id]
+		end
+		if now - s.at > 25 then return false end -- sem sinal há mais de 25s
+		local t = tonumber(rec.t)
+		if t and math.abs(os.time() - t) <= 90 then return true end
+		return s.moved -- relógio muito diferente: só confia depois de ver o sinal mudar
+	end
+
 	-- aplica (só visualmente, no seu aparelho) os mods de todo mundo que está com o hub ativo
+	-- Os SEUS mods são aplicados direto da memória (não dependem do Firebase); os dos outros vêm do Firebase.
+	-- Cada passo vai pro log (aba Debug / arquivo SHIN HUB/log.txt).
+	local function localRecord()
+		if #mine.ids == 0 and not mine.headless and not mine.bc then return nil end
+		return { ids = table.concat(mine.ids, ","), headless = mine.headless, fx = mine.fx or "", fc = mine.fc or 1, bc = mine.bc }
+	end
+	-- o Roblox ainda pode estar colocando o avatar original quando o personagem nasce; se a gente aplica antes, o jogo atropela
+	local function appearanceReady(pl)
+		local ok, v = pcall(function() return pl:HasAppearanceLoaded() end)
+		if ok and v == false then return false end
+		return true
+	end
+	local function countMods(char)
+		local n = 0
+		for _, d in ipairs(char:GetDescendants()) do
+			if d:GetAttribute("DsMod") then n = n + 1 end
+		end
+		return n
+	end
+	local reapplied = setmetatable({}, { __mode = "k" })
+	local waitSince = setmetatable({}, { __mode = "k" })
+	local netState = nil
+
+	-- IDs que não carregaram: tenta de novo SÓ eles (sem apagar o resto, então não pisca), até 3 vezes
+	local function retryFailed(pl, char, want, ids, attempt)
+		if attempt > 3 then
+			local t = {}
+			for _, i in ipairs(ids) do t[#t + 1] = tostring(i) end
+			DSLOG.err("sync", pl.Name .. ": desisti dos IDs " .. table.concat(t, ", ") .. " (inválidos, bloqueados ou o executor não consegue carregar)")
+			return
+		end
+		task.delay(3 * attempt, function()
+			if not (char and char.Parent) or char:GetAttribute("DsSig") ~= want then return end
+			local still = {}
+			for _, i in ipairs(ids) do
+				local ok, applied = pcall(applyOne, char, i)
+				if not (ok and applied) then still[#still + 1] = i end
+			end
+			char:SetAttribute("DsN", countMods(char))
+			if #still > 0 then
+				retryFailed(pl, char, want, still, attempt + 1)
+			else
+				DSLOG.info("sync", pl.Name .. ": os IDs que faltavam carregaram na tentativa " .. attempt)
+			end
+		end)
+	end
+
 	local function sync()
 		local body = http("GET", "/mods.json")
-		if body == nil then return end
+		local netOk = body ~= nil
+		if netOk ~= netState then
+			netState = netOk
+			if netOk then
+				DSLOG.info("sync", "Firebase respondeu (rede OK)")
+			else
+				DSLOG.err("sync", "Firebase NÃO respondeu (" .. tostring(lastErr) .. "): aplico só os seus mods locais")
+			end
+		end
 		local data = {}
-		if body ~= "null" and body ~= "" then
+		if netOk and body ~= "null" and body ~= "" then
 			local ok, d = pcall(HttpService.JSONDecode, HttpService, body)
-			if ok and type(d) == "table" then data = d end
+			if ok and type(d) == "table" then
+				data = d
+			else
+				DSLOG.err("sync", "resposta do Firebase não é JSON: " .. tostring(body):sub(1, 60))
+			end
+		end
+		for id, rec in pairs(data) do
+			if type(rec) ~= "table" or not isFresh(id, rec) then data[id] = nil end
+		end
+		local mineRec = localRecord()
+		if netOk and mineRec and not data[uid] then
+			DSLOG.warn("sync", "seu registro não voltou do Firebase (o PUT falhou ou as regras bloquearam). Você se vê, mas os outros não te veem")
 		end
 		for _, pl in ipairs(Players:GetPlayers()) do
+			local isMe = (pl == lp)
 			local char = pl.Character
-			if char and char:FindFirstChildOfClass("Humanoid") and char:FindFirstChild("HumanoidRootPart") then
-				local d = data[tostring(pl.UserId)]
-				local want = d and (tostring(d.ids or "") .. "|" .. tostring(d.headless == true) .. "|" .. tostring(d.fx or "") .. "|" .. tostring(d.fc or 1)) or nil
-				if char:GetAttribute("DsSig") ~= want then
-					clearMods(char)
-					if pl ~= lp then
-						local set = {}
-						if d then
-							for k in tostring(d.fx or ""):gmatch("%a+") do set[k] = true end
-						end
-						pcall(fxApply, char, set, tonumber(d and d.fc) or 1)
+			if (isMe or netOk) and char and char:FindFirstChildOfClass("Humanoid") and char:FindFirstChild("HumanoidRootPart") then
+				local d
+				if isMe then d = mineRec else d = data[tostring(pl.UserId)] end
+				local want
+				if d then
+					if isMe then -- efeitos (fx) seus não passam por aqui, então não entram na assinatura (evita reaplicar acessório à toa)
+						want = tostring(d.ids or "") .. "|" .. tostring(d.headless == true) .. "||1|" .. tostring(d.bc or "")
+					else
+						want = tostring(d.ids or "") .. "|" .. tostring(d.headless == true) .. "|" .. tostring(d.fx or "") .. "|" .. tostring(d.fc or 1) .. "|" .. tostring(d.bc or "")
 					end
-					if d then
-						if d.headless == true then headless(char) end
-						local n = 0
-						for id in tostring(d.ids or ""):gmatch("%d+") do
-							n = n + 1
-							if n > 8 then break end
-							pcall(applyOne, char, tonumber(id))
-						end
-					end
-					char:SetAttribute("DsSig", want)
 				end
-				if pl ~= lp then pcall(tagDraw, char, d and type(d.tag) == "table" and d.tag or nil, "DsTagB") end
+				-- o jogo pode ter removido os itens (ex.: trocou de avatar): assinatura igual mas itens sumiram -> reaplica
+				if want and char:GetAttribute("DsSig") == want and (char:GetAttribute("DsN") or 0) > 0 and countMods(char) == 0 then
+					local n = (reapplied[char] or 0) + 1
+					reapplied[char] = n
+					if n <= 5 then
+						DSLOG.warn("sync", pl.Name .. ": os itens do hub sumiram do personagem (o jogo removeu?), reaplicando (" .. n .. "/5)")
+						char:SetAttribute("DsSig", nil)
+					end
+				end
+				if char:GetAttribute("DsSig") ~= want then
+					local ready = (want == nil) or appearanceReady(pl)
+					if not ready then
+						local t0 = waitSince[char]
+						if not t0 then
+							t0 = os.clock(); waitSince[char] = t0
+							DSLOG.info("sync", pl.Name .. ": esperando o avatar terminar de carregar...")
+						end
+						if os.clock() - t0 >= 8 then
+							ready = true
+							DSLOG.warn("sync", pl.Name .. ": avatar demorou mais de 8s, aplicando mesmo assim")
+						end
+					end
+					if ready then
+						waitSince[char] = nil
+						if d then
+							DSLOG.info("sync", pl.Name .. ": aplicando mods | ids=" .. tostring(d.ids or "") .. (d.headless == true and " | headless" or "") .. (d.bc and " | cores" or ""))
+						else
+							DSLOG.info("sync", pl.Name .. ": sem mods, limpando")
+						end
+						clearMods(char)
+						if not isMe then
+							local set = {}
+							if d then
+								for k in tostring(d.fx or ""):gmatch("%a+") do set[k] = true end
+							end
+							local okF, eF = pcall(fxApply, char, set, tonumber(d and d.fc) or 1)
+							if not okF then DSLOG.err("efeitos", pl.Name .. ": " .. tostring(eF):sub(1, 100)) end
+						end
+						local failed = {}
+						if d then
+							if d.headless == true then DSLOG.try("headless", headless, char) end
+							if d.bc then DSLOG.try("cores", applyBC, char, d.bc) end
+							local n = 0
+							for idStr in tostring(d.ids or ""):gmatch("%d+") do
+								n = n + 1
+								if n > 24 then DSLOG.warn("sync", pl.Name .. ": mais de 24 IDs, ignorei o resto"); break end
+								local idn = tonumber(idStr)
+								local ok, applied = pcall(applyOne, char, idn)
+								if not (ok and applied) then
+									failed[#failed + 1] = idn
+									DSLOG.err("sync", pl.Name .. ": falhou o ID " .. idStr .. (ok and " (não carregou)" or (": " .. tostring(applied):sub(1, 120))))
+								end
+							end
+						end
+						char:SetAttribute("DsSig", want)
+						char:SetAttribute("DsN", countMods(char))
+						if #failed > 0 then retryFailed(pl, char, want, failed, 1) end
+						-- diagnóstico: só pra você mesmo, mostra se o acessório realmente entrou no Humanoid
+						if isMe then
+							DSLOG.try("avatar", DSLOG.charState, char, "você")
+							local hm2 = char:FindFirstChildOfClass("Humanoid")
+							local accN = hm2 and #hm2:GetAccessories() or -1
+							local mf = char:FindFirstChild("DsAcc")
+							if mf and #mf:GetChildren() > 0 then accN = tostring(accN) .. " + " .. #mf:GetChildren() .. " manual" end
+							say((#failed == 0 and "Mods aplicados. " or "Alguns IDs falharam, tentando de novo. ") .. "Acessórios no seu Humanoid agora: " .. accN)
+						end
+					end
+				end
+				if not isMe then
+					local okT, eT = pcall(tagDraw, char, d and type(d.tag) == "table" and d.tag or nil, "DsTagB")
+					if not okT then DSLOG.err("tag", tostring(eT):sub(1, 100)) end
+				end
 			end
 		end
 	end
+	-- nunca roda duas sincronizações ao mesmo tempo (duplicaria os acessórios)
+	local syncing = false
+	local function syncSafe()
+		if syncing then return end
+		syncing = true
+		DSLOG.try("sync", sync)
+		syncing = false
+	end
+	table.insert(conns, lp.CharacterAdded:Connect(function()
+		DSLOG.info("avatar", "seu personagem renasceu, reaplicando os mods")
+		task.wait(1)
+		if alive then syncSafe() end
+	end))
 	task.spawn(function()
-		while alive do pcall(sync); task.wait(3) end
+		while alive do syncSafe(); task.wait(3) end
+	end)
+	-- sinal de vida: reenvia o registro a cada 8s; ao sair/teleportar apaga na hora
+	task.spawn(function()
+		while alive do
+			task.wait(8)
+			if alive and (#mine.ids > 0 or mine.headless or mine.fx or mine.tag or mine.bc) then pcall(publish) end
+		end
+	end)
+	local function goodbye() pcall(http, "DELETE", "/mods/" .. uid .. ".json") end
+	table.insert(conns, Players.PlayerRemoving:Connect(function(p) if p == lp then goodbye() end end))
+	pcall(function()
+		table.insert(conns, lp.OnTeleport:Connect(function(st)
+			if st == Enum.TeleportState.Started then goodbye() end
+		end))
 	end)
 
 	-- UI da aba Mod
 	section(page, "Mod personalizado")
 	mk("TextLabel", {
-		Text = "Cole o ID de qualquer item visual do catálogo (acessório, roupa, pacote, partes do corpo, rosto ou efeito). Scripts e sons são removidos. Todos que usam o hub veem.",
+		Text = "Cole o ID de qualquer item visual do catálogo (acessório, roupa, pacote, partes do corpo, rosto ou efeito). Scripts e sons são removidos. Chapéu/cabelo/rosto novo troca o que você já está usando automaticamente. Todos que usam o hub veem.",
 		Size = UDim2.new(1, 0, 0, 58), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
@@ -707,6 +1269,7 @@ local function buildMods(page, say)
 	local function refreshList()
 		listLbl.Text = "IDs ativos: " .. (#mine.ids > 0 and table.concat(mine.ids, ", ") or "nenhum")
 	end
+	mine.onList = refreshList
 	rowBtn(page, "Adicionar ID", function()
 		local n = idBox.Text:match("%d+")
 		if not n then say("Digite o ID (só números)."); return end
@@ -715,7 +1278,18 @@ local function buildMods(page, say)
 		idBox.Text = ""
 		refreshList()
 		publish()
-		say("ID " .. n .. " adicionado.")
+		say("ID " .. n .. " adicionado, carregando...")
+		task.spawn(function()
+			local id = tonumber(n)
+			local objs = loadAsset(id)
+			if objs then
+				local cls = {}
+				for _, o in ipairs(objs) do cls[#cls + 1] = o.ClassName end
+				say("ID " .. n .. " carregado: " .. table.concat(cls, ", ") .. ". Aplicando em até 3s.")
+			else
+				say("Não consegui carregar o ID " .. n .. (lastLoadErr[id] and (" (" .. lastLoadErr[id] .. ")") or "") .. ". Vou tentar de novo sozinho; confira se é um ID de item de avatar válido.")
+			end
+		end)
 	end)
 	rowBtn(page, "Limpar IDs", function()
 		mine.ids = {}
@@ -727,6 +1301,14 @@ local function buildMods(page, say)
 	return function()
 		alive = false
 		fxConn:Disconnect()
+		-- ao fechar o hub, devolve o avatar de todo mundo ao normal (itens do hub saem, originais voltam)
+		for _, pl in ipairs(Players:GetPlayers()) do
+			if pl.Character then
+				pcall(clearMods, pl.Character)
+				pl.Character:SetAttribute("DsSig", nil)
+				pl.Character:SetAttribute("DsN", nil)
+			end
+		end
 		fxClearAll()
 		for _, pl in ipairs(Players:GetPlayers()) do
 			local hd = pl.Character and pl.Character:FindFirstChild("Head")
@@ -734,6 +1316,107 @@ local function buildMods(page, say)
 			if o then o:Destroy() end
 		end
 		http("DELETE", "/mods/" .. uid .. ".json")
+	end
+end
+
+-- ===== Aba Debug: log na tela, copiar, salvar e inspecionar IDs =====
+local function buildDebug(page, say)
+	if not page then return nil end
+	local onlyProblems, dirty, alive = false, true, true
+	local function onNew() dirty = true end
+	table.insert(DSLOG.subs, onNew)
+
+	section(page, "Diagnóstico")
+	local info = mk("TextLabel", {
+		Text = "", Size = UDim2.new(1, 0, 0, 30), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+	}, page)
+	rowBtn(page, "Copiar log completo", function()
+		local f = setclipboard or toclipboard
+		DSLOG.flush()
+		if not f then say("Seu executor não tem setclipboard. O log está no arquivo " .. DSLOG.file); return end
+		pcall(f, DSLOG.dump(false))
+		say("Log copiado (" .. #DSLOG.lines .. " linhas). Cole na conversa.")
+	end, true)
+	rowBtn(page, "Copiar só avisos e erros", function()
+		local f = setclipboard or toclipboard
+		DSLOG.flush()
+		if not f then say("Seu executor não tem setclipboard. O log está no arquivo " .. DSLOG.file); return end
+		pcall(f, DSLOG.dump(true))
+		say("Avisos e erros copiados.")
+	end, true)
+	rowBtn(page, "Salvar agora no arquivo", function()
+		DSLOG.flush()
+		say("Salvo em " .. DSLOG.file .. " (pasta do executor)")
+	end, true)
+	rowBtn(page, "Ver estado do meu personagem", function()
+		DSLOG.try("avatar", DSLOG.charState, lp.Character, "você")
+		say("Estado do personagem registrado no log.")
+	end, true)
+	toggleRow(page, "Só avisos e erros", "Esconde as linhas de informação", function(v)
+		onlyProblems = v; dirty = true
+	end)
+	local idRow = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+	round(idRow, 17); stroke(idRow, 1.5)
+	local idBox = mk("TextBox", {
+		Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
+		Text = "", PlaceholderText = "ID pra inspecionar (só números)", PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 11, ClearTextOnFocus = false,
+		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
+	}, idRow)
+	rowBtn(page, "Inspecionar ID (não aplica)", function()
+		if not DSLOG.inspect then say("A aba Mod ainda não carregou."); return end
+		task.spawn(function() DSLOG.try("inspecionar", DSLOG.inspect, idBox.Text) end)
+		say("Inspecionando, veja o log abaixo.")
+	end, true)
+	rowBtn(page, "Limpar tela", function()
+		DSLOG.lines = {}
+		dirty = true
+	end, true)
+
+	local box = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundColor3 = Color3.fromRGB(10, 2, 3), BackgroundTransparency = 0.15 }, page)
+	round(box, 10); stroke(box, 1.5)
+	mk("UIPadding", { PaddingTop = UDim.new(0, 6), PaddingBottom = UDim.new(0, 6), PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8) }, box)
+	local txt = mk("TextLabel", {
+		Text = "", Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+		RichText = true, TextWrapped = true, Font = Enum.Font.Code, TextSize = 10, TextColor3 = Color3.fromRGB(230, 210, 210),
+		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+	}, box)
+
+	local COL = { INFO = "#e6d2d2", WARN = "#ffc864", ERRO = "#ff6464" }
+	local function esc(s)
+		return (s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
+	end
+	local function render()
+		local out, total = {}, 0
+		for i = #DSLOG.lines, 1, -1 do -- mais recente em cima
+			local l = DSLOG.lines[i]
+			if not onlyProblems or l[1] ~= "INFO" then
+				local s = l[2]
+				if #s > 220 then s = s:sub(1, 220) .. "..." end
+				total = total + #s + 40
+				if total > 14000 or #out >= 150 then break end
+				out[#out + 1] = '<font color="' .. (COL[l[1]] or COL.INFO) .. '">' .. esc(s) .. "</font>"
+			end
+		end
+		txt.Text = #out > 0 and table.concat(out, "\n") or "(log vazio)"
+		info.Text = DSLOG.n.INFO .. " info · " .. DSLOG.n.WARN .. " avisos · " .. DSLOG.n.ERRO .. " erros · mais recente em cima\nArquivo: " .. DSLOG.file
+	end
+	task.spawn(function()
+		while alive and gui.Parent do
+			if dirty and page.Visible then
+				dirty = false
+				pcall(render)
+			end
+			task.wait(0.5)
+		end
+	end)
+	return function()
+		alive = false
+		for i, f in ipairs(DSLOG.subs) do
+			if f == onNew then table.remove(DSLOG.subs, i); break end
+		end
 	end
 end
 
@@ -746,10 +1429,11 @@ local selfCleanup
 local TAG_FONTS = { "GothamBlack", "FredokaOne", "Bangers", "Creepster", "Arcade", "Fantasy", "SciFi", "LuckiestGuy", "PermanentMarker", "Cartoon", "Code" }
 local TAG_ROLES = {
 	{ "Membro", Color3.fromRGB(235, 235, 235) },
-	{ "ADM", Color3.fromRGB(255, 70, 80) },
+	{ "Influenciador", Color3.fromRGB(255, 105, 180) },
+	{ "Sub Dono", Color3.fromRGB(255, 140, 40) },
 	{ "Dono", Color3.fromRGB(255, 205, 60) },
 }
-local TAG = { avail = false, on = true, text = "0DS", font = "GothamBlack", role = "Membro" }
+local TAG = { avail = false, on = false, text = "", font = "GothamBlack", role = "Membro", rgb = false }
 local function tagRoleColor(name)
 	for _, r in ipairs(TAG_ROLES) do
 		if r[1] == name then return r[2] end
@@ -757,7 +1441,7 @@ local function tagRoleColor(name)
 	return TAG_ROLES[1][2]
 end
 -- desenha (ou atualiza / remove) o letreiro na cabeça de "char". d = { on, text, font, role }
-local function tagDraw(char, d, nm)
+function tagDraw(char, d, nm)
 	nm = nm or "DsTag"
 	local head = char and char:FindFirstChild("Head")
 	if not head then return end
@@ -766,8 +1450,12 @@ local function tagDraw(char, d, nm)
 		if old then old:Destroy() end
 		return
 	end
-	local text = tostring(d.text or "0DS"):sub(1, 16)
-	local role = tostring(d.role or "Membro"):sub(1, 10)
+	local text = tostring(d.text or ""):sub(1, 16)
+	if text == "" then -- sem nome escolhido: usa o nome de exibição do Roblox da pessoa
+		local pl = Players:GetPlayerFromCharacter(char)
+		text = tostring(pl and pl.DisplayName or lp.DisplayName):sub(1, 16)
+	end
+	local role = tostring(d.role or "Membro"):sub(1, 14)
 	local fontName = table.find(TAG_FONTS, d.font) and d.font or "GothamBlack"
 	local g = old
 	if not g then
@@ -788,10 +1476,51 @@ local function tagDraw(char, d, nm)
 	end
 	local n, r = g:FindFirstChild("N"), g:FindFirstChild("R")
 	if n then n.Text = text; n.Font = Enum.Font[fontName] end
-	if r then r.Text = role; r.TextColor3 = tagRoleColor(role) end
+	if r then r.Text = role end
+	if d.rgb == true then
+		g:SetAttribute("Rgb", true)
+		TAG.rgbStart()
+	else
+		g:SetAttribute("Rgb", nil)
+		if n then n.TextColor3 = WHITE end
+		if r then r.TextColor3 = tagRoleColor(role) end
+	end
+end
+-- RGB: anima a cor de toda tag marcada com o atributo "Rgb" (a minha e as dos outros)
+function TAG.rgbStart()
+	if TAG.rgbRun then return end
+	TAG.rgbRun = true
+	task.spawn(function()
+		while TAG.rgbRun and gui and gui.Parent do
+			local h = (os.clock() * 0.35) % 1
+			local c1, c2 = Color3.fromHSV(h, 1, 1), Color3.fromHSV((h + 0.5) % 1, 1, 1)
+			local any = false
+			for _, pl in ipairs(Players:GetPlayers()) do
+				local hd = pl.Character and pl.Character:FindFirstChild("Head")
+				if hd then
+					for _, nm in ipairs({ "DsTag", "DsTagB" }) do
+						local g = hd:FindFirstChild(nm)
+						if g and g:GetAttribute("Rgb") then
+							any = true
+							local n, r = g:FindFirstChild("N"), g:FindFirstChild("R")
+							if n then n.TextColor3 = c1 end
+							if r then r.TextColor3 = c2 end
+						end
+					end
+				end
+			end
+			task.wait(any and 0.03 or 0.5)
+		end
+		TAG.rgbRun = false
+	end)
+end
+-- dados efetivos da tag: ligada pelo próprio, ou forçada quando o Dono está no servidor (só quem tem tag dada por ID)
+function TAG.data()
+	local on = TAG.on or (TAG.force and TAG.granted and not TAG.forceOff) or false
+	return { on = on, text = TAG.text, font = TAG.font, role = TAG.role, rgb = TAG.rgb == true }
 end
 function TAG.refresh()
-	if TAG.avail then pcall(tagDraw, lp.Character, TAG) end
+	if TAG.avail then pcall(tagDraw, lp.Character, TAG.data()) end
 end
 function TAG.start()
 	if TAG.running then return end
@@ -918,7 +1647,7 @@ local function buildSelf(pages, say)
 			if surfaceY then
 				if not wwPart then
 					wwPart = mk("Part", {
-						Name = "MeuHubWater", Size = Vector3.new(14, 1, 14), Anchored = true, CanCollide = true,
+						Name = "ShinHubWater", Size = Vector3.new(14, 1, 14), Anchored = true, CanCollide = true,
 						CanQuery = false, CanTouch = false, Transparency = 1,
 					}, workspace)
 				end
@@ -1006,11 +1735,11 @@ local function buildSelf(pages, say)
 	end
 
 	-- ===== Fling nos outros: gira rápido; quem encostar em você sai voando e VOCÊ fica no lugar =====
-	local tfTok, tfBAV, tfOld = 0, nil, {}
+	local tfTok, tfRoot, tfOld = 0, nil, {}
 	local startTFling
 	local function stopTFling()
 		tfTok = tfTok + 1
-		if tfBAV then tfBAV:Destroy(); tfBAV = nil end
+		tfRoot = nil
 		for p, o in pairs(tfOld) do
 			if p.Parent then pcall(function() p.CustomPhysicalProperties = o or nil end) end
 		end
@@ -1029,20 +1758,20 @@ local function buildSelf(pages, say)
 				p.CustomPhysicalProperties = PhysicalProperties.new(100, 0.3, 0.5, 1, 1)
 			end
 		end
-		tfBAV = mk("BodyAngularVelocity", { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, S.flingVal * 2, 0), P = 1e5 }, r)
+		tfRoot = r
 		task.spawn(function()
 			while tfTok == my do
 				RunService.Heartbeat:Wait()
 				local root = hrp()
 				if not root then
 					task.wait(0.5)
-				elseif not tfBAV or tfBAV.Parent ~= root then
+				elseif tfRoot ~= root then
 					startTFling() -- renasceu: refaz tudo
 					return
 				else
 					local v = root.AssemblyLinearVelocity
 					if v.Magnitude > 50 then v = v.Unit * 50 end
-					root.AssemblyLinearVelocity = v * 10000 + Vector3.new(0, 10000, 0)
+					root.AssemblyLinearVelocity = v * 10000 + Vector3.new(0, S.flingVal * 70, 0)
 					RunService.RenderStepped:Wait()
 					if root.Parent then root.AssemblyLinearVelocity = v end
 					RunService.Stepped:Wait()
@@ -1059,7 +1788,7 @@ local function buildSelf(pages, say)
 	end
 	local function isLoose(p)
 		if not (p and p:IsA("BasePart")) or p.Anchored then return false end
-		if p.Name == "HumanoidRootPart" or p.Name == "MeuHubWater" or p:GetAttribute("DsFx") then return false end
+		if p.Name == "HumanoidRootPart" or p.Name == "ShinHubWater" or p:GetAttribute("DsFx") then return false end
 		if p:FindFirstAncestorOfClass("Accessory") or p:FindFirstAncestorOfClass("Tool") then return false end
 		local root = p.AssemblyRootPart
 		if root and root.Anchored then return false end
@@ -1189,14 +1918,11 @@ local function buildSelf(pages, say)
 		local r = hrp()
 		if r then r.CFrame = r.CFrame + Vector3.new(0, 100, 0); say("Subiu 100 studs.") end
 	end)
-	toggleRow(dp, "Fling (girar e lançar os outros)", "Você gira; quem encostar sai voando. Você não é lançado", function(v)
+	toggleRow(dp, "Fling (lançar os outros)", "Quem encostar em você sai voando. Você não gira nem é lançado", function(v)
 		S.tfling = v
 		if v then startTFling() else stopTFling() end
 	end)
-	sliderRow(dp, "Giro do fling", "Velocidade do giro", 50, 300, 150, function(v)
-		S.flingVal = v
-		if tfBAV then tfBAV.AngularVelocity = Vector3.new(0, v * 2, 0) end
-	end)
+	sliderRow(dp, "Força do fling", "Intensidade do lançamento", 50, 300, 150, function(v) S.flingVal = v end)
 	toggleRow(dp, "Anti-void", "Volta pro último lugar seguro se cair no vazio", function(v) S.antivoid = v end)
 	toggleRow(dp, "Pulo infinito", "Pula no ar quantas vezes quiser", function(v) S.infjump = v end)
 	toggleRow(dp, "Andar sobre a água", "Plataforma invisível na superfície", function(v)
@@ -1209,7 +1935,7 @@ local function buildSelf(pages, say)
 		if not r then return end
 		if not island or not island.Parent then
 			island = mk("Part", {
-				Name = "MeuHubIlha", Size = Vector3.new(40, 2, 40), Anchored = true, CanCollide = true,
+				Name = "ShinHubIlha", Size = Vector3.new(40, 2, 40), Anchored = true, CanCollide = true,
 				Material = Enum.Material.SmoothPlastic, Color = Color3.fromRGB(60, 8, 12),
 				Position = Vector3.new(r.Position.X, 3500, r.Position.Z),
 			}, workspace)
@@ -1347,37 +2073,85 @@ local function buildSelf(pages, say)
 	end
 end
 
--- ===== AVISO (obrigatório) =====
-local accepted
-local box = panel(430, 380, UDim2.new(0.5, -215, 0.5, -190))
-mk("TextLabel", {
-	Text = "Aviso antes de continuar", Size = UDim2.new(1, -24, 0, 36), Position = UDim2.fromOffset(14, 4),
-	BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.GothamBold,
-	TextSize = 17, TextXAlignment = Enum.TextXAlignment.Left,
-}, box)
-local textBg = mk("Frame", {
-	Position = UDim2.fromOffset(12, 44), Size = UDim2.new(1, -24, 1, -112),
-	BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
-}, box)
-round(textBg, 10); stroke(textBg, 1.5)
-mk("TextLabel", {
-	Text = "script em desenvolvimento:\n\n"
-		.. "• SHIN HUB \n"
-		.. "• korblox,headless visual através de ID  \n• poucas opções, mais em breve terá mais coisas \n"
-		.. "• contem Efeitos  visuais obs: eles só ficam visível pra vc e pra outras pessoas q usan o script \n\n"
-		.. "•ids funcionado por enquanto só no brook\n\n"
-		.. "mais atualização em breve",
-	Position = UDim2.fromOffset(10, 6), Size = UDim2.new(1, -20, 1, -12), BackgroundTransparency = 1,
-	TextColor3 = Color3.fromRGB(240, 225, 225), Font = Enum.Font.Gotham, TextSize = 11,
-	TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
-}, textBg)
-local yes = bigBtn(box, "Aceitar", UDim2.new(0, 12, 1, -56), UDim2.new(0.5, -18, 0, 44), true)
-local no = bigBtn(box, "Não aceito", UDim2.new(0.5, 6, 1, -56), UDim2.new(0.5, -18, 0, 44), false)
-yes.MouseButton1Click:Connect(function() accepted = true end)
-no.MouseButton1Click:Connect(function() accepted = false end)
-repeat task.wait() until accepted ~= nil
-box:Destroy()
-if not accepted then gui:Destroy(); return end
+-- ===== TELA DE CARREGAMENTO (0 a 100% em 5s, verifica ID / executor / versão) =====
+do
+	local LOAD_URL = "https://i.postimg.cc/52hXnz83/e1d39eb5abfe26de721ee0928f64af67.jpg"
+	local TIME = 5 -- segundos
+	local sg = mk("ScreenGui", { Name = "ShinHubCarregando", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 999 }, parent)
+	local bg = mk("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(6, 1, 2), BorderSizePixel = 0, Active = true }, sg)
+	local img = mk("ImageLabel", {
+		Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.15,
+	}, bg)
+	mk("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(15, 0, 2), BackgroundTransparency = 0.55, BorderSizePixel = 0 }, bg)
+	-- foto baixada uma vez e reaproveitada (igual às outras)
+	local imgReady = false
+	task.spawn(function()
+		local a = fetchAsset(LOAD_URL, "loading.jpg")
+		if a then img.Image = a end
+		imgReady = true
+	end)
+
+	local box = mk("Frame", { Size = UDim2.new(0.8, 0, 0, 220), Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1 }, bg)
+	mk("UISizeConstraint", { MaxSize = Vector2.new(420, 220) }, box)
+	mk("TextLabel", {
+		Text = "Shin Hub", Size = UDim2.new(1, 0, 0, 54), BackgroundTransparency = 1, TextColor3 = WHITE,
+		Font = Enum.Font.GothamBlack, TextSize = 40, TextStrokeTransparency = 0.3, TextStrokeColor3 = Color3.fromRGB(80, 0, 8),
+	}, box)
+	local pct = mk("TextLabel", {
+		Text = "0%", Size = UDim2.new(1, 0, 0, 34), Position = UDim2.fromOffset(0, 58), BackgroundTransparency = 1,
+		TextColor3 = Color3.fromRGB(255, 120, 125), Font = Enum.Font.GothamBold, TextSize = 26, TextStrokeTransparency = 0.5,
+	}, box)
+	local track = mk("Frame", { Size = UDim2.new(1, 0, 0, 12), Position = UDim2.fromOffset(0, 104), BackgroundColor3 = Color3.fromRGB(30, 6, 9), BackgroundTransparency = 0.1 }, box)
+	round(track, 6); stroke(track, 1.5)
+	local fill = mk("Frame", { Size = UDim2.fromScale(0, 1), BackgroundColor3 = RED, BorderSizePixel = 0 }, track)
+	round(fill, 6)
+
+	-- executor e versão (esta é a versão de membro)
+	local exName = "Desconhecido"
+	pcall(function()
+		local n, v = identifyexecutor()
+		if n then exName = tostring(n) .. (v and (" " .. tostring(v)) or "") end
+	end)
+	if exName == "Desconhecido" then pcall(function() local n = getexecutorname(); if n then exName = tostring(n) end end) end
+	local checks = {
+		{ at = 0.00, label = "ID da pessoa", value = tostring(lp.UserId) .. " (@" .. lp.Name .. ")" },
+		{ at = 0.30, label = "Executor", value = exName },
+		{ at = 0.60, label = "Versão", value = "Membro" },
+	}
+	local lines = {}
+	for i, c in ipairs(checks) do
+		lines[i] = mk("TextLabel", {
+			Text = "", Size = UDim2.new(1, 0, 0, 16), Position = UDim2.fromOffset(0, 126 + (i - 1) * 17), BackgroundTransparency = 1,
+			TextColor3 = Color3.fromRGB(235, 210, 210), Font = Enum.Font.Gotham, TextSize = 11, TextStrokeTransparency = 0.6,
+		}, box)
+	end
+
+	-- se a foto ainda não baixou (primeira vez), espera um pouco antes de começar os 5s
+	local w = 0
+	while not imgReady and w < 2.5 do w = w + task.wait() end
+
+	local t0 = os.clock()
+	while true do
+		local p = math.clamp((os.clock() - t0) / TIME, 0, 1)
+		fill.Size = UDim2.fromScale(p, 1)
+		pct.Text = math.floor(p * 100) .. "%"
+		for i, c in ipairs(checks) do
+			local nextAt = checks[i + 1] and checks[i + 1].at or 0.9
+			if p >= c.at then
+				if p >= nextAt then
+					lines[i].Text = "✓ " .. c.label .. ": " .. c.value
+				else
+					lines[i].Text = "Verificando " .. c.label:lower() .. "..."
+				end
+			end
+		end
+		if p >= 1 then break end
+		task.wait()
+	end
+	pct.Text = "100%"
+	task.wait(0.25)
+	sg:Destroy()
+end
 
 -- ===== AÇÕES FIXAS (única coisa que o admin consegue disparar) =====
 local floatConn, floatBV
@@ -1607,10 +2381,11 @@ do
 				if r[1] == c.role then TAG.role = c.role end
 			end
 		end
-		if type(c.on) == "boolean" then TAG.on = c.on end
+		if type(c.rgb) == "boolean" then TAG.rgb = c.rgb end
+		if type(c.on) == "boolean" then TAG.on = c.on; TAG.forceOff = (c.on == false) end
 		TAG.refresh()
 		if TAG.onChanged then pcall(TAG.onChanged) end
-		if pushPresence then task.spawn(pushPresence) end
+		if TAG.push then TAG.push() end
 	end
 
 	cleanupActions = function()
@@ -1628,6 +2403,7 @@ end
 local Lighting = game:GetService("Lighting")
 local function buildEffects(page, say)
 	local E = { colorIdx = 1 }
+	local fxSet = {} -- setters dos interruptores (pra desligar tudo quando você morre)
 	local lightOrig
 	local sizeTouched = false
 	local function col() return COLORS[E.colorIdx][2] end
@@ -1649,10 +2425,27 @@ local function buildEffects(page, say)
 		share()
 	end
 
-	local charConn = lp.CharacterAdded:Connect(function()
-		task.wait(1.2)
-		refresh()
+	-- ao morrer (ou renascer) os efeitos se desligam: pra você e pra todo mundo que usa o hub
+	local function resetFx()
+		for _, k in ipairs(FX_KEYS) do
+			if E[k] then
+				E[k] = false
+				if fxSet[k] then fxSet[k](false) end
+			end
+		end
+		local c = lp.Character
+		if c then pcall(fxApply, c, {}, E.colorIdx) end
+		share()
+	end
+	local function watchChar(c)
+		local h = c:FindFirstChildOfClass("Humanoid") or c:WaitForChild("Humanoid", 8)
+		if h then h.Died:Connect(function() task.spawn(resetFx) end) end
+	end
+	local charConn = lp.CharacterAdded:Connect(function(c)
+		task.spawn(resetFx)
+		task.spawn(watchChar, c)
 	end)
+	if lp.Character then task.spawn(watchChar, lp.Character) end
 
 	-- ambiente (guarda o original uma vez)
 	local function saveLight()
@@ -1679,7 +2472,7 @@ local function buildEffects(page, say)
 		refresh()
 	end)
 	local function fxToggle(label, desc, key)
-		toggleRow(page, label, desc, function(v) E[key] = v; refresh() end)
+		fxSet[key] = select(2, toggleRow(page, label, desc, function(v) E[key] = v; refresh() end))
 	end
 	fxToggle("Fogo", "Chamas no corpo", "fire")
 	fxToggle("Fumaça", "Fumaça subindo", "smoke")
@@ -1688,10 +2481,10 @@ local function buildEffects(page, say)
 	fxToggle("Rastro", "Rastro de luz ao andar", "trail")
 	fxToggle("Aura", "Contorno brilhante no corpo", "aura")
 	fxToggle("Luz", "Ilumina o ambiente em volta", "light")
-	toggleRow(page, "Efeitos arco-íris", "Troca a cor dos efeitos sem parar", function(v) E.rainbow = v; refresh() end)
-	toggleRow(page, "Corpo neon", "Material neon em todas as peças", function(v) E.neon = v; refresh() end)
-	toggleRow(page, "Corpo arco-íris", "Pinta o corpo trocando de cor", function(v) E.rainbowBody = v; refresh() end)
-	toggleRow(page, "Fantasma", "Deixa o corpo meio transparente", function(v) E.ghost = v; refresh() end)
+	fxSet.rainbow = select(2, toggleRow(page, "Efeitos arco-íris", "Troca a cor dos efeitos sem parar", function(v) E.rainbow = v; refresh() end))
+	fxSet.neon = select(2, toggleRow(page, "Corpo neon", "Material neon em todas as peças", function(v) E.neon = v; refresh() end))
+	fxSet.rainbowBody = select(2, toggleRow(page, "Corpo arco-íris", "Pinta o corpo trocando de cor", function(v) E.rainbowBody = v; refresh() end))
+	fxSet.ghost = select(2, toggleRow(page, "Fantasma", "Deixa o corpo meio transparente", function(v) E.ghost = v; refresh() end))
 	rowBtn(page, "Explosão de confete", function()
 		local r = hrp()
 		if not r then return end
@@ -2021,6 +2814,7 @@ end
 
 -- ===== aba Brookhaven: nome/bio RP (com RGB) + rádio por ID =====
 -- Os remotes ficam dentro da função (nomes podem mudar se o jogo atualizar).
+local MUSIC_CATS = {} -- lista de músicas (preenchida na aba Música e reaproveitada na aba Car)
 local function buildBrookhaven(pages, say)
 	local page = pages["Nome"]
 	local RS = game:GetService("ReplicatedStorage")
@@ -2180,6 +2974,9 @@ local function buildBrookhaven(pages, say)
 			{ "Burning Memory Phonk Funk", "138608395929191" },
 			{ "Roblox Phonk", "136932193331774" },
 			{ "Roblox Gigachad Phonk", "134366188285514" },
+			{ "antrsPnEu", "73461924431293" },
+			{ "Aniquilação", "135772975027358" },
+			{ "Pedra na Praia", "127615454743173" },
 		} },
 		{ "Trap", {
 			{ "Zyfrov", "126598871221536" },
@@ -2281,6 +3078,7 @@ local function buildBrookhaven(pages, say)
 		end
 		table.insert(CATS, 1, { "Todas as músicas", all })
 	end
+	MUSIC_CATS = CATS
 
 	local GRAY = Color3.fromRGB(170, 130, 130)
 	local songRows, catUI, nowPlaying = {}, {}, nil
@@ -2386,7 +3184,7 @@ local function buildBrookhaven(pages, say)
 	TAG.start()
 	section(page, "Tag em cima da cabeça")
 	mk("TextLabel", {
-		Text = "Letreiro grande em cima de você, visível pra você e pro ADM. O cargo embaixo (Membro / ADM / Dono) é o ADM quem define.",
+		Text = "Letreiro grande em cima de você. Se não escolher um nome, aparece o seu nome de exibição do Roblox. O cargo embaixo (Membro / Influenciador / Sub Dono / Dono) é o Dono quem define.",
 		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
@@ -2395,7 +3193,7 @@ local function buildBrookhaven(pages, say)
 		TAG.on = v; TAG.refresh()
 		if TAG.push then TAG.push() end
 	end, TAG.on)
-	local tagBox = inputRow("Nome da tag (máx. 16 letras)")
+	local tagBox = inputRow("Nome da tag (vazio = seu nome de exibição)")
 	tagBox.Text = TAG.text
 	local fontBtn, roleLbl
 	fontBtn = rowBtn(page, "Fonte: " .. TAG.font, function()
@@ -2408,20 +3206,19 @@ local function buildBrookhaven(pages, say)
 	rowBtn(page, "Aplicar nome da tag", function()
 		local t = (tagBox.Text:gsub("^%s+", ""))
 		t = (t:gsub("%s+$", ""))
-		if t == "" then say("Digite o nome da tag."); return end
 		TAG.text = t:sub(1, 16)
 		TAG.refresh()
 		if TAG.push then TAG.push() end
-		say("Tag: " .. TAG.text)
+		say("Tag: " .. (TAG.text ~= "" and TAG.text or lp.DisplayName))
 	end, true)
 	roleLbl = mk("TextLabel", {
-		Text = "Cargo: " .. TAG.role .. " (definido pelo ADM)", Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1,
+		Text = "Cargo: " .. TAG.role .. " (definido pelo Dono)", Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 	}, page)
 	TAG.onChanged = function()
 		tagBox.Text = TAG.text
 		fontBtn:FindFirstChildOfClass("TextLabel").Text = "Fonte: " .. TAG.font
-		roleLbl.Text = "Cargo: " .. TAG.role .. " (definido pelo ADM)"
+		roleLbl.Text = "Cargo: " .. TAG.role .. " (definido pelo Dono)"
 		setTagOn(TAG.on)
 	end
 
@@ -2440,10 +3237,10 @@ local function inGame(name)
 	return false
 end
 local function buildTabs(last)
-	local t = { "Scripts" }
+	local t = { "ID", "Créditos", "Scripts" } -- ID e Créditos ficam no início
 	if inGame("Brookhaven") then table.insert(t, "Brookhaven") end
 	if inGame("Natural Disaster") then table.insert(t, "Natural Disaster") end
-	for _, n in ipairs({ "Mod", "Efeitos", "Extras" }) do table.insert(t, n) end -- comuns aos dois jogos
+	for _, n in ipairs({ "Mod", "Efeitos", "Extras", "Debug" }) do table.insert(t, n) end -- comuns aos dois jogos
 	for _, n in ipairs(last) do table.insert(t, n) end
 	return t
 end
@@ -2472,26 +3269,1166 @@ local function addSubTabs(host, names)
 	return subs
 end
 
-local win, pages, say = buildWindow(560, 330, "Shin Hub", "Membro", buildTabs({ "Conexão", "Créditos" }))
+-- ===== Registro compartilhado de remotes (usado pelo turbo da aba Car e pela aba Log) =====
+local HUBLOG = { list = {}, on = false, self = false, hooked = false, t0 = os.clock(), listeners = {} }
+function HUBLOG.ser(v, d)
+	d = d or 0
+	local t = typeof(v)
+	if t == "string" then return string.format("%q", v)
+	elseif t == "number" or t == "boolean" or t == "nil" then return tostring(v)
+	elseif t == "Color3" then return string.format("Color3.fromRGB(%d,%d,%d)", math.floor(v.R * 255 + 0.5), math.floor(v.G * 255 + 0.5), math.floor(v.B * 255 + 0.5))
+	elseif t == "Vector3" then return string.format("Vector3.new(%g,%g,%g)", v.X, v.Y, v.Z)
+	elseif t == "CFrame" then local p = v.Position; return string.format("CFrame.new(%g,%g,%g)", p.X, p.Y, p.Z)
+	elseif t == "Instance" then return "game." .. v:GetFullName()
+	elseif t == "table" then
+		if d >= 2 then return "{...}" end
+		local out, n = {}, 0
+		for k, x in pairs(v) do
+			n = n + 1
+			if n > 12 then out[#out + 1] = "..."; break end
+			out[#out + 1] = (type(k) == "number" and "" or ("[" .. HUBLOG.ser(k, d + 1) .. "]=")) .. HUBLOG.ser(x, d + 1)
+		end
+		return "{" .. table.concat(out, ", ") .. "}"
+	end
+	return "<" .. t .. ">"
+end
+function HUBLOG.path(inst)
+	local names, p = {}, inst
+	while p and p ~= game do table.insert(names, 1, p.Name); p = p.Parent end
+	local svc = table.remove(names, 1) or "?"
+	local s = 'game:GetService("' .. tostring(svc) .. '")'
+	for _, n in ipairs(names) do s = s .. "[" .. string.format("%q", n) .. "]" end
+	return s
+end
+function HUBLOG.add(remote, method, args, own)
+	local parts = {}
+	for i = 1, args.n do parts[i] = HUBLOG.ser(args[i]) end
+	local line = (own and "-- [HUB] " or "") .. HUBLOG.path(remote) .. ":" .. method .. "(" .. table.concat(parts, ", ") .. ")"
+	local list = HUBLOG.list
+	local last = list[#list]
+	if last and last.line == line then last.n = last.n + 1; return end
+	list[#list + 1] = { t = os.clock() - HUBLOG.t0, line = line, n = 1 }
+	if #list > 300 then table.remove(list, 1) end
+end
+function HUBLOG.listen(fn) table.insert(HUBLOG.listeners, fn) end
+function HUBLOG.unlisten(fn)
+	for i, f in ipairs(HUBLOG.listeners) do
+		if f == fn then table.remove(HUBLOG.listeners, i); break end
+	end
+end
+function HUBLOG.install()
+	if HUBLOG.hooked then return true end
+	local ok = pcall(function()
+		local old
+		old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+			local m = getnamecallmethod()
+			local own = checkcaller()
+			if (m == "FireServer" or m == "InvokeServer") and typeof(self) == "Instance" and (not own or (HUBLOG.self and HUBLOG.on)) then
+				local pk = table.pack(...)
+				task.defer(function()
+					if not own then
+						for _, fn in ipairs(HUBLOG.listeners) do pcall(fn, self, m, pk) end
+					end
+					if HUBLOG.on then pcall(HUBLOG.add, self, m, pk, own) end
+				end)
+			end
+			return old(self, ...)
+		end))
+	end)
+	HUBLOG.hooked = ok
+	return ok
+end
+
+-- ===== Sub-aba Car (Brookhaven): velocidade, suspensão, música do carro e log de remotes =====
+local function buildCar(page, say)
+	local RS = game:GetService("ReplicatedStorage")
+	local alive = true
+	local cons = {}
+	local onFire -- preenchido mais abaixo (hook de FireServer)
+	-- o assento fica em um submodelo ("Seats"); o carro de verdade é o modelo mais alto (ex.: Vehicles.NomeCar)
+	local function topModel(part)
+		local m = part and part:FindFirstAncestorOfClass("Model")
+		while m and m.Parent and m.Parent:IsA("Model") do m = m.Parent end
+		return m
+	end
+	-- >>> nomes dos remotes do jogo (sem os "1" do meio). Se algo não funcionar, use o Log lá embaixo
+	-- pra ver o nome/argumentos reais e ajuste aqui.
+	local CAR_REMOTE = "PlayersCar" -- RE["1Player1sCa1r"] (confirmado pelo log)
+
+	local function reByPlain(plain)
+		local re = RS:FindFirstChild("RE")
+		if not re then return nil end
+		for _, c in ipairs(re:GetChildren()) do
+			if (c.Name:gsub("1", "")) == plain then return c end
+		end
+		return nil
+	end
+	local function inputRow(placeholder)
+		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		round(row, 17); stroke(row, 1.5)
+		return mk("TextBox", {
+			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
+			Text = "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
+			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
+		}, row)
+	end
+	local function note(text, h)
+		mk("TextLabel", {
+			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+		}, page)
+	end
+	-- assento de motorista do carro em que você está sentado
+	local function currentSeat()
+		local h = hum()
+		local s = h and h.SeatPart
+		if s and (s:IsA("VehicleSeat") or s:IsA("Seat")) then return s end
+		return nil
+	end
+	-- ===== Velocidade =====
+	section(page, "Velocidade do carro")
+	note("Funciona dirigindo (você controla a física do carro, então todo mundo vê ele andando assim).")
+	local spd = { on = false, val = 120, thr = 0, fwd = nil, fwdSeat = nil, warned = nil }
+	toggleRow(page, "Turbo do carro", "Vai até a velocidade escolhida enquanto você acelera", function(v) spd.on = v end)
+	sliderRow(page, "Velocidade máxima", "studs por segundo", 40, 400, 120, function(v) spd.val = v end)
+	-- controles (celular e PC) pra saber se você está acelerando
+	local controls
+	pcall(function()
+		controls = require(lp:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule", 5)):GetControls()
+	end)
+	-- o jogo manda SetThrottleFloat(1 / 0 / -1) pro servidor (hook em onFire grava em spd.thr);
+	-- se o hook não existir, usa ThrottleFloat do assento, os controles ou o teclado
+	local function readThrottle(seat)
+		if spd.thr ~= 0 then return spd.thr end
+		local ok, v = pcall(function() return seat.ThrottleFloat end)
+		if ok and type(v) == "number" and v ~= 0 then return v > 0 and 1 or -1 end
+		if controls then
+			local ok2, mv = pcall(function() return controls:GetMoveVector() end)
+			if ok2 and mv and math.abs(mv.Z) > 0.2 then return (-mv.Z) > 0 and 1 or -1 end
+		end
+		if not UIS:GetFocusedTextBox() then
+			if UIS:IsKeyDown(Enum.KeyCode.W) or UIS:IsKeyDown(Enum.KeyCode.Up) then return 1 end
+			if UIS:IsKeyDown(Enum.KeyCode.S) or UIS:IsKeyDown(Enum.KeyCode.Down) then return -1 end
+		end
+		return 0
+	end
+	cons[#cons + 1] = RunService.Heartbeat:Connect(function()
+		if not spd.on then return end
+		local seat = currentSeat()
+		if not seat then spd.thr = 0; spd.fwd = nil; spd.fwdSeat = nil; return end
+		if spd.fwdSeat ~= seat then spd.fwdSeat = seat; spd.fwd = nil end
+		local t = readThrottle(seat)
+		if t == 0 then return end
+		local root = seat.AssemblyRootPart or seat
+		local v = root.AssemblyLinearVelocity
+		local hv = Vector3.new(v.X, 0, v.Z)
+		local cur = hv.Magnitude
+		if cur < 4 then return end -- deixa o próprio jogo arrancar o carro
+		local look = seat.CFrame.LookVector
+		local flat = Vector3.new(look.X, 0, look.Z)
+		if flat.Magnitude < 0.01 then return end
+		flat = flat.Unit
+		local along = hv:Dot(flat) -- >0: andando pro lado que o assento aponta
+		-- aprende qual lado é a "frente" na primeira vez que você acelera (t>0) em movimento
+		if t > 0 and spd.fwd == nil and cur > 6 then spd.fwd = along >= 0 and 1 or -1 end
+		if spd.fwd == nil then return end
+		local moving = (along * spd.fwd) >= 0 and 1 or -1 -- 1 = indo pra frente, -1 = de ré
+		if moving ~= (t > 0 and 1 or -1) then return end -- freando: não empurra
+		if cur >= spd.val then return end
+		if isnetworkowner and spd.warned ~= root then
+			local okN, own = pcall(isnetworkowner, root)
+			if okN and own == false then
+				spd.warned = root
+				say("Turbo: o servidor controla a física desse carro, então o impulso pode não funcionar.")
+			end
+		end
+		local nxt = cur + (spd.val - cur) * 0.08 + 0.4
+		root.AssemblyLinearVelocity = hv.Unit * nxt + Vector3.new(0, v.Y, 0)
+	end)
+
+	-- ===== Suspensão =====
+	section(page, "Suspensão (altura do carro)")
+	note("Usa a suspensão do próprio jogo (todo mundo vê). Fique sentado no carro.")
+	local function susRemote()
+		local folder = RS:FindFirstChild("Remotes")
+		return folder and folder:FindFirstChild("SetNextSuspensionHeight")
+	end
+	local function nextHeight(times)
+		local f = susRemote()
+		if not f then say("Remote da suspensão não encontrado."); return end
+		task.spawn(function()
+			local last
+			for i = 1, times do
+				local ok, res = pcall(function() return f:InvokeServer() end)
+				if not ok then say("Falhou: " .. tostring(res):sub(1, 50)); return end
+				last = res
+				if i < times then task.wait(0.25) end
+			end
+			say("Altura trocada" .. (last ~= nil and (" (" .. tostring(last) .. ")") or "") .. ".")
+		end)
+	end
+	rowBtn(page, "Próxima altura da suspensão", function() nextHeight(1) end)
+	rowBtn(page, "Pular 2 alturas", function() nextHeight(2) end, true)
+
+	-- rebaixar forçando o carro pra baixo (experimental): empurra o carro contra a suspensão
+	note("Rebaixar forçando: empurra o carro pra baixo contra a suspensão, indo além da altura mais baixa do jogo. Só funciona se o carro for simulado por você.", 54)
+	local low = { on = false, k = 2, vf = nil, root = nil }
+	local function lowClear()
+		if low.vf then
+			pcall(function() low.vf.Attachment0:Destroy() end)
+			pcall(function() low.vf:Destroy() end)
+		end
+		low.vf, low.root = nil, nil
+	end
+	toggleRow(page, "Rebaixar forçando o carro", "Empurra o carro pra baixo enquanto você está sentado", function(v)
+		low.on = v
+		if not v then lowClear() end
+	end)
+	sliderRow(page, "Força do rebaixamento", "Múltiplos do peso do carro (1 a 8)", 1, 8, 2, function(v) low.k = v end)
+	task.spawn(function()
+		while alive do
+			local h = hum()
+			local sp = h and h.SeatPart
+			local root = sp and sp.AssemblyRootPart
+			if low.on and root then
+				if low.root ~= root or not low.vf or not low.vf.Parent then
+					lowClear()
+					local att = mk("Attachment", { Name = "ShinHubLow" }, root)
+					low.vf = mk("VectorForce", {
+						Attachment0 = att, RelativeTo = Enum.ActuatorRelativeTo.World,
+						ApplyAtCenterOfMass = true, Force = Vector3.zero,
+					}, root)
+					low.root = root
+				end
+				low.vf.Force = Vector3.new(0, -root.AssemblyMass * workspace.Gravity * low.k, 0)
+			elseif low.vf then
+				lowClear()
+			end
+			task.wait(0.25)
+		end
+		lowClear()
+	end)
+
+	-- o turbo precisa saber quando você acelera: o jogo manda SetThrottleFloat(1 / 0 / -1) pro servidor
+	onFire = function(remote, method, a)
+		if not alive or method ~= "FireServer" then return end
+		if remote.Name == "SetThrottleFloat" then
+			local tv = tonumber(a[1])
+			if tv then spd.thr = tv end
+		end
+	end
+	HUBLOG.install() -- sempre ligado: o turbo lê o acelerador
+	HUBLOG.listen(onFire)
+
+	return function()
+		alive = false
+		HUBLOG.unlisten(onFire)
+		lowClear()
+		for _, c in ipairs(cons) do c:Disconnect() end
+	end
+end
+
+-- ===== Sub-aba Log: registra o que o jogo e o hub mandam pro servidor (remotes) =====
+local function buildLog(page, say)
+	local RS = game:GetService("ReplicatedStorage")
+	local function topModel(part)
+		local m = part and part:FindFirstAncestorOfClass("Model")
+		while m and m.Parent and m.Parent:IsA("Model") do m = m.Parent end
+		return m
+	end
+	local function inputRow(placeholder)
+		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		round(row, 17); stroke(row, 1.5)
+		return mk("TextBox", {
+			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
+			Text = "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
+			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
+		}, row)
+	end
+	local function note(text, h)
+		mk("TextLabel", {
+			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+		}, page)
+	end
+	local function copy(txt)
+		local f = setclipboard or toclipboard
+		if not f then say("Seu executor não tem setclipboard."); return end
+		local ok = pcall(f, txt)
+		say(ok and "Copiado!" or "Falhou ao copiar.")
+	end
+
+	return function() HUBLOG.on = false end
+end
+
+-- ===== Copiar avatar de outro jogador (só no Brookhaven; todo mundo com o hub vê) =====
+-- Pega os itens do avatar (acessórios, roupas, rosto, partes do corpo) e as cores da pele,
+-- e publica junto com os seus mods.
+local function buildAvatarCopy(page, say)
+	if not page then return end
+	local picked
+	local function collect(uid)
+		local ok, desc = pcall(function() return Players:GetHumanoidDescriptionFromUserId(uid) end)
+		if not ok or not desc then return nil end
+		local ids, seen = {}, {}
+		local function add(n)
+			n = tonumber(n)
+			if n and n > 0 and not seen[n] and #ids < 24 then
+				seen[n] = true
+				table.insert(ids, tostring(math.floor(n)))
+			end
+		end
+		local okA, acc = pcall(function() return desc:GetAccessories(true) end)
+		if okA and type(acc) == "table" then
+			for _, a in ipairs(acc) do add(a.AssetId) end
+		end
+		for _, k in ipairs({ "Shirt", "Pants", "GraphicTShirt", "Face", "Head", "Torso", "LeftArm", "RightArm", "LeftLeg", "RightLeg" }) do
+			local okP, v = pcall(function() return desc[k] end)
+			if okP then add(v) end
+		end
+		local function hex(c)
+			return string.format("%02x%02x%02x", math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
+		end
+		local bc = table.concat({
+			hex(desc.HeadColor), hex(desc.TorsoColor), hex(desc.LeftArmColor),
+			hex(desc.RightArmColor), hex(desc.LeftLegColor), hex(desc.RightLegColor),
+		}, ",")
+		return ids, bc
+	end
+
+	section(page, "Copiar avatar (Brookhaven)")
+	mk("TextLabel", {
+		Text = "Escolha alguém que está no jogo e copie o avatar. Todo mundo que usa o hub vê em você.",
+		Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+	}, page)
+	local dd
+	dd = dropdown(page, "Escolher jogador (nenhum)", function()
+		local t = {}
+		for _, pl in ipairs(Players:GetPlayers()) do
+			if pl ~= lp then
+				table.insert(t, { label = pl.DisplayName .. "  (@" .. pl.Name .. ")", value = pl.UserId, name = pl.DisplayName })
+			end
+		end
+		table.sort(t, function(x, y) return x.label:lower() < y.label:lower() end)
+		return t
+	end, function(it)
+		picked = it
+		dd.setText("Jogador: " .. it.name)
+	end)
+	local busy = false
+	rowBtn(page, "Copiar avatar do jogador", function()
+		if not picked then say("Escolha um jogador primeiro."); return end
+		if busy then return end
+		busy = true
+		task.spawn(function()
+			local ids, bc = collect(picked.value)
+			busy = false
+			if not ids or #ids == 0 then say("Não consegui ler o avatar de " .. picked.name .. "."); return end
+			MINE.ids = ids
+			MINE.bc = bc
+			if MINE.onList then MINE.onList() end
+			if publishMods then publishMods() end
+			say("Avatar de " .. picked.name .. " copiado (" .. #ids .. " itens). Aparece em alguns segundos.")
+		end)
+	end)
+	rowBtn(page, "Voltar ao meu avatar", function()
+		MINE.ids = {}
+		MINE.bc = nil
+		if MINE.onList then MINE.onList() end
+		if publishMods then publishMods() end
+		say("Avatar copiado removido.")
+	end, true)
+end
+
+-- ===== Sub-aba Asa (Brookhaven): blocos do Prop Maker viram uma asa que bate =====
+-- Fluxo (igual ao log): equipa o Prop Maker, escolhe o bloco, cria os blocos perto de você,
+-- posiciona cada um atrás do personagem e fica atualizando a posição para animar.
+-- v2: acha os remotes do bloco na hora (antes um bloco ficava no chão porque os remotes dele ainda
+--     não tinham replicado), refaz bloco parado, adota bloco criado em dobro e esconde a interface
+--     de edição do Prop Maker (menu e setas).
+local function buildWings(page, say)
+	local rawSay = say
+	local trace, T0 = {}, os.clock()
+	local function say(s)
+		trace[#trace + 1] = string.format("[%.1fs] %s", os.clock() - T0, tostring(s))
+		if #trace > 60 then table.remove(trace, 1) end
+		rawSay(s)
+	end
+	local RS = game:GetService("ReplicatedStorage")
+	local alive, animating, busyBuild = true, false, false
+	local animGen = 0
+	local recs = {}
+	local cfg = { per = 3, scale = 10, speed = 5, interval = 300, full = true, hide = true }
+	local blockName = "Block3"
+	local spacing = 2
+	local t0 = os.clock()
+	local wconns = {}
+
+	local function inputRow(placeholder, text)
+		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		round(row, 17); stroke(row, 1.5)
+		return mk("TextBox", {
+			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
+			Text = text or "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
+			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
+		}, row)
+	end
+	local function clip(txt)
+		if setclipboard then pcall(setclipboard, txt); say("Copiado.") else say("Seu executor não tem setclipboard.") end
+	end
+	local function getRoot()
+		return lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+	end
+	local function remoteRE(name)
+		local re = RS:FindFirstChild("RE")
+		return re and re:FindFirstChild(name)
+	end
+	local function propTool()
+		local c = lp.Character
+		return c and c:FindFirstChild("PropMaker")
+	end
+	local function findTool(name)
+		local c = lp.Character
+		local t = c and c:FindFirstChild(name)
+		if t then return t, "character" end
+		local bp = lp:FindFirstChildOfClass("Backpack")
+		t = bp and bp:FindFirstChild(name)
+		if t then return t, "backpack" end
+		return nil
+	end
+	local function equipPropMaker(re1)
+		local t, where = findTool("PropMaker")
+		if t and where == "character" then return t end
+		if not t then
+			local ok, res = pcall(function() return re1:InvokeServer("PickingTools", "PropMaker") end)
+			say("PickingTools: " .. (ok and ("resposta=" .. tostring(res)) or ("erro=" .. tostring(res):sub(1, 60))))
+			for _ = 1, 30 do
+				task.wait(0.1)
+				t, where = findTool("PropMaker")
+				if t then break end
+			end
+		end
+		if t and where == "backpack" then
+			local h = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
+			if h then pcall(function() h:EquipTool(t) end) end
+			for _ = 1, 20 do
+				task.wait(0.1)
+				if lp.Character and lp.Character:FindFirstChild("PropMaker") then break end
+			end
+		end
+		return lp.Character and lp.Character:FindFirstChild("PropMaker")
+	end
+	local function scanProps(deep)
+		local out = {}
+		local wc = workspace:FindFirstChild("WorkspaceCom")
+		if not wc then return out end
+		local want = "Prop" .. lp.Name
+		local function isMine(n) return n:sub(1, #want) == want end
+		if deep then
+			for _, d in ipairs(wc:GetDescendants()) do
+				if d.Name == "SetCurrentCFrame" and d.Parent and isMine(d.Parent.Name) then out[d.Parent] = true end
+			end
+		else
+			for _, c in ipairs(wc:GetChildren()) do
+				if isMine(c.Name) then out[c] = true end
+				for _, p in ipairs(c:GetChildren()) do
+					if isMine(p.Name) then out[p] = true end
+				end
+			end
+		end
+		return out
+	end
+
+	-- ===== bloco: os remotes (Begin/Set/End...) são procurados na hora, não guardados no começo =====
+	local REMOTES = { begin = "BeginPreview", setcf = "SetCurrentCFrame", setsc = "SetCurrentScale", endp = "EndPreview", resume = "ResumePropBehavior" }
+	local function makeRec(model)
+		return { model = model, fails = 0, stuck = 0, heals = 0, busy = false, lastCF = nil, lastP = nil, lastErr = nil }
+	end
+	local function rem(rec, key)
+		local r = rec[key]
+		if r and r.Parent then return r end
+		r = rec.model:FindFirstChild(REMOTES[key])
+		rec[key] = r
+		return r
+	end
+	local function touchOf(rec)
+		local t = rec.touch
+		if t and t.Parent then return t end
+		t = rec.model:FindFirstChild("Touch", true)
+		rec.touch = t
+		return t
+	end
+	local function waitRemotes(rec, secs)
+		local t = os.clock()
+		while os.clock() - t < secs do
+			if rem(rec, "begin") and rem(rec, "setcf") and rem(rec, "endp") then return true end
+			task.wait(0.1)
+		end
+		return false
+	end
+	local function sizeOf(model)
+		local ok, s = pcall(function()
+			if model:IsA("Model") then return model:GetExtentsSize() end
+			return model.Size
+		end)
+		if ok and typeof(s) == "Vector3" then return s end
+		return Vector3.new(2, 2, 2)
+	end
+	local function groundAt(x, z, y0)
+		local rp = RaycastParams.new()
+		rp.FilterType = Enum.RaycastFilterType.Exclude
+		local ex = { lp.Character }
+		for p in pairs(scanProps(false)) do ex[#ex + 1] = p end
+		for _, r in ipairs(recs) do ex[#ex + 1] = r.model end
+		rp.FilterDescendantsInstances = ex
+		local r = workspace:Raycast(Vector3.new(x, y0 + 20, z), Vector3.new(0, -80, 0), rp)
+		if r then return r.Instance, r.Position end
+		return nil
+	end
+
+	-- ===== esconder a interface de edição do Prop Maker (só visual) =====
+	-- Aprende quais telas/painéis do jogo aparecem por causa da edição do bloco (menu do Prop Maker,
+	-- setas de mover/girar) e mantém eles escondidos enquanto a asa é criada e bate.
+	-- Nunca mexe em algo que já estava visível antes de começar (seu HUD continua normal).
+	local hide = { on = false, learning = false, expect = 0, base = {}, set = {}, names = {}, count = 0 }
+	local ADORN = {
+		Handles = true, ArcHandles = true, SelectionBox = true, SelectionSphere = true, SurfaceSelection = true,
+		BoxHandleAdornment = true, ConeHandleAdornment = true, CylinderHandleAdornment = true,
+		SphereHandleAdornment = true, Highlight = true,
+	}
+	local function playerGui()
+		return lp:FindFirstChildOfClass("PlayerGui")
+	end
+	local function guiOn(g)
+		if g:IsA("ScreenGui") then return g.Enabled end
+		if g:IsA("GuiObject") then return g.Visible end
+		return false
+	end
+	local function guiOff(g)
+		pcall(function()
+			if g:IsA("ScreenGui") then g.Enabled = false elseif g:IsA("GuiObject") then g.Visible = false end
+		end)
+	end
+	-- percorre as telas do jogo (tela > filhos > netos), só descendo em quem está visível
+	local function eachGui(fn)
+		local pg = playerGui()
+		if not pg then return end
+		for _, sg in ipairs(pg:GetChildren()) do
+			if sg:IsA("ScreenGui") then
+				fn(sg, 1)
+				if guiOn(sg) then
+					for _, c in ipairs(sg:GetChildren()) do
+						if c:IsA("GuiObject") then
+							fn(c, 2)
+							if c.Visible then
+								for _, d in ipairs(c:GetChildren()) do
+									if d:IsA("GuiObject") then fn(d, 3) end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	local function hideBase()
+		hide.base = {}
+		eachGui(function(g) hide.base[g] = guiOn(g) and true or false end)
+	end
+	local function underHidden(g)
+		local p = g.Parent
+		while p do
+			if hide.set[p] then return true end
+			p = p.Parent
+		end
+		return false
+	end
+	local function hideTick()
+		if not (hide.on and cfg.hide) then return end
+		local learn = hide.learning and os.clock() < hide.expect
+		eachGui(function(g, depth)
+			if not guiOn(g) then return end
+			if hide.set[g] then guiOff(g); return end
+			if hide.base[g] == true then return end
+			if learn and not underHidden(g) then
+				hide.set[g] = true
+				hide.count = hide.count + 1
+				if depth == 1 then hide.names[g.Name] = true end
+				guiOff(g)
+			elseif depth == 1 and hide.names[g.Name] then
+				guiOff(g)
+			end
+		end)
+	end
+	local function isMine(inst)
+		local want = "Prop" .. lp.Name
+		local p = inst
+		while p and p ~= workspace do
+			if p.Name:sub(1, #want) == want then return true end
+			p = p.Parent
+		end
+		return false
+	end
+	local function hide3D(inst)
+		if not ADORN[inst.ClassName] then return end
+		local ok, mine = pcall(function()
+			if isMine(inst) then return true end
+			local ad = inst.Adornee
+			return ad ~= nil and isMine(ad)
+		end)
+		if ok and mine then
+			pcall(function()
+				if inst:IsA("Highlight") then inst.Enabled = false else inst.Visible = false end
+			end)
+		end
+	end
+	wconns[#wconns + 1] = workspace.DescendantAdded:Connect(function(d)
+		if hide.on and cfg.hide and ADORN[d.ClassName] then task.defer(hide3D, d) end
+	end)
+	do
+		local pgc = playerGui()
+		if pgc then
+			wconns[#wconns + 1] = pgc.DescendantAdded:Connect(function(d)
+				if hide.on and cfg.hide and ADORN[d.ClassName] then task.defer(hide3D, d) end
+			end)
+		end
+	end
+	local function hideStart(learn)
+		if hide.on then
+			if learn then hide.learning = true end
+			return
+		end
+		hide.on, hide.learning = true, learn and true or false
+		hideBase()
+		task.spawn(function()
+			local n = 0
+			while alive and hide.on do
+				pcall(hideTick)
+				n = n + 1
+				if n % 5 == 0 then
+					pcall(function()
+						for _, r in ipairs(recs) do
+							if r.model.Parent then
+								for _, d in ipairs(r.model:GetDescendants()) do hide3D(d) end
+							end
+						end
+					end)
+				end
+				task.wait(0.2)
+			end
+		end)
+	end
+	local function hideStop()
+		hide.on, hide.learning = false, false
+	end
+
+	-- posição de cada bloco: i-ésimo bloco da asa (side = 1 direita, -1 esquerda)
+	local function targetCF(root, side, i, n, t)
+		local freq = 0.2 + cfg.speed * 0.1
+		local phase = t * freq * 2 * math.pi - i * 0.45
+		local amp = 0.35 + 0.35 * (i / n)
+		local flap = 0.25 + amp * math.sin(phase)
+		local r = (i - 0.5) * spacing
+		return root.CFrame * CFrame.new(side * 0.9, 0.9, 1.4) * CFrame.Angles(0, -side * 0.35, 0)
+			* CFrame.Angles(0, 0, side * flap) * CFrame.new(side * r, 0, 0)
+	end
+
+	-- um ciclo de edição do bloco, como o jogo faz: (clicar) -> Begin -> Set -> End -> (Resume)
+	local function cycle(rec, cf, scale, full)
+		local b, s, e = rem(rec, "begin"), rem(rec, "setcf"), rem(rec, "endp")
+		if not (b and s and e) then error("bloco sem remotes (ainda replicando)", 0) end
+		rec.lastCF = cf
+		local tool = propTool()
+		local pm = tool and tool:FindFirstChild("Tool_PropMake")
+		local touch = touchOf(rec)
+		if full and pm and touch then
+			hide.expect = os.clock() + 1.2
+			pm:FireServer(touch, touch.Position)
+		end
+		b:InvokeServer()
+		local sc = rem(rec, "setsc")
+		if scale and sc then sc:InvokeServer(scale) end
+		s:InvokeServer(cf)
+		e:InvokeServer()
+		local rs = rem(rec, "resume")
+		if full and rs then rs:InvokeServer() end
+	end
+	-- roda um ciclo sem deixar dois ciclos do mesmo bloco se atropelarem
+	local function runCycle(rec, cf, scale, full)
+		-- se um pedido ao servidor travar por mais de 8s, libera o bloco pra não ficar preso pra sempre
+		if rec.busy and os.clock() - (rec.busyAt or 0) < 8 then return false, "ocupado" end
+		rec.busy, rec.busyAt = true, os.clock()
+		local ok, err = pcall(cycle, rec, cf, scale, full)
+		rec.busy = false
+		return ok, err
+	end
+	local function slotOf(idx, n)
+		local per = math.max(1, math.floor(n / 2))
+		local side = idx <= per and 1 or -1
+		local i = idx <= per and idx or (idx - per)
+		return side, i, per
+	end
+
+	local function stopAnim()
+		animating = false
+		animGen = animGen + 1
+		if not busyBuild then hideStop() end
+	end
+
+	local function startAnim()
+		if animating or #recs == 0 then return end
+		animating = true
+		animGen = animGen + 1
+		local gen = animGen
+		t0 = os.clock()
+		if cfg.hide then hideStart(false) end
+		local n = #recs
+		for idx, rec in ipairs(recs) do
+			local side, i, per = slotOf(idx, n)
+			task.spawn(function()
+				while alive and animating and gen == animGen and rec.model.Parent do
+					local root = getRoot()
+					if root then
+						local cf = targetCF(root, side, i, per, os.clock() - t0)
+						local ok, err = runCycle(rec, cf, nil, cfg.full or rec.forceFull)
+						if err == "ocupado" then
+							-- outro ciclo do mesmo bloco ainda está rodando: pula essa batida
+						elseif ok then
+							rec.fails = 0
+						else
+							rec.fails = rec.fails + 1
+							rec.lastErr = tostring(err):sub(1, 80)
+							if rec.fails >= 3 then rec.forceFull = true end
+							if rec.fails == 6 then say("Bloco " .. idx .. " falhando: " .. rec.lastErr) end
+						end
+					end
+					task.wait(cfg.interval / 1000)
+				end
+				if alive and animating and gen == animGen and not rec.model.Parent then
+					say("Bloco " .. idx .. " sumiu do mapa.")
+				end
+			end)
+		end
+		-- fiscal: bloco que não sai do lugar (ficou no chão) é refeito com o ciclo completo
+		task.spawn(function()
+			while alive and animating and gen == animGen do
+				task.wait(1.5)
+				for idx, rec in ipairs(recs) do
+					if rec.model.Parent and rec.heals < 6 then
+						local ok, p = pcall(function() return rec.model:GetPivot().Position end)
+						if ok then
+							if rec.lastP and (p - rec.lastP).Magnitude < 0.5 then
+								rec.stuck = rec.stuck + 1
+							else
+								rec.stuck = 0
+							end
+							rec.lastP = p
+							if rec.stuck >= 3 then
+								rec.stuck = 0
+								rec.heals = rec.heals + 1
+								local root = getRoot()
+								if root then
+									local side, i, per = slotOf(idx, #recs)
+									say("Bloco " .. idx .. " parado. Refazendo (" .. rec.heals .. "/6)...")
+									waitRemotes(rec, 2)
+									runCycle(rec, targetCF(root, side, i, per, os.clock() - t0), nil, true)
+								end
+							end
+						end
+					end
+				end
+			end
+		end)
+		say("Asa batendo.")
+	end
+
+	local function buildWing()
+		if busyBuild then say("Já estou criando a asa..."); return end
+		busyBuild = true
+		task.spawn(function()
+			stopAnim()
+			recs = {}
+			if cfg.hide then hideStart(true) end
+			local ok, err = pcall(function()
+				local root0 = getRoot()
+				if not root0 then say("Personagem não encontrado."); return end
+				local re1, re2 = remoteRE("1Too1l"), remoteRE("1Clea1rTool1s")
+				if not (re1 and re2) then say("Remotes do Prop Maker não encontrados."); return end
+				say("Equipando o Prop Maker...")
+				local tool = equipPropMaker(re1)
+				if not tool then
+					say("Prop Maker não apareceu. Use 'Copiar diagnóstico dos blocos'."); return
+				end
+				local pm = tool:WaitForChild("Tool_PropMake", 3)
+				if not pm then say("Tool_PropMake não encontrado dentro do Prop Maker."); return end
+
+				local total = cfg.per * 2
+				local per = cfg.per
+				-- tudo que já existia antes (de asas antigas ou construções suas) fica de fora
+				local known = {}
+				for p in pairs(scanProps(false)) do known[p] = true end
+				for p in pairs(scanProps(true)) do known[p] = true end
+				local scaleF = cfg.scale / 10
+				local function selectBlock()
+					hide.expect = os.clock() + 1.2
+					pcall(function() re2:FireServer("OpenPropMenu") end)
+					pcall(function() re2:FireServer("RequestingPropName", blockName, "Building", nil) end)
+					task.wait(0.35)
+				end
+				local function waitNew(seconds)
+					for _ = 1, math.floor(seconds * 10) do
+						task.wait(0.1)
+						for p in pairs(scanProps(false)) do
+							if not known[p] then return p end
+						end
+					end
+					for p in pairs(scanProps(true)) do
+						if not known[p] then return p end
+					end
+					return nil
+				end
+
+				for i = 1, total do
+					if not alive then return end
+					say("Criando bloco " .. i .. " de " .. total .. "...")
+					local found
+					for attempt = 1, 3 do
+						local r0 = getRoot()
+						if not r0 then say("Personagem sumiu."); return end
+						local ang = (i / total) * math.pi * 2 + (attempt - 1) * 0.6
+						local dist = 10 + (attempt - 1) * 3
+						local hit, pos = groundAt(r0.Position.X + math.cos(ang) * dist, r0.Position.Z + math.sin(ang) * dist, r0.Position.Y)
+						if hit then
+							selectBlock()
+							pm:FireServer(hit, pos)
+							found = waitNew(2.5)
+							if not found and recs[#recs] then
+								-- o bloco anterior ainda pode estar "em edição": confirma ele e tenta de novo
+								pcall(function()
+									local rs = rem(recs[#recs], "resume")
+									if rs then rs:InvokeServer() end
+								end)
+								task.wait(0.4)
+								selectBlock()
+								pm:FireServer(hit, pos)
+								found = waitNew(2.5)
+							end
+						end
+						if found then break end
+					end
+					if not found then
+						say("Bloco " .. i .. " não apareceu. Seguindo com os outros.")
+					else
+						known[found] = true
+						local rec = makeRec(found)
+						recs[#recs + 1] = rec
+						pcall(function() re2:FireServer("ClosePropMenu") end)
+						-- espera os remotes do bloco replicarem (antes isso era ignorado e o bloco ficava no chão)
+						if not waitRemotes(rec, 4) then say("Bloco " .. i .. ": remotes demoraram a replicar.") end
+
+						if #recs == 1 then
+							local base = sizeOf(found).X
+							spacing = math.clamp(base * scaleF * 0.95, 0.5, 12)
+						end
+						-- posiciona atrás do personagem e confirma (ResumePropBehavior); tenta até 3 vezes
+						local side = i <= per and 1 or -1
+						local fi = i <= per and i or (i - per)
+						local r1 = getRoot() or root0
+						local cf = targetCF(r1, side, fi, per, 0)
+						local okc, e2
+						for _ = 1, 3 do
+							okc, e2 = runCycle(rec, cf, scaleF, true)
+							if okc then break end
+							task.wait(0.5)
+							waitRemotes(rec, 2)
+						end
+						if not okc then say("Bloco " .. i .. ": " .. tostring(e2):sub(1, 60)) end
+						task.wait(0.3)
+					end
+				end
+				pcall(function() re2:FireServer("ClosePropMenu") end)
+
+				-- blocos que apareceram mas não foram registrados (ex.: criado em dobro) entram na asa também
+				do
+					local reg = {}
+					for _, r in ipairs(recs) do reg[r.model] = true end
+					local extra = 0
+					for _, deep in ipairs({ false, true }) do
+						for p in pairs(scanProps(deep)) do
+							if not known[p] and not reg[p] then
+								known[p] = true; reg[p] = true; extra = extra + 1
+								local rec = makeRec(p)
+								recs[#recs + 1] = rec
+								waitRemotes(rec, 2)
+							end
+						end
+					end
+					if extra > 0 then say(extra .. " bloco(s) extra entraram na asa.") end
+				end
+				if #recs == 0 then return end
+
+				-- confere cada bloco e refaz os que não chegaram no lugar
+				local good = 0
+				for pass = 1, 2 do
+					good = 0
+					local r1 = getRoot()
+					for idx, rec in ipairs(recs) do
+						if r1 and rec.model.Parent then
+							local side, fi, pp = slotOf(idx, #recs)
+							local cf = targetCF(r1, side, fi, pp, 0)
+							local okp, p = pcall(function() return rec.model:GetPivot().Position end)
+							if okp and (p - cf.Position).Magnitude < 6 then
+								good = good + 1
+							elseif pass == 1 then
+								waitRemotes(rec, 2)
+								runCycle(rec, cf, scaleF, true)
+							end
+						end
+					end
+					if good == #recs then break end
+					task.wait(0.6)
+				end
+				say(good .. " de " .. #recs .. " blocos no lugar.")
+			end)
+			busyBuild = false
+			hide.learning = false
+			if not ok then
+				say("Erro: " .. tostring(err):sub(1, 70))
+				hideStop()
+				return
+			end
+			if #recs > 0 and alive then startAnim() else hideStop() end
+		end)
+	end
+
+	-- ===== interface =====
+	section(page, "Asa de blocos (Prop Maker)")
+	mk("TextLabel", {
+		Text = "Cria blocos do jogo atrás de você e faz eles bater como uma asa. Precisa ter o Prop Maker e ficar perto do chão. Todos veem os blocos.",
+		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+	}, page)
+	local nameBox = inputRow("Nome do bloco (padrão Block3)", blockName)
+	nameBox.FocusLost:Connect(function()
+		local t = nameBox.Text:gsub("%s", "")
+		if t ~= "" then blockName = t end
+	end)
+	sliderRow(page, "Blocos por asa", "2 a 5 por lado", 2, 5, 3, function(v) cfg.per = v end)
+	sliderRow(page, "Tamanho do bloco", "10 = normal (5 a 20)", 5, 20, 10, function(v) cfg.scale = v end)
+	sliderRow(page, "Velocidade da batida", "1 lento · 10 rápido", 1, 10, 5, function(v) cfg.speed = v end)
+	sliderRow(page, "Intervalo (ms)", "menor = mais suave e mais pesado", 150, 600, 300, function(v) cfg.interval = v end)
+	toggleRow(page, "Modo completo", "Clica no bloco a cada batida. Desligue se pesar", function(v) cfg.full = v end, true)
+	toggleRow(page, "Esconder edição dos blocos", "Some com o menu e as setas do Prop Maker", function(v)
+		cfg.hide = v
+		if v then
+			if animating or busyBuild then hideStart(false) end
+		else
+			hideStop()
+		end
+	end, true)
+	rowBtn(page, "Criar asa e bater", buildWing, true)
+	toggleRow(page, "Bater asas", "Liga/desliga a animação", function(v)
+		if v then startAnim() else stopAnim(); say("Animação parada.") end
+	end, true)
+	rowBtn(page, "Reparar blocos (refaz os que ficaram no chão)", function()
+		if #recs == 0 then say("Crie a asa primeiro."); return end
+		if busyBuild then say("Espere a criação terminar."); return end
+		local was = animating
+		stopAnim()
+		busyBuild = true
+		task.spawn(function()
+			if cfg.hide then hideStart(false) end
+			local root = getRoot()
+			if root then
+				local scaleF = cfg.scale / 10
+				for idx, rec in ipairs(recs) do
+					if rec.model.Parent then
+						local side, i, per = slotOf(idx, #recs)
+						waitRemotes(rec, 2)
+						rec.heals, rec.fails, rec.stuck, rec.lastP = 0, 0, 0, nil
+						local okc, e = runCycle(rec, targetCF(root, side, i, per, 0), scaleF, true)
+						if not okc then say("Bloco " .. idx .. ": " .. tostring(e):sub(1, 60)) end
+						task.wait(0.2)
+					end
+				end
+				say("Reparo feito.")
+			end
+			busyBuild = false
+			if was and alive then startAnim() else hideStop() end
+		end)
+	end, true)
+	rowBtn(page, "Copiar diagnóstico dos blocos", function()
+		local L = { "-- log da asa:" }
+		for _, s in ipairs(trace) do L[#L + 1] = s end
+		local function names(inst, limit)
+			local out = {}
+			if inst then
+				for _, c in ipairs(inst:GetChildren()) do
+					if #out < (limit or 25) then out[#out + 1] = c.Name .. "[" .. c.ClassName .. "]" end
+				end
+			end
+			return table.concat(out, ", ")
+		end
+		L[#L + 1] = "PropMaker equipado: " .. tostring(propTool() ~= nil)
+		L[#L + 1] = "Character: " .. names(lp.Character)
+		L[#L + 1] = "Backpack: " .. names(lp:FindFirstChildOfClass("Backpack"))
+		local wc0 = workspace:FindFirstChild("WorkspaceCom")
+		L[#L + 1] = "PropLocations: " .. names(wc0 and wc0:FindFirstChild("PropLocations"), 20)
+		L[#L + 1] = "esconder edição: " .. tostring(cfg.hide) .. " | interfaces aprendidas: " .. hide.count
+		do
+			local nm = {}
+			for g in pairs(hide.set) do
+				if #nm < 15 then
+					local full = g:GetFullName()
+					nm[#nm + 1] = (full:gsub("^.-PlayerGui%.", ""))
+				end
+			end
+			L[#L + 1] = "interfaces escondidas: " .. table.concat(nm, " | ")
+		end
+		do
+			local sgs = {}
+			local pg = playerGui()
+			if pg then
+				for _, sg in ipairs(pg:GetChildren()) do
+					if sg:IsA("ScreenGui") and #sgs < 70 then sgs[#sgs + 1] = sg.Name .. (sg.Enabled and "" or "(off)") end
+				end
+			end
+			L[#L + 1] = "PlayerGui: " .. table.concat(sgs, ", ")
+		end
+		L[#L + 1] = "blocos registrados: " .. #recs
+		for idx, rec in ipairs(recs) do
+			local kids = {}
+			for _, c in ipairs(rec.model:GetChildren()) do kids[#kids + 1] = c.Name .. "[" .. c.ClassName .. "]" end
+			local ok, p = pcall(function() return rec.model:GetPivot().Position end)
+			L[#L + 1] = idx .. ") " .. rec.model:GetFullName() .. " pos=" .. (ok and tostring(p) or "?")
+			L[#L + 1] = "   remotes: begin=" .. tostring(rem(rec, "begin") ~= nil) .. " set=" .. tostring(rem(rec, "setcf") ~= nil)
+				.. " end=" .. tostring(rem(rec, "endp") ~= nil) .. " touch=" .. tostring(touchOf(rec) ~= nil)
+				.. " | falhas=" .. rec.fails .. " refeitos=" .. rec.heals .. " erro=" .. tostring(rec.lastErr)
+			L[#L + 1] = "   filhos: " .. table.concat(kids, ", ")
+		end
+		local wc = workspace:FindFirstChild("WorkspaceCom")
+		if wc then
+			L[#L + 1] = "-- WorkspaceCom (itens com o seu nome ou 'Prop'):"
+			local n = 0
+			for _, c in ipairs(wc:GetChildren()) do
+				if n < 40 and (c.Name:find(lp.Name, 1, true) or c.Name:find("Prop", 1, true)) then
+					n = n + 1
+					local kids = {}
+					for _, k in ipairs(c:GetChildren()) do
+						if #kids < 8 then kids[#kids + 1] = k.Name .. "[" .. k.ClassName .. "]" end
+					end
+					L[#L + 1] = c:GetFullName() .. " -> " .. table.concat(kids, ", ")
+				end
+			end
+		end
+		clip(table.concat(L, "\n"))
+	end, true)
+	rowBtn(page, "Parar e soltar blocos", function()
+		stopAnim()
+		say("Animação parada. Os blocos ficam no mapa (apague pelo menu do Prop Maker).")
+	end, true)
+
+	return function()
+		alive = false; animating = false; hide.on = false
+		for _, c in ipairs(wconns) do pcall(function() c:Disconnect() end) end
+	end
+end
+
+-- ===== Aba ID: tempo ativo, nick, executor e ID único por usuário =====
+local HUB_START_T = os.time()
+local function execName()
+	local name, ver
+	pcall(function() name, ver = identifyexecutor() end)
+	if not name then pcall(function() name = getexecutorname() end) end
+	if not name then return "Desconhecido" end
+	return tostring(name) .. (ver and (" " .. tostring(ver)) or "")
+end
+local function toBase36(n)
+	local chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	local s = ""
+	repeat
+		local r = n % 36
+		s = chars:sub(r + 1, r + 1) .. s
+		n = (n - r) / 36
+	until n <= 0
+	return s
+end
+-- ID único por conta: sempre o mesmo pro mesmo usuário (gerado do UserId, com dígito de conferência)
+local function hubId(uid)
+	return "DS-" .. toBase36(uid) .. "-" .. toBase36((uid * 31 + 7) % 1296)
+end
+local function buildId(page, say)
+	local function fmt(sec)
+		sec = math.max(0, math.floor(sec))
+		return string.format("%02d:%02d:%02d", math.floor(sec / 3600), math.floor(sec / 60) % 60, sec % 60)
+	end
+	local function row(title, value)
+		local f = mk("Frame", { Size = UDim2.new(1, 0, 0, 46), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		round(f, 12); stroke(f, 1.5)
+		mk("TextLabel", {
+			Text = title, Size = UDim2.new(1, -24, 0, 16), Position = UDim2.fromOffset(14, 5), BackgroundTransparency = 1,
+			TextColor3 = Color3.fromRGB(220, 140, 140), Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left,
+		}, f)
+		return mk("TextLabel", {
+			Text = value, Size = UDim2.new(1, -24, 0, 22), Position = UDim2.fromOffset(14, 21), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left,
+			TextTruncate = Enum.TextTruncate.AtEnd,
+		}, f)
+	end
+	section(page, "Seu perfil no hub")
+	local up = row("Tempo ativo", fmt(0))
+	row("Nick", lp.DisplayName .. "  (@" .. lp.Name .. ")")
+	row("Executor", execName())
+	local id = hubId(lp.UserId)
+	row("ID único", id)
+	row("UserId do Roblox", tostring(lp.UserId))
+	rowBtn(page, "Copiar meu ID", function()
+		local f = setclipboard or toclipboard
+		if not f then say("Seu executor não tem setclipboard. Seu ID: " .. id); return end
+		say(pcall(f, id) and ("ID copiado: " .. id) or "Falhou ao copiar.")
+	end)
+	task.spawn(function()
+		while page.Parent do
+			up.Text = fmt(os.time() - HUB_START_T)
+			task.wait(1)
+		end
+	end)
+end
+
+local win, pages, say = buildWindow(560, 330, "Shin Hub", "Membro", buildTabs({ "Conexão" }))
 -- sub-abas do Brookhaven (as funções do Brookhaven ficam todas dentro do menu Brookhaven)
 do
 	local real = pages
 	pages = {}
 	for k, v in pairs(real) do pages[k] = v end
 	if real["Brookhaven"] then
-		local subs = addSubTabs(real["Brookhaven"], { "Nome", "Música", "Tag", "Proteções", "Movimento" })
+		local subs = addSubTabs(real["Brookhaven"], { "Nome", "Música", "Tag", "Proteções", "Movimento", "Asa", "Car", "Log" })
 		for n, f in pairs(subs) do pages[n] = f end
 	end
 end
 selfCleanup = buildSelf(pages, say)
 if pages["Nome"] then buildBrookhaven(pages, say) end
+local stopCar = pages["Car"] and buildCar(pages["Car"], say)
+local stopLog = pages["Log"] and buildLog(pages["Log"], say)
+local stopWings = pages["Asa"] and buildWings(pages["Asa"], say)
 buildCredits(pages["Créditos"])
+if pages["ID"] then buildId(pages["ID"], say) end
 local stopMods = buildMods(pages["Mod"], say)
+local stopDebug = buildDebug(pages["Debug"], say)
+if pages["Nome"] then buildAvatarCopy(pages["Mod"], say) end
 local stopFx = buildEffects(pages["Efeitos"], say)
 local stopExtras = buildExtras(pages["Extras"], say)
 do
 	local base = selfCleanup
-	selfCleanup = function() if base then base() end; stopMods(); stopFx(); stopExtras(); if TAG.stop then TAG.stop() end end
+	selfCleanup = function() if base then base() end; stopMods(); if stopDebug then stopDebug() end; stopFx(); stopExtras(); if stopCar then stopCar() end; if stopLog then stopLog() end; if stopWings then stopWings() end; if TAG.stop then TAG.stop() end end
 end
 
 -- ===== Aba Conexão (status + Desativar ficam dentro do menu) =====
@@ -2540,18 +4477,25 @@ local beat = 0
 local function presenceBody()
 	local root = hrp()
 	return {
-		name = lp.Name, uid = lp.UserId, place = game.PlaceId, job = game.JobId, beat = beat,
+		name = lp.Name, uid = lp.UserId, place = game.PlaceId, job = game.JobId, beat = beat, t = os.time(),
 		fire = (root and root:FindFirstChild("ShinFire") ~= nil) or nil,
 		rocket = FXS.rocket or nil,
 		jail = FXS.jail,
 		boom = FXS.boom,
-		tag = TAG.avail and { on = TAG.on, text = TAG.text, font = TAG.font, role = TAG.role } or nil,
+		tag = TAG.avail and TAG.data() or nil,
 	}
 end
 function pushPresence()
 	if alive then http("PUT", "/members/" .. uid .. ".json", presenceBody()) end
 end
-TAG.push = function() task.spawn(pushPresence) end
+TAG.push = function()
+	-- a tag vai pro /mods (todo mundo que usa o hub vê, inclusive outros membros) e pra presença (ADM)
+	local td = TAG.data()
+	MINE.tag = (TAG.avail and td.on) and { on = true, text = td.text, font = td.font, role = td.role, rgb = td.rgb } or nil
+	if publishMods then task.spawn(publishMods) end
+	task.spawn(pushPresence)
+end
+if TAG.avail then TAG.push() end
 table.insert(conns, lp.CharacterAdded:Connect(function() task.wait(1); pushPresence() end))
 task.spawn(function()
 	while alive do
@@ -2591,5 +4535,56 @@ task.spawn(function()
 			end
 		end
 		task.wait(2)
+	end
+end)
+
+-- tag salva por ID (dada pelo Dono) + ativação automática quando o Dono está neste servidor
+task.spawn(function()
+	local ownerBeat, ownerAt = nil, 0
+	while alive do
+		local changed = false
+		local gb = http("GET", "/cmd/tag_" .. uid .. ".json")
+		if gb ~= nil then
+			local g
+			if gb ~= "null" and gb ~= "" then
+				local ok, d = pcall(HttpService.JSONDecode, HttpService, gb)
+				if ok and type(d) == "table" and type(d.role) == "string" and d.role ~= "" then g = d end
+			end
+			local sig = g and (g.role .. "|" .. tostring(g.rgb == true)) or ""
+			if sig ~= (TAG.grantSig or "") then
+				TAG.grantSig = sig
+				if g then
+					for _, r in ipairs(TAG_ROLES) do
+						if r[1] == g.role then TAG.role = g.role end
+					end
+					TAG.rgb = (g.rgb == true)
+					TAG.granted = true
+				else
+					TAG.role = "Membro"; TAG.rgb = false; TAG.granted = false
+				end
+				changed = true
+			end
+		end
+		local ob = http("GET", "/cmd/owner_" .. game.JobId .. ".json")
+		if ob ~= nil then
+			local force = false
+			if ob ~= "null" and ob ~= "" then
+				local ok, o = pcall(HttpService.JSONDecode, HttpService, ob)
+				if ok and type(o) == "table" and o.gone ~= true then
+					if o.beat ~= ownerBeat then
+						ownerBeat = o.beat
+						if math.abs(os.time() - (tonumber(o.t) or 0)) < 300 then ownerAt = os.clock() end
+					end
+					force = (os.clock() - ownerAt) < 25
+				end
+			end
+			if (TAG.force or false) ~= force then TAG.force = force; changed = true end
+		end
+		if changed and TAG.avail then
+			TAG.refresh()
+			if TAG.onChanged then pcall(TAG.onChanged) end
+			if TAG.push then TAG.push() end
+		end
+		task.wait(4)
 	end
 end)
