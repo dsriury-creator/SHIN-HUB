@@ -1,38 +1,38 @@
-local function _obi44m9h(t)
+local function _obczbshz(t)
 	local b={}
-	for i=1,#t do b[i]=string.char((t[i]-((13+i-1)%256))%256) end
+	for i=1,#t do b[i]=string.char((t[i]-((105+i-1)%256))%256) end
 	return table.concat(b)
 end
-local DB = _obi44m9h({117,130,131,128,132,76,66,67,136,127,139,125,70,74,127,143,74,130,132,134,130,151,143,152,82,152,155,140,139,88,145,149,159,147,145,145,164,151,156,163,99,153,166,165})
-local BG_URL = _obi44m9h({117,130,131,128,132,76,66,67,126,68,135,135,140,142,132,137,132,76,130,131,80,87,83,123,139,91,93,152,129,89,144,94,101,102,146,101,146,98,104,151,106,104,157,105,111,106,161,108,118,159,114,118,120,121,115,119,170,126,128,122,124,123,121,182,189,181})
-local ICON_URL = _obi44m9h({117,130,131,128,132,76,66,67,126,68,135,135,140,142,132,137,132,76,130,131,80,116,83,108,114,148,138,95,96,89,99,97,143,102,144,147,105,148,150,154,110,156,106,106,107,158,116,114,116,159,117,165,165,118,165,121,170,126,169,174,127,172,121,182,189,181})
-local FOLDER = _obi44m9h({96,86,88,94,49,90,104,86})
+local DB = _obczbshz({209,222,223,220,224,168,158,159,228,219,231,217,162,166,219,235,166,222,224,226,222,243,235,244,174,244,247,232,231,180,237,241,251,239,237,237,0,243,248,255,191,245,2,1})
+local BG_URL = _obczbshz({209,222,223,220,224,168,158,159,218,160,227,227,232,234,224,229,224,168,222,223,172,179,175,215,231,183,185,244,221,181,236,186,193,194,238,193,238,190,196,243,198,196,249,197,203,198,253,200,210,251,206,210,212,213,207,211,6,218,220,214,216,215,213,18,25,17})
+local ICON_URL = _obczbshz({209,222,223,220,224,168,158,159,218,160,227,227,232,234,224,229,224,168,222,223,172,208,175,200,206,240,230,187,188,181,191,189,235,194,236,239,197,240,242,246,202,248,198,198,199,250,208,206,208,251,209,1,1,210,1,213,6,218,5,10,219,8,213,18,25,17})
+local FOLDER = _obczbshz({188,178,180,186,141,182,196,178})
 
 local SCRIPTS = {
-	{ _obi44m9h({82,123,126,132,118,133}), _obi44m9h({117,130,131,128,132,76,66,67,118,134,128,70,139,143,125,133,144,76,128,144,145,81,153,86,84,153,138,154,138,154,90,157,146,150,161,156,147,105,130,156,109,165,131,135,160,175,110,107,175,159,182}), _obi44m9h({82,123,126,132,118,133,51,103,120,136,128,136,141,141}) },
-	{ _obi44m9h({99,96}), _obi44m9h({117,130,131,128,132,76,66,67,135,119,142,139,124,140,132,140,145,145,77,142,134,150,82,150,134,157,86,118,138,158,160,158,142,154,92,116,154,165,148,167,169,155,169,101,140,175,173,178,166,180,160,172,110,136,136,113,139,167,178,173,118,160,157,121,155,175,195,197,195,179,191,129,153,191,202,185,204,206,192,206,138,169,196,217,205,199,214,215,146,152,155,153,153,163,163}), _obi44m9h({95,111,125,116,128,127,51,103,120,136,128,136,141,141}) },
-	{ _obi44m9h({79,128,126,127,124,122,116,138,122,132}), _obi44m9h({117,130,131,128,132,76,66,67,135,119,142,139,124,140,132,140,145,145,77,142,134,150,82,150,134,157,86,106,155,153,154,151,149,143,165,149,159,95,133,132,98,137,163,153,178,159,173,105,133,179,161,109,115,118,121,119,118,127}), _obi44m9h({96,113,129,121,129,134,134}) },
+	{ _obczbshz({174,215,218,224,210,225}), _obczbshz({209,222,223,220,224,168,158,159,210,226,220,162,231,235,217,225,236,168,220,236,237,173,245,178,176,245,230,246,230,246,182,249,238,242,253,248,239,197,222,248,201,1,223,227,252,11,202,199,11,251,18}), _obczbshz({174,215,218,224,210,225,143,195,212,228,220,228,233,233}) },
+	{ _obczbshz({191,188}), _obczbshz({209,222,223,220,224,168,158,159,227,211,234,231,216,232,224,232,237,237,169,234,226,242,174,242,226,249,178,210,230,250,252,250,234,246,184,208,246,1,240,3,5,247,5,193,232,11,9,14,2,16,252,8,202,228,228,205,231,3,14,9,210,252,249,213,247,11,31,33,31,15,27,221,245,27,38,21,40,42,28,42,230,5,32,53,41,35,50,51,238,244,247,245,245,255,255}), _obczbshz({187,203,217,208,220,219,143,195,212,228,220,228,233,233}) },
+	{ _obczbshz({171,220,218,219,216,214,208,230,214,224}), _obczbshz({209,222,223,220,224,168,158,159,227,211,234,231,216,232,224,232,237,237,169,234,226,242,174,242,226,249,178,198,247,245,246,243,241,235,1,241,251,187,225,224,190,229,255,245,14,251,9,197,225,15,253,201,207,210,213,211,210,219}), _obczbshz({188,205,221,213,221,226,226}) },
 }
 
-local Players = game:GetService(_obi44m9h({93,122,112,137,118,132,134}))
-local HttpService = game:GetService(_obi44m9h({85,130,131,128,100,119,133,138,126,121,124}))
-local RunService = game:GetService(_obi44m9h({95,131,125,99,118,132,137,125,120,123}))
-local UIS = game:GetService(_obi44m9h({98,129,116,130,90,128,131,137,137,105,124,138,143,131,126,129}))
+local Players = game:GetService(_obczbshz({185,214,204,229,210,224,226}))
+local HttpService = game:GetService(_obczbshz({177,222,223,220,192,211,225,230,218,213,216}))
+local RunService = game:GetService(_obczbshz({187,223,217,191,210,224,229,217,212,215}))
+local UIS = game:GetService(_obczbshz({190,221,208,222,182,220,223,229,229,197,216,230,235,223,218,221}))
 local lp = Players.LocalPlayer
 local req = request or http_request or (syn and syn.request)
 
-local DSLOG = { lines = {}, pending = {}, max = 3000, t0 = os.clock(), file = FOLDER .. _obi44m9h({60,122,126,119,63,134,139,136}),
+local DSLOG = { lines = {}, pending = {}, max = 3000, t0 = os.clock(), file = FOLDER .. _obczbshz({152,214,218,211,155,226,231,228}),
 	n = { INFO = 0, WARN = 0, ERRO = 0 }, subs = {}, last = nil, rep = 0, alive = true }
 pcall(function()
 	if isfolder and not isfolder(FOLDER) then makefolder(FOLDER) end
 	if isfile and readfile and writefile and isfile(DSLOG.file) then
-		writefile(FOLDER .. _obi44m9h({60,122,126,119,112,115,129,136,122,136,128,135,139,72,143,148,145}), readfile(DSLOG.file))
+		writefile(FOLDER .. _obczbshz({152,214,218,211,204,207,221,228,214,228,220,227,231,164,235,240,237}), readfile(DSLOG.file))
 	end
-	if writefile then writefile(DSLOG.file, _obi44m9h({})) end
+	if writefile then writefile(DSLOG.file, _obczbshz({})) end
 end)
 local function dsEmit(level, tag, msg)
-	local one = tostring(msg):gsub(_obi44m9h({104,27,25,109,60}), _obi44m9h({45,138,47}))
-	local line = string.format(_obi44m9h({104,51,130,48,60,55,73,66,70,124,138,117,57,63,72,80,144,62,68,77,82,82,150,68,74,153}), os.date(_obi44m9h({50,86,73,53,94,76,56,103})), os.clock() - DSLOG.t0, level, tag, one)
+	local one = tostring(msg):gsub(_obczbshz({196,119,117,201,152}), _obczbshz({137,230,139}))
+	local line = string.format(_obczbshz({196,143,222,140,152,147,165,158,162,216,230,209,149,155,164,172,236,154,160,169,174,174,242,160,166,245}), os.date(_obczbshz({142,178,165,145,186,168,148,195})), os.clock() - DSLOG.t0, level, tag, one)
 	table.insert(DSLOG.lines, { level, line })
 	if #DSLOG.lines > DSLOG.max then table.remove(DSLOG.lines, 1) end
 	DSLOG.n[level] = (DSLOG.n[level] or 0) + 1
@@ -40,29 +40,29 @@ local function dsEmit(level, tag, msg)
 	for _, f in ipairs(DSLOG.subs) do pcall(f) end
 end
 function DSLOG.add(level, tag, msg)
-	local key = level .. _obi44m9h({137}) .. tag .. _obi44m9h({137}) .. tostring(msg)
+	local key = level .. _obczbshz({229}) .. tag .. _obczbshz({229}) .. tostring(msg)
 	if key == DSLOG.last then DSLOG.rep = DSLOG.rep + 1; return end
-	if DSLOG.rep > 0 then dsEmit(_obi44m9h({86,92,85,95}), _obi44m9h({121,125,118}), _obi44m9h({53,111,47,124,122,128,123,117,53,119,122,129,134,123,59,143,130,62,145,133,145,135,151,141,154,70,148,137,146,157,75}) .. DSLOG.rep .. _obi44m9h({133,55})); DSLOG.rep = 0 end
+	if DSLOG.rep > 0 then dsEmit(_obczbshz({178,184,177,187}), _obczbshz({213,217,210}), _obczbshz({145,203,139,216,214,220,215,209,145,211,214,221,226,215,151,235,222,154,237,225,237,227,243,233,246,162,240,229,238,249,167}) .. DSLOG.rep .. _obczbshz({225,147})); DSLOG.rep = 0 end
 	DSLOG.last = key
 	dsEmit(level, tag, msg)
 end
-function DSLOG.info(tag, msg) DSLOG.add(_obi44m9h({86,92,85,95}), tag, msg) end
-function DSLOG.warn(tag, msg) DSLOG.add(_obi44m9h({100,79,97,94}), tag, msg) end
-function DSLOG.err(tag, msg) DSLOG.add(_obi44m9h({82,96,97,95}), tag, msg) end
+function DSLOG.info(tag, msg) DSLOG.add(_obczbshz({178,184,177,187}), tag, msg) end
+function DSLOG.warn(tag, msg) DSLOG.add(_obczbshz({192,171,189,186}), tag, msg) end
+function DSLOG.err(tag, msg) DSLOG.add(_obczbshz({174,188,189,187}), tag, msg) end
 function DSLOG.ev(level, tag, msg) dsEmit(level, tag, msg) end
 
 function DSLOG.try(tag, fn, ...)
 	local res = table.pack(xpcall(fn, function(e)
-		local tb = _obi44m9h({})
-		pcall(function() tb = debug.traceback(_obi44m9h({}), 2) end)
-		return tostring(e) .. _obi44m9h({45,78,47}) .. tb:gsub(_obi44m9h({50,129,57,26,54,133,61}), _obi44m9h({45,76,47}))
+		local tb = _obczbshz({})
+		pcall(function() tb = debug.traceback(_obczbshz({}), 2) end)
+		return tostring(e) .. _obczbshz({137,170,139}) .. tb:gsub(_obczbshz({142,221,149,118,146,225,153}), _obczbshz({137,168,139}))
 	end, ...))
 	if not res[1] then DSLOG.err(tag, res[2]); return false end
 	return true, table.unpack(res, 2, res.n)
 end
 local function dsFlush()
 	if #DSLOG.pending == 0 then return end
-	local txt = table.concat(DSLOG.pending, _obi44m9h({23})) .. _obi44m9h({23})
+	local txt = table.concat(DSLOG.pending, _obczbshz({115})) .. _obczbshz({115})
 	DSLOG.pending = {}
 	pcall(function()
 		if appendfile then
@@ -70,7 +70,7 @@ local function dsFlush()
 		elseif writefile then
 			local all = {}
 			for _, l in ipairs(DSLOG.lines) do all[#all + 1] = l[2] end
-			writefile(DSLOG.file, table.concat(all, _obi44m9h({23})) .. _obi44m9h({23}))
+			writefile(DSLOG.file, table.concat(all, _obczbshz({115})) .. _obczbshz({115}))
 		end
 	end)
 end
@@ -79,78 +79,78 @@ task.spawn(function()
 	while DSLOG.alive do task.wait(2); dsFlush() end
 end)
 function DSLOG.header()
-	local ex = _obi44m9h({76})
-	pcall(function() local n, v = identifyexecutor(); ex = tostring(n) .. _obi44m9h({45}) .. tostring(v or _obi44m9h({})) end)
-	local function has(f) return f and _obi44m9h({128,119,124}) or _obi44m9h({91,209,146,95}) end
+	local ex = _obczbshz({168})
+	pcall(function() local n, v = identifyexecutor(); ex = tostring(n) .. _obczbshz({137}) .. tostring(v or _obczbshz({})) end)
+	local function has(f) return f and _obczbshz({220,211,216}) or _obczbshz({183,45,238,187}) end
 	return table.concat({
-		_obi44m9h({96,118,120,126,49,90,136,118,53,130,134,127,57,150,59}) .. os.date(_obi44m9h({50,103,60,53,126,63,56,120,53,59,95,82,62,103,85,65,112})),
-		_obi44m9h({114,134,116,115,134,134,130,134,79,54}) .. ex,
-		_obi44m9h({119,125,118,127,75,50,99,128,118,121,124,97,125,58}) .. tostring(game.PlaceId) .. _obi44m9h({45,138,47,90,128,116,92,120,53}) .. tostring(game.JobId),
-		_obi44m9h({119,125,118,113,117,129,133,78,53}) .. lp.Name .. _obi44m9h({45,54}) .. lp.UserId .. _obi44m9h({54}),
-		_obi44m9h({115,131,125,211,184,213,200,121,136,80,55,138,126,139,144,129,144,146,92}) .. has(req) .. _obi44m9h({45,117,116,132,116,135,134,136,132,131,120,139,140,127,143,89}) .. has(getcustomasset) .. _obi44m9h({45,111,127,128,118,128,119,122,126,130,124,85}) .. has(appendfile)
-			.. _obi44m9h({45,129,116,132,116,126,124,132,119,133,120,138,125,87}) .. has(setclipboard) .. _obi44m9h({45,117,116,132,121,135,124,81}) .. has(gethui),
-		_obi44m9h({112,125,125,132,114,121,120,129,79,54}) .. DSLOG.n.INFO .. _obi44m9h({45,119,125,118,128,62,51}) .. DSLOG.n.WARN .. _obi44m9h({45,111,133,121,132,129,134,64,53}) .. DSLOG.n.ERRO .. _obi44m9h({45,115,129,130,128,133}),
-	}, _obi44m9h({23}))
+		_obczbshz({188,210,212,218,141,182,228,210,145,222,226,219,149,242,151}) .. os.date(_obczbshz({142,195,152,145,218,155,148,212,145,151,187,174,154,195,177,157,204})),
+		_obczbshz({206,226,208,207,226,226,222,226,171,146}) .. ex,
+		_obczbshz({211,217,210,219,167,142,191,220,210,213,216,189,217,150}) .. tostring(game.PlaceId) .. _obczbshz({137,230,139,182,220,208,184,212,145}) .. tostring(game.JobId),
+		_obczbshz({211,217,210,205,209,221,225,170,145}) .. lp.Name .. _obczbshz({137,146}) .. lp.UserId .. _obczbshz({146}),
+		_obczbshz({207,223,217,47,20,49,36,213,228,172,147,230,218,231,236,221,236,238,184}) .. has(req) .. _obczbshz({137,209,208,224,208,227,226,228,224,223,212,231,232,219,235,181}) .. has(getcustomasset) .. _obczbshz({137,203,219,220,210,220,211,214,218,222,216,177}) .. has(appendfile)
+			.. _obczbshz({137,221,208,224,208,218,216,224,211,225,212,230,217,179}) .. has(setclipboard) .. _obczbshz({137,209,208,224,213,227,216,173}) .. has(gethui),
+		_obczbshz({204,217,217,224,206,213,212,221,171,146}) .. DSLOG.n.INFO .. _obczbshz({137,211,217,210,220,154,143}) .. DSLOG.n.WARN .. _obczbshz({137,203,225,213,224,221,226,156,145}) .. DSLOG.n.ERRO .. _obczbshz({137,207,221,222,220,225}),
+	}, _obczbshz({115}))
 end
 function DSLOG.dump(onlyProblems)
-	local out = { DSLOG.header(), _obi44m9h({58,59,60,61,62,63}) }
+	local out = { DSLOG.header(), _obczbshz({150,151,152,153,154,155}) }
 	for _, l in ipairs(DSLOG.lines) do
-		if not onlyProblems or l[1] ~= _obi44m9h({86,92,85,95}) then out[#out + 1] = l[2] end
+		if not onlyProblems or l[1] ~= _obczbshz({178,184,177,187}) then out[#out + 1] = l[2] end
 	end
-	return table.concat(out, _obi44m9h({23}))
+	return table.concat(out, _obczbshz({115}))
 end
 
 function DSLOG.charState(char, who)
-	if not char then DSLOG.warn(_obi44m9h({110,132,112,132,114,132}), tostring(who or _obi44m9h({76})) .. _obi44m9h({71,46,130,117,126,50,131,121,135,137,134,134,122,129,128,137,61,127,134,143,147,131})); return end
-	local hm = char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
-	local root = char:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}))
-	local parts, nMod, st = {}, 0, char:FindFirstChild(_obi44m9h({81,129,98,132,114,133,123}))
+	if not char then DSLOG.warn(_obczbshz({202,224,204,224,206,224}), tostring(who or _obczbshz({168})) .. _obczbshz({163,138,222,209,218,142,223,213,227,229,226,226,214,221,220,229,153,219,226,235,239,223})); return end
+	local hm = char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+	local root = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
+	local parts, nMod, st = {}, 0, char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
 	local function far(a)
-		local h = a:FindFirstChild(_obi44m9h({85,111,125,116,125,119}))
-		if not h then return _obi44m9h({53,97,84,93,49,90,116,130,121,130,124,65}) end
-		if root and (h.Position - root.Position).Magnitude > 15 then return _obi44m9h({53,90,94,94,88,87,51,120,132,54,122,135,139,138,138,69}) end
-		return _obi44m9h({})
+		local h = a:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
+		if not h then return _obczbshz({145,189,176,185,141,182,208,222,213,222,216,157}) end
+		if root and (h.Position - root.Position).Magnitude > 15 then return _obczbshz({145,182,186,186,180,179,143,212,224,146,214,227,231,230,230,161}) end
+		return _obczbshz({})
 	end
 	if hm then
 		for _, a in ipairs(hm:GetAccessories()) do
-			parts[#parts + 1] = a.Name .. (a:GetAttribute(_obi44m9h({81,129,92,127,117})) and _obi44m9h({104,118,132,114,110}) or _obi44m9h({})) .. far(a)
+			parts[#parts + 1] = a.Name .. (a:GetAttribute(_obczbshz({173,221,184,219,209})) and _obczbshz({196,210,224,206,202}) or _obczbshz({})) .. far(a)
 		end
 	end
-	local man = char:FindFirstChild(_obi44m9h({81,129,80,115,116}))
+	local man = char:FindFirstChild(_obczbshz({173,221,172,207,208}))
 	if man then
-		for _, a in ipairs(man:GetChildren()) do parts[#parts + 1] = a.Name .. _obi44m9h({104,118,132,114,62,127,116,130,138,119,131,117}) .. far(a) end
+		for _, a in ipairs(man:GetChildren()) do parts[#parts + 1] = a.Name .. _obczbshz({196,210,224,206,154,219,208,222,230,211,223,209}) .. far(a) end
 	end
 	for _, d in ipairs(char:GetDescendants()) do
-		if d:GetAttribute(_obi44m9h({81,129,92,127,117})) then nMod = nMod + 1 end
+		if d:GetAttribute(_obczbshz({173,221,184,219,209})) then nMod = nMod + 1 end
 	end
-	DSLOG.info(_obi44m9h({110,132,112,132,114,132}), string.format(_obi44m9h({50,129,47,140,49,132,124,123,82,59,138,56,149,58,124,127,130,145,146,227,212,148,140,147,152,78,76,140,82,100,75,81,160,78,171,80,154,166,152,162,168,86,155,167,89,162,176,158,122,99,163,96,189,98,178,182,174,173,176,182,170,179,190,108,180,195,176,194,181,179,183,195,200,147,124,188,121,214,123,207,198,197,156,133,212}),
-		tostring(who or char.Name), hm and hm.RigType.Name or _obi44m9h({76}), #parts,
-		#parts > 0 and table.concat(parts, _obi44m9h({57,46})) or _obi44m9h({123,115,125,120,134,127}), nMod, st and #st:GetChildren() or 0, tostring(char:GetAttribute(_obi44m9h({81,129,98,121,120})) or _obi44m9h({58}))))
+	DSLOG.info(_obczbshz({202,224,204,224,206,224}), string.format(_obczbshz({142,221,139,232,141,224,216,215,174,151,230,148,241,150,216,219,222,237,238,63,48,240,232,239,244,170,168,232,174,192,167,173,252,170,7,172,246,2,244,254,4,178,247,3,181,254,12,250,214,191,255,188,25,190,14,18,10,9,12,18,6,15,26,200,16,31,12,30,17,15,19,31,36,239,216,24,213,50,215,43,34,33,248,225,48}),
+		tostring(who or char.Name), hm and hm.RigType.Name or _obczbshz({168}), #parts,
+		#parts > 0 and table.concat(parts, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219}), nMod, st and #st:GetChildren() or 0, tostring(char:GetAttribute(_obczbshz({173,221,190,213,212})) or _obczbshz({150}))))
 end
-for l in DSLOG.header():gmatch(_obi44m9h({104,108,25,109,60})) do DSLOG.info(_obi44m9h({118,124,210,189,116,123,130}), l) end
+for l in DSLOG.header():gmatch(_obczbshz({196,200,117,201,152})) do DSLOG.info(_obczbshz({210,216,46,25,208,215,222}), l) end
 
-local lastErr = _obi44m9h({})
+local lastErr = _obczbshz({})
 local function http(method, path, body)
-	if not req then lastErr = _obi44m9h({114,134,116,115,134,134,130,134,53,137,124,133,57,140,128,141,146,131,146,148,73,75}); DSLOG.err(_obi44m9h({117,130,131,128}), lastErr); return nil end
+	if not req then lastErr = _obczbshz({206,226,208,207,226,226,222,226,145,229,216,225,149,232,220,233,238,223,238,240,165,167}); DSLOG.err(_obczbshz({209,222,223,220}), lastErr); return nil end
 	local ok, res = pcall(req, {
 		Url = DB .. path, Method = method,
-		Headers = { [_obi44m9h({80,125,125,132,118,128,135,65,105,143,135,125})] = _obi44m9h({110,126,127,124,122,117,116,136,126,133,133,71,131,141,138,138}) },
+		Headers = { [_obczbshz({172,217,217,224,210,220,227,157,197,235,227,217})] = _obczbshz({202,218,219,216,214,209,208,228,218,225,225,163,223,233,230,230}) },
 		Body = body and HttpService:JSONEncode(body) or nil,
 	})
 	if not ok then
 		lastErr = tostring(res):sub(1, 60)
-		DSLOG.err(_obi44m9h({117,130,131,128}), method .. _obi44m9h({45}) .. path .. _obi44m9h({45,116,112,124,121,129,136,78,53}) .. tostring(res):sub(1, 120))
+		DSLOG.err(_obczbshz({209,222,223,220}), method .. _obczbshz({137}) .. path .. _obczbshz({137,208,204,216,213,221,228,170,145}) .. tostring(res):sub(1, 120))
 		return nil
 	end
 	local code = res.StatusCode or 0
-	if res.Success or code == 200 then lastErr = _obi44m9h({}); return res.Body or _obi44m9h({}) end
-	lastErr = _obi44m9h({85,98,99,96,49}) .. tostring(code) .. _obi44m9h({45}) .. tostring(res.Body or _obi44m9h({})):sub(1, 50)
-	DSLOG.err(_obi44m9h({117,130,131,128}), method .. _obi44m9h({45}) .. path .. _obi44m9h({45,59,77,48}) .. lastErr)
+	if res.Success or code == 200 then lastErr = _obczbshz({}); return res.Body or _obczbshz({}) end
+	lastErr = _obczbshz({177,190,191,188,141}) .. tostring(code) .. _obczbshz({137}) .. tostring(res.Body or _obczbshz({})):sub(1, 50)
+	DSLOG.err(_obczbshz({209,222,223,220}), method .. _obczbshz({137}) .. path .. _obczbshz({137,151,169,140}) .. lastErr)
 	return nil
 end
 
 local RED = Color3.fromRGB(220, 30, 40)
-local PANEL = Color3.fromRGB(22, 5, 7)
+local PANEL = Color3.fromRGB(24, 8, 11)
 local WHITE = Color3.new(1, 1, 1)
 local function mk(class, props, par)
 	local o = Instance.new(class)
@@ -158,24 +158,24 @@ local function mk(class, props, par)
 	o.Parent = par
 	return o
 end
-local function round(o, r) mk(_obi44m9h({98,87,82,127,131,128,120,134}), { CornerRadius = UDim.new(0, r or 8) }, o) end
+local function round(o, r) mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(0, r or 8) }, o) end
 local function stroke(o, th, col)
-	mk(_obi44m9h({98,87,98,132,131,129,126,121}), { Thickness = th or 1.5, Color = col or RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, o)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = th or 1.5, Color = col or RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, o)
 end
 local function fetchAsset(url, name)
 	local ok, res = pcall(function()
 		if not isfolder(FOLDER) then makefolder(FOLDER) end
-		local path = FOLDER .. _obi44m9h({60}) .. name
+		local path = FOLDER .. _obczbshz({152}) .. name
 		if not isfile(path) then writefile(path, game:HttpGet(url)) end
 		return getcustomasset(path)
 	end)
 	return ok and res or nil
 end
 
-local parent = (gethui and gethui()) or game:GetService(_obi44m9h({80,125,129,117,88,135,124}))
-local old = parent:FindFirstChild(_obi44m9h({96,118,120,126,89,135,117,97,122,131,121,138,136}))
+local parent = (gethui and gethui()) or game:GetService(_obczbshz({172,217,221,209,180,227,216}))
+local old = parent:FindFirstChild(_obczbshz({188,210,212,218,181,227,209,189,214,223,213,230,228}))
 if old then old:Destroy() end
-local gui = mk(_obi44m9h({96,113,129,117,118,128,90,137,126}), { Name = _obi44m9h({96,118,120,126,89,135,117,97,122,131,121,138,136}), ResetOnSpawn = false }, parent)
+local gui = mk(_obczbshz({188,205,221,209,210,220,182,229,218}), { Name = _obczbshz({188,210,212,218,181,227,209,189,214,223,213,230,228}), ResetOnSpawn = false }, parent)
 gui.Destroying:Connect(function()
 	DSLOG.alive = false
 	dsFlush()
@@ -183,9 +183,9 @@ gui.Destroying:Connect(function()
 end)
 
 pcall(function()
-	DSLOG.lsConn = game:GetService(_obi44m9h({89,125,118,99,118,132,137,125,120,123})).MessageOut:Connect(function(msg, mt)
-		if mt == Enum.MessageType.MessageError and (msg:find(_obi44m9h({107,51,106,131,133,132,124,130,124})) or msg:find(_obi44m9h({96,118,120,126}))) then
-			DSLOG.err(_obi44m9h({112,125,125,131,128,126,120}), msg:sub(1, 200))
+	DSLOG.lsConn = game:GetService(_obczbshz({181,217,210,191,210,224,229,217,212,215})).MessageOut:Connect(function(msg, mt)
+		if mt == Enum.MessageType.MessageError and (msg:find(_obczbshz({199,143,198,223,225,224,216,222,216})) or msg:find(_obczbshz({188,210,212,218}))) then
+			DSLOG.err(_obczbshz({204,217,217,223,220,218,212}), msg:sub(1, 200))
 		end
 	end)
 end)
@@ -198,7 +198,7 @@ local function isMove(i)
 end
 
 local conns = {}
-local function makeDraggable(handle, target, onTap)
+local function makeDraggable(handle, target, onTap, onDrop, clamp)
 	local dragging, moved, startPos, startInput = false, false, nil, nil
 	handle.InputBegan:Connect(function(i)
 		if isPress(i) then
@@ -212,234 +212,627 @@ local function makeDraggable(handle, target, onTap)
 			if d.Magnitude > 6 then moved = true end
 			if moved then
 				target.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X, startPos.Y.Scale, startPos.Y.Offset + d.Y)
+				if clamp then pcall(clamp, target) end
 			end
 		end
 	end))
 	table.insert(conns, UIS.InputEnded:Connect(function(i)
 		if dragging and isPress(i) then
 			dragging = false
-			if not moved and onTap then onTap() end
+			if moved then
+				if onDrop then pcall(onDrop, target) end
+			elseif onTap then
+				onTap()
+			end
 		end
 	end))
 end
 
+local function keepBarOnScreen(handle)
+	return function(target)
+		local vp = gui.AbsoluteSize
+		local rel = handle.AbsolutePosition - gui.AbsolutePosition
+		local sz = handle.AbsoluteSize
+		local dx, dy = 0, 0
+		if rel.X + sz.X < 90 then dx = 90 - (rel.X + sz.X) elseif rel.X > vp.X - 90 then dx = (vp.X - 90) - rel.X end
+		if rel.Y < 0 then dy = -rel.Y elseif rel.Y > vp.Y - 40 then dy = (vp.Y - 40) - rel.Y end
+		if dx ~= 0 or dy ~= 0 then
+			local p = target.Position
+			target.Position = UDim2.new(p.X.Scale, p.X.Offset + dx, p.Y.Scale, p.Y.Offset + dy)
+		end
+	end
+end
+
+local UI = {
+	ACTIVE = Color3.fromRGB(104, 18, 28), HOVER = Color3.fromRGB(56, 13, 18), EDGE = Color3.fromRGB(165, 30, 44),
+	DIM = Color3.fromRGB(205, 168, 171), SOFT = Color3.fromRGB(228, 150, 156), GLOW = Color3.fromRGB(255, 80, 96),
+	pc = false, listeners = {},
+}
+function UI.tween(o, t, props)
+	pcall(function()
+		game:GetService(_obczbshz({189,225,208,209,219,193,212,226,231,219,214,217})):Create(o, TweenInfo.new(t or 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props):Play()
+	end)
+end
+
+UI.pc = (UIS.KeyboardEnabled and UIS.MouseEnabled) and true or false
+function UI.setPc(v)
+	v = v and true or false
+	if UI.pc == v then return end
+	UI.pc = v
+	for _, f in ipairs(UI.listeners) do pcall(f, v) end
+end
+function UI.onDevice(f)
+	table.insert(UI.listeners, f)
+	pcall(f, UI.pc)
+end
+table.insert(conns, UIS.LastInputTypeChanged:Connect(function(t)
+	if t == Enum.UserInputType.Touch then
+		UI.setPc(false)
+	elseif t == Enum.UserInputType.Keyboard and UIS.KeyboardEnabled and UIS.MouseEnabled then
+		UI.setPc(true)
+	end
+end))
+
 local function panel(w, h, pos)
-	local f = mk(_obi44m9h({83,128,112,125,118}), {
+	local f = mk(_obczbshz({175,220,204,217,210}), {
 		Size = UDim2.fromOffset(w, h), Position = pos,
-		BackgroundColor3 = Color3.fromRGB(6, 1, 2), ClipsDescendants = true,
+		BackgroundColor3 = Color3.fromRGB(9, 4, 6), ClipsDescendants = true,
 	}, gui)
-	round(f, 22); stroke(f, 2.5)
-	local img = mk(_obi44m9h({86,123,112,119,118,94,116,118,122,130}), {
+	round(f, 16)
+	local es = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, f)
+	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
+		Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 80, 96)), ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 12, 22)) }),
+		Rotation = 45,
+	}, es)
+	local img = mk(_obczbshz({178,215,204,211,210,186,208,210,214,222}), {
 		Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1,
-		ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.45,
+		ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.5,
 	}, f)
-	round(img, 22)
-	local shade = mk(_obi44m9h({83,128,112,125,118}), {
-		Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(25, 0, 3),
-		BackgroundTransparency = 0.7, BorderSizePixel = 0,
+	round(img, 16)
+	local shade = mk(_obczbshz({175,220,204,217,210}), {
+		Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(22, 2, 5),
+		BackgroundTransparency = 0, BorderSizePixel = 0,
 	}, f)
-	round(shade, 22)
-	task.spawn(function() local a = fetchAsset(BG_URL, _obi44m9h({111,117,61,122,129,121})); if a then img.Image = a end end)
+	round(shade, 16)
+	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
+		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.55), NumberSequenceKeypoint.new(1, 0.2) }),
+		Rotation = 90,
+	}, shade)
+
+	local function fitScale()
+		local cam = workspace.CurrentCamera
+		if not cam then return 1 end
+		local vp = cam.ViewportSize
+		return math.clamp(math.min((vp.X - 24) / w, (vp.Y - 24) / h), 0.6, 1)
+	end
+	local sc = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = fitScale() }, f)
+	f:GetPropertyChangedSignal(_obczbshz({191,211,222,213,207,218,212})):Connect(function()
+		if f.Visible then
+			local s = fitScale()
+			sc.Scale = s * 0.94
+			UI.tween(sc, 0.18, { Scale = s })
+		end
+	end)
+	task.spawn(function() local a = fetchAsset(BG_URL, _obczbshz({203,209,153,214,221,213})); if a then img.Image = a end end)
 	return f
 end
 local function bigBtn(par, text, pos, size, filled)
-	local b = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
-		Text = text, Position = pos, Size = size,
+	local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+		Text = text, Position = pos, Size = size, AutoButtonColor = false,
 		BackgroundColor3 = filled and RED or PANEL, BackgroundTransparency = filled and 0 or 0.1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14,
 	}, par)
-	round(b, 20); stroke(b, 2)
+	round(b, 14); stroke(b, 1.5, UI.EDGE)
 	return b
 end
 
 local ICONS = {
-	[_obi44m9h({96,113,129,121,129,134,134})] = _obi44m9h({239,165,149}), [_obi44m9h({82,132,112,116,118})] = _obi44m9h({239,167,181}), [_obi44m9h({79,128,126,127,124,122,116,138,122,132})] = _obi44m9h({239,165,150}), [_obi44m9h({91,111,131,133,131,115,127,52,89,127,138,121,140,142,128,142})] = _obi44m9h({239,164,193}), [_obi44m9h({90,125,115})] = _obi44m9h({239,166,148}), [_obi44m9h({82,116,116,121,133,129,134})] = _obi44m9h({239,165,158}),
-	[_obi44m9h({82,134,131,130,114,133})] = _obi44m9h({239,164,175}), [_obi44m9h({80,125,125,117,137,213,182,131})] = _obi44m9h({239,164,203}), [_obi44m9h({80,128,210,185,117,123,135,131,136})] = _obi44m9h({239,166,149}), [_obi44m9h({86,82})] = _obi44m9h({239,165,152}), [_obi44m9h({78,114,124,121,127})] = _obi44m9h({239,165,143}), [_obi44m9h({93,128,126,132,118,213,186,215,202,123,138})] = _obi44m9h({239,165,151}), [_obi44m9h({90,125,133,121,126,119,129,136,132})] = _obi44m9h({239,164,197}),
-	[_obi44m9h({81,115,113,133,120})] = _obi44m9h({239,165,156}), [_obi44m9h({91,125,124,117})] = _obi44m9h({239,164,178}), [_obi44m9h({90,209,201,131,122,117,116})] = _obi44m9h({239,167,185}), [_obi44m9h({97,111,118})] = _obi44m9h({239,170,181}),
+	[_obczbshz({188,205,221,213,221,226,226})] = _obczbshz({75,1,241}), [_obczbshz({174,224,204,208,210})] = _obczbshz({75,3,17}), [_obczbshz({171,220,218,219,216,214,208,230,214,224})] = _obczbshz({75,1,242}), [_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})] = _obczbshz({75,0,29}), [_obczbshz({182,217,207})] = _obczbshz({75,2,240}), [_obczbshz({174,208,208,213,225,221,226})] = _obczbshz({75,1,250}),
+	[_obczbshz({174,226,223,222,206,225})] = _obczbshz({75,0,11}), [_obczbshz({172,217,217,209,229,49,18,223})] = _obczbshz({75,0,39}), [_obczbshz({172,220,46,21,209,215,227,223,228})] = _obczbshz({75,2,241}), [_obczbshz({178,174})] = _obczbshz({75,1,244}), [_obczbshz({170,206,216,213,219})] = _obczbshz({75,1,235}), [_obczbshz({185,220,218,224,210,49,22,51,38,215,230})] = _obczbshz({75,1,243}), [_obczbshz({182,217,225,213,218,211,221,228,224})] = _obczbshz({75,0,33}),
+	[_obczbshz({173,207,205,225,212})] = _obczbshz({75,1,248}), [_obczbshz({183,217,216,209})] = _obczbshz({75,0,14}), [_obczbshz({182,45,37,223,214,209,208})] = _obczbshz({75,3,21}), [_obczbshz({189,203,210})] = _obczbshz({75,6,17}),
 }
 local function buildWindow(w, h, title, sub, tabNames, onClose)
-	local win = panel(w, h, UDim2.new(0.5, -w / 2, 0.5, -h / 2))
-	local top = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 42), BackgroundTransparency = 1 }, win)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = title .. _obi44m9h({45,46,75,118,128,128,135,52,136,127,145,125,86,60,76,77,63,62,130,143,141,145,149,97,71,152,142,138,81,92,94,92,89,95,97,96,93,99,101,100,94,88,117}) .. sub .. _obi44m9h({73,61,117,127,127,134,81}), RichText = true,
-		Size = UDim2.new(1, -140, 1, 0), Position = UDim2.fromOffset(22, 0), BackgroundTransparency = 1,
-		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 17, TextXAlignment = Enum.TextXAlignment.Left,
+	local win = panel(w, h, UDim2.new(0.5, 0, 0.5, 0))
+	win.AnchorPoint = Vector2.new(0.5, 0.5)
+
+	local top = mk(_obczbshz({175,220,204,217,210}), {
+		Size = UDim2.new(1, -12, 0, 36), Position = UDim2.fromOffset(6, 6),
+		BackgroundColor3 = Color3.fromRGB(14, 4, 6), BackgroundTransparency = 0.15, BorderSizePixel = 0,
+	}, win)
+	round(top, 12)
+	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
+		Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 22, 34)),
+			ColorSequenceKeypoint.new(0.6, Color3.fromRGB(44, 9, 13)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(16, 5, 7)),
+		}),
 	}, top)
-	makeDraggable(top, win)
+	local left = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -110, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1 }, top)
+	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), {
+		FillDirection = Enum.FillDirection.Horizontal, VerticalAlignment = Enum.VerticalAlignment.Center,
+		Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder,
+	}, left)
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = title, LayoutOrder = 0, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 36),
+		BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 17,
+	}, left)
+	local function pill(text, order, col)
+		local pl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = text, LayoutOrder = order, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 18),
+			BackgroundColor3 = col, BackgroundTransparency = 0.2, TextColor3 = WHITE,
+			Font = Enum.Font.GothamBold, TextSize = 10,
+		}, left)
+		round(pl, 9)
+		mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 9), PaddingRight = UDim.new(0, 9) }, pl)
+		return pl
+	end
+	pill(sub, 1, Color3.fromRGB(190, 24, 38))
+	local devPill = pill(_obczbshz({}), 2, Color3.fromRGB(60, 14, 20))
+	UI.onDevice(function(pc) devPill.Text = pc and _obczbshz({185,173,139,140,79,238,17,144,145,230,216,215,225,215,151,186}) or _obczbshz({182,217,205,213,217,211}) end)
+	makeDraggable(top, win, nil, nil, keepBarOnScreen(top))
 
-	local statusLbl = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Position = UDim2.new(0, 170, 1, -26), Size = UDim2.new(1, -184, 0, 20), BackgroundTransparency = 1,
-		Text = _obi44m9h({}), TextColor3 = Color3.fromRGB(240, 210, 210), Font = Enum.Font.Gotham,
-		TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
+	local statusLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Position = UDim2.new(0, 172, 1, -26), Size = UDim2.new(1, -186, 0, 20), BackgroundTransparency = 1,
+		Text = _obczbshz({}), TextColor3 = UI.SOFT, Font = Enum.Font.Gotham,
+		TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, win)
 
-	local side = mk(_obi44m9h({96,113,129,127,125,126,124,130,124,92,137,121,134,127}), {
-		Position = UDim2.fromOffset(10, 46), Size = UDim2.new(0, 150, 1, -56), BackgroundTransparency = 1,
-		BorderSizePixel = 0, ScrollBarThickness = 2, AutomaticCanvasSize = Enum.AutomaticSize.Y, CanvasSize = UDim2.new(),
+	local sideBg = mk(_obczbshz({175,220,204,217,210}), {
+		Position = UDim2.fromOffset(8, 48), Size = UDim2.new(0, 154, 1, -56),
+		BackgroundColor3 = Color3.fromRGB(8, 3, 5), BackgroundTransparency = 0.35, BorderSizePixel = 0,
 	}, win)
-	mk(_obi44m9h({98,87,91,121,132,134,95,117,142,133,140,140}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, side)
-	mk(_obi44m9h({98,87,95,113,117,118,124,130,124}), { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 4), PaddingBottom = UDim.new(0, 4) }, side)
+	round(sideBg, 12)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1, Color = UI.EDGE, Transparency = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, sideBg)
+	local contentBg = mk(_obczbshz({175,220,204,217,210}), {
+		Position = UDim2.fromOffset(168, 48), Size = UDim2.new(1, -176, 1, -78),
+		BackgroundColor3 = Color3.fromRGB(8, 3, 5), BackgroundTransparency = 0.45, BorderSizePixel = 0,
+	}, win)
+	round(contentBg, 12)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1, Color = UI.EDGE, Transparency = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, contentBg)
 
-	local pages, tabBtns, bars = {}, {}, {}
+	local searchBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
+		Position = UDim2.fromOffset(14, 54), Size = UDim2.fromOffset(142, 26), BackgroundColor3 = Color3.fromRGB(14, 4, 6),
+		BackgroundTransparency = 0.25, Text = _obczbshz({}), PlaceholderText = _obczbshz({89,9,255,249,141,176,228,227,212,211,229,148,214,216,216,166,167,168}), PlaceholderColor3 = UI.DIM,
+		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left,
+	}, win)
+	round(searchBox, 9)
+	local sbSt = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.55, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, searchBox)
+	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 8) }, searchBox)
+	searchBox.Focused:Connect(function() UI.tween(sbSt, 0.12, { Transparency = 0 }) end)
+	searchBox.FocusLost:Connect(function() UI.tween(sbSt, 0.12, { Transparency = 0.55 }) end)
+
+	local side = mk(_obczbshz({188,205,221,219,217,218,216,222,216,184,229,213,226,219}), {
+		Position = UDim2.fromOffset(10, 86), Size = UDim2.new(0, 150, 1, -96), BackgroundTransparency = 1,
+		BorderSizePixel = 0, ScrollBarThickness = 2, ScrollBarImageColor3 = UI.EDGE,
+		AutomaticCanvasSize = Enum.AutomaticSize.Y, CanvasSize = UDim2.new(),
+	}, win)
+	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, side)
+	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 4), PaddingRight = UDim.new(0, 4), PaddingBottom = UDim.new(0, 4) }, side)
+
+	local pages, tabBtns, bars, parts = {}, {}, {}, {}
+	local current
+	local function paintTab(n)
+		local b, tp = tabBtns[n], parts[n]
+		if not (b and tp) then return end
+		local on = (n == current)
+		UI.tween(b, 0.12, {
+			BackgroundColor3 = on and UI.ACTIVE or (tp.hover and UI.HOVER or PANEL),
+			BackgroundTransparency = on and 0.05 or (tp.hover and 0.25 or 0.5),
+		})
+		UI.tween(tp.stroke, 0.12, { Transparency = on and 0.1 or 0.65 })
+		tp.ic.TextColor3 = on and WHITE or UI.DIM
+		tp.lb.TextColor3 = on and WHITE or UI.DIM
+		bars[n].Visible = on
+	end
 	local function selectTab(name)
-		for n, p in pairs(pages) do p.Visible = (n == name) end
-		for n, b in pairs(tabBtns) do
-			b.BackgroundColor3 = (n == name) and Color3.fromRGB(70, 10, 14) or PANEL
-			bars[n].Visible = (n == name)
+		local changed = (current ~= name)
+		current = name
+		for n, pg in pairs(pages) do pg.Visible = (n == name) end
+		if changed and pages[name] then
+			pages[name].Position = UDim2.fromOffset(176, 64)
+			UI.tween(pages[name], 0.2, { Position = UDim2.fromOffset(176, 54) })
 		end
+		for n in pairs(tabBtns) do paintTab(n) end
 	end
 	for _, name in ipairs(tabNames) do
-		local b = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
-			Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, 28),
-			BackgroundColor3 = PANEL, BackgroundTransparency = 0.1,
+		local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			Text = _obczbshz({}), AutoButtonColor = false, Size = UDim2.new(1, 0, 0, 28),
+			BackgroundColor3 = PANEL, BackgroundTransparency = 0.5,
 		}, side)
-		round(b, 14); stroke(b, 1.5)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = ICONS[name] or _obi44m9h({239,165,149}), Size = UDim2.fromOffset(22, 28), Position = UDim2.fromOffset(12, 0),
-			BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14,
+		round(b, 10)
+		UI.onDevice(function(pc) b.Size = UDim2.new(1, 0, 0, pc and 28 or 34) end)
+		local bst = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.65, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+		local ic = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = ICONS[name] or _obczbshz({75,1,241}), Size = UDim2.fromOffset(22, 28), Position = UDim2.fromOffset(12, 0),
+			BackgroundTransparency = 1, TextColor3 = UI.DIM, Font = Enum.Font.GothamBold, TextSize = 13,
 		}, b)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+		local lb = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 			Text = name, Size = UDim2.new(1, -46, 1, 0), Position = UDim2.fromOffset(38, 0),
-			BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11,
+			BackgroundTransparency = 1, TextColor3 = UI.DIM, Font = Enum.Font.GothamMedium, TextSize = 11,
 			TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 		}, b)
-		local bar = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.fromOffset(3, 14), Position = UDim2.new(0, 3, 0.5, -7), BackgroundColor3 = RED, Visible = false }, b)
+		local bar = mk(_obczbshz({175,220,204,217,210}), {
+			Size = UDim2.fromOffset(3, 14), Position = UDim2.new(0, 3, 0.5, -7),
+			BackgroundColor3 = UI.GLOW, BorderSizePixel = 0, Visible = false,
+		}, b)
 		round(bar, 2)
-		local p = mk(_obi44m9h({96,113,129,127,125,126,124,130,124,92,137,121,134,127}), {
-			Position = UDim2.fromOffset(170, 46), Size = UDim2.new(1, -182, 1, -76), BackgroundTransparency = 1,
-			BorderSizePixel = 0, ScrollBarThickness = 3, AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		local p = mk(_obczbshz({188,205,221,219,217,218,216,222,216,184,229,213,226,219}), {
+			Position = UDim2.fromOffset(176, 54), Size = UDim2.new(1, -192, 1, -88), BackgroundTransparency = 1,
+			BorderSizePixel = 0, ScrollBarThickness = 3, ScrollBarImageColor3 = UI.EDGE, AutomaticCanvasSize = Enum.AutomaticSize.Y,
 			CanvasSize = UDim2.new(), Visible = false,
 		}, win)
-		mk(_obi44m9h({98,87,91,121,132,134,95,117,142,133,140,140}), { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, p)
-		mk(_obi44m9h({98,87,95,113,117,118,124,130,124}), { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 8), PaddingBottom = UDim.new(0, 8) }, p)
+		mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, p)
+		mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 8), PaddingBottom = UDim.new(0, 8) }, p)
 		pages[name], tabBtns[name], bars[name] = p, b, bar
+		local tp = { hover = false, stroke = bst, ic = ic, lb = lb }
+		parts[name] = tp
+		b.MouseEnter:Connect(function() tp.hover = true; paintTab(name) end)
+		b.MouseLeave:Connect(function() tp.hover = false; paintTab(name) end)
 		b.MouseButton1Click:Connect(function() selectTab(name) end)
 	end
 	selectTab(tabNames[1])
 
-	local function topBtn(txt, x, size, cb)
-		local t = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
-			Text = txt, Size = UDim2.fromOffset(30, 30), Position = UDim2.new(1, x, 0, 6), BackgroundTransparency = 1,
+	local function applyFilter()
+		local q = searchBox.Text:lower():gsub(_obczbshz({199,143,222,151}), _obczbshz({})):gsub(_obczbshz({142,221,150,144}), _obczbshz({}))
+		local first
+		for _, name in ipairs(tabNames) do
+			local show = (q == _obczbshz({})) or (name:lower():find(q, 1, true) ~= nil)
+			tabBtns[name].Visible = show
+			if show and not first then first = name end
+		end
+		return first
+	end
+	searchBox:GetPropertyChangedSignal(_obczbshz({189,207,227,224})):Connect(applyFilter)
+	searchBox.FocusLost:Connect(function(enter)
+		if enter then
+			local f = applyFilter()
+			if f and searchBox.Text ~= _obczbshz({}) then selectTab(f) end
+		end
+	end)
+
+	local function topBtn(txt, x, size, cb, danger)
+		local t = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			Text = txt, Size = UDim2.fromOffset(26, 26), Position = UDim2.new(1, x, 0.5, -13), AutoButtonColor = false,
+			BackgroundColor3 = Color3.fromRGB(10, 3, 5), BackgroundTransparency = 0.4,
 			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = size,
 		}, top)
+		round(t, 13)
+		t.MouseEnter:Connect(function()
+			UI.tween(t, 0.12, { BackgroundColor3 = danger and Color3.fromRGB(205, 30, 46) or UI.ACTIVE, BackgroundTransparency = 0.05 })
+		end)
+		t.MouseLeave:Connect(function()
+			UI.tween(t, 0.12, { BackgroundColor3 = Color3.fromRGB(10, 3, 5), BackgroundTransparency = 0.4 })
+		end)
 		t.MouseButton1Click:Connect(cb)
 		return t
 	end
-	topBtn(_obi44m9h({239,168,168}), -108, 20, function() if pages[_obi44m9h({82,134,131,130,114,133})] then selectTab(_obi44m9h({82,134,131,130,114,133})) end end)
-	topBtn(_obi44m9h({239,142,163}), -74, 16, function() win.Visible = false end)
-	topBtn(_obi44m9h({101}), -40, 15, function() if onClose then onClose() else win.Visible = false end end)
+	topBtn(_obczbshz({75,4,4}), -96, 15, function() if pages[_obczbshz({174,226,223,222,206,225})] then selectTab(_obczbshz({174,226,223,222,206,225})) end end)
+	topBtn(_obczbshz({75,234,255}), -64, 13, function() win.Visible = false end)
+	topBtn(_obczbshz({193}), -32, 13, function() if onClose then onClose() else win.Visible = false end end, true)
 
 	return win, pages, function(t)
 		statusLbl.Text = t
 		local s = tostring(t)
 		local low = s:lower()
-		local bad = low:find(_obi44m9h({114,128,129,127})) or low:find(_obi44m9h({123,209,178,127,49,117,130,130,136,123,126,141,130})) or low:find(_obi44m9h({115,111,123,120,128,135}))
-		DSLOG.add(bad and _obi44m9h({100,79,97,94}) or _obi44m9h({86,92,85,95}), _obi44m9h({130,119}), s)
+		local bad = low:find(_obczbshz({206,220,221,219})) or low:find(_obczbshz({215,45,14,219,141,209,222,222,228,215,218,233,222})) or low:find(_obczbshz({207,203,215,212,220,227}))
+		DSLOG.add(bad and _obczbshz({192,171,189,186}) or _obczbshz({178,184,177,187}), _obczbshz({222,211}), s)
 	end
 end
 
-local function floatButton(onTap)
-	local b = mk(_obi44m9h({86,123,112,119,118,84,136,136,137,133,133}), {
-		Size = UDim2.fromOffset(36, 36), Position = UDim2.fromOffset(10, 8),
-		BackgroundColor3 = PANEL, AutoButtonColor = false, ScaleType = Enum.ScaleType.Crop, Image = _obi44m9h({}),
-	}, gui)
-	mk(_obi44m9h({98,87,82,127,131,128,120,134}), { CornerRadius = UDim.new(1, 0) }, b)
-	stroke(b, 2, RED)
-	local fallback = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({90}), Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1,
-		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 17,
+local function floatButton(onTap, winRef)
+	local POS_FILE = FOLDER .. _obczbshz({152,208,215,219,206,226,206,224,224,229,161,222,232,229,229})
+	local SIZE, MARGIN = 46, 8
+	local function areaSize()
+		local a = gui.AbsoluteSize
+		if a.X < 50 or a.Y < 50 then
+			local cam = workspace.CurrentCamera
+			a = cam and cam.ViewportSize or Vector2.new(800, 600)
+		end
+		return a
+	end
+	local function clampPos(x, y)
+		local a = areaSize()
+		return math.clamp(x, MARGIN, math.max(MARGIN, a.X - SIZE - MARGIN)), math.clamp(y, MARGIN, math.max(MARGIN, a.Y - SIZE - MARGIN))
+	end
+
+	local sx, sy = MARGIN + 2, MARGIN + 2
+	pcall(function()
+		if isfile and readfile and isfile(POS_FILE) then
+			local d = HttpService:JSONDecode(readfile(POS_FILE))
+			local a = areaSize()
+			if type(d.x) == _obczbshz({215,223,216,206,210,224}) and type(d.y) == _obczbshz({215,223,216,206,210,224}) then sx, sy = d.x * a.X, d.y * a.Y end
+		end
+	end)
+	sx, sy = clampPos(sx, sy)
+
+	local root = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(SIZE, SIZE), Position = UDim2.fromOffset(sx, sy), BackgroundTransparency = 1 }, gui)
+	local rootScale = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = 0.01 }, root)
+
+	local pulse = mk(_obczbshz({175,220,204,217,210}), {
+		Size = UDim2.fromScale(1, 1), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+		BackgroundTransparency = 1, ZIndex = 1,
+	}, root)
+	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, pulse)
+	local ps = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = UI.GLOW, Transparency = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, pulse)
+	local pulseScale = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = 1 }, pulse)
+
+	local b = mk(_obczbshz({178,215,204,211,210,176,228,228,229,225,225}), {
+		Size = UDim2.fromScale(1, 1), BackgroundColor3 = PANEL, AutoButtonColor = false,
+		ScaleType = Enum.ScaleType.Crop, Image = _obczbshz({}), ZIndex = 2,
+	}, root)
+	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, b)
+	local press = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = 1 }, b)
+	local fs = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2.5, Color = WHITE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+	local ring = mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
+		Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 90, 104)),
+			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(110, 10, 20)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 90, 104)),
+		}),
+	}, fs)
+
+	pcall(function()
+		game:GetService(_obczbshz({189,225,208,209,219,193,212,226,231,219,214,217})):Create(ring, TweenInfo.new(4, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1), { Rotation = 360 }):Play()
+	end)
+
+	local tint = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(20, 2, 5), BackgroundTransparency = 0.78, BorderSizePixel = 0, ZIndex = 2 }, b)
+	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, tint)
+	local fallback = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({188}), Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 3,
+		TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 20,
 	}, b)
-	if ICON_URL:find(_obi44m9h({107,118,131,132,129})) then
+	if ICON_URL:find(_obczbshz({199,210,223,224,221})) then
 		task.spawn(function()
-			local a = fetchAsset(ICON_URL, _obi44m9h({118,113,126,126,63,130,129,123}))
-			if a then b.Image = a; fallback.Visible = false end
+			local a = fetchAsset(ICON_URL, _obczbshz({210,205,218,218,155,222,221,215}))
+			if a then b.Image = a; fallback.Visible = false; tint.BackgroundTransparency = 0.9 end
 		end)
 	end
-	makeDraggable(b, b, onTap)
-	return b
+
+	local badge = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({171}), Size = UDim2.fromOffset(17, 17), Position = UDim2.new(1, -14, 1, -14), ZIndex = 5,
+		BackgroundColor3 = Color3.fromRGB(190, 24, 38), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 10, Visible = false,
+	}, root)
+	round(badge, 9)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = Color3.fromRGB(9, 4, 6), ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, badge)
+	UI.onDevice(function(pc) badge.Visible = pc end)
+
+	local dot = mk(_obczbshz({175,220,204,217,210}), {
+		Size = UDim2.fromOffset(11, 11), Position = UDim2.new(1, -11, 0, 0), ZIndex = 5,
+		BackgroundColor3 = Color3.fromRGB(70, 220, 110), BorderSizePixel = 0, Visible = false,
+	}, root)
+	round(dot, 6)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = Color3.fromRGB(9, 4, 6), ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, dot)
+
+	local tip = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({188,210,212,218,141,182,228,210}), Size = UDim2.fromOffset(0, 24), AutomaticSize = Enum.AutomaticSize.X, Visible = false, ZIndex = 6,
+		BackgroundColor3 = Color3.fromRGB(14, 4, 6), BackgroundTransparency = 0.05, TextColor3 = WHITE,
+		Font = Enum.Font.GothamMedium, TextSize = 11,
+	}, root)
+	round(tip, 12)
+	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 11), PaddingRight = UDim.new(0, 11) }, tip)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, tip)
+	local function showTip(on)
+		if not UI.pc then tip.Visible = false; return end
+		local open = winRef and winRef.Visible
+		tip.Text = (open and _obczbshz({182,211,217,213,218,215,233,209,227}) or _obczbshz({170,204,221,213,223,142,220,213,223,231})) .. _obczbshz({137,138,77,236,15,142,143,178})
+		local a = areaSize()
+		local leftSide = (root.Position.X.Offset + SIZE / 2) < a.X / 2
+		tip.AnchorPoint = Vector2.new(leftSide and 0 or 1, 0.5)
+		tip.Position = UDim2.new(leftSide and 1 or 0, leftSide and 8 or -8, 0.5, 0)
+		tip.Visible = on
+	end
+
+	local pulseTween
+	local pulseId = 0
+	local function stopPulse()
+		pulseId = pulseId + 1
+		if pulseTween then pcall(function() pulseTween:Cancel() end); pulseTween = nil end
+		pulseScale.Scale = 1; ps.Transparency = 1
+	end
+	local function startPulse()
+		stopPulse()
+		pulseId = pulseId + 1
+		local my = pulseId
+		task.spawn(function()
+			while root.Parent and winRef and not winRef.Visible and my == pulseId do
+				pulseScale.Scale = 1; ps.Transparency = 0.25
+				UI.tween(pulseScale, 1.4, { Scale = 1.55 })
+				UI.tween(ps, 1.4, { Transparency = 1 })
+				task.wait(2.2)
+			end
+		end)
+	end
+	local function syncState()
+		local open = winRef and winRef.Visible
+		dot.Visible = open and true or false
+		fs.Thickness = open and 3 or 2.5
+		if not open then startPulse() else stopPulse() end
+	end
+	if winRef then
+		winRef:GetPropertyChangedSignal(_obczbshz({191,211,222,213,207,218,212})):Connect(syncState)
+		syncState()
+	end
+
+	b.MouseEnter:Connect(function()
+		UI.tween(press, 0.14, { Scale = 1.1 }); showTip(true)
+	end)
+	b.MouseLeave:Connect(function()
+		UI.tween(press, 0.14, { Scale = 1 }); showTip(false)
+	end)
+	b.InputBegan:Connect(function(i) if isPress(i) then UI.tween(press, 0.08, { Scale = 0.88 }); tip.Visible = false end end)
+	b.InputEnded:Connect(function(i) if isPress(i) then UI.tween(press, 0.14, { Scale = 1 }) end end)
+
+	local function clampBtn(t)
+		local p = t.Position
+		local x, y = clampPos(p.X.Offset, p.Y.Offset)
+		t.Position = UDim2.fromOffset(x, y)
+	end
+	local function snap(t)
+		local a = areaSize()
+		local x, y = clampPos(t.Position.X.Offset, t.Position.Y.Offset)
+		local toLeft = (x + SIZE / 2) < a.X / 2
+		x = toLeft and MARGIN or (a.X - SIZE - MARGIN)
+		UI.tween(t, 0.22, { Position = UDim2.fromOffset(x, y) })
+		pcall(function()
+			if writefile then
+				if not (isfolder and isfolder(FOLDER)) and makefolder then makefolder(FOLDER) end
+				writefile(POS_FILE, HttpService:JSONEncode({ x = x / a.X, y = y / a.Y }))
+			end
+		end)
+	end
+	makeDraggable(b, root, function()
+		UI.tween(rootScale, 0.08, { Scale = 0.94 })
+		task.delay(0.08, function() UI.tween(rootScale, 0.12, { Scale = 1 }) end)
+		onTap()
+	end, snap, clampBtn)
+
+	table.insert(conns, gui:GetPropertyChangedSignal(_obczbshz({170,204,222,219,217,227,227,213,196,219,237,217})):Connect(function()
+		pcall(function() clampBtn(root); snap(root) end)
+	end))
+
+	pcall(function()
+		game:GetService(_obczbshz({189,225,208,209,219,193,212,226,231,219,214,217})):Create(rootScale, TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+	end)
+	return root
 end
 
 local function section(par, text)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = text, Size = UDim2.new(1, 0, 0, 28), BackgroundTransparency = 1, TextColor3 = WHITE,
-		Font = Enum.Font.Gotham, TextSize = 17, TextXAlignment = Enum.TextXAlignment.Left,
-	}, par)
+	local f = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1 }, par)
+	local acc = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(3, 15), Position = UDim2.new(0, 2, 0.5, -7), BackgroundColor3 = UI.GLOW, BorderSizePixel = 0 }, f)
+	round(acc, 2)
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = text, Size = UDim2.new(1, -14, 1, 0), Position = UDim2.fromOffset(12, 0), BackgroundTransparency = 1, TextColor3 = WHITE,
+		Font = Enum.Font.GothamBold, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
+	}, f)
+	local ln = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -4, 0, 1), Position = UDim2.new(0, 2, 1, -2), BackgroundColor3 = UI.EDGE, BorderSizePixel = 0 }, f)
+	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), { Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.1), NumberSequenceKeypoint.new(1, 1) }) }, ln)
+end
+
+local function rowHover(b, st)
+	b.MouseEnter:Connect(function()
+		UI.tween(b, 0.12, { BackgroundColor3 = UI.HOVER, BackgroundTransparency = 0.05 })
+		UI.tween(st, 0.12, { Transparency = 0 })
+	end)
+	b.MouseLeave:Connect(function()
+		UI.tween(b, 0.12, { BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 })
+		UI.tween(st, 0.12, { Transparency = 0.35 })
+	end)
+
+	b.MouseButton1Down:Connect(function()
+		UI.tween(b, 0.06, { BackgroundColor3 = UI.ACTIVE, BackgroundTransparency = 0 })
+		UI.tween(st, 0.06, { Color = UI.GLOW, Transparency = 0 })
+	end)
+	local function release()
+		UI.tween(b, 0.16, { BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 })
+		UI.tween(st, 0.16, { Color = UI.EDGE, Transparency = 0.35 })
+	end
+	b.MouseButton1Up:Connect(release)
+	b.TouchTap:Connect(release)
 end
 local function rowBtn(par, text, cb, compact)
-	local hgt = compact and 34 or 42
-	local b = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), { Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, hgt), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, par)
-	round(b, math.floor(hgt / 2)); stroke(b, compact and 1.5 or 2)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = text, Size = UDim2.new(1, -48, 1, 0), Position = UDim2.fromOffset(compact and 14 or 16, 0), BackgroundTransparency = 1,
+	local hgt = compact and 32 or 38
+	local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+		Text = _obczbshz({}), AutoButtonColor = false, Size = UDim2.new(1, 0, 0, hgt), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
+	}, par)
+	round(b, 10)
+	local st = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = text, Size = UDim2.new(1, -44, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = compact and 12 or 13, TextXAlignment = Enum.TextXAlignment.Left,
+		TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({239,142,201}), Size = UDim2.fromOffset(30, hgt), Position = UDim2.new(1, compact and -36 or -40, 0, 0), BackgroundTransparency = 1,
-		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = compact and 22 or 26,
+	local arrow = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({75,234,37}), Size = UDim2.fromOffset(28, hgt), Position = UDim2.new(1, -34, 0, 0), BackgroundTransparency = 1,
+		TextColor3 = UI.GLOW, Font = Enum.Font.GothamBold, TextSize = compact and 20 or 24,
 	}, b)
+	b.MouseEnter:Connect(function() UI.tween(arrow, 0.14, { Position = UDim2.new(1, -28, 0, 0) }) end)
+	b.MouseLeave:Connect(function() UI.tween(arrow, 0.14, { Position = UDim2.new(1, -34, 0, 0) }) end)
+	rowHover(b, st)
 	b.MouseButton1Click:Connect(cb)
 	return b
 end
 local DARK = Color3.fromRGB(40, 8, 10)
 local function toggleRow(par, text, desc, onChange, initial)
-	if type(desc) == _obi44m9h({115,131,125,115,133,123,130,130}) then initial = onChange; onChange, desc = desc, nil end
+	if type(desc) == _obczbshz({207,223,217,207,225,215,222,222}) then initial = onChange; onChange, desc = desc, nil end
 	local state = initial and true or false
-	local b = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), { Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, desc and 50 or 42), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, par)
-	round(b, 21); stroke(b, 2)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = text, Size = UDim2.new(1, -84, 0, desc and 26 or 42), Position = UDim2.fromOffset(16, desc and 3 or 0), BackgroundTransparency = 1,
-		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left,
+	local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+		Text = _obczbshz({}), AutoButtonColor = false, Size = UDim2.new(1, 0, 0, desc and 48 or 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
+	}, par)
+	round(b, 10)
+	local st = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = text, Size = UDim2.new(1, -78, 0, desc and 26 or 38), Position = UDim2.fromOffset(14, desc and 3 or 0), BackgroundTransparency = 1,
+		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
 	if desc then
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = desc, Size = UDim2.new(1, -84, 0, 16), Position = UDim2.fromOffset(16, 29), BackgroundTransparency = 1,
-			TextColor3 = Color3.fromRGB(220, 140, 140), Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left,
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = desc, Size = UDim2.new(1, -78, 0, 16), Position = UDim2.fromOffset(14, 27), BackgroundTransparency = 1,
+			TextColor3 = UI.SOFT, Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 		}, b)
 	end
-	local sw = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.fromOffset(48, 26), Position = UDim2.new(1, -62, 0.5, -13), BackgroundColor3 = DARK }, b)
-	round(sw, 13); stroke(sw, 2)
-	local knob = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.fromOffset(20, 20), Position = UDim2.fromOffset(3, 3), BackgroundColor3 = WHITE, BackgroundTransparency = 1 }, sw)
-	round(knob, 10)
-	local ks = mk(_obi44m9h({98,87,98,132,131,129,126,121}), { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, knob)
-	local function paint()
-		knob.Position = state and UDim2.fromOffset(25, 3) or UDim2.fromOffset(3, 3)
-		knob.BackgroundTransparency = state and 0 or 1
-		ks.Color = state and WHITE or RED
-		sw.BackgroundColor3 = state and RED or DARK
+	local sw = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(40, 22), Position = UDim2.new(1, -52, 0.5, -11), BackgroundColor3 = DARK, BorderSizePixel = 0 }, b)
+	round(sw, 11)
+	local sws = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = UI.EDGE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, sw)
+	local knob = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(16, 16), Position = UDim2.fromOffset(3, 3), BackgroundColor3 = WHITE, BorderSizePixel = 0 }, sw)
+	round(knob, 8)
+	local function paint(anim)
+		local kp = state and UDim2.fromOffset(21, 3) or UDim2.fromOffset(3, 3)
+		local sc = state and RED or DARK
+		local kc = state and WHITE or Color3.fromRGB(190, 150, 152)
+		local swc = state and UI.GLOW or UI.EDGE
+		if anim then
+			UI.tween(knob, 0.14, { Position = kp, BackgroundColor3 = kc })
+			UI.tween(sw, 0.14, { BackgroundColor3 = sc })
+			UI.tween(sws, 0.14, { Color = swc })
+		else
+			knob.Position, knob.BackgroundColor3, sw.BackgroundColor3, sws.Color = kp, kc, sc, swc
+		end
 	end
-	paint()
+	paint(false)
+	rowHover(b, st)
 	b.MouseButton1Click:Connect(function()
 		state = not state
-		paint()
+		paint(true)
 		pcall(onChange, state)
 	end)
-	return b, function(v) state = v and true or false; paint() end
+	return b, function(v) state = v and true or false; paint(true) end
 end
 local function sliderRow(par, text, desc, minV, maxV, defV, onChange)
-	local b = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 50), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, par)
-	round(b, 21); stroke(b, 2)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = text, Size = UDim2.new(0.5, -16, 0, 26), Position = UDim2.fromOffset(16, 3), BackgroundTransparency = 1,
-		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left,
+	local b = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 48), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 }, par)
+	round(b, 10)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = text, Size = UDim2.new(0.5, -16, 0, 26), Position = UDim2.fromOffset(14, 3), BackgroundTransparency = 1,
+		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = desc, Size = UDim2.new(0.5, -16, 0, 16), Position = UDim2.fromOffset(16, 29), BackgroundTransparency = 1,
-		TextColor3 = Color3.fromRGB(220, 140, 140), Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left,
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = desc, Size = UDim2.new(0.5, -16, 0, 16), Position = UDim2.fromOffset(14, 27), BackgroundTransparency = 1,
+		TextColor3 = UI.SOFT, Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
-	local val = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = tostring(defV), Size = UDim2.fromOffset(30, 50), Position = UDim2.new(0.5, 0, 0, 0), BackgroundTransparency = 1,
+	local val = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = tostring(defV), Size = UDim2.fromOffset(34, 48), Position = UDim2.new(0.5, 0, 0, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 13,
 	}, b)
-	local hit = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(0.5, -52, 0, 28), Position = UDim2.new(0.5, 34, 0.5, -14), BackgroundTransparency = 1 }, b)
-	local bar = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 8), Position = UDim2.new(0, 0, 0.5, -4), BackgroundColor3 = DARK }, hit)
-	round(bar, 4); stroke(bar, 1.5)
-	local fill = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new((defV - minV) / (maxV - minV), 0, 1, 0), BackgroundColor3 = RED }, bar)
-	round(fill, 4)
+	local hit = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(0.5, -58, 0, 28), Position = UDim2.new(0.5, 38, 0.5, -14), BackgroundTransparency = 1 }, b)
+	local bar = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 6), Position = UDim2.new(0, 0, 0.5, -3), BackgroundColor3 = DARK, BorderSizePixel = 0 }, hit)
+	round(bar, 3)
+	local rel0 = (defV - minV) / (maxV - minV)
+	local fill = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(rel0, 0, 1, 0), BackgroundColor3 = RED, BorderSizePixel = 0 }, bar)
+	round(fill, 3)
+	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), { Color = ColorSequence.new(Color3.fromRGB(255, 90, 105), Color3.fromRGB(190, 25, 38)) }, fill)
+	local knob = mk(_obczbshz({175,220,204,217,210}), {
+		Size = UDim2.fromOffset(14, 14), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(rel0, 0, 0.5, 0),
+		BackgroundColor3 = WHITE, BorderSizePixel = 0, ZIndex = 2,
+	}, bar)
+	round(knob, 7)
+	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, knob)
 	local dragging = false
 	local function setFromX(x)
 		local rel = math.clamp((x - bar.AbsolutePosition.X) / math.max(bar.AbsoluteSize.X, 1), 0, 1)
 		local v = math.floor(minV + (maxV - minV) * rel + 0.5)
 		fill.Size = UDim2.new(rel, 0, 1, 0)
+		knob.Position = UDim2.new(rel, 0, 0.5, 0)
 		val.Text = tostring(v)
 		pcall(onChange, v)
 	end
@@ -457,28 +850,28 @@ end
 
 local function buildCredits(page)
 	local function lbl(text, size, bold, col, h)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 			Text = text, Size = UDim2.new(1, 0, 0, h or 24), BackgroundTransparency = 1,
 			TextColor3 = col or WHITE, Font = bold and Enum.Font.GothamBold or Enum.Font.Gotham, TextSize = size,
 			TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 		}, page)
 	end
-	section(page, _obi44m9h({80,128,210,185,117,123,135,131,136}))
-	lbl(_obi44m9h({83,115,120,132,128,50,131,131,135,54,71,92,140}), 15, true)
-	lbl(_obi44m9h({91,119,114,123,75,50,120,128,126,138,124,126,139,137,142,144,130,144}), 13, false)
-	lbl(_obi44m9h({}), 8, false, WHITE, 10)
-	lbl(_obi44m9h({239,168,175,48,82,136,124,135,132,80,55,135,57,130,144,126,61,140,226,195,144,66,136,151,153,233,200,72,90,90,91,81,77,158,161,159,159,166,162,84,154,86,166,88,154,168,159,157,175,94,178,175,163,180,168,100,166,102,10,233,176,191,172,108,187,17,242,191,113,184,200,194,184,191,198,198,186,136}), 12, true, Color3.fromRGB(255, 190, 120), 44)
+	section(page, _obczbshz({172,220,46,21,209,215,227,223,228}))
+	lbl(_obczbshz({175,207,212,224,220,142,223,223,227,146,163,184,232}), 15, true)
+	lbl(_obczbshz({183,211,206,215,167,142,212,220,218,230,216,218,231,229,234,236,222,236}), 13, false)
+	lbl(_obczbshz({}), 8, false, WHITE, 10)
+	lbl(_obczbshz({75,4,11,140,174,228,216,227,224,172,147,227,149,222,236,218,153,232,62,31,236,158,228,243,245,69,36,164,182,182,183,173,169,250,253,251,251,2,254,176,246,178,2,180,246,4,251,249,11,186,14,11,255,16,4,192,2,194,102,69,12,27,8,200,23,109,78,27,205,20,36,30,20,27,34,34,22,228}), 12, true, Color3.fromRGB(255, 190, 120), 44)
 end
 
 local COLORS = {
-	{ _obi44m9h({99,115,129,125,118,126,123,131}), Color3.fromRGB(255, 40, 50) }, { _obi44m9h({78,136,132,124}), Color3.fromRGB(60, 140, 255) },
-	{ _obi44m9h({99,115,129,116,118}), Color3.fromRGB(60, 255, 120) }, { _obi44m9h({95,125,135,127}), Color3.fromRGB(170, 70, 255) },
-	{ _obi44m9h({95,125,130,113}), Color3.fromRGB(255, 90, 200) }, { _obi44m9h({78,123,112,130,118,126,130}), Color3.fromRGB(255, 220, 60) },
-	{ _obi44m9h({79,128,112,126,116,129}), Color3.fromRGB(255, 255, 255) },
+	{ _obczbshz({191,207,221,217,210,218,215,223}), Color3.fromRGB(255, 40, 50) }, { _obczbshz({170,228,224,216}), Color3.fromRGB(60, 140, 255) },
+	{ _obczbshz({191,207,221,208,210}), Color3.fromRGB(60, 255, 120) }, { _obczbshz({187,217,227,219}), Color3.fromRGB(170, 70, 255) },
+	{ _obczbshz({187,217,222,205}), Color3.fromRGB(255, 90, 200) }, { _obczbshz({170,215,204,222,210,218,222}), Color3.fromRGB(255, 220, 60) },
+	{ _obczbshz({171,220,204,218,208,221}), Color3.fromRGB(255, 255, 255) },
 }
-local STAR_TEX = _obi44m9h({127,112,135,113,132,133,120,136,79,69,70,140,126,146,143,145,143,131,146,79,145,131,149,152,142,137,147,141,156,89,158,156,142,160,154,156,150,165,146,161,150,159,165,102,157,158,174})
-local FX_KEYS = { _obi44m9h({115,119,129,117}), _obi44m9h({128,123,126,123,118}), _obi44m9h({128,126,112,130,124,126,120,135}), _obi44m9h({128,130,112,130,132}), _obi44m9h({129,128,112,121,125}), _obi44m9h({110,131,129,113}), _obi44m9h({121,119,118,120,133}), _obi44m9h({127,111,120,126,115,129,138}), _obi44m9h({123,115,126,126}), _obi44m9h({127,111,120,126,115,129,138,86,132,122,144}), _obi44m9h({116,118,126,131,133}) }
-local FX_REG = setmetatable({}, { __mode = _obi44m9h({120}) })
+local STAR_TEX = _obczbshz({219,204,227,205,224,225,212,228,171,161,162,232,218,238,235,237,235,223,238,171,237,223,241,244,234,229,239,233,248,181,250,248,234,252,246,248,242,1,238,253,242,251,1,194,249,250,10})
+local FX_KEYS = { _obczbshz({207,211,221,209}), _obczbshz({220,215,218,215,210}), _obczbshz({220,218,204,222,216,218,212,227}), _obczbshz({220,222,204,222,224}), _obczbshz({221,220,204,213,217}), _obczbshz({202,223,221,205}), _obczbshz({213,211,210,212,225}), _obczbshz({219,203,212,218,207,221,230}), _obczbshz({215,207,218,218}), _obczbshz({219,203,212,218,207,221,230,178,224,214,236}), _obczbshz({208,210,218,223,225}) }
+local FX_REG = setmetatable({}, { __mode = _obczbshz({212}) })
 local MINE = { ids = {}, headless = false, fx = nil, fc = 1 }
 local publishMods
 local tagDraw
@@ -491,57 +884,57 @@ local function fxApply(char, set, ci)
 	rec.list, rec.body = {}, {}
 	rec.set = set
 	local k = (COLORS[ci] or COLORS[1])[2]
-	local r = char:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}))
+	local r = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
 	local function add(inst, par)
-		inst:SetAttribute(_obi44m9h({81,129,85,136}), true)
+		inst:SetAttribute(_obczbshz({173,221,177,228}), true)
 		inst.Parent = par
 		table.insert(rec.list, inst)
 		return inst
 	end
 	if r then
-		if set.fire then add(mk(_obi44m9h({83,119,129,117}), { Color = k, SecondaryColor = k, Size = 7, Heat = 9 }), r) end
-		if set.smoke then add(mk(_obi44m9h({96,123,126,123,118}), { Color = k, Size = 4, Opacity = 0.4, RiseVelocity = 3 }), r) end
-		if set.sparkles then add(mk(_obi44m9h({96,126,112,130,124,126,120,135}), { SparkleColor = k }), r) end
+		if set.fire then add(mk(_obczbshz({175,211,221,209}), { Color = k, SecondaryColor = k, Size = 7, Heat = 9 }), r) end
+		if set.smoke then add(mk(_obczbshz({188,215,218,215,210}), { Color = k, Size = 4, Opacity = 0.4, RiseVelocity = 3 }), r) end
+		if set.sparkles then add(mk(_obczbshz({188,218,204,222,216,218,212,227}), { SparkleColor = k }), r) end
 		if set.stars then
-			add(mk(_obi44m9h({93,111,129,132,122,117,127,121,90,131,128,140,141,127,141}), {
+			add(mk(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233}), {
 				Texture = STAR_TEX, Rate = 30, Lifetime = NumberRange.new(1, 2), Speed = NumberRange.new(2, 5),
 				SpreadAngle = Vector2.new(180, 180), Color = ColorSequence.new(k), LightEmission = 1,
 				Size = NumberSequence.new(0.5, 0),
 			}), r)
 		end
 		if set.trail then
-			local a0 = add(mk(_obi44m9h({78,130,131,113,116,122,128,121,131,138}), { Position = Vector3.new(0, 1.2, 0) }), r)
-			local a1 = add(mk(_obi44m9h({78,130,131,113,116,122,128,121,131,138}), { Position = Vector3.new(0, -1.2, 0) }), r)
-			add(mk(_obi44m9h({97,128,112,121,125}), {
+			local a0 = add(mk(_obczbshz({170,222,223,205,208,214,220,213,223,230}), { Position = Vector3.new(0, 1.2, 0) }), r)
+			local a1 = add(mk(_obczbshz({170,222,223,205,208,214,220,213,223,230}), { Position = Vector3.new(0, -1.2, 0) }), r)
+			add(mk(_obczbshz({189,220,204,213,217}), {
 				Attachment0 = a0, Attachment1 = a1, Lifetime = 0.8, LightEmission = 1, Color = ColorSequence.new(k),
 				Transparency = NumberSequence.new(0.1, 1),
 			}), r)
 		end
-		if set.light then add(mk(_obi44m9h({93,125,120,126,133,94,124,123,125,138}), { Color = k, Range = 18, Brightness = 3 }), r) end
+		if set.light then add(mk(_obczbshz({185,217,212,218,225,186,216,215,217,230}), { Color = k, Range = 18, Brightness = 3 }), r) end
 	end
 	if set.aura then
-		add(mk(_obi44m9h({85,119,118,120,125,123,122,124,137}), { Adornee = char, FillColor = k, OutlineColor = k, FillTransparency = 0.65, OutlineTransparency = 0 }), char)
+		add(mk(_obczbshz({177,211,210,212,217,215,214,216,229}), { Adornee = char, FillColor = k, OutlineColor = k, FillTransparency = 0.65, OutlineTransparency = 0 }), char)
 	end
 
 	for _, p in ipairs(char:GetDescendants()) do
-		if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) and p.Name ~= _obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}) and not p:GetAttribute(_obi44m9h({81,129,85,136})) then
+		if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p.Name ~= _obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}) and not p:GetAttribute(_obczbshz({173,221,177,228})) then
 			if set.neon then
-				if p:GetAttribute(_obi44m9h({81,129,94,93})) == nil then p:SetAttribute(_obi44m9h({81,129,94,93}), p.Material.Name) end
+				if p:GetAttribute(_obczbshz({173,221,186,185})) == nil then p:SetAttribute(_obczbshz({173,221,186,185}), p.Material.Name) end
 				p.Material = Enum.Material.Neon
-			elseif p:GetAttribute(_obi44m9h({81,129,94,93})) then
-				p.Material = Enum.Material[p:GetAttribute(_obi44m9h({81,129,94,93}))]; p:SetAttribute(_obi44m9h({81,129,94,93}), nil)
+			elseif p:GetAttribute(_obczbshz({173,221,186,185})) then
+				p.Material = Enum.Material[p:GetAttribute(_obczbshz({173,221,186,185}))]; p:SetAttribute(_obczbshz({173,221,186,185}), nil)
 			end
 			if set.ghost then
-				if p:GetAttribute(_obi44m9h({81,129,94,100})) == nil then p:SetAttribute(_obi44m9h({81,129,94,100}), p.Transparency) end
-				p.Transparency = math.max(p:GetAttribute(_obi44m9h({81,129,94,100})), 0.65)
-			elseif p:GetAttribute(_obi44m9h({81,129,94,100})) then
-				p.Transparency = p:GetAttribute(_obi44m9h({81,129,94,100})); p:SetAttribute(_obi44m9h({81,129,94,100}), nil)
+				if p:GetAttribute(_obczbshz({173,221,186,192})) == nil then p:SetAttribute(_obczbshz({173,221,186,192}), p.Transparency) end
+				p.Transparency = math.max(p:GetAttribute(_obczbshz({173,221,186,192})), 0.65)
+			elseif p:GetAttribute(_obczbshz({173,221,186,192})) then
+				p.Transparency = p:GetAttribute(_obczbshz({173,221,186,192})); p:SetAttribute(_obczbshz({173,221,186,192}), nil)
 			end
 			if set.rainbowBody then
-				if p:GetAttribute(_obi44m9h({81,129,94,83})) == nil then p:SetAttribute(_obi44m9h({81,129,94,83}), p.Color) end
+				if p:GetAttribute(_obczbshz({173,221,186,175})) == nil then p:SetAttribute(_obczbshz({173,221,186,175}), p.Color) end
 				table.insert(rec.body, p)
-			elseif p:GetAttribute(_obi44m9h({81,129,94,83})) then
-				p.Color = p:GetAttribute(_obi44m9h({81,129,94,83})); p:SetAttribute(_obi44m9h({81,129,94,83}), nil)
+			elseif p:GetAttribute(_obczbshz({173,221,186,175})) then
+				p.Color = p:GetAttribute(_obczbshz({173,221,186,175})); p:SetAttribute(_obczbshz({173,221,186,175}), nil)
 			end
 		end
 	end
@@ -556,12 +949,12 @@ local function fxTick(dt)
 			if rec.set.rainbow then
 				for _, o in ipairs(rec.list) do
 					if o.Parent then
-						if o:IsA(_obi44m9h({85,119,118,120,125,123,122,124,137})) then o.FillColor = c; o.OutlineColor = c
-						elseif o:IsA(_obi44m9h({83,119,129,117})) then o.Color = c; o.SecondaryColor = c
-						elseif o:IsA(_obi44m9h({96,123,126,123,118})) then o.Color = c
-						elseif o:IsA(_obi44m9h({96,126,112,130,124,126,120,135})) then o.SparkleColor = c
-						elseif o:IsA(_obi44m9h({93,125,120,126,133,94,124,123,125,138})) then o.Color = c
-						elseif o:IsA(_obi44m9h({97,128,112,121,125})) or o:IsA(_obi44m9h({93,111,129,132,122,117,127,121,90,131,128,140,141,127,141})) then o.Color = ColorSequence.new(c) end
+						if o:IsA(_obczbshz({177,211,210,212,217,215,214,216,229})) then o.FillColor = c; o.OutlineColor = c
+						elseif o:IsA(_obczbshz({175,211,221,209})) then o.Color = c; o.SecondaryColor = c
+						elseif o:IsA(_obczbshz({188,215,218,215,210})) then o.Color = c
+						elseif o:IsA(_obczbshz({188,218,204,222,216,218,212,227})) then o.SparkleColor = c
+						elseif o:IsA(_obczbshz({185,217,212,218,225,186,216,215,217,230})) then o.Color = c
+						elseif o:IsA(_obczbshz({189,220,204,213,217})) or o:IsA(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233})) then o.Color = ColorSequence.new(c) end
 					end
 				end
 			end
@@ -587,12 +980,12 @@ local function buildMods(page, say)
 
 	local function publish()
 		if #mine.ids == 0 and not mine.headless and not mine.fx and not mine.tag and not mine.bc then
-			http(_obi44m9h({81,83,91,85,101,87}), _obi44m9h({60,123,126,116,132,65}) .. uid .. _obi44m9h({59,120,130,127,127}))
+			http(_obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219}))
 		else
 			mine.beat = (mine.beat or 0) + 1
-			http(_obi44m9h({93,99,99}), _obi44m9h({60,123,126,116,132,65}) .. uid .. _obi44m9h({59,120,130,127,127}), {
-				name = lp.Name, ids = table.concat(mine.ids, _obi44m9h({57})), headless = mine.headless,
-				fx = mine.fx or _obi44m9h({}), fc = mine.fc or 1, tag = mine.tag, bc = mine.bc,
+			http(_obczbshz({185,191,191}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219}), {
+				name = lp.Name, ids = table.concat(mine.ids, _obczbshz({149})), headless = mine.headless,
+				fx = mine.fx or _obczbshz({}), fc = mine.fc or 1, tag = mine.tag, bc = mine.bc,
 				beat = mine.beat, t = os.time(),
 			})
 		end
@@ -603,55 +996,55 @@ local function buildMods(page, say)
 	local function loadAsset(id)
 		if cache[id] then return cache[id] end
 		local objs
-		local ok, res = pcall(function() return game:GetObjects(_obi44m9h({127,112,135,113,132,133,120,136,126,122,81,71,72}) .. id) end)
-		if ok and type(res) == _obi44m9h({129,111,113,124,118}) and #res > 0 then
+		local ok, res = pcall(function() return game:GetObjects(_obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164}) .. id) end)
+		if ok and type(res) == _obczbshz({221,203,205,216,210}) and #res > 0 then
 			objs = res
-			DSLOG.info(_obi44m9h({110,129,130,117,133}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({71,46,86,117,133,97,117,126,122,121,139,139,57,137,134,60,69}) .. #res .. _obi44m9h({45,125,113,122,118,134,130,60,136,63,64}))
+			DSLOG.info(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,178,209,225,189,209,218,214,213,231,231,149,229,226,152,161}) .. #res .. _obczbshz({137,217,205,214,210,226,222,152,228,155,156}))
 		else
-			local why = ok and _obi44m9h({131,125,123,132,128,135,51,138,118,144,128,135}) or tostring(res):sub(1, 90)
-			DSLOG.warn(_obi44m9h({110,129,130,117,133}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({71,46,86,117,133,97,117,126,122,121,139,139,57,128,124,136,133,141,148,64,73}) .. why .. _obi44m9h({54,58,47,132,118,128,135,117,131,122,134,56,98,136,142,129,143,146,114,133,147,152,140,135,138}))
-			local ok2, m = pcall(function() return game:GetService(_obi44m9h({86,124,130,117,131,134,102,121,135,140,128,123,126})):LoadAsset(id) end)
+			local why = ok and _obczbshz({223,217,215,224,220,227,143,230,210,236,220,227}) or tostring(res):sub(1, 90)
+			DSLOG.warn(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,178,209,225,189,209,218,214,213,231,231,149,220,216,228,225,233,240,156,165}) .. why .. _obczbshz({146,150,139,224,210,220,227,209,223,214,226,148,190,228,234,221,235,238,206,225,239,244,232,227,230}))
+			local ok2, m = pcall(function() return game:GetService(_obczbshz({178,216,222,209,223,226,194,213,227,232,220,215,218})):LoadAsset(id) end)
 			if ok2 and m then
 				local kids = m:GetChildren()
 				if #kids > 0 then
 					objs = kids
-					DSLOG.info(_obi44m9h({110,129,130,117,133}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({71,46,88,126,132,119,133,136,104,123,137,142,130,125,128,60,140,137,63,72}) .. #kids .. _obi44m9h({45,125,113,122,118,134,130,60,136,63,64}))
+					DSLOG.info(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,180,218,224,211,225,228,196,215,229,234,222,217,220,152,232,229,155,164}) .. #kids .. _obczbshz({137,217,205,214,210,226,222,152,228,155,156}))
 				else
-					lastLoadErr[id] = _obi44m9h({122,125,115,117,125,129,51,138,118,144,128,135})
-					DSLOG.err(_obi44m9h({110,129,130,117,133}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({71,46,88,126,132,119,133,136,104,123,137,142,130,125,128,60,147,141,139,148,144,151,67,153,146,70,148,151,141,143,151,155,77,164,144,170,154,161}))
+					lastLoadErr[id] = _obczbshz({214,217,207,209,217,221,143,230,210,236,220,227})
+					DSLOG.err(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,180,218,224,211,225,228,196,215,229,234,222,217,220,152,239,233,231,240,236,243,159,245,238,162,240,243,233,235,243,247,169,0,236,6,246,253}))
 				end
 			else
-				lastLoadErr[id] = ok2 and _obi44m9h({131,125,123,132,128,135,51,130,118,122,120}) or tostring(m):sub(1, 70)
-				DSLOG.err(_obi44m9h({110,129,130,117,133}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({71,46,88,126,132,119,133,136,104,123,137,142,130,125,128,60,131,127,139,136,144,151,93,68}) .. lastLoadErr[id])
+				lastLoadErr[id] = ok2 and _obczbshz({223,217,215,224,220,227,143,222,210,214,212}) or tostring(m):sub(1, 70)
+				DSLOG.err(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,180,218,224,211,225,228,196,215,229,234,222,217,220,152,223,219,231,228,236,243,185,160}) .. lastLoadErr[id])
 			end
 		end
 		if objs then
 			local removed = 0
 			for _, o in ipairs(objs) do
 				for _, d in ipairs(o:GetDescendants()) do
-					if d:IsA(_obi44m9h({89,131,112,99,128,135,133,119,122,89,134,134,141,123,132,138,130,144})) or d:IsA(_obi44m9h({96,125,132,126,117})) then d:Destroy(); removed = removed + 1 end
+					if d:IsA(_obczbshz({181,223,204,191,220,227,225,211,214,181,226,226,233,215,224,230,222,236})) or d:IsA(_obczbshz({188,217,224,218,209})) then d:Destroy(); removed = removed + 1 end
 				end
 			end
-			if removed > 0 then DSLOG.info(_obi44m9h({110,129,130,117,133}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({71,46}) .. removed .. _obi44m9h({45,129,114,130,122,130,135,60,136,63,70,139,136,135,67,138,144,71,63,146,134,143,146,154,142,138,150,80,156,83})) end
+			if removed > 0 then DSLOG.info(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138}) .. removed .. _obczbshz({137,221,206,222,214,222,227,152,228,155,162,231,228,227,159,230,236,163,155,238,226,235,238,246,234,230,242,172,248,175})) end
 			cache[id] = objs
 		end
 		return objs
 	end
 
 	local function limb(char, mp)
-		if mp:FindFirstAncestorOfClass(_obi44m9h({78,113,114,117,132,133,130,134,142})) then return end
+		if mp:FindFirstAncestorOfClass(_obczbshz({170,205,206,209,224,225,222,226,234})) then return end
 		local t = char:FindFirstChild(mp.Name)
-		if not (t and t:IsA(_obi44m9h({79,111,130,117,97,115,133,136}))) or t:GetAttribute(_obi44m9h({81,129,92,127,117})) then return end
+		if not (t and t:IsA(_obczbshz({171,203,222,209,189,207,225,228}))) or t:GetAttribute(_obczbshz({173,221,184,219,209})) then return end
 		local c = mp:Clone()
 		c:ClearAllChildren()
 		c.Anchored = false; c.CanCollide = false; c.Massless = true
 		c.CFrame = t.CFrame
-		c:SetAttribute(_obi44m9h({81,129,92,127,117}), true)
+		c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
 		c.Parent = char
-		local w = Instance.new(_obi44m9h({100,115,123,116,84,129,129,135,137,136,120,129,135,142}))
+		local w = Instance.new(_obczbshz({192,207,215,208,176,221,221,227,229,228,212,221,227,234}))
 		w.Part0 = c; w.Part1 = t; w.Parent = c
 		t.Transparency = 1
-		t:SetAttribute(_obi44m9h({81,129,87,121,117,94,124,129,119}), true)
+		t:SetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211}), true)
 	end
 
 	local EFX = { ParticleEmitter = true, Fire = true, Smoke = true, Sparkles = true, PointLight = true, SpotLight = true, SurfaceLight = true }
@@ -659,18 +1052,18 @@ local function buildMods(page, say)
 	local clearGen = 0
 	local HEAD_SLOTS = { Hat = true, Hair = true, Face = true, Eyebrow = true, Eyelash = true }
 	local function slotOf(o)
-		if o:IsA(_obi44m9h({85,111,131})) then return _obi44m9h({85,111,131}) end
+		if o:IsA(_obczbshz({177,203,223})) then return _obczbshz({177,203,223}) end
 		local ok, at = pcall(function() return o.AccessoryType end)
 		if ok and at and at ~= Enum.AccessoryType.Unknown then
 			return HEAD_SLOTS[at.Name] and at.Name or nil
 		end
-		local h = o:FindFirstChild(_obi44m9h({85,111,125,116,125,119}))
-		local att = h and h:FindFirstChildOfClass(_obi44m9h({78,130,131,113,116,122,128,121,131,138}))
+		local h = o:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
+		local att = h and h:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
 		if att then
 			local n = att.Name
-			if n == _obi44m9h({85,111,131,81,133,134,116,119,125,131,124,134,141}) then return _obi44m9h({85,111,131}) end
-			if n == _obi44m9h({85,111,120,130,82,134,135,117,120,126,132,125,135,142}) then return _obi44m9h({85,111,120,130}) end
-			if n:match(_obi44m9h({107,84,112,115,118})) then return _obi44m9h({83,111,114,117}) end
+			if n == _obczbshz({177,203,223,173,225,226,208,211,217,223,216,226,233}) then return _obczbshz({177,203,223}) end
+			if n == _obczbshz({177,203,212,222,174,226,227,209,212,218,224,217,227,234}) then return _obczbshz({177,203,212,222}) end
+			if n:match(_obczbshz({199,176,204,207,210})) then return _obczbshz({175,203,206,209}) end
 		end
 		return nil
 	end
@@ -678,37 +1071,37 @@ local function buildMods(page, say)
 
 	local function hideStashed(o)
 		for _, p in ipairs(o:GetDescendants()) do
-			if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) and p:GetAttribute(_obi44m9h({81,129,87,121,117,83,118,119})) == nil then
-				p:SetAttribute(_obi44m9h({81,129,87,121,117,83,118,119}), p.Transparency)
+			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p:GetAttribute(_obczbshz({173,221,179,213,209,175,210,211})) == nil then
+				p:SetAttribute(_obczbshz({173,221,179,213,209,175,210,211}), p.Transparency)
 				p.Transparency = 1
 			end
 		end
 	end
 	local function showStashed(o)
 		for _, p in ipairs(o:GetDescendants()) do
-			if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) and p:GetAttribute(_obi44m9h({81,129,87,121,117,83,118,119})) ~= nil then
-				p.Transparency = p:GetAttribute(_obi44m9h({81,129,87,121,117,83,118,119}))
-				p:SetAttribute(_obi44m9h({81,129,87,121,117,83,118,119}), nil)
+			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p:GetAttribute(_obczbshz({173,221,179,213,209,175,210,211})) ~= nil then
+				p.Transparency = p:GetAttribute(_obczbshz({173,221,179,213,209,175,210,211}))
+				p:SetAttribute(_obczbshz({173,221,179,213,209,175,210,211}), nil)
 			end
 		end
 	end
 
 	local function clearHeadAccessories(char, slot)
-		local st = char:FindFirstChild(_obi44m9h({81,129,98,132,114,133,123}))
+		local st = char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
 		for _, o in ipairs(char:GetChildren()) do
-			if o:IsA(_obi44m9h({78,113,114,117,132,133,130,134,142})) or o:IsA(_obi44m9h({85,111,131})) then
+			if o:IsA(_obczbshz({170,205,206,209,224,225,222,226,234})) or o:IsA(_obczbshz({177,203,223})) then
 				local s = slotOf(o)
 				if s and (slot == nil or s == slot) then
-					if o:GetAttribute(_obi44m9h({81,129,92,127,117})) then
+					if o:GetAttribute(_obczbshz({173,221,184,219,209})) then
 						clearGen = clearGen + 1
 						o:Destroy()
 					else
 						if not st then
-							st = Instance.new(_obi44m9h({83,125,123,116,118,132})); st.Name = _obi44m9h({81,129,98,132,114,133,123}); st.Parent = char
+							st = Instance.new(_obczbshz({175,217,215,208,210,224})); st.Name = _obczbshz({173,221,190,224,206,225,215}); st.Parent = char
 						end
 						o.Parent = st
 						hideStashed(o)
-						DSLOG.info(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), _obi44m9h({124,128,120,119,122,128,116,128,53,61}) .. o.Name .. _obi44m9h({52,46,55}) .. s .. _obi44m9h({54,46,118,133,114,132,119,117,121,133,55,125,57,127,142,127,140,140,131,137,133,145}))
+						DSLOG.info(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({216,220,212,211,214,220,208,220,145,153}) .. o.Name .. _obczbshz({144,138,147}) .. s .. _obczbshz({146,138,210,225,206,224,211,209,213,225,147,217,149,219,234,219,232,232,223,229,225,237}))
 					end
 				end
 			end
@@ -716,195 +1109,195 @@ local function buildMods(page, say)
 	end
 
 	local function stash(char, class)
-		local st = char:FindFirstChild(_obi44m9h({81,129,98,132,114,133,123}))
+		local st = char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
 		if not st then
-			st = Instance.new(_obi44m9h({83,125,123,116,118,132})); st.Name = _obi44m9h({81,129,98,132,114,133,123}); st.Parent = char
+			st = Instance.new(_obczbshz({175,217,215,208,210,224})); st.Name = _obczbshz({173,221,190,224,206,225,215}); st.Parent = char
 		end
 		for _, o in ipairs(char:GetChildren()) do
-			if o:IsA(class) and not o:GetAttribute(_obi44m9h({81,129,92,127,117})) then o.Parent = st end
+			if o:IsA(class) and not o:GetAttribute(_obczbshz({173,221,184,219,209})) then o.Parent = st end
 		end
 	end
 
 	local function attachProp(char, src)
-		local r = char:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}))
+		local r = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
 		if not r then return end
 		local c = src:Clone()
 		for _, d in ipairs(c:GetDescendants()) do
-			if d:IsA(_obi44m9h({85,131,124,113,127,129,124,120})) or d:IsA(_obi44m9h({78,124,120,125,114,134,130,134})) then d:Destroy() end
+			if d:IsA(_obczbshz({177,223,216,205,219,221,216,212})) or d:IsA(_obczbshz({170,216,212,217,206,226,222,226})) then d:Destroy() end
 		end
 		local parts = {}
-		if c:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) then table.insert(parts, c) end
+		if c:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then table.insert(parts, c) end
 		for _, d in ipairs(c:GetDescendants()) do
-			if d:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) then table.insert(parts, d) end
+			if d:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then table.insert(parts, d) end
 		end
 		if #parts == 0 or #parts > 200 then c:Destroy(); return end
 		for _, p in ipairs(parts) do
 			p.Anchored = false; p.CanCollide = false; p.Massless = true
 		end
-		c:SetAttribute(_obi44m9h({81,129,92,127,117}), true)
+		c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
 		c.Parent = char
-		if c:IsA(_obi44m9h({90,125,115,117,125})) then c:PivotTo(r.CFrame) else c.CFrame = r.CFrame end
+		if c:IsA(_obczbshz({182,217,207,209,217})) then c:PivotTo(r.CFrame) else c.CFrame = r.CFrame end
 		for _, p in ipairs(parts) do
-			local w = Instance.new(_obi44m9h({100,115,123,116,84,129,129,135,137,136,120,129,135,142}))
+			local w = Instance.new(_obczbshz({192,207,215,208,176,221,221,227,229,228,212,221,227,234}))
 			w.Part0 = p; w.Part1 = r; w.Parent = p
 		end
 	end
 
 	local manualAcc = false
 	local function placeManual(char, o)
-		local c = o:Clone(); c:SetAttribute(_obi44m9h({81,129,92,127,117}), true)
-		local h = c:FindFirstChild(_obi44m9h({85,111,125,116,125,119}))
-		local ha = h and h:FindFirstChildOfClass(_obi44m9h({78,130,131,113,116,122,128,121,131,138}))
+		local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
+		local h = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
+		local ha = h and h:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
 		if not (h and ha) then
-			DSLOG.err(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), o.Name .. _obi44m9h({71,46,130,117,126,50,91,117,131,122,131,125,57,137,144,60,144,131,140,64,134,144,134,133,142,158,140,72,81,107,159,160,142,145,151,157,150,160,167,93,97,86,165,251,220,169,91,160,0,223,95,176,179,163,99,183,180,178,171,169,187}))
+			DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,222,209,218,142,183,209,223,214,223,217,149,229,236,152,236,223,232,156,226,236,226,225,234,250,232,164,173,199,251,252,234,237,243,249,242,252,3,185,189,178,1,87,56,5,183,252,92,59,187,12,15,255,191,19,16,14,7,5,23}))
 			c:Destroy(); return false
 		end
 		local target, tAtt
 		for _, p in ipairs(char:GetChildren()) do
-			if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) then
+			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
 				local a = p:FindFirstChild(ha.Name)
-				if a and a:IsA(_obi44m9h({78,130,131,113,116,122,128,121,131,138})) then target, tAtt = p, a; break end
+				if a and a:IsA(_obczbshz({170,222,223,205,208,214,220,213,223,230})) then target, tAtt = p, a; break end
 			end
 		end
 		if not target then
-			DSLOG.err(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), o.Name .. _obi44m9h({71,46,126,48,132,119,136,52,120,133,137,136,136,58,137,223,192,141,63,148,134,143,67,147,69,139,149,139,138,147,163,145,77,85}) .. ha.Name .. _obi44m9h({52,46,55,98,71,65,101,69,74,54,123,129,127,127,141,129,139,146,132,95,74}))
+			DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,218,140,224,211,228,144,212,225,229,228,228,150,229,59,28,233,155,240,226,235,159,239,161,231,241,231,230,239,255,237,169,177}) .. ha.Name .. _obczbshz({144,138,147,190,163,157,193,161,166,146,215,221,219,219,233,221,231,238,224,187,166}))
 			c:Destroy(); return false
 		end
-		local folder = char:FindFirstChild(_obi44m9h({81,129,80,115,116}))
+		local folder = char:FindFirstChild(_obczbshz({173,221,172,207,208}))
 		if not folder then
-			folder = Instance.new(_obi44m9h({83,125,123,116,118,132})); folder.Name = _obi44m9h({81,129,80,115,116}); folder:SetAttribute(_obi44m9h({81,129,92,127,117}), true); folder.Parent = char
+			folder = Instance.new(_obczbshz({175,217,215,208,210,224})); folder.Name = _obczbshz({173,221,172,207,208}); folder:SetAttribute(_obczbshz({173,221,184,219,209}), true); folder.Parent = char
 		end
 		h.Anchored = false; h.CanCollide = false; h.Massless = true
 		c.Parent = folder
-		local w = Instance.new(_obi44m9h({100,115,123,116}))
-		w.Name = _obi44m9h({81,129,80,115,116,105,120,128,121}); w.Part0 = target; w.Part1 = h; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
+		local w = Instance.new(_obczbshz({192,207,215,208}))
+		w.Name = _obczbshz({173,221,172,207,208,197,212,220,213}); w.Part0 = target; w.Part1 = h; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
 		w.Parent = h
-		DSLOG.info(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), _obi44m9h({52}) .. o.Name .. _obi44m9h({52,46,114,127,125,129,118,117,121,133,55,125,134,58,104,107,97,109,63,109,98,112,120,101,113,70,140,149,73}) .. target.Name .. _obi44m9h({45,54,116,126,116,115,124,140,122,54}) .. ha.Name .. _obi44m9h({54}))
+		DSLOG.info(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. o.Name .. _obczbshz({144,138,206,219,217,221,210,209,213,225,147,217,226,150,196,199,189,201,155,201,190,204,212,193,205,162,232,241,165}) .. target.Name .. _obczbshz({137,146,208,218,208,207,216,232,214,146}) .. ha.Name .. _obczbshz({146}))
 		return true
 	end
 
 	local function handle(char, hm, r, o)
-		DSLOG.info(_obi44m9h({118,130,116,125}), o.ClassName .. _obi44m9h({45,53}) .. o.Name .. _obi44m9h({52}))
-		if o:IsA(_obi44m9h({78,113,114,117,132,133,130,134,142})) then
+		DSLOG.info(_obczbshz({210,222,208,217}), o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144}))
+		if o:IsA(_obczbshz({170,205,206,209,224,225,222,226,234})) then
 			if not hm then
-				DSLOG.warn(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), o.Name .. _obi44m9h({71,46,130,117,134,50,131,121,135,137,134,134,122,129,128,137,61,131,146,148,228,195,67,151,138,147,71,112,158,151,140,154,156,151,147,80,146,153,162,166,150,98,87,168,174,166,160,165}))
+				DSLOG.warn(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,222,209,226,142,223,213,227,229,226,226,214,221,220,229,153,223,238,240,64,31,159,243,230,239,163,204,250,243,232,246,248,243,239,172,238,245,254,2,242,190,179,4,10,2,252,1}))
 				return true
 			end
 			local slot = slotOf(o)
 			if slot then clearHeadAccessories(char, slot) end
 			if manualAcc then placeManual(char, o); return true end
-			local c = o:Clone(); c:SetAttribute(_obi44m9h({81,129,92,127,117}), true)
-			local h = c:FindFirstChild(_obi44m9h({85,111,125,116,125,119}))
-			local hAtt = h and h:FindFirstChildOfClass(_obi44m9h({78,130,131,113,116,122,128,121,131,138}))
+			local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
+			local h = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
+			local hAtt = h and h:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
 			local okT, accType = pcall(function() return o.AccessoryType.Name end)
-			local layered = h and (h:FindFirstChildOfClass(_obi44m9h({100,128,112,128,93,115,140,121,135})) ~= nil) or false
+			local layered = h and (h:FindFirstChildOfClass(_obczbshz({192,220,204,220,185,207,232,213,227})) ~= nil) or false
 			local gone, newParent, myGen = false, nil, clearGen
 			pcall(function() c.Destroying:Connect(function() gone = true end) end)
 			pcall(function() c.AncestryChanged:Connect(function(_, p) newParent = p end) end)
 			local okAdd, errAdd = pcall(function() hm:AddAccessory(c) end)
 			if not okAdd then
-				DSLOG.err(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), o.Name .. _obi44m9h({71,46,80,116,117,83,118,119,122,137,138,135,139,147,59,130,126,138,135,143,150,92,67}) .. tostring(errAdd):sub(1, 100))
+				DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,172,208,209,175,210,211,214,229,230,227,231,239,151,222,218,230,227,235,242,184,159}) .. tostring(errAdd):sub(1, 100))
 				c:Destroy()
 				return true
 			end
-			DSLOG.info(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), string.format(_obi44m9h({52,51,130,55,49,117,130,128,132,121,120,124,136,58,151,60,145,135,143,143,94,71,150,68,161,70,140,150,140,139,148,164,146,107,84,163,81,174,83,170,150,157,152,117,94,173,96,175}), o.Name,
-				okT and accType or _obi44m9h({76}), hAtt and hAtt.Name or _obi44m9h({91,83,93,88,102,95}), slot or _obi44m9h({112,125,129,128,128}),
-				layered and _obi44m9h({45,138,47,130,128,135,131,117,53,123,132,56,124,123,136,125,129,127,146,64,73,121,149,133,149,114,136,161,142,156,87,76,157,157,147,149,81,160,246,215,164,86,155,157,159,169,173,169,158,176,104}) or _obi44m9h({})))
-			if not h then DSLOG.err(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), o.Name .. _obi44m9h({71,46,125,211,180,129,51,136,122,131,55,96,122,136,127,136,130,74,63,142,228,197,146,68,155,135,144,72,138,154,140,158,146,145,148,162})) end
+			DSLOG.info(_obczbshz({202,205,208,223,224,49,34,226,218,225}), string.format(_obczbshz({144,143,222,147,141,209,222,220,224,213,212,216,228,150,243,152,237,227,235,235,186,163,242,160,253,162,232,242,232,231,240,0,238,199,176,255,173,10,175,6,242,249,244,209,186,9,188,11}), o.Name,
+				okT and accType or _obczbshz({168}), hAtt and hAtt.Name or _obczbshz({183,175,185,180,194,187}), slot or _obczbshz({204,217,221,220,220}),
+				layered and _obczbshz({137,230,139,222,220,227,223,209,145,215,224,148,216,215,228,217,221,219,238,156,165,213,241,225,241,206,228,253,234,248,179,168,249,249,239,241,173,252,82,51,0,178,247,249,251,5,9,5,250,12,196}) or _obczbshz({})))
+			if not h then DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,217,47,16,221,143,228,214,223,147,188,214,228,219,228,222,166,155,234,64,33,238,160,247,227,236,164,230,246,232,250,238,237,240,254})) end
 
 			task.delay(0.6, function()
 				if not c.Parent then
 					if clearGen ~= myGen then return end
-					DSLOG.warn(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), _obi44m9h({52}) .. c.Name .. _obi44m9h({52,46,117,127,122,50,101,89,98,101,109,97,93,105,59,128,140,62,143,133,147,149,146,146,134,141,140,149,73,143,152,76,154,147,157,159,164,82,151,153,85,102,101,110,172,90,99})
-						.. (gone and _obi44m9h({81,115,130,132,131,129,140,60,62}) or (_obi44m9h({122,125,133,121,117,129,51,132,135,119,55}) .. tostring(newParent and newParent.Name or _obi44m9h({123,119,123}))))
-						.. _obi44m9h({54,60,47,93,134,118,116,130,121,133,55,136,139,137,59,137,140,130,142,64,142,131,145,153,134,146}))
+					DSLOG.warn(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. c.Name .. _obczbshz({144,138,209,219,214,142,193,181,190,193,201,189,185,197,151,220,232,154,235,225,239,241,238,238,226,233,232,241,165,235,244,168,246,239,249,251,0,174,243,245,177,194,193,202,8,182,191})
+						.. (gone and _obczbshz({173,207,222,224,223,221,232,152,154}) or (_obczbshz({214,217,225,213,209,221,143,224,227,211,147}) .. tostring(newParent and newParent.Name or _obczbshz({215,211,215}))))
+						.. _obczbshz({146,152,139,185,226,210,208,222,213,225,147,228,231,229,151,229,232,222,234,156,234,223,237,245,226,238}))
 					manualAcc = true
-					if char.Parent and char:GetAttribute(_obi44m9h({81,129,98,121,120})) ~= nil then
-						if placeManual(char, o) then char:SetAttribute(_obi44m9h({81,129,93}), 1) end
+					if char.Parent and char:GetAttribute(_obczbshz({173,221,190,213,212})) ~= nil then
+						if placeManual(char, o) then char:SetAttribute(_obczbshz({173,221,185}), 1) end
 					end
 					return
 				end
-				local hh = c:FindFirstChild(_obi44m9h({85,111,125,116,125,119}))
-				local root2 = char:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}))
+				local hh = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
+				local root2 = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
 				if not (hh and root2) then return end
 				if (hh.Position - root2.Position).Magnitude < 15 then return end
-				local ha = hh:FindFirstChildOfClass(_obi44m9h({78,130,131,113,116,122,128,121,131,138}))
+				local ha = hh:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
 				local target, tAtt
 				if ha then
 					for _, p in ipairs(char:GetChildren()) do
-						if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) then
+						if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
 							local a = p:FindFirstChild(ha.Name)
-							if a and a:IsA(_obi44m9h({78,130,131,113,116,122,128,121,131,138})) then target, tAtt = p, a; break end
+							if a and a:IsA(_obczbshz({170,222,223,205,208,214,220,213,223,230})) then target, tAtt = p, a; break end
 						end
 					end
 				end
 				if target then
 					hh.Anchored = false; hh.CanCollide = false; hh.Massless = true
-					local w = Instance.new(_obi44m9h({100,115,123,116}))
-					w.Name = _obi44m9h({81,129,80,115,116,105,120,128,121}); w.Part0 = target; w.Part1 = hh; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
+					local w = Instance.new(_obczbshz({192,207,215,208}))
+					w.Name = _obczbshz({173,221,172,207,208,197,212,220,213}); w.Part0 = target; w.Part1 = hh; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
 					w.Parent = hh
-					DSLOG.warn(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), _obi44m9h({52}) .. c.Name .. _obi44m9h({52,46,125,211,180,129,51,121,131,121,120,129,145,137,144,60,144,141,153,137,143,138,146,95,69,153,150,148,141,143,148,76,155,143,79,157,244,213,162,84,154,163,87}) .. target.Name .. _obi44m9h({45,54,116,126,116,115,124,140,122,54}) .. ha.Name .. _obi44m9h({54}))
+					DSLOG.warn(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. c.Name .. _obczbshz({144,138,217,47,16,221,143,213,223,213,212,221,237,229,236,152,236,233,245,229,235,230,238,187,161,245,242,240,233,235,240,168,247,235,171,249,80,49,254,176,246,255,179}) .. target.Name .. _obczbshz({137,146,208,218,208,207,216,232,214,146}) .. ha.Name .. _obczbshz({146}))
 				else
-					DSLOG.err(_obi44m9h({110,113,116,131,132,213,198,134,126,133}), _obi44m9h({52}) .. c.Name .. _obi44m9h({52,46,123,127,127,121,120,52,121,133,55,123,136,140,139,139,61,131,63,147,134,143,67,137,147,137,136,145,161,143,75,83}) .. (ha and ha.Name or _obi44m9h({76})) .. _obi44m9h({52,46,125,127,49,133,120,137,53,121,134,138,137,137,59,68,111,84,78,114,82,87,67,136,142,140,140,154,142,152,159,145,108,87}))
+					DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. c.Name .. _obczbshz({144,138,215,219,219,213,212,144,213,225,147,215,228,232,231,231,153,223,155,239,226,235,159,229,239,229,228,237,253,235,167,175}) .. (ha and ha.Name or _obczbshz({168})) .. _obczbshz({144,138,217,219,141,225,212,229,145,213,226,230,229,229,151,160,203,176,170,206,174,179,159,228,234,232,232,246,234,244,251,237,200,179}))
 				end
 			end)
 			return true
-		elseif o:IsA(_obi44m9h({85,111,131})) then
-			DSLOG.info(_obi44m9h({112,118,112,128,212,187,136}), _obi44m9h({112,118,112,128,212,187,136,52,118,132,139,129,128,137,59,68,128,138,128,147,148,135,67,108,134,154,80,72,80}) .. o.Name .. _obi44m9h({52,58,47,131,128,126,119,117,131,122,134,56,135,123,59,127,126,128,132,227,200,131}))
+		elseif o:IsA(_obczbshz({177,203,223})) then
+			DSLOG.info(_obczbshz({204,210,204,220,48,23,228}), _obczbshz({204,210,204,220,48,23,228,144,210,224,231,221,220,229,151,160,220,230,220,239,240,227,159,200,226,246,172,164,172}) .. o.Name .. _obczbshz({144,150,139,223,220,218,211,209,223,214,226,148,227,215,151,219,218,220,224,63,36,223}))
 
-			local head = char:FindFirstChild(_obi44m9h({85,115,112,116}))
-			local srcHandle = o:FindFirstChild(_obi44m9h({85,111,125,116,125,119}))
-				if not (head and srcHandle) then DSLOG.warn(_obi44m9h({112,118,112,128,212,187,136}), o.Name .. _obi44m9h({71,46,130,117,126,50,91,121,118,122,55,135,142,58,142,129,138,62,103,129,143,134,143,137,81,70,144,143,151,153,157,141,145,157})) end
+			local head = char:FindFirstChild(_obczbshz({177,207,204,208}))
+			local srcHandle = o:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
+				if not (head and srcHandle) then DSLOG.warn(_obczbshz({204,210,204,220,48,23,228}), o.Name .. _obczbshz({163,138,222,209,218,142,183,213,210,214,147,227,234,150,234,221,230,154,195,221,235,226,235,229,173,162,236,235,243,245,249,233,237,249})) end
 			if head and srcHandle then
-				clearHeadAccessories(char, _obi44m9h({85,111,131}))
-				local c = o:Clone(); c:SetAttribute(_obi44m9h({81,129,92,127,117}), true)
-				local h = c:FindFirstChild(_obi44m9h({85,111,125,116,125,119}))
+				clearHeadAccessories(char, _obczbshz({177,203,223}))
+				local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
+				local h = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
 				h.Anchored = false; h.CanCollide = false; h.Massless = true
 				local okPos, pos = pcall(function() return c.AttachmentPos end)
-				local offset = (okPos and typeof(pos) == _obi44m9h({99,115,114,132,128,132,70})) and CFrame.new(pos) or CFrame.new(0, 0.6, 0)
+				local offset = (okPos and typeof(pos) == _obczbshz({191,207,206,224,220,224,162})) and CFrame.new(pos) or CFrame.new(0, 0.6, 0)
 				h.CFrame = head.CFrame * offset
 				c.Parent = char
-				local w = Instance.new(_obi44m9h({100,115,123,116,84,129,129,135,137,136,120,129,135,142}))
+				local w = Instance.new(_obczbshz({192,207,215,208,176,221,221,227,229,228,212,221,227,234}))
 				w.Part0 = head; w.Part1 = h; w.Parent = h
 			end
 			return true
-		elseif o:IsA(_obi44m9h({96,118,120,130,133})) or o:IsA(_obi44m9h({93,111,125,132,132})) or o:IsA(_obi44m9h({96,118,120,130,133,89,133,117,133,126,128,123})) or o:IsA(_obi44m9h({79,125,115,137,84,129,127,131,135,137})) then
+		elseif o:IsA(_obczbshz({188,210,212,222,225})) or o:IsA(_obczbshz({185,203,217,224,224})) or o:IsA(_obczbshz({188,210,212,222,225,181,225,209,225,218,220,215})) or o:IsA(_obczbshz({171,217,207,229,176,221,219,223,227,229})) then
 			stash(char, o.ClassName)
-			local c = o:Clone(); c:SetAttribute(_obi44m9h({81,129,92,127,117}), true); c.Parent = char
+			local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = char
 			return true
-		elseif o:IsA(_obi44m9h({80,118,112,130,114,117,135,121,135,99,124,139,129})) then
-			local c = o:Clone(); c:SetAttribute(_obi44m9h({81,129,92,127,117}), true); c.Parent = char
+		elseif o:IsA(_obczbshz({172,210,204,222,206,209,227,213,227,191,216,231,221})) then
+			local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = char
 			return true
-		elseif o:IsA(_obi44m9h({81,115,114,113,125})) then
-			local head = char:FindFirstChild(_obi44m9h({85,115,112,116}))
+		elseif o:IsA(_obczbshz({173,207,206,205,217})) then
+			local head = char:FindFirstChild(_obczbshz({177,207,204,208}))
 			if head then
 				for _, d in ipairs(head:GetChildren()) do
-					if d:IsA(_obi44m9h({81,115,114,113,125})) and not d:GetAttribute(_obi44m9h({81,129,92,127,117})) and not d:GetAttribute(_obi44m9h({81,129,87,121,117,86,120,119,118,130})) then
-						d.Transparency = 1; d:SetAttribute(_obi44m9h({81,129,87,121,117,86,120,119,118,130}), true)
+					if d:IsA(_obczbshz({173,207,206,205,217})) and not d:GetAttribute(_obczbshz({173,221,184,219,209})) and not d:GetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222})) then
+						d.Transparency = 1; d:SetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222}), true)
 					end
 				end
-				local c = o:Clone(); c.Face = Enum.NormalId.Front; c:SetAttribute(_obi44m9h({81,129,92,127,117}), true); c.Parent = head
+				local c = o:Clone(); c.Face = Enum.NormalId.Front; c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = head
 			end
 			return true
 		elseif EFX[o.ClassName] then
 			if r then
-				local c = o:Clone(); c:SetAttribute(_obi44m9h({81,129,92,127,117}), true); c.Parent = r
+				local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = r
 			end
 			return true
-		elseif o:IsA(_obi44m9h({90,115,130,120,97,115,133,136})) and char:FindFirstChild(o.Name) and char[o.Name]:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) then
+		elseif o:IsA(_obczbshz({182,207,222,212,189,207,225,228})) and char:FindFirstChild(o.Name) and char[o.Name]:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
 			limb(char, o)
 			return true
-		elseif o:IsA(_obi44m9h({90,125,115,117,125})) or o:IsA(_obi44m9h({83,125,123,116,118,132})) then
+		elseif o:IsA(_obczbshz({182,217,207,209,217})) or o:IsA(_obczbshz({175,217,215,208,210,224})) then
 			local any = false
 			for _, ch in ipairs(o:GetChildren()) do
 				if handle(char, hm, r, ch) then any = true end
 			end
-			if not any and o:IsA(_obi44m9h({90,125,115,117,125})) then
+			if not any and o:IsA(_obczbshz({182,217,207,209,217})) then
 				attachProp(char, o)
 				any = true
 			end
 			return any
-		elseif o:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) then
+		elseif o:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
 			if char:FindFirstChild(o.Name) then return false end
 			attachProp(char, o)
 			return true
@@ -915,40 +1308,40 @@ local function buildMods(page, say)
 	local function applyOne(char, id)
 		local objs = loadAsset(id)
 		if not objs then return false end
-		local hm = char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
-		local r = char:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}))
+		local hm = char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		local r = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
 		for _, o in ipairs(objs) do
 			local ok, ret = pcall(handle, char, hm, r, o)
 			if not ok then
-				DSLOG.err(_obi44m9h({118,130,116,125}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({45,54}) .. o.ClassName .. _obi44m9h({45,53}) .. o.Name .. _obi44m9h({52,55,73,48}) .. tostring(ret):sub(1, 140))
+				DSLOG.err(_obczbshz({210,222,208,217}), _obczbshz({178,174,139}) .. id .. _obczbshz({137,146}) .. o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144,147,165,140}) .. tostring(ret):sub(1, 140))
 			elseif ret == false then
-				DSLOG.warn(_obi44m9h({118,130,116,125}), _obi44m9h({86,82,47}) .. id .. _obi44m9h({45,54}) .. o.ClassName .. _obi44m9h({45,53}) .. o.Name .. _obi44m9h({52,55,73,48,127,213,182,131,53,137,124,129,57,123,139,136,134,129,128,146,65,135,150,151,138,70,155,145,153,153,75,144,146,78,152,164,150,159}))
+				DSLOG.warn(_obczbshz({210,222,208,217}), _obczbshz({178,174,139}) .. id .. _obczbshz({137,146}) .. o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144,147,165,140,219,49,18,223,145,229,216,221,149,215,231,228,226,221,220,238,157,227,242,243,230,162,247,237,245,245,167,236,238,170,244,0,242,251}))
 			end
 		end
 		return true
 	end
 
 	DSLOG.inspect = function(idText)
-		local n = tonumber(tostring(idText or _obi44m9h({})):match(_obi44m9h({50,114,58})))
-		if not n then DSLOG.warn(_obi44m9h({118,124,130,128,118,117,124,131,131,119,137}), _obi44m9h({113,119,118,121,133,119,51,137,130,54,96,92,57,66,142,223,208,62,141,227,219,143,136,150,148,153,80})); return end
-		DSLOG.info(_obi44m9h({118,124,130,128,118,117,124,131,131,119,137}), _obi44m9h({86,82,47}) .. n .. _obi44m9h({71,46,114,113,131,132,120,123,118,132,123,135,71,72,73}))
+		local n = tonumber(tostring(idText or _obczbshz({})):match(_obczbshz({142,206,150})))
+		if not n then DSLOG.warn(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({205,211,210,213,225,211,143,229,222,146,188,184,149,158,234,59,44,154,233,63,55,235,228,242,240,245,172})); return end
+		DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({178,174,139}) .. n .. _obczbshz({163,138,206,205,223,224,212,215,210,224,215,227,163,164,165}))
 		local objs = loadAsset(n)
 		if not objs then
-			DSLOG.err(_obi44m9h({118,124,130,128,118,117,124,131,131,119,137}), _obi44m9h({86,82,47}) .. n .. _obi44m9h({45,92,210,147,96,50,118,117,135,136,124,127,136,143,85,60}) .. tostring(lastLoadErr[n] or _obi44m9h({128,115,124,48,118,132,133,131,53,62,141,135,133,142,138,145,61,148,128,154,138,145,76})))
+			DSLOG.err(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({178,174,139}) .. n .. _obczbshz({137,184,46,239,188,142,210,209,227,228,216,219,228,235,177,152}) .. tostring(lastLoadErr[n] or _obczbshz({220,207,216,140,210,224,225,223,145,154,233,227,225,234,230,237,153,240,220,246,230,237,168})))
 			return
 		end
 		local shown = 0
 		for _, o in ipairs(objs) do
-			local extra = _obi44m9h({})
-			if o:IsA(_obi44m9h({78,113,114,117,132,133,130,134,142})) then
+			local extra = _obczbshz({})
+			if o:IsA(_obczbshz({170,205,206,209,224,225,222,226,234})) then
 				local okT, at = pcall(function() return o.AccessoryType.Name end)
-				extra = _obi44m9h({45,130,120,128,128,79}) .. (okT and at or _obi44m9h({76})) .. _obi44m9h({45,132,112,119,114,79}) .. tostring(slotOf(o) or _obi44m9h({112,125,129,128,128}))
+				extra = _obczbshz({137,222,212,220,220,171}) .. (okT and at or _obczbshz({168})) .. _obczbshz({137,224,204,211,206,171}) .. tostring(slotOf(o) or _obczbshz({204,217,221,220,220}))
 			end
-			DSLOG.info(_obi44m9h({118,124,130,128,118,117,124,131,131,119,137}), _obi44m9h({86,82,47}) .. n .. _obi44m9h({45,128,112,121,139,76,51}) .. o.ClassName .. _obi44m9h({45,53}) .. o.Name .. _obi44m9h({52}) .. extra)
+			DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({178,174,139}) .. n .. _obczbshz({137,220,204,213,231,168,143}) .. o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144}) .. extra)
 			for _, d in ipairs(o:GetDescendants()) do
 				shown = shown + 1
-				if shown > 40 then DSLOG.info(_obi44m9h({118,124,130,128,118,117,124,131,131,119,137}), _obi44m9h({59,60,61,48,57,127,116,125,136,54,128,140,126,136,142,60,139,225,194,143,65,142,140,151,153,135,139,151,156,83})); return end
-				DSLOG.info(_obi44m9h({118,124,130,128,118,117,124,131,131,119,137}), _obi44m9h({45,46,60,48}) .. d.ClassName .. _obi44m9h({45,53}) .. d.Name .. _obi44m9h({52,46,116,125,49}) .. d.Parent.Name)
+				if shown > 40 then DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({151,152,153,140,149,219,208,217,228,146,220,232,218,228,234,152,231,61,30,235,157,234,232,243,245,227,231,243,248,175})); return end
+				DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({137,138,152,140}) .. d.ClassName .. _obczbshz({137,145}) .. d.Name .. _obczbshz({144,138,208,217,141}) .. d.Parent.Name)
 			end
 		end
 	end
@@ -956,7 +1349,7 @@ local function buildMods(page, say)
 	local function clearMods(char)
 		clearGen = clearGen + 1
 		local restored, removed = 0, 0
-		local st = char:FindFirstChild(_obi44m9h({81,129,98,132,114,133,123}))
+		local st = char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
 		if st then
 			for _, o in ipairs(st:GetChildren()) do
 				showStashed(o)
@@ -966,40 +1359,40 @@ local function buildMods(page, say)
 			st:Destroy()
 		end
 		for _, o in ipairs(char:GetDescendants()) do
-			if o:GetAttribute(_obi44m9h({81,129,92,127,117})) then
+			if o:GetAttribute(_obczbshz({173,221,184,219,209})) then
 				o:Destroy(); removed = removed + 1
-			elseif o:GetAttribute(_obi44m9h({81,129,87,121,117,94,124,129,119})) then
-				o.Transparency = 0; o:SetAttribute(_obi44m9h({81,129,87,121,117,94,124,129,119}), nil)
-			elseif o:GetAttribute(_obi44m9h({81,129,87,121,117,86,120,119,118,130})) then
-				o.Transparency = 0; o:SetAttribute(_obi44m9h({81,129,87,121,117,86,120,119,118,130}), nil)
+			elseif o:GetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211})) then
+				o.Transparency = 0; o:SetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211}), nil)
+			elseif o:GetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222})) then
+				o.Transparency = 0; o:SetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222}), nil)
 			end
 		end
 		if removed > 0 or restored > 0 then
-			DSLOG.info(_obi44m9h({121,119,124,128,114,132}), removed .. _obi44m9h({45,119,131,117,126,58,129,135,62,54,123,135,57,130,144,126,61,144,132,141,144,152,140,136,148,78,154,81,85,74}) .. restored .. _obi44m9h({45,125,129,121,120,123,129,117,129,62,128,139,66,58,127,129,147,141,139,150,138,134,146,76,152,79}))
+			DSLOG.info(_obczbshz({213,211,216,220,206,224}), removed .. _obczbshz({137,211,223,209,218,150,221,227,154,146,215,227,149,222,236,218,153,236,224,233,236,244,232,228,240,170,246,173,177,166}) .. restored .. _obczbshz({137,217,221,213,212,215,221,209,221,154,220,231,158,150,219,221,239,233,231,242,230,226,238,168,244,171}))
 		end
 	end
 
 	local function headless(char)
-		local head = char:FindFirstChild(_obi44m9h({85,115,112,116}))
+		local head = char:FindFirstChild(_obczbshz({177,207,204,208}))
 		if not head then return end
-		head.Transparency = 1; head:SetAttribute(_obi44m9h({81,129,87,121,117,94,124,129,119}), true)
+		head.Transparency = 1; head:SetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211}), true)
 		for _, d in ipairs(head:GetChildren()) do
-			if d:IsA(_obi44m9h({81,115,114,113,125})) then d.Transparency = 1; d:SetAttribute(_obi44m9h({81,129,87,121,117,86,120,119,118,130}), true) end
+			if d:IsA(_obczbshz({173,207,206,205,217})) then d.Transparency = 1; d:SetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222}), true) end
 		end
 	end
 
 	local function applyBC(char, bc)
 		local cols = {}
-		for h in tostring(bc):gmatch(_obi44m9h({50,134,52,136,54,138,56,140,58,142,60,144})) do
+		for h in tostring(bc):gmatch(_obczbshz({142,226,144,228,146,230,148,232,150,234,152,236})) do
 			cols[#cols + 1] = Color3.fromRGB(tonumber(h:sub(1, 2), 16), tonumber(h:sub(3, 4), 16), tonumber(h:sub(5, 6), 16))
 		end
 		if #cols < 6 then return end
-		stash(char, _obi44m9h({79,125,115,137,84,129,127,131,135,137}))
-		local b = Instance.new(_obi44m9h({79,125,115,137,84,129,127,131,135,137}))
+		stash(char, _obczbshz({171,217,207,229,176,221,219,223,227,229}))
+		local b = Instance.new(_obczbshz({171,217,207,229,176,221,219,223,227,229}))
 		b.HeadColor3, b.TorsoColor3 = cols[1], cols[2]
 		b.LeftArmColor3, b.RightArmColor3 = cols[3], cols[4]
 		b.LeftLegColor3, b.RightLegColor3 = cols[5], cols[6]
-		b:SetAttribute(_obi44m9h({81,129,92,127,117}), true)
+		b:SetAttribute(_obczbshz({173,221,184,219,209}), true)
 		b.Parent = char
 	end
 
@@ -1019,7 +1412,7 @@ local function buildMods(page, say)
 
 	local function localRecord()
 		if #mine.ids == 0 and not mine.headless and not mine.bc then return nil end
-		return { ids = table.concat(mine.ids, _obi44m9h({57})), headless = mine.headless, fx = mine.fx or _obi44m9h({}), fc = mine.fc or 1, bc = mine.bc }
+		return { ids = table.concat(mine.ids, _obczbshz({149})), headless = mine.headless, fx = mine.fx or _obczbshz({}), fc = mine.fc or 1, bc = mine.bc }
 	end
 
 	local function appearanceReady(pl)
@@ -1030,149 +1423,149 @@ local function buildMods(page, say)
 	local function countMods(char)
 		local n = 0
 		for _, d in ipairs(char:GetDescendants()) do
-			if d:GetAttribute(_obi44m9h({81,129,92,127,117})) then n = n + 1 end
+			if d:GetAttribute(_obczbshz({173,221,184,219,209})) then n = n + 1 end
 		end
 		return n
 	end
-	local reapplied = setmetatable({}, { __mode = _obi44m9h({120}) })
-	local waitSince = setmetatable({}, { __mode = _obi44m9h({120}) })
+	local reapplied = setmetatable({}, { __mode = _obczbshz({212}) })
+	local waitSince = setmetatable({}, { __mode = _obczbshz({212}) })
 	local netState = nil
 
 	local function retryFailed(pl, char, want, ids, attempt)
 		if attempt > 3 then
 			local t = {}
 			for _, i in ipairs(ids) do t[#t + 1] = tostring(i) end
-			DSLOG.err(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,115,117,132,123,134,136,126,54,123,135,140,58,100,96,144,62}) .. table.concat(t, _obi44m9h({57,46})) .. _obi44m9h({45,54,120,126,135,213,180,128,126,122,134,139,69,58,125,136,140,143,148,133,130,134,146,151,69,149,156,72,152,74,144,164,146,145,164,164,160,164,83,162,248,217,166,88,156,169,169,175,162,165,180,165,97,165,164,182,183,171,174,169,187,115}))
+			DSLOG.err(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,207,209,224,215,226,228,218,146,215,227,232,150,192,188,236,154}) .. table.concat(t, _obczbshz({149,138})) .. _obczbshz({137,146,212,218,227,49,16,220,218,214,226,231,161,150,217,228,232,235,240,225,222,226,238,243,161,241,248,164,244,166,236,0,238,237,0,0,252,0,175,254,84,53,2,180,248,5,5,11,254,1,16,1,189,1,0,18,19,7,10,5,23,207}))
 			return
 		end
 		task.delay(3 * attempt, function()
-			if not (char and char.Parent) or char:GetAttribute(_obi44m9h({81,129,98,121,120})) ~= want then return end
+			if not (char and char.Parent) or char:GetAttribute(_obczbshz({173,221,190,213,212})) ~= want then return end
 			local still = {}
 			for _, i in ipairs(ids) do
 				local ok, applied = pcall(applyOne, char, i)
 				if not (ok and applied) then still[#still + 1] = i end
 			end
-			char:SetAttribute(_obi44m9h({81,129,93}), countMods(char))
+			char:SetAttribute(_obczbshz({173,221,185}), countMods(char))
 			if #still > 0 then
 				retryFailed(pl, char, want, still, attempt + 1)
 			else
-				DSLOG.info(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,126,131,49,91,87,135,53,135,140,125,57,128,124,136,145,127,149,129,142,66,134,133,151,152,140,143,138,156,140,153,77,156,144,80,165,151,161,168,150,170,160,174,154,90}) .. attempt)
+				DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,218,223,141,183,179,227,145,227,232,217,149,220,216,228,237,219,241,221,234,158,226,225,243,244,232,235,230,248,232,245,169,248,236,172,1,243,253,4,242,6,252,10,246,182}) .. attempt)
 			end
 		end)
 	end
 
 	local function sync()
-		local body = http(_obi44m9h({84,83,99}), _obi44m9h({60,123,126,116,132,64,125,135,132,132}))
+		local body = http(_obczbshz({176,175,191}), _obczbshz({152,215,218,208,224,156,217,227,224,224}))
 		local netOk = body ~= nil
 		if netOk ~= netState then
 			netState = netOk
 			if netOk then
-				DSLOG.info(_obi44m9h({128,135,125,115}), _obi44m9h({83,119,129,117,115,115,134,121,53,136,124,139,137,137,137,128,130,147,63,72,147,135,135,137,69,117,114,81}))
+				DSLOG.info(_obczbshz({220,227,217,207}), _obczbshz({175,211,221,209,207,207,226,213,145,228,216,231,229,229,229,220,222,239,155,164,239,227,227,229,161,209,206,173}))
 			else
-				DSLOG.err(_obi44m9h({128,135,125,115}), _obi44m9h({83,119,129,117,115,115,134,121,53,100,218,155,104,58,141,129,144,142,142,142,133,135,152,68,77}) .. tostring(lastErr) .. _obi44m9h({54,72,47,113,129,126,124,119,132,54,138,219,204,58,138,143,61,145,132,149,148,66,144,147,137,153,71,148,152,141,140,149,160}))
+				DSLOG.err(_obczbshz({220,227,217,207}), _obczbshz({175,211,221,209,207,207,226,213,145,192,54,247,196,150,233,221,236,234,234,234,225,227,244,160,169}) .. tostring(lastErr) .. _obczbshz({146,164,139,205,221,218,216,211,224,146,230,55,40,150,230,235,153,237,224,241,240,158,236,239,229,245,163,240,244,233,232,241,252}))
 			end
 		end
 		local data = {}
-		if netOk and body ~= _obi44m9h({123,131,123,124}) and body ~= _obi44m9h({}) then
+		if netOk and body ~= _obczbshz({215,223,215,216}) and body ~= _obczbshz({}) then
 			local ok, d = pcall(HttpService.JSONDecode, HttpService, body)
-			if ok and type(d) == _obi44m9h({129,111,113,124,118}) then
+			if ok and type(d) == _obczbshz({221,203,205,216,210}) then
 				data = d
 			else
-				DSLOG.err(_obi44m9h({128,135,125,115}), _obi44m9h({127,115,130,128,128,133,135,117,53,122,134,56,95,131,141,129,127,127,146,133,65,144,230,199,148,70,234,209,73,116,126,123,123,104,79}) .. tostring(body):sub(1, 60))
+				DSLOG.err(_obczbshz({220,227,217,207}), _obczbshz({219,207,222,220,220,225,227,209,145,214,226,148,187,223,233,221,219,219,238,225,157,236,66,35,240,162,70,45,165,208,218,215,215,196,171}) .. tostring(body):sub(1, 60))
 			end
 		end
 		for id, rec in pairs(data) do
-			if type(rec) ~= _obi44m9h({129,111,113,124,118}) or not isFresh(id, rec) then data[id] = nil end
+			if type(rec) ~= _obczbshz({221,203,205,216,210}) or not isFresh(id, rec) then data[id] = nil end
 		end
 		local mineRec = localRecord()
 		if netOk and mineRec and not data[uid] then
-			DSLOG.warn(_obi44m9h({128,135,125,115}), _obi44m9h({128,115,132,48,131,119,122,125,136,138,137,135,57,136,222,191,140,62,149,143,141,150,146,153,69,138,150,72,111,147,157,145,143,143,162,149,81,90,162,84,133,139,139,88,159,155,167,164,172,179,95,175,182,98,164,183,101,184,172,175,187,171,190,108,175,186,190,193,198,183,180,198,182,195,128,134,121,176,202,191,32,8,127,211,198,130,217,39,15,146,135,213,202,221,139,219,224,142,222,229,229,228,226,231,149,228,58,27,232,154,239,225,157,244,228,229,238}))
+			DSLOG.warn(_obczbshz({220,227,217,207}), _obczbshz({220,207,224,140,223,211,214,217,228,230,229,227,149,228,58,27,232,154,241,235,233,242,238,245,161,230,242,164,203,239,249,237,235,235,254,241,173,182,254,176,225,231,231,180,251,247,3,0,8,15,187,11,18,190,0,19,193,20,8,11,23,7,26,200,11,22,26,29,34,19,16,34,18,31,220,226,213,12,38,27,124,100,219,47,34,222,53,131,107,238,227,49,38,57,231,55,60,234,58,65,65,64,62,67,241,64,150,119,68,246,75,61,249,80,64,65,74}))
 		end
 		for _, pl in ipairs(Players:GetPlayers()) do
 			local isMe = (pl == lp)
 			local char = pl.Character
-			if (isMe or netOk) and char and char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120})) and char:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144})) then
+			if (isMe or netOk) and char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212})) and char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236})) then
 				local d
 				if isMe then d = mineRec else d = data[tostring(pl.UserId)] end
 				local want
 				if d then
 					if isMe then
-						want = tostring(d.ids or _obi44m9h({})) .. _obi44m9h({137}) .. tostring(d.headless == true) .. _obi44m9h({137,138,64,140}) .. tostring(d.bc or _obi44m9h({}))
+						want = tostring(d.ids or _obczbshz({})) .. _obczbshz({229}) .. tostring(d.headless == true) .. _obczbshz({229,230,156,232}) .. tostring(d.bc or _obczbshz({}))
 					else
-						want = tostring(d.ids or _obi44m9h({})) .. _obi44m9h({137}) .. tostring(d.headless == true) .. _obi44m9h({137}) .. tostring(d.fx or _obi44m9h({})) .. _obi44m9h({137}) .. tostring(d.fc or 1) .. _obi44m9h({137}) .. tostring(d.bc or _obi44m9h({}))
+						want = tostring(d.ids or _obczbshz({})) .. _obczbshz({229}) .. tostring(d.headless == true) .. _obczbshz({229}) .. tostring(d.fx or _obczbshz({})) .. _obczbshz({229}) .. tostring(d.fc or 1) .. _obczbshz({229}) .. tostring(d.bc or _obczbshz({}))
 					end
 				end
 
-				if want and char:GetAttribute(_obi44m9h({81,129,98,121,120})) == want and (char:GetAttribute(_obi44m9h({81,129,93})) or 0) > 0 and countMods(char) == 0 then
+				if want and char:GetAttribute(_obczbshz({173,221,190,213,212})) == want and (char:GetAttribute(_obczbshz({173,221,185})) or 0) > 0 and countMods(char) == 0 then
 					local n = (reapplied[char] or 0) + 1
 					reapplied[char] = n
 					if n <= 5 then
-						DSLOG.warn(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,126,131,49,123,135,121,131,137,55,124,136,58,131,145,127,62,146,149,142,139,149,133,146,70,139,151,73,154,144,158,160,157,157,145,152,151,160,84,93,165,87,162,168,161,170,92,175,163,172,175,183,167,184,131,110,114,103,186,174,171,187,184,182,177,176,190,181,193,115,124}) .. n .. _obi44m9h({60,67,56}))
-						char:SetAttribute(_obi44m9h({81,129,98,121,120}), nil)
+						DSLOG.warn(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,218,223,141,215,227,213,223,229,147,216,228,150,223,237,219,154,238,241,234,231,241,225,238,162,231,243,165,246,236,250,252,249,249,237,244,243,252,176,185,1,179,254,4,253,6,184,11,255,8,11,19,3,20,223,202,206,195,22,10,7,23,20,18,13,12,26,17,29,207,216}) .. n .. _obczbshz({152,159,148}))
+						char:SetAttribute(_obczbshz({173,221,190,213,212}), nil)
 					end
 				end
-				if char:GetAttribute(_obi44m9h({81,129,98,121,120})) ~= want then
+				if char:GetAttribute(_obczbshz({173,221,190,213,212})) ~= want then
 					local ready = (want == nil) or appearanceReady(pl)
 					if not ready then
 						local t0 = waitSince[char]
 						if not t0 then
 							t0 = os.clock(); waitSince[char] = t0
-							DSLOG.info(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,116,131,129,119,133,117,131,122,134,56,136,58,124,146,126,146,128,146,65,150,136,150,146,143,149,137,155,74,143,145,77,145,144,162,163,151,154,149,167,100,101,102}))
+							DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,208,223,221,211,225,209,223,214,226,148,228,150,216,238,218,238,220,238,157,242,228,242,238,235,241,229,247,166,235,237,169,237,236,254,255,243,246,241,3,192,193,194}))
 						end
 						if os.clock() - t0 >= 8 then
 							ready = true
-							DSLOG.warn(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,112,134,114,134,116,134,53,122,124,133,136,140,138,145,61,139,128,137,148,66,135,137,69,94,154,84,73,139,155,152,150,145,144,158,149,161,83,161,154,169,164,167,89,155,174,175,166,171}))
+							DSLOG.warn(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,204,226,206,226,208,226,145,214,216,225,228,232,230,237,153,231,220,229,240,158,227,229,161,186,246,176,165,231,247,244,242,237,236,250,241,253,175,253,246,5,0,3,181,247,10,11,2,7}))
 						end
 					end
 					if ready then
 						waitSince[char] = nil
 						if d then
-							DSLOG.info(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,112,128,125,123,118,117,131,122,134,56,134,137,127,143,61,154,63,137,133,149,96}) .. tostring(d.ids or _obi44m9h({})) .. (d.headless == true and _obi44m9h({45,138,47,120,118,115,119,128,122,137,138}) or _obi44m9h({})) .. (d.bc and _obi44m9h({45,138,47,115,128,132,120,135}) or _obi44m9h({})))
+							DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,204,220,217,215,210,209,223,214,226,148,226,229,219,235,153,246,155,229,225,241,188}) .. tostring(d.ids or _obczbshz({})) .. (d.headless == true and _obczbshz({137,230,139,212,210,207,211,220,214,229,230}) or _obczbshz({})) .. (d.bc and _obczbshz({137,230,139,207,220,224,212,227}) or _obczbshz({})))
 						else
-							DSLOG.info(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,130,117,126,50,128,131,121,137,67,56,133,131,136,140,126,140,131,143}))
+							DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,222,209,218,142,220,223,213,229,159,148,225,223,228,232,218,232,223,235}))
 						end
 						clearMods(char)
 						if not isMe then
 							local set = {}
 							if d then
-								for k in tostring(d.fx or _obi44m9h({})):gmatch(_obi44m9h({50,111,58})) do set[k] = true end
+								for k in tostring(d.fx or _obczbshz({})):gmatch(_obczbshz({142,203,150})) do set[k] = true end
 							end
 							local okF, eF = pcall(fxApply, char, set, tonumber(d and d.fc) or 1)
-							if not okF then DSLOG.err(_obi44m9h({114,116,116,121,133,129,134}), pl.Name .. _obi44m9h({71,46}) .. tostring(eF):sub(1, 100)) end
+							if not okF then DSLOG.err(_obczbshz({206,208,208,213,225,221,226}), pl.Name .. _obczbshz({163,138}) .. tostring(eF):sub(1, 100)) end
 						end
 						local failed = {}
 						if d then
-							if d.headless == true then DSLOG.try(_obi44m9h({117,115,112,116,125,119,134,135}), headless, char) end
-							if d.bc then DSLOG.try(_obi44m9h({112,125,129,117,132}), applyBC, char, d.bc) end
+							if d.headless == true then DSLOG.try(_obczbshz({209,207,204,208,217,211,226,227}), headless, char) end
+							if d.bc then DSLOG.try(_obczbshz({204,217,221,209,224}), applyBC, char, d.bc) end
 							local n = 0
-							for idStr in tostring(d.ids or _obi44m9h({})):gmatch(_obi44m9h({50,114,58})) do
+							for idStr in tostring(d.ids or _obczbshz({})):gmatch(_obczbshz({142,206,150})) do
 								n = n + 1
-								if n > 24 then DSLOG.warn(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,124,113,122,133,51,120,122,54,73,76,57,99,95,143,73,62,136,135,143,145,149,137,142,70,150,72,155,143,158,160,156})); break end
+								if n > 24 then DSLOG.warn(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,216,205,214,225,143,212,214,146,165,168,149,191,187,235,165,154,228,227,235,237,241,229,234,162,242,164,247,235,250,252,248})); break end
 								local idn = tonumber(idStr)
 								local ok, applied = pcall(applyOne, char, idn)
 								if not (ok and applied) then
 									failed[#failed + 1] = idn
-									DSLOG.err(_obi44m9h({128,135,125,115}), pl.Name .. _obi44m9h({71,46,117,113,125,122,130,137,53,133,55,97,93,58}) .. idStr .. (ok and _obi44m9h({45,54,125,211,180,129,51,119,118,136,137,125,128,137,144,69}) or (_obi44m9h({71,46}) .. tostring(applied):sub(1, 120))))
+									DSLOG.err(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,209,205,217,214,222,229,145,225,147,189,185,150}) .. idStr .. (ok and _obczbshz({137,146,217,47,16,221,143,211,210,228,229,217,220,229,236,161}) or (_obczbshz({163,138}) .. tostring(applied):sub(1, 120))))
 								end
 							end
 						end
-						char:SetAttribute(_obi44m9h({81,129,98,121,120}), want)
-						char:SetAttribute(_obi44m9h({81,129,93}), countMods(char))
+						char:SetAttribute(_obczbshz({173,221,190,213,212}), want)
+						char:SetAttribute(_obczbshz({173,221,185}), countMods(char))
 						if #failed > 0 then retryFailed(pl, char, want, failed, 1) end
 
 						if isMe then
-							DSLOG.try(_obi44m9h({110,132,112,132,114,132}), DSLOG.charState, char, _obi44m9h({131,125,114,211,187}))
-							local hm2 = char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
+							DSLOG.try(_obczbshz({202,224,204,224,206,224}), DSLOG.charState, char, _obczbshz({223,217,206,47,23}))
+							local hm2 = char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
 							local accN = hm2 and #hm2:GetAccessories() or -1
-							local mf = char:FindFirstChild(_obi44m9h({81,129,80,115,116}))
-							if mf and #mf:GetChildren() > 0 then accN = tostring(accN) .. _obi44m9h({45,57,47}) .. #mf:GetChildren() .. _obi44m9h({45,123,112,126,134,115,127}) end
-							say((#failed == 0 and _obi44m9h({90,125,115,131,49,115,131,128,126,121,120,124,136,141,73,60}) or _obi44m9h({78,122,118,133,127,133,51,93,89,137,55,126,122,134,131,125,143,127,140,76,65,150,136,146,153,135,149,140,152,74,143,145,77,156,158,166,160,96,83})) .. _obi44m9h({78,113,116,131,132,213,198,134,126,133,138,56,135,137,59,143,130,147,63,104,150,143,132,146,148,143,139,72,138,145,154,158,142,104,79}) .. accN)
+							local mf = char:FindFirstChild(_obczbshz({173,221,172,207,208}))
+							if mf and #mf:GetChildren() > 0 then accN = tostring(accN) .. _obczbshz({137,149,139}) .. #mf:GetChildren() .. _obczbshz({137,215,204,218,226,207,219}) end
+							say((#failed == 0 and _obczbshz({182,217,207,223,141,207,223,220,218,213,212,216,228,233,165,152}) or _obczbshz({170,214,210,225,219,225,143,185,181,229,147,218,214,226,223,217,235,219,232,168,157,242,228,238,245,227,241,232,244,166,235,237,169,248,250,2,252,188,175})) .. _obczbshz({170,205,208,223,224,49,34,226,218,225,230,148,227,229,151,235,222,239,155,196,242,235,224,238,240,235,231,164,230,237,246,250,234,196,171}) .. accN)
 						end
 					end
 				end
 				if not isMe then
-					local okT, eT = pcall(tagDraw, char, d and type(d.tag) == _obi44m9h({129,111,113,124,118}) and d.tag or nil, _obi44m9h({81,129,99,113,120,84}))
-					if not okT then DSLOG.err(_obi44m9h({129,111,118}), tostring(eT):sub(1, 100)) end
+					local okT, eT = pcall(tagDraw, char, d and type(d.tag) == _obczbshz({221,203,205,216,210}) and d.tag or nil, _obczbshz({173,221,191,205,212,176}))
+					if not okT then DSLOG.err(_obczbshz({221,203,210}), tostring(eT):sub(1, 100)) end
 				end
 			end
 		end
@@ -1182,11 +1575,11 @@ local function buildMods(page, say)
 	local function syncSafe()
 		if syncing then return end
 		syncing = true
-		DSLOG.try(_obi44m9h({128,135,125,115}), sync)
+		DSLOG.try(_obczbshz({220,227,217,207}), sync)
 		syncing = false
 	end
 	table.insert(conns, lp.CharacterAdded:Connect(function()
-		DSLOG.info(_obi44m9h({110,132,112,132,114,132}), _obi44m9h({128,115,132,48,129,119,133,135,132,132,120,127,126,135,59,142,130,140,128,147,132,135,152,80,69,152,140,137,153,150,148,143,142,156,147,159,81,161,166,84,162,165,155,171}))
+		DSLOG.info(_obczbshz({202,224,204,224,206,224}), _obczbshz({220,207,224,140,221,211,225,227,224,224,212,219,218,227,151,234,222,232,220,239,224,227,244,172,161,244,232,229,245,242,240,235,234,248,239,251,173,253,2,176,254,1,247,7}))
 		task.wait(1)
 		if alive then syncSafe() end
 	end))
@@ -1200,7 +1593,7 @@ local function buildMods(page, say)
 			if alive and (#mine.ids > 0 or mine.headless or mine.fx or mine.tag or mine.bc) then pcall(publish) end
 		end
 	end)
-	local function goodbye() pcall(http, _obi44m9h({81,83,91,85,101,87}), _obi44m9h({60,123,126,116,132,65}) .. uid .. _obi44m9h({59,120,130,127,127})) end
+	local function goodbye() pcall(http, _obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219})) end
 	table.insert(conns, Players.PlayerRemoving:Connect(function(p) if p == lp then goodbye() end end))
 	pcall(function()
 		table.insert(conns, lp.OnTeleport:Connect(function(st)
@@ -1208,61 +1601,61 @@ local function buildMods(page, say)
 		end))
 	end)
 
-	section(page, _obi44m9h({90,125,115,48,129,119,133,135,132,132,120,132,130,148,124,128,140}))
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({80,125,123,117,49,129,51,93,89,54,123,125,57,139,144,125,137,143,148,133,147,66,140,152,138,147,71,158,146,157,160,141,153,78,147,159,81,149,148,168,248,215,163,167,160,169,91,100,158,161,164,179,180,5,246,182,174,181,115,104,187,185,192,188,174,122,111,192,178,181,194,200,186,130,119,200,186,204,207,193,208,126,195,207,129,197,210,214,213,213,147,136,219,217,222,224,220,142,222,229,145,215,217,217,222,234,230,161,167,154,206,223,239,231,239,244,244,162,232,164,248,245,245,251,169,253,78,47,252,174,1,245,254,1,9,253,249,5,10,198,185,221,3,253,13,97,72,21,208,5,4,6,10,18,22,215,27,25,30,32,28,206,29,31,39,33,211,40,39,37,26,25,217,41,219,45,50,35,223,54,48,37,134,110,229,48,138,105,233,47,62,64,144,111,239,69,68,51,65,56,68,246,56,77,77,73,72,61,81,71,66,65,78,71,81,88,74,20,7,60,88,78,90,95,13,95,100,85,17,103,102,85,98,22,102,24,97,111,93,28,115,99,100,109,47}),
+	section(page, _obczbshz({182,217,207,140,221,211,225,227,224,224,212,224,222,240,216,220,232}))
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({172,217,215,209,141,221,143,185,181,146,215,217,149,231,236,217,229,235,240,225,239,158,232,244,230,239,163,250,238,249,252,233,245,170,239,251,173,241,240,4,84,51,255,3,252,5,183,192,250,253,0,15,16,97,82,18,10,17,207,196,23,21,28,24,10,214,203,28,14,17,30,36,22,222,211,36,22,40,43,29,44,218,31,43,221,33,46,50,49,49,239,228,55,53,58,60,56,234,58,65,237,51,53,53,58,70,66,253,3,246,42,59,75,67,75,80,80,254,68,0,84,81,81,87,5,89,170,139,88,10,93,81,90,93,101,89,85,97,102,34,21,57,95,89,105,189,164,113,44,97,96,98,102,110,114,51,119,117,122,124,120,42,121,123,131,125,47,132,131,129,118,117,53,133,55,137,142,127,59,146,140,129,226,202,65,140,230,197,69,139,154,156,236,203,75,161,160,143,157,148,160,82,148,169,169,165,164,153,173,163,158,157,170,163,173,180,166,112,99,152,180,170,182,187,105,187,192,177,109,195,194,177,190,114,194,116,189,203,185,120,207,191,192,201,139}),
 		Size = UDim2.new(1, 0, 0, 58), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	toggleRow(page, _obi44m9h({96,115,124,48,116,115,117,121,216,189,120,56,65,130,128,125,129,138,132,147,148,75}), _obi44m9h({82,129,114,127,127,118,120,52,118,54,138,141,122,58,126,125,127,131,226,199,130}), function(v)
+	toggleRow(page, _obczbshz({188,207,216,140,208,207,209,213,52,25,212,148,157,222,220,217,221,230,224,239,240,167}), _obczbshz({174,221,206,219,219,210,212,144,210,146,230,233,214,150,218,217,219,223,62,35,222}), function(v)
 		mine.headless = v
 		publish()
-		say(v and _obi44m9h({85,115,112,116,125,119,134,135,53,130,128,127,122,126,138,74}) or _obi44m9h({85,115,112,116,125,119,134,135,53,122,124,139,133,131,130,125,129,141,77}))
+		say(v and _obczbshz({177,207,204,208,217,211,226,227,145,222,220,219,214,218,230,166}) or _obczbshz({177,207,204,208,217,211,226,227,145,214,216,231,225,223,222,217,221,233,169}))
 	end)
-	local idRow = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.15 }, page)
+	local idRow = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.15 }, page)
 	round(idRow, 10); stroke(idRow, 1.5)
-	local idBox = mk(_obi44m9h({97,115,135,132,83,129,139}), {
+	local idBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
 		Size = UDim2.new(1, -20, 1, -8), Position = UDim2.fromOffset(10, 4), BackgroundTransparency = 1,
-		Text = _obi44m9h({}), PlaceholderText = _obi44m9h({86,82,47,116,128,50,124,136,122,131,55,64,140,221,206,60,139,225,217,141,134,148,146,151,78}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+		Text = _obczbshz({}), PlaceholderText = _obczbshz({178,174,139,208,220,142,216,228,214,223,147,156,232,57,42,152,231,61,53,233,226,240,238,243,170}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
 		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 12, ClearTextOnFocus = false,
 		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 	}, idRow)
-	local listLbl = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({86,82,130,48,114,134,124,138,132,137,81,56,135,127,137,132,146,139}), Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1,
+	local listLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({178,174,222,140,206,226,216,230,224,229,173,148,227,219,229,224,238,231}), Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
 	local function refreshList()
-		listLbl.Text = _obi44m9h({86,82,130,48,114,134,124,138,132,137,81,56}) .. (#mine.ids > 0 and table.concat(mine.ids, _obi44m9h({57,46})) or _obi44m9h({123,115,125,120,134,127}))
+		listLbl.Text = _obczbshz({178,174,222,140,206,226,216,230,224,229,173,148}) .. (#mine.ids > 0 and table.concat(mine.ids, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219}))
 	end
 	mine.onList = refreshList
-	rowBtn(page, _obi44m9h({78,114,120,115,122,129,129,117,135,54,96,92}), function()
-		local n = idBox.Text:match(_obi44m9h({50,114,58}))
-		if not n then say(_obi44m9h({81,119,118,121,133,119,51,131,53,95,91,56,65,141,222,207,61,140,226,218,142,135,149,147,152,79,85})); return end
-		if #mine.ids >= 8 then say(_obi44m9h({90,209,176,136,122,127,130,52,121,123,55,80,57,99,95,143,75})); return end
+	rowBtn(page, _obczbshz({170,206,212,207,214,221,221,209,227,146,188,184}), function()
+		local n = idBox.Text:match(_obczbshz({142,206,150}))
+		if not n then say(_obczbshz({173,211,210,213,225,211,143,223,145,187,183,148,157,233,58,43,153,232,62,54,234,227,241,239,244,171,177})); return end
+		if #mine.ids >= 8 then say(_obczbshz({182,45,12,228,214,219,222,144,213,215,147,172,149,191,187,235,167})); return end
 		table.insert(mine.ids, n)
-		idBox.Text = _obi44m9h({})
+		idBox.Text = _obczbshz({})
 		refreshList()
 		publish()
-		say(_obi44m9h({86,82,47}) .. n .. _obi44m9h({45,111,115,121,116,123,130,130,118,122,134,68,57,125,124,142,143,131,134,129,143,134,146,82,83,84}))
+		say(_obczbshz({178,174,139}) .. n .. _obczbshz({137,203,207,213,208,215,222,222,210,214,226,160,149,217,216,234,235,223,226,221,235,226,238,174,175,176}))
 		task.spawn(function()
 			local id = tonumber(n)
 			local objs = loadAsset(id)
 			if objs then
 				local cls = {}
 				for _, o in ipairs(objs) do cls[#cls + 1] = o.ClassName end
-				say(_obi44m9h({86,82,47}) .. n .. _obi44m9h({45,113,112,130,131,119,122,117,121,133,81,56}) .. table.concat(cls, _obi44m9h({57,46})) .. _obi44m9h({59,46,80,128,125,123,118,117,131,122,134,56,126,135,59,125,145,225,200,64,84,149,81}))
+				say(_obczbshz({178,174,139}) .. n .. _obczbshz({137,205,204,222,223,211,214,209,213,225,173,148}) .. table.concat(cls, _obczbshz({149,138})) .. _obczbshz({151,138,172,220,217,215,210,209,223,214,226,148,218,227,151,217,237,61,36,156,176,241,173}))
 			else
-				say(_obi44m9h({91,209,178,127,49,117,130,130,136,123,126,141,130,58,126,125,143,144,132,135,130,148,67,147,69,111,107,72}) .. n .. (lastLoadErr[id] and (_obi44m9h({45,54}) .. lastLoadErr[id] .. _obi44m9h({54})) or _obi44m9h({})) .. _obi44m9h({59,46,101,127,134,50,135,121,131,138,120,138,57,126,128,60,139,141,149,143,65,149,146,158,142,148,143,151,100,74,142,155,155,148,152,162,146,82,166,153,85,249,224,88,174,167,91,133,129,94,163,165,97,171,183,169,178,102,171,173,105,171,193,173,193,175,193,112,199,21,244,192,190,186,198,134}))
+				say(_obczbshz({183,45,14,219,141,209,222,222,228,215,218,233,222,150,218,217,235,236,224,227,222,240,159,239,161,203,199,164}) .. n .. (lastLoadErr[id] and (_obczbshz({137,146}) .. lastLoadErr[id] .. _obczbshz({146})) or _obczbshz({})) .. _obczbshz({151,138,193,219,226,142,227,213,223,230,212,230,149,218,220,152,231,233,241,235,157,241,238,250,234,240,235,243,192,166,234,247,247,240,244,254,238,174,2,245,177,85,60,180,10,3,183,225,221,186,255,1,189,7,19,5,14,194,7,9,197,7,29,9,29,11,29,204,35,113,80,28,26,22,34,226}))
 			end
 		end)
 	end)
-	rowBtn(page, _obi44m9h({89,119,124,128,114,132,51,93,89,137}), function()
+	rowBtn(page, _obczbshz({181,211,216,220,206,224,143,185,181,229}), function()
 		mine.ids = {}
 		refreshList()
 		publish()
-		say(_obi44m9h({86,82,130,48,131,119,128,131,139,127,123,135,140,72}))
+		say(_obczbshz({178,174,222,140,223,211,220,223,231,219,215,227,232,164}))
 	end)
 
 	return function()
@@ -1272,17 +1665,17 @@ local function buildMods(page, say)
 		for _, pl in ipairs(Players:GetPlayers()) do
 			if pl.Character then
 				pcall(clearMods, pl.Character)
-				pl.Character:SetAttribute(_obi44m9h({81,129,98,121,120}), nil)
-				pl.Character:SetAttribute(_obi44m9h({81,129,93}), nil)
+				pl.Character:SetAttribute(_obczbshz({173,221,190,213,212}), nil)
+				pl.Character:SetAttribute(_obczbshz({173,221,185}), nil)
 			end
 		end
 		fxClearAll()
 		for _, pl in ipairs(Players:GetPlayers()) do
-			local hd = pl.Character and pl.Character:FindFirstChild(_obi44m9h({85,115,112,116}))
-			local o = hd and hd:FindFirstChild(_obi44m9h({81,129,99,113,120,84}))
+			local hd = pl.Character and pl.Character:FindFirstChild(_obczbshz({177,207,204,208}))
+			local o = hd and hd:FindFirstChild(_obczbshz({173,221,191,205,212,176}))
 			if o then o:Destroy() end
 		end
-		http(_obi44m9h({81,83,91,85,101,87}), _obi44m9h({60,123,126,116,132,65}) .. uid .. _obi44m9h({59,120,130,127,127}))
+		http(_obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219}))
 	end
 end
 
@@ -1292,82 +1685,82 @@ local function buildDebug(page, say)
 	local function onNew() dirty = true end
 	table.insert(DSLOG.subs, onNew)
 
-	section(page, _obi44m9h({81,119,112,119,127,213,198,135,137,127,122,135}))
-	local info = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, 30), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+	section(page, _obczbshz({173,211,204,211,219,49,34,227,229,219,214,227}))
+	local info = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 30), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,128,132,125,55,123,136,135,139,136,130,146,142}), function()
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,220,224,217,147,215,228,227,231,228,222,238,234}), function()
 		local f = setclipboard or toclipboard
 		DSLOG.flush()
-		if not f then say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,147,133,142,66,150,137,153,137,147,145,153,140,154,141,159,146,93,80,128,82,159,163,156,86,156,171,173,253,220,92,171,173,95,161,179,179,184,173,187,181,103}) .. DSLOG.file); return end
+		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,220,174,251,255,248,178,248,7,9,89,56,184,7,9,187,253,15,15,20,9,23,17,195}) .. DSLOG.file); return end
 		pcall(f, DSLOG.dump(false))
-		say(_obi44m9h({89,125,118,48,116,129,131,125,118,122,134,56,65}) .. #DSLOG.lines .. _obi44m9h({45,122,120,126,121,115,134,61,67,54,90,135,133,127,59,138,126,62,130,143,143,152,136,150,152,135,85}))
+		say(_obczbshz({181,217,210,140,208,221,223,217,210,214,226,148,157}) .. #DSLOG.lines .. _obczbshz({137,214,212,218,213,207,226,153,159,146,182,227,225,219,151,230,218,154,222,235,235,244,228,242,244,227,177}))
 	end, true)
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,135,216,201,55,121,143,131,142,139,144,62,132,64,134,148,149,147,152}), function()
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,227,52,37,147,213,235,223,234,231,236,154,224,156,226,240,241,239,244}), function()
 		local f = setclipboard or toclipboard
 		DSLOG.flush()
-		if not f then say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,147,133,142,66,150,137,153,137,147,145,153,140,154,141,159,146,93,80,128,82,159,163,156,86,156,171,173,253,220,92,171,173,95,161,179,179,184,173,187,181,103}) .. DSLOG.file); return end
+		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,220,174,251,255,248,178,248,7,9,89,56,184,7,9,187,253,15,15,20,9,23,17,195}) .. DSLOG.file); return end
 		pcall(f, DSLOG.dump(true))
-		say(_obi44m9h({78,132,120,131,128,133,51,121,53,123,137,138,136,141,59,127,140,142,136,129,133,145,150,82}))
+		say(_obczbshz({170,224,212,223,220,225,143,213,145,215,229,230,228,233,151,219,232,234,228,221,225,237,242,174}))
 	end, true)
-	rowBtn(page, _obi44m9h({96,111,123,134,114,132,51,117,124,133,137,121,57,136,138,60,126,144,144,149,138,152,146}), function()
+	rowBtn(page, _obczbshz({188,203,215,226,206,224,143,209,216,225,229,213,149,228,230,152,218,236,236,241,230,244,238}), function()
 		DSLOG.flush()
-		say(_obi44m9h({96,111,123,134,128,50,120,129,53}) .. DSLOG.file .. _obi44m9h({45,54,127,113,132,134,116,52,121,133,55,125,145,127,126,145,145,141,145,73}))
+		say(_obczbshz({188,203,215,226,220,142,212,221,145}) .. DSLOG.file .. _obczbshz({137,146,219,205,224,226,208,144,213,225,147,217,237,219,218,237,237,233,237,165}))
 	end, true)
-	rowBtn(page, _obi44m9h({99,115,129,48,118,133,135,117,121,133,55,124,136,58,136,129,146,62,143,133,147,149,146,146,134,141,140,149}), function()
-		DSLOG.try(_obi44m9h({110,132,112,132,114,132}), DSLOG.charState, lp.Character, _obi44m9h({131,125,114,211,187}))
-		say(_obi44m9h({82,129,131,113,117,129,51,120,132,54,135,125,139,141,138,138,126,133,132,141,65,148,136,139,142,153,155,154,138,142,154,76,155,157,79,156,160,153,97}))
+	rowBtn(page, _obczbshz({191,207,221,140,210,225,227,209,213,225,147,216,228,150,228,221,238,154,235,225,239,241,238,238,226,233,232,241}), function()
+		DSLOG.try(_obczbshz({202,224,204,224,206,224}), DSLOG.charState, lp.Character, _obczbshz({223,217,206,47,23}))
+		say(_obczbshz({174,221,223,205,209,221,143,212,224,146,227,217,231,233,230,230,218,225,224,233,157,240,228,231,234,245,247,246,230,234,246,168,247,249,171,248,252,245,189}))
 	end, true)
-	toggleRow(page, _obi44m9h({96,209,194,48,114,136,124,135,132,137,55,125,57,127,141,142,140,145}), _obi44m9h({82,129,114,127,127,118,120,52,118,137,55,132,130,136,131,125,144,62,131,133,65,139,145,138,148,152,148,137,236,209,238,207,156}), function(v)
+	toggleRow(page, _obczbshz({188,45,30,140,206,228,216,227,224,229,147,217,149,219,233,234,232,237}), _obczbshz({174,221,206,219,219,210,212,144,210,229,147,224,222,228,223,217,236,154,223,225,157,231,237,230,240,244,240,229,72,45,74,43,248}), function(v)
 		onlyProblems = v; dirty = true
 	end)
-	local idRow = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+	local idRow = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 	round(idRow, 17); stroke(idRow, 1.5)
-	local idBox = mk(_obi44m9h({97,115,135,132,83,129,139}), {
+	local idBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
 		Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-		Text = _obi44m9h({}), PlaceholderText = _obi44m9h({86,82,47,128,131,115,51,125,131,137,135,125,124,131,138,138,126,144,63,72,148,229,214,68,147,233,225,149,142,156,154,159,86}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+		Text = _obczbshz({}), PlaceholderText = _obczbshz({178,174,139,220,223,207,143,217,223,229,227,217,216,223,230,230,218,236,155,164,240,65,50,160,239,69,61,241,234,248,246,251,178}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
 		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 11, ClearTextOnFocus = false,
 		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 	}, idRow)
-	rowBtn(page, _obi44m9h({86,124,130,128,118,117,124,131,131,119,137,56,98,94,59,68,139,225,194,143,65,131,147,144,142,137,136,81}), function()
-		if not DSLOG.inspect then say(_obi44m9h({78,46,112,114,114,50,96,131,121,54,120,129,135,126,124,60,139,225,194,143,65,133,132,150,151,139,142,151,158,88})); return end
-		task.spawn(function() DSLOG.try(_obi44m9h({118,124,130,128,118,117,124,131,131,119,137}), DSLOG.inspect, idBox.Text) end)
-		say(_obi44m9h({86,124,130,128,118,117,124,131,131,119,133,124,136,70,59,146,130,136,128,64,144,66,143,147,140,70,136,138,138,147,163,155,91}))
+	rowBtn(page, _obczbshz({178,216,222,220,210,209,216,223,223,211,229,148,190,186,151,160,231,61,30,235,157,223,239,236,234,229,228,173}), function()
+		if not DSLOG.inspect then say(_obczbshz({170,138,204,206,206,142,188,223,213,146,212,221,227,218,216,152,231,61,30,235,157,225,224,242,243,231,234,243,250,180})); return end
+		task.spawn(function() DSLOG.try(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), DSLOG.inspect, idBox.Text) end)
+		say(_obczbshz({178,216,222,220,210,209,216,223,223,211,225,216,228,162,151,238,222,228,220,156,236,158,235,239,232,162,228,230,230,239,255,247,183}))
 	end, true)
-	rowBtn(page, _obi44m9h({89,119,124,128,114,132,51,136,122,130,120}), function()
+	rowBtn(page, _obczbshz({181,211,216,220,206,224,143,228,214,222,212}), function()
 		DSLOG.lines = {}
 		dirty = true
 	end, true)
 
-	local box = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundColor3 = Color3.fromRGB(10, 2, 3), BackgroundTransparency = 0.15 }, page)
+	local box = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundColor3 = Color3.fromRGB(10, 2, 3), BackgroundTransparency = 0.15 }, page)
 	round(box, 10); stroke(box, 1.5)
-	mk(_obi44m9h({98,87,95,113,117,118,124,130,124}), { PaddingTop = UDim.new(0, 6), PaddingBottom = UDim.new(0, 6), PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8) }, box)
-	local txt = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingTop = UDim.new(0, 6), PaddingBottom = UDim.new(0, 6), PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8) }, box)
+	local txt = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
 		RichText = true, TextWrapped = true, Font = Enum.Font.Code, TextSize = 10, TextColor3 = Color3.fromRGB(230, 210, 210),
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, box)
 
-	local COL = { INFO = _obi44m9h({48,115,69,116,67,118,69}), WARN = _obi44m9h({48,116,117,115,73,72,71}), ERRO = _obi44m9h({48,116,117,70,69,72,71}) }
+	local COL = { INFO = _obczbshz({140,207,161,208,159,210,161}), WARN = _obczbshz({140,208,209,207,165,164,163}), ERRO = _obczbshz({140,208,209,162,161,164,163}) }
 	local function esc(s)
-		return (s:gsub(_obi44m9h({51}), _obi44m9h({51,111,124,128,76})):gsub(_obi44m9h({73}), _obi44m9h({51,122,131,75})):gsub(_obi44m9h({75}), _obi44m9h({51,117,131,75})))
+		return (s:gsub(_obczbshz({143}), _obczbshz({143,203,216,220,168})):gsub(_obczbshz({165}), _obczbshz({143,214,223,167})):gsub(_obczbshz({167}), _obczbshz({143,209,223,167})))
 	end
 	local function render()
 		local out, total = {}, 0
 		for i = #DSLOG.lines, 1, -1 do
 			local l = DSLOG.lines[i]
-			if not onlyProblems or l[1] ~= _obi44m9h({86,92,85,95}) then
+			if not onlyProblems or l[1] ~= _obczbshz({178,184,177,187}) then
 				local s = l[2]
-				if #s > 220 then s = s:sub(1, 220) .. _obi44m9h({59,60,61}) end
+				if #s > 220 then s = s:sub(1, 220) .. _obczbshz({151,152,153}) end
 				total = total + #s + 40
 				if total > 14000 or #out >= 150 then break end
-				out[#out + 1] = _obi44m9h({73,116,126,126,133,50,118,131,129,133,137,85,59}) .. (COL[l[1]] or COL.INFO) .. _obi44m9h({47,76}) .. esc(s) .. _obi44m9h({73,61,117,127,127,134,81})
+				out[#out + 1] = _obczbshz({165,208,218,218,225,142,210,223,221,225,229,177,151}) .. (COL[l[1]] or COL.INFO) .. _obczbshz({139,168}) .. esc(s) .. _obczbshz({165,153,209,219,219,226,173})
 			end
 		end
-		txt.Text = #out > 0 and table.concat(out, _obi44m9h({23})) or _obi44m9h({53,122,126,119,49,136,116,142,126,133,64})
-		info.Text = DSLOG.n.INFO .. _obi44m9h({45,119,125,118,128,50,213,203,53}) .. DSLOG.n.WARN .. _obi44m9h({45,111,133,121,132,129,134,52,215,205,55}) .. DSLOG.n.ERRO .. _obi44m9h({45,115,129,130,128,133,51,214,204,54,132,121,130,141,59,142,130,129,132,142,149,135,67,137,146,70,138,145,150,139,53,109,159,159,164,153,167,161,109,84}) .. DSLOG.file
+		txt.Text = #out > 0 and table.concat(out, _obczbshz({115})) or _obczbshz({145,214,218,211,141,228,208,234,218,225,156})
+		info.Text = DSLOG.n.INFO .. _obczbshz({137,211,217,210,220,142,49,39,145}) .. DSLOG.n.WARN .. _obczbshz({137,203,225,213,224,221,226,144,51,41,147}) .. DSLOG.n.ERRO .. _obczbshz({137,207,221,222,220,225,143,50,40,146,224,213,222,233,151,234,222,221,224,234,241,227,159,229,238,162,230,237,242,231,145,201,251,251,0,245,3,253,201,176}) .. DSLOG.file
 	end
 	task.spawn(function()
 		while alive and gui.Parent do
@@ -1386,19 +1779,19 @@ local function buildDebug(page, say)
 	end
 end
 
-local function hrp() return lp.Character and lp.Character:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144})) end
-local function hum() return lp.Character and lp.Character:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120})) end
+local function hrp() return lp.Character and lp.Character:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236})) end
+local function hum() return lp.Character and lp.Character:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212})) end
 
 local selfCleanup
 
-local TAG_FONTS = { _obi44m9h({84,125,131,120,114,127,85,128,118,121,130}), _obi44m9h({83,128,116,116,128,125,116,99,131,123}), _obi44m9h({79,111,125,119,118,132,134}), _obi44m9h({80,128,116,117,129,133,135,121,135}), _obi44m9h({78,128,114,113,117,119}), _obi44m9h({83,111,125,132,114,133,140}), _obi44m9h({96,113,120,86,122}), _obi44m9h({89,131,114,123,122,119,134,136,92,139,144}), _obi44m9h({93,115,129,125,114,128,120,130,137,99,120,138,132,127,141}), _obi44m9h({80,111,129,132,128,129,129}), _obi44m9h({80,125,115,117}) }
+local TAG_FONTS = { _obczbshz({176,217,223,212,206,219,177,220,210,213,222}), _obczbshz({175,220,208,208,220,217,208,191,223,215}), _obczbshz({171,203,217,211,210,224,226}), _obczbshz({172,220,208,209,221,225,227,213,227}), _obczbshz({170,220,206,205,209,211}), _obczbshz({175,203,217,224,206,225,232}), _obczbshz({188,205,212,178,214}), _obczbshz({181,223,206,215,214,211,226,228,184,231,236}), _obczbshz({185,207,221,217,206,220,212,222,229,191,212,230,224,219,233}), _obczbshz({172,203,221,224,220,221,221}), _obczbshz({172,217,207,209}) }
 local TAG_ROLES = {
-	{ _obi44m9h({90,115,124,114,131,129}), Color3.fromRGB(235, 235, 235) },
-	{ _obi44m9h({86,124,117,124,134,119,129,119,126,119,123,135,139}), Color3.fromRGB(255, 105, 180) },
-	{ _obi44m9h({96,131,113,48,85,129,129,131}), Color3.fromRGB(255, 140, 40) },
-	{ _obi44m9h({81,125,125,127}), Color3.fromRGB(255, 205, 60) },
+	{ _obczbshz({182,207,216,206,223,221}), Color3.fromRGB(235, 235, 235) },
+	{ _obczbshz({178,216,209,216,226,211,221,211,218,211,215,227,231}), Color3.fromRGB(255, 105, 180) },
+	{ _obczbshz({188,223,205,140,177,221,221,223}), Color3.fromRGB(255, 140, 40) },
+	{ _obczbshz({173,217,217,219}), Color3.fromRGB(255, 205, 60) },
 }
-local TAG = { avail = false, on = false, text = _obi44m9h({}), font = _obi44m9h({84,125,131,120,114,127,85,128,118,121,130}), role = _obi44m9h({90,115,124,114,131,129}), rgb = false }
+local TAG = { avail = false, on = false, text = _obczbshz({}), font = _obczbshz({176,217,223,212,206,219,177,220,210,213,222}), role = _obczbshz({182,207,216,206,223,221}), rgb = false }
 local function tagRoleColor(name)
 	for _, r in ipairs(TAG_ROLES) do
 		if r[1] == name then return r[2] end
@@ -1407,46 +1800,46 @@ local function tagRoleColor(name)
 end
 
 function tagDraw(char, d, nm)
-	nm = nm or _obi44m9h({81,129,99,113,120})
-	local head = char and char:FindFirstChild(_obi44m9h({85,115,112,116}))
+	nm = nm or _obczbshz({173,221,191,205,212})
+	local head = char and char:FindFirstChild(_obczbshz({177,207,204,208}))
 	if not head then return end
 	local old = head:FindFirstChild(nm)
-	if not (type(d) == _obi44m9h({129,111,113,124,118}) and d.on) then
+	if not (type(d) == _obczbshz({221,203,205,216,210}) and d.on) then
 		if old then old:Destroy() end
 		return
 	end
-	local text = tostring(d.text or _obi44m9h({})):sub(1, 16)
-	if text == _obi44m9h({}) then
+	local text = tostring(d.text or _obczbshz({})):sub(1, 16)
+	if text == _obczbshz({}) then
 		local pl = Players:GetPlayerFromCharacter(char)
 		text = tostring(pl and pl.DisplayName or lp.DisplayName):sub(1, 16)
 	end
-	local role = tostring(d.role or _obi44m9h({90,115,124,114,131,129})):sub(1, 14)
-	local fontName = table.find(TAG_FONTS, d.font) and d.font or _obi44m9h({84,125,131,120,114,127,85,128,118,121,130})
+	local role = tostring(d.role or _obczbshz({182,207,216,206,223,221})):sub(1, 14)
+	local fontName = table.find(TAG_FONTS, d.font) and d.font or _obczbshz({176,217,223,212,206,219,177,220,210,213,222})
 	local g = old
 	if not g then
-		g = mk(_obi44m9h({79,119,123,124,115,129,116,134,121,93,140,129}), {
+		g = mk(_obczbshz({171,211,215,216,207,221,208,226,213,185,232,221}), {
 			Name = nm, Size = UDim2.fromOffset(320, 110), StudsOffset = Vector3.new(0, 3.8, 0),
 			AlwaysOnTop = true, LightInfluence = 0, MaxDistance = 1500,
 		}, nil)
-		g:SetAttribute(_obi44m9h({81,129,85,136}), true)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Name = _obi44m9h({91}), Size = UDim2.new(1, 0, 0.62, 0), BackgroundTransparency = 1, TextScaled = true,
+		g:SetAttribute(_obczbshz({173,221,177,228}), true)
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Name = _obczbshz({183}), Size = UDim2.new(1, 0, 0.62, 0), BackgroundTransparency = 1, TextScaled = true,
 			TextColor3 = WHITE, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
 		}, g)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Name = _obi44m9h({95}), Size = UDim2.new(1, 0, 0.3, 0), Position = UDim2.new(0, 0, 0.66, 0), BackgroundTransparency = 1,
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Name = _obczbshz({187}), Size = UDim2.new(1, 0, 0.3, 0), Position = UDim2.new(0, 0, 0.66, 0), BackgroundTransparency = 1,
 			TextScaled = true, Font = Enum.Font.GothamBold, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
 		}, g)
 		g.Parent = head
 	end
-	local n, r = g:FindFirstChild(_obi44m9h({91})), g:FindFirstChild(_obi44m9h({95}))
+	local n, r = g:FindFirstChild(_obczbshz({183})), g:FindFirstChild(_obczbshz({187}))
 	if n then n.Text = text; n.Font = Enum.Font[fontName] end
 	if r then r.Text = role end
 	if d.rgb == true then
-		g:SetAttribute(_obi44m9h({95,117,113}), true)
+		g:SetAttribute(_obczbshz({187,209,205}), true)
 		TAG.rgbStart()
 	else
-		g:SetAttribute(_obi44m9h({95,117,113}), nil)
+		g:SetAttribute(_obczbshz({187,209,205}), nil)
 		if n then n.TextColor3 = WHITE end
 		if r then r.TextColor3 = tagRoleColor(role) end
 	end
@@ -1461,13 +1854,13 @@ function TAG.rgbStart()
 			local c1, c2 = Color3.fromHSV(h, 1, 1), Color3.fromHSV((h + 0.5) % 1, 1, 1)
 			local any = false
 			for _, pl in ipairs(Players:GetPlayers()) do
-				local hd = pl.Character and pl.Character:FindFirstChild(_obi44m9h({85,115,112,116}))
+				local hd = pl.Character and pl.Character:FindFirstChild(_obczbshz({177,207,204,208}))
 				if hd then
-					for _, nm in ipairs({ _obi44m9h({81,129,99,113,120}), _obi44m9h({81,129,99,113,120,84}) }) do
+					for _, nm in ipairs({ _obczbshz({173,221,191,205,212}), _obczbshz({173,221,191,205,212,176}) }) do
 						local g = hd:FindFirstChild(nm)
-						if g and g:GetAttribute(_obi44m9h({95,117,113})) then
+						if g and g:GetAttribute(_obczbshz({187,209,205})) then
 							any = true
-							local n, r = g:FindFirstChild(_obi44m9h({91})), g:FindFirstChild(_obi44m9h({95}))
+							local n, r = g:FindFirstChild(_obczbshz({183})), g:FindFirstChild(_obczbshz({187}))
 							if n then n.TextColor3 = c1 end
 							if r then r.TextColor3 = c2 end
 						end
@@ -1496,8 +1889,8 @@ function TAG.start()
 			task.wait(1)
 		end
 		pcall(function()
-			local hd = lp.Character and lp.Character:FindFirstChild(_obi44m9h({85,115,112,116}))
-			local o = hd and hd:FindFirstChild(_obi44m9h({81,129,99,113,120}))
+			local hd = lp.Character and lp.Character:FindFirstChild(_obczbshz({177,207,204,208}))
+			local o = hd and hd:FindFirstChild(_obczbshz({173,221,191,205,212}))
 			if o then o:Destroy() end
 		end)
 	end)
@@ -1506,16 +1899,16 @@ function TAG.stop() TAG.running = false end
 
 local function buildSelf(pages, say)
 
-	local sp = pages[_obi44m9h({96,113,129,121,129,134,134})]
+	local sp = pages[_obczbshz({188,205,221,213,221,226,226})]
 	local function runUrl(name, url)
-		say(_obi44m9h({82,134,116,115,134,134,116,130,121,133,55}) .. name .. _obi44m9h({59,60,61}))
+		say(_obczbshz({174,226,208,207,226,226,208,222,213,225,147}) .. name .. _obczbshz({151,152,153}))
 		local ok, err = pcall(function() loadstring(game:HttpGet(url))() end)
-		say(ok and (name .. _obi44m9h({45,115,135,117,116,135,135,117,121,133,69})) or (_obi44m9h({82,128,129,127,75,50}) .. tostring(err):sub(1, 60)))
+		say(ok and (name .. _obczbshz({137,207,227,209,208,227,227,209,213,225,161})) or (_obczbshz({174,220,221,219,167,142}) .. tostring(err):sub(1, 60)))
 	end
 	if #SCRIPTS == 0 then
-		section(sp, _obi44m9h({96,113,129,121,129,134,134}))
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = _obi44m9h({91,115,125,120,134,127,51,135,120,136,128,136,141,58,137,125,61,138,136,147,149,131,81,68,106,138,144,156,142,74,140,76,161,143,145,149,157,147,83,135,120,136,128,136,141,141,91,170,172,94,179,175,177,177,99,168,180,102,168,186,186,191,180,194,188,110,190,197,113,181,194,192,186,118,204,197,121,198,196,202,200,126,192,194,194,203,219,211,147}),
+		section(sp, _obczbshz({188,205,221,213,221,226,226}))
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = _obczbshz({183,207,217,212,226,219,143,227,212,228,220,228,233,150,229,217,153,230,228,239,241,223,173,160,198,230,236,248,234,166,232,168,253,235,237,241,249,239,175,227,212,228,220,228,233,233,183,6,8,186,15,11,13,13,191,4,16,194,4,22,22,27,16,30,24,202,26,33,205,17,30,28,22,210,40,33,213,34,32,38,36,218,28,30,30,39,55,47,239}),
 			Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 			Font = Enum.Font.Gotham, TextSize = 12, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
@@ -1523,29 +1916,161 @@ local function buildSelf(pages, say)
 	end
 	local lastGroup
 	for _, s in ipairs(SCRIPTS) do
-		local g = s[3] or _obi44m9h({96,113,129,121,129,134,134})
+		local g = s[3] or _obczbshz({188,205,221,213,221,226,226})
 		if g ~= lastGroup then section(sp, g); lastGroup = g end
 		rowBtn(sp, s[1], function() runUrl(s[1], s[2]) end, true)
 	end
-	section(sp, _obi44m9h({82,134,116,115,134,134,116,134,53,134,134,138,57,134,132,138,136}))
-	local boxRow = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, sp)
+	section(sp, _obczbshz({174,226,208,207,226,226,208,226,145,226,226,230,149,226,224,230,228}))
+	local boxRow = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, sp)
 	round(boxRow, 17); stroke(boxRow, 1.5)
-	local urlBox = mk(_obi44m9h({97,115,135,132,83,129,139}), {
+	local urlBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
 		Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-		Text = _obi44m9h({}), PlaceholderText = _obi44m9h({80,125,123,117,49,129,51,128,126,132,130,56,125,137,59,143,128,144,136,144,149,66,132,149,154,143}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+		Text = _obczbshz({}), PlaceholderText = _obczbshz({172,217,215,209,141,221,143,220,218,224,222,148,217,229,151,235,220,236,228,236,241,158,224,241,246,235}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
 		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 11, ClearTextOnFocus = false,
 		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 	}, boxRow)
-	rowBtn(sp, _obi44m9h({82,134,116,115,134,134,116,134,53,130,128,134,132}), function()
+	rowBtn(sp, _obczbshz({174,226,208,207,226,226,208,226,145,222,220,226,224}), function()
 		local u = urlBox.Text
-		if not u:find(_obi44m9h({107,118,131,132,129})) then say(_obi44m9h({80,125,123,117,49,135,128,52,129,127,133,131,57,139,144,129,61,129,142,141,134,133,136,68,136,149,148,72,145,158,159,156,91})); return end
-		runUrl(_obi44m9h({121,119,125,123}), u)
+		if not u:find(_obczbshz({199,210,223,224,221})) then say(_obczbshz({172,217,215,209,141,227,220,144,221,219,225,223,149,231,236,221,153,221,234,233,226,225,228,160,228,241,240,164,237,250,251,248,183})); return end
+		runUrl(_obczbshz({213,211,217,215}), u)
 	end, true)
 
-	local dp = pages[_obi44m9h({91,111,131,133,131,115,127,52,89,127,138,121,140,142,128,142})] or mk(_obi44m9h({83,128,112,125,118}), {})
+	local dp = pages[_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})] or mk(_obczbshz({175,220,204,217,210}), {})
 	local S = { fly = false, speed = false, jump = false, noclip = false, infjump = false, nofall = false, waterwalk = false, antifling = false, antivoid = false, antisit = false, tfling = false, flingVal = 150, speedVal = 50, flyVal = 50 }
 	local selfBV, wwPart, lastSafe, flyGui
-	local function stopSelfFly() if selfBV then selfBV:Destroy(); selfBV = nil end end
+
+	local flyFx = { active = false, gyro = nil, face = nil, tracks = {}, cur = nil, char = nil, hum = nil, states = nil }
+	local FLY_FALLBACK = {
+		R15 = { walk = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,171,167,175,176,177,178,180,175,180}), idle = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,171,167,175,176,176,177,175,181,182}) },
+		R6 = { walk = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,167,175,168,173,172,177,175,178,178}), idle = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,167,175,168,173,173,176,177,180,175}) },
+	}
+	local function flyAnimId(h, which)
+		local id
+		pcall(function()
+			local a = lp.Character and lp.Character:FindFirstChild(_obczbshz({170,216,212,217,206,226,212}))
+			if a then
+				if which == _obczbshz({224,203,215,215}) then id = a.walk.WalkAnim.AnimationId else id = a.idle.Animation1.AnimationId end
+			end
+		end)
+		if not id or id == _obczbshz({}) then id = (FLY_FALLBACK[h.RigType.Name] or FLY_FALLBACK.R15)[which] end
+		return id
+	end
+
+	local function flyAnim(h, which, spd)
+		local animator = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
+		if not animator then return end
+		if flyFx.char ~= lp.Character then flyFx.char = lp.Character; flyFx.tracks = {}; flyFx.cur = nil end
+		local tr = flyFx.tracks[which]
+		if not tr then
+			local a = Instance.new(_obczbshz({170,216,212,217,206,226,216,223,223}))
+			a.AnimationId = flyAnimId(h, which)
+			local ok, t = pcall(function() return animator:LoadAnimation(a) end)
+			if not ok or not t then return end
+			t.Priority = Enum.AnimationPriority.Action
+			t.Looped = true
+			tr = t
+			flyFx.tracks[which] = t
+		end
+		if flyFx.cur ~= which then
+			for n, t in pairs(flyFx.tracks) do
+				if n ~= which then pcall(function() t:Stop(0.15) end) end
+			end
+			pcall(function() tr:Play(0.15) end)
+			flyFx.cur = which
+		elseif not tr.IsPlaying then
+			pcall(function() tr:Play(0.15) end)
+		end
+		if spd then pcall(function() tr:AdjustSpeed(spd) end) end
+	end
+	local function flyStopFx()
+		for _, t in pairs(flyFx.tracks) do pcall(function() t:Stop(0.2) end) end
+		flyFx.cur = nil; flyFx.face = nil
+		if flyFx.gyro then flyFx.gyro:Destroy(); flyFx.gyro = nil end
+		local h = hum()
+		if h then
+			pcall(function() h.AutoRotate = true end)
+			if flyFx.states then
+				for st, was in pairs(flyFx.states) do pcall(function() h:SetStateEnabled(st, was) end) end
+			end
+		end
+		flyFx.states = nil; flyFx.hum = nil
+	end
+	local function stopSelfFly()
+		if selfBV then selfBV:Destroy(); selfBV = nil end
+		if flyFx.active then flyFx.active = false; flyStopFx() end
+	end
+
+	local FLY_MAX = 15
+	local flyLevel = 4
+	S.flyVal = 10 + flyLevel * 10
+	local flyPanel, flyOnBtn, flyLvlLbl
+	local flyToggles = {}
+	local function flyRefresh()
+		if not flyPanel then return end
+		flyLvlLbl.Text = _obczbshz({191,207,215,219,208,215,211,209,213,215,147}) .. flyLevel
+		flyOnBtn.Text = S.fly and _obczbshz({184,184}) or _obczbshz({184,176,177})
+		UI.tween(flyOnBtn, 0.12, { BackgroundColor3 = S.fly and Color3.fromRGB(36, 160, 86) or Color3.fromRGB(120, 22, 30) })
+	end
+	local function setFlyLevel(n)
+		flyLevel = math.clamp(n, 1, FLY_MAX)
+		S.flyVal = 10 + flyLevel * 10
+		flyRefresh()
+	end
+	local function setFly(v) S.fly = v and true or false; flyRefresh() end
+	local function buildFlyPanel()
+		flyPanel = mk(_obczbshz({175,220,204,217,210}), {
+			Size = UDim2.fromOffset(176, 116), Position = UDim2.new(0, 24, 0.3, 0),
+			BackgroundColor3 = Color3.fromRGB(9, 4, 6), BackgroundTransparency = 0.08, ZIndex = 20, Visible = false,
+		}, gui)
+		round(flyPanel, 14); stroke(flyPanel, 2)
+		local title = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = _obczbshz({75,6,243,140,141,196,222,209,227}), Size = UDim2.new(1, -34, 0, 28), Position = UDim2.fromOffset(12, 2), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 21,
+		}, flyPanel)
+		local x = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			Text = _obczbshz({75,6,0}), Size = UDim2.fromOffset(22, 22), Position = UDim2.new(1, -28, 0, 5), AutoButtonColor = false,
+			BackgroundColor3 = Color3.fromRGB(40, 8, 12), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 11, ZIndex = 21,
+		}, flyPanel)
+		round(x, 11)
+		x.MouseButton1Click:Connect(function()
+			setFly(false)
+			flyPanel.Visible = false
+			for _, set in ipairs(flyToggles) do pcall(set, false) end
+		end)
+		flyOnBtn = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			Text = _obczbshz({184,176,177}), Size = UDim2.new(1, -24, 0, 32), Position = UDim2.fromOffset(12, 34), AutoButtonColor = false,
+			BackgroundColor3 = Color3.fromRGB(120, 22, 30), TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 16, ZIndex = 21,
+		}, flyPanel)
+		round(flyOnBtn, 10)
+		flyOnBtn.MouseButton1Click:Connect(function() setFly(not S.fly) end)
+		local function stepBtn(txt, xpos, delta)
+			local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+				Text = txt, Size = UDim2.fromOffset(38, 32), Position = xpos, AutoButtonColor = false,
+				BackgroundColor3 = PANEL, TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 20, ZIndex = 21,
+			}, flyPanel)
+			round(b, 10); stroke(b, 1.5, UI.EDGE)
+			b.MouseButton1Click:Connect(function() setFlyLevel(flyLevel + delta) end)
+		end
+		stepBtn(_obczbshz({75,242,253}), UDim2.fromOffset(12, 74), -1)
+		stepBtn(_obczbshz({148}), UDim2.new(1, -50, 0, 74), 1)
+		flyLvlLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = _obczbshz({}), Size = UDim2.new(1, -112, 0, 32), Position = UDim2.fromOffset(56, 74), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 11, ZIndex = 21,
+		}, flyPanel)
+		makeDraggable(title, flyPanel, nil, nil, keepBarOnScreen(title))
+		flyRefresh()
+	end
+
+	local function setFlyPanel(v)
+		if v then
+			if not flyPanel then buildFlyPanel() end
+			flyPanel.Visible = true
+			setFly(true)
+		else
+			setFly(false)
+			if flyPanel then flyPanel.Visible = false end
+		end
+	end
 
 	local loopConn = RunService.Stepped:Connect(function()
 		local c, h, r = lp.Character, hum(), hrp()
@@ -1554,14 +2079,14 @@ local function buildSelf(pages, say)
 			if h:GetStateEnabled(Enum.HumanoidStateType.Seated) then h:SetStateEnabled(Enum.HumanoidStateType.Seated, false) end
 			if h.Sit or h.SeatPart then
 				local sp = h.SeatPart
-				local w = sp and sp:FindFirstChild(_obi44m9h({96,115,112,132,104,119,127,120}))
+				local w = sp and sp:FindFirstChild(_obczbshz({188,207,204,224,196,211,219,212}))
 				if w then w:Destroy() end
 				h.Sit = false
 			end
 		end
 		if S.noclip then
 			for _, p in ipairs(c:GetDescendants()) do
-				if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) and p.CanCollide then p.CanCollide = false end
+				if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p.CanCollide then p.CanCollide = false end
 			end
 		end
 		if S.speed then h.WalkSpeed = S.speedVal end
@@ -1581,7 +2106,7 @@ local function buildSelf(pages, say)
 			for _, pl in ipairs(Players:GetPlayers()) do
 				if pl ~= lp and pl.Character then
 					for _, p in ipairs(pl.Character:GetDescendants()) do
-						if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) and p.CanCollide then p.CanCollide = false end
+						if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p.CanCollide then p.CanCollide = false end
 					end
 				end
 			end
@@ -1601,7 +2126,7 @@ local function buildSelf(pages, say)
 			if res then
 				local ins = res.Instance
 				local nm = ins:GetFullName():lower()
-				local waterish = res.Material == Enum.Material.Water or nm:find(_obi44m9h({132,111,131,117,131})) or nm:find(_obi44m9h({115,122,126,127,117})) or nm:find(_obi44m9h({129,129,132,126,114,127,124}))
+				local waterish = res.Material == Enum.Material.Water or nm:find(_obczbshz({224,203,223,209,223})) or nm:find(_obczbshz({207,214,218,219,209})) or nm:find(_obczbshz({221,221,224,218,206,219,216}))
 					or (not ins.CanCollide and ins.Transparency >= 0.2 and ins.Color.B > ins.Color.R + 0.1)
 				if waterish then surfaceY = res.Position.Y end
 			end
@@ -1610,8 +2135,8 @@ local function buildSelf(pages, say)
 			end
 			if surfaceY then
 				if not wwPart then
-					wwPart = mk(_obi44m9h({93,111,129,132}), {
-						Name = _obi44m9h({96,118,120,126,89,135,117,107,118,138,124,138}), Size = Vector3.new(14, 1, 14), Anchored = true, CanCollide = true,
+					wwPart = mk(_obczbshz({185,203,221,224}), {
+						Name = _obczbshz({188,210,212,218,181,227,209,199,210,230,216,230}), Size = Vector3.new(14, 1, 14), Anchored = true, CanCollide = true,
 						CanQuery = false, CanTouch = false, Transparency = 1,
 					}, workspace)
 				end
@@ -1624,7 +2149,7 @@ local function buildSelf(pages, say)
 		if S.fly then
 			if not selfBV or selfBV.Parent ~= r then
 				stopSelfFly()
-				selfBV = mk(_obi44m9h({79,125,115,137,103,119,127,131,120,127,139,145}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
+				selfBV = mk(_obczbshz({171,217,207,229,195,211,219,223,212,219,231,237}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
 			end
 			local mv = h.MoveDirection
 			local look = workspace.CurrentCamera.CFrame.LookVector
@@ -1636,7 +2161,36 @@ local function buildSelf(pages, say)
 			if S.flyBtns then
 				up = ((S.flyUp and 1 or 0) - (S.flyDown and 1 or 0))
 			end
-			selfBV.Velocity = mv * S.flyVal + Vector3.new(0, up * S.flyVal, 0)
+			local target = mv * S.flyVal + Vector3.new(0, up * S.flyVal, 0)
+			selfBV.Velocity = selfBV.Velocity:Lerp(target, 0.35)
+
+			if not flyFx.active or flyFx.hum ~= h then
+				flyFx.active = true; flyFx.hum = h; flyFx.states = {}
+				for _, st in ipairs({ Enum.HumanoidStateType.FallingDown, Enum.HumanoidStateType.Ragdoll }) do
+					flyFx.states[st] = h:GetStateEnabled(st)
+					pcall(function() h:SetStateEnabled(st, false) end)
+				end
+				pcall(function() h.AutoRotate = false end)
+			end
+			if not flyFx.gyro or flyFx.gyro.Parent ~= r then
+				if flyFx.gyro then flyFx.gyro:Destroy() end
+				flyFx.gyro = mk(_obczbshz({171,217,207,229,180,231,225,223}), { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 30000, D = 800, CFrame = r.CFrame }, r)
+			end
+			local face = Vector3.new(mv.X, 0, mv.Z)
+			if face.Magnitude > 0.05 then
+				flyFx.face = face.Unit
+			elseif not flyFx.face then
+				local lk = r.CFrame.LookVector
+				local f2 = Vector3.new(lk.X, 0, lk.Z)
+				flyFx.face = f2.Magnitude > 0.05 and f2.Unit or Vector3.new(0, 0, -1)
+			end
+			flyFx.gyro.CFrame = CFrame.lookAt(r.Position, r.Position + flyFx.face)
+
+			if target.Magnitude > 1 then
+				flyAnim(h, _obczbshz({224,203,215,215}), math.clamp(S.flyVal / 14.5, 0.7, 2.2))
+			else
+				flyAnim(h, _obczbshz({210,206,215,209}), 1)
+			end
 		else
 			stopSelfFly()
 		end
@@ -1651,7 +2205,7 @@ local function buildSelf(pages, say)
 	local LAG_LIMITS = { ParticleEmitter = 40, Sound = 25, Explosion = 15, Fire = 25, Smoke = 25, Sparkles = 25, Beam = 50, Trail = 50 }
 	local lag = { on = false, cnt = {}, t0 = 0, bad = 0, lastClean = 0, started = 0 }
 	local function lagOwn(o)
-		return o:GetAttribute(_obi44m9h({81,129,85,136})) or o.Name == _obi44m9h({96,118,120,126,87,123,133,121}) or o.Name == _obi44m9h({78,114,124,86,137,88,124,134,122})
+		return o:GetAttribute(_obczbshz({173,221,177,228})) or o.Name == _obczbshz({188,210,212,218,179,215,225,213}) or o.Name == _obczbshz({170,206,216,178,229,180,216,226,214})
 	end
 	local function lagAdded(o)
 		if not lag.on then return end
@@ -1663,14 +2217,14 @@ local function buildSelf(pages, say)
 		lag.cnt[o.ClassName] = n
 		if n > lim then
 			task.defer(function() pcall(function() o:Destroy() end) end)
-		elseif o:IsA(_obi44m9h({93,111,129,132,122,117,127,121,90,131,128,140,141,127,141})) and o.Rate > 50 then
+		elseif o:IsA(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233})) and o.Rate > 50 then
 			o.Rate = 50
 		end
 	end
 	local function lagEmergency()
 		for _, o in ipairs(workspace:GetDescendants()) do
 			if LAG_LIMITS[o.ClassName] and not lagOwn(o) then
-				if o:IsA(_obi44m9h({96,125,132,126,117})) then pcall(function() o:Stop() end)
+				if o:IsA(_obczbshz({188,217,224,218,209})) then pcall(function() o:Stop() end)
 				else pcall(function() o:Destroy() end) end
 			end
 		end
@@ -1714,7 +2268,7 @@ local function buildSelf(pages, say)
 		local c, r = lp.Character, hrp()
 		if not (c and r) then return end
 		for _, p in ipairs(c:GetDescendants()) do
-			if p:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) then
+			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
 				tfOld[p] = p.CustomPhysicalProperties or false
 				p.CustomPhysicalProperties = PhysicalProperties.new(100, 0.3, 0.5, 1, 1)
 			end
@@ -1743,13 +2297,13 @@ local function buildSelf(pages, say)
 	end
 
 	local function claimSim()
-		pcall(function() sethiddenproperty(lp, _obi44m9h({96,119,124,133,125,115,135,125,132,132,105,121,125,131,144,143}), 1e9) end)
+		pcall(function() sethiddenproperty(lp, _obczbshz({188,211,216,225,217,207,227,217,224,224,197,213,217,223,236,235}), 1e9) end)
 		pcall(function() lp.MaximumSimulationRadius = 1e9 end)
 	end
 	local function isLoose(p)
-		if not (p and p:IsA(_obi44m9h({79,111,130,117,97,115,133,136}))) or p.Anchored then return false end
-		if p.Name == _obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}) or p.Name == _obi44m9h({96,118,120,126,89,135,117,107,118,138,124,138}) or p:GetAttribute(_obi44m9h({81,129,85,136})) then return false end
-		if p:FindFirstAncestorOfClass(_obi44m9h({78,113,114,117,132,133,130,134,142})) or p:FindFirstAncestorOfClass(_obi44m9h({97,125,126,124})) then return false end
+		if not (p and p:IsA(_obczbshz({171,203,222,209,189,207,225,228}))) or p.Anchored then return false end
+		if p.Name == _obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}) or p.Name == _obczbshz({188,210,212,218,181,227,209,199,210,230,216,230}) or p:GetAttribute(_obczbshz({173,221,177,228})) then return false end
+		if p:FindFirstAncestorOfClass(_obczbshz({170,205,206,209,224,225,222,226,234})) or p:FindFirstAncestorOfClass(_obczbshz({189,217,218,216})) then return false end
 		local root = p.AssemblyRootPart
 		if root and root.Anchored then return false end
 		for _, pl in ipairs(Players:GetPlayers()) do
@@ -1769,8 +2323,8 @@ local function buildSelf(pages, say)
 		claimSim()
 		tk.part = part
 		part.CanCollide = true
-		tk.bp = mk(_obi44m9h({79,125,115,137,97,129,134,125,137,127,134,134}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), P = 1e5, D = 2e3, Position = part.Position }, part)
-		tk.bg = mk(_obi44m9h({79,125,115,137,88,139,133,131}), { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 1e4, D = 500, CFrame = CFrame.new() }, part)
+		tk.bp = mk(_obczbshz({171,217,207,229,189,221,226,217,229,219,226,226}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), P = 1e5, D = 2e3, Position = part.Position }, part)
+		tk.bg = mk(_obczbshz({171,217,207,229,180,231,225,223}), { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 1e4, D = 500, CFrame = CFrame.new() }, part)
 		local r, h = hrp(), hum()
 		if r and h then
 			tk.y = r.Position.Y - (h.HipHeight + r.Size.Y / 2) - part.Size.Y / 2
@@ -1807,9 +2361,9 @@ local function buildSelf(pages, say)
 		local part = res and res.Instance
 		if part and isLoose(part) and part.Size.Magnitude < 300 then
 			tkGrab(part)
-			say(_obi44m9h({79,122,126,115,128,50,131,121,124,133,56,56,90,136,127,129,61,131,140,64,132,139,144,133,69,138,140,148,142,88,75,123,153,150,148,80,161,164,148,84,152,159,164,153,104,156,156,165,181,173,95,165,97,163,177,168,170,102,183,186,170,106,193,187,174,192,125}))
+			say(_obczbshz({171,214,218,207,220,142,223,213,216,225,148,148,182,228,219,221,153,223,232,156,224,231,236,225,161,230,232,240,234,180,167,215,245,242,240,172,253,0,240,176,244,251,0,245,196,248,248,1,17,9,187,1,189,255,13,4,6,194,19,22,6,198,29,23,10,28,217}))
 		else
-			say(_obi44m9h({86,129,130,127,49,128,214,183,132,54,218,193,57,143,136,60,127,138,142,131,144,66,150,147,145,154,150,72,81,142,144,159,142,156,146,159,163,147,151,163,94,100}))
+			say(_obczbshz({178,221,222,219,141,220,50,19,224,146,54,29,149,235,228,152,219,230,234,223,236,158,242,239,237,246,242,164,173,234,236,251,234,248,238,251,255,239,243,255,186,192}))
 		end
 	end)
 
@@ -1821,7 +2375,7 @@ local function buildSelf(pages, say)
 		for _, d in ipairs(workspace:GetDescendants()) do
 			n = n + 1
 			if n % 3000 == 0 then task.wait() end
-			if d:IsA(_obi44m9h({79,111,130,117,97,115,133,136})) and not d.Anchored and d.Size.Magnitude < 60 and d ~= tk.part and isLoose(d) then
+			if d:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and not d.Anchored and d.Size.Magnitude < 60 and d ~= tk.part and isLoose(d) then
 				table.insert(list, d)
 			end
 		end
@@ -1871,31 +2425,34 @@ local function buildSelf(pages, say)
 		end
 	end
 
-	section(dp, _obi44m9h({96,125,113,130,118,136,124,138,122,136}))
-	toggleRow(dp, _obi44m9h({99,125,112,130}), _obi44m9h({92,122,119,117,49,130,133,117,53,121,128,133,122,58,70,60,135,141,152,147,149,139,134,143,69,99,71,155,152,140,144}), function(v) S.fly = v end)
-	toggleRow(dp, _obi44m9h({78,124,131,121,62,131,136,121,121,119}), _obi44m9h({89,119,124,121,133,115,51,117,53,140,124,132,136,125,132,128,126,130,132,64,133,131,67,149,154,139,139,137}), function(v) S.nofall = v end)
-	rowBtn(dp, _obi44m9h({96,131,113,121,131,50,68,68,69,54,138,140,142,126,142,60,69,132,148,135,138,148,67,136,134,70,234,201,144,159,140,85}), function()
+	section(dp, _obczbshz({188,217,205,222,210,228,216,230,214,228}))
+	do
+		local _, st = toggleRow(dp, _obczbshz({191,217,204,222}), _obczbshz({170,204,221,209,141,221,143,224,210,219,225,217,225,150,219,221,153,240,234,235,157,166,206,206,176,209,201,202,165,235,167,254,238,246,250,239,246,242,240,244,246,187,179,118,21,56,183,7,5,2,0,188,13,16,0,192,4,11,16,5,197,209,199,18,24,35,30,32,22,17,26,208,238,210,38,35,23,27}), function(v) setFlyPanel(v) end)
+		table.insert(flyToggles, st)
+	end
+	toggleRow(dp, _obczbshz({170,216,223,213,154,223,228,213,213,211}), _obczbshz({181,211,216,213,225,207,143,209,145,232,216,224,228,217,224,220,218,222,224,156,225,223,159,241,246,231,231,229}), function(v) S.nofall = v end)
+	rowBtn(dp, _obczbshz({188,223,205,213,223,142,160,160,161,146,230,232,234,218,234,152,161,224,240,227,230,240,159,228,226,162,70,37,236,251,232,177}), function()
 		local r = hrp()
-		if r then r.CFrame = r.CFrame + Vector3.new(0, 100, 0); say(_obi44m9h({96,131,113,121,134,50,68,68,69,54,138,140,142,126,142,74})) end
+		if r then r.CFrame = r.CFrame + Vector3.new(0, 100, 0); say(_obczbshz({188,223,205,213,226,142,160,160,161,146,230,232,234,218,234,166})) end
 	end)
-	toggleRow(dp, _obi44m9h({83,122,120,126,120,50,59,128,118,132,218,191,122,140,59,139,144,62,142,149,149,148,146,151,78}), _obi44m9h({94,131,116,125,49,119,129,119,132,137,139,121,139,58,128,137,61,148,142,131,228,204,67,151,134,143,71,158,152,139,153,144,156,92,79,134,160,149,246,222,85,164,250,219,168,90,162,165,175,159,95,174,166,175,99,7,238,102,179,169,183,13,242,173,177,189}), function(v)
+	toggleRow(dp, _obczbshz({175,214,212,218,212,142,151,220,210,224,54,27,214,232,151,231,236,154,234,241,241,240,238,243,170}), _obczbshz({186,223,208,217,141,211,221,211,224,229,231,213,231,150,220,229,153,240,234,223,64,40,159,243,226,235,163,250,244,231,245,236,248,184,171,226,252,241,82,58,177,0,86,55,4,182,254,1,11,251,187,10,2,11,191,99,74,194,15,5,19,105,78,9,13,25}), function(v)
 		S.tfling = v
 		if v then startTFling() else stopTFling() end
 	end)
-	sliderRow(dp, _obi44m9h({83,125,129,211,184,115,51,120,132,54,125,132,130,136,130}), _obi44m9h({86,124,131,117,127,133,124,120,118,122,124,56,125,137,59,136,126,140,226,199,130,143,136,146,153,149}), 50, 300, 150, function(v) S.flingVal = v end)
-	toggleRow(dp, _obi44m9h({78,124,131,121,62,136,130,125,121}), _obi44m9h({99,125,123,132,114,50,131,134,132,54,218,210,133,142,132,137,140,62,139,149,136,131,149,68,152,139,142,157,155,153,75,159,146,78,146,145,154,164,83,162,164,86,173,153,179,163,170}), function(v) S.antivoid = v end)
-	toggleRow(dp, _obi44m9h({93,131,123,127,49,123,129,122,126,132,128,140,136}), _obi44m9h({93,131,123,113,49,128,130,52,118,136,55,137,142,123,137,144,126,145,63,150,134,156,136,151,69,151,156,145,156,143,157}), function(v) S.infjump = v end)
-	toggleRow(dp, _obi44m9h({78,124,115,113,131,50,134,131,119,136,124,56,122,58,222,189,132,147,128}), _obi44m9h({93,122,112,132,114,120,130,134,130,119,55,129,135,144,132,143,224,203,149,133,141,66,145,133,69,153,156,152,142,156,145,239,218,145,152,149}), function(v)
+	sliderRow(dp, _obczbshz({175,217,221,47,20,207,143,212,224,146,217,224,222,228,222}), _obczbshz({178,216,223,209,219,225,216,212,210,214,216,148,217,229,151,228,218,232,62,35,222,235,228,238,245,241}), 50, 300, 150, function(v) S.flingVal = v end)
+	toggleRow(dp, _obczbshz({170,216,223,213,154,228,222,217,213}), _obczbshz({191,217,215,224,206,142,223,226,224,146,54,46,225,234,224,229,232,154,231,241,228,223,241,160,244,231,234,249,247,245,167,251,238,170,238,237,246,0,175,254,0,178,9,245,15,255,6}), function(v) S.antivoid = v end)
+	toggleRow(dp, _obczbshz({185,223,215,219,141,215,221,214,218,224,220,232,228}), _obczbshz({185,223,215,205,141,220,222,144,210,228,147,229,234,215,229,236,218,237,155,242,226,248,228,243,161,243,248,237,248,235,249}), function(v) S.infjump = v end)
+	toggleRow(dp, _obczbshz({170,216,207,205,223,142,226,223,211,228,216,148,214,150,58,25,224,239,220}), _obczbshz({185,214,204,224,206,212,222,226,222,211,147,221,227,236,224,235,60,39,241,225,233,158,237,225,161,245,248,244,234,248,237,75,54,237,244,241}), function(v)
 		S.waterwalk = v
 		if not v and wwPart then wwPart:Destroy(); wwPart = nil end
 	end)
 	local island, islandBack
-	rowBtn(dp, _obi44m9h({86,122,119,113,49,133,120,123,138,136,120,56,65,138,135,125,145,127,133,143,147,143,132,68,147,149,71,139,236,211,160,85}), function()
+	rowBtn(dp, _obczbshz({178,214,211,205,141,225,212,215,230,228,212,148,157,230,227,217,237,219,225,235,239,235,224,160,239,241,163,231,72,47,252,177}), function()
 		local r = hrp()
 		if not r then return end
 		if not island or not island.Parent then
-			island = mk(_obi44m9h({93,111,129,132}), {
-				Name = _obi44m9h({96,118,120,126,89,135,117,93,129,126,120}), Size = Vector3.new(40, 2, 40), Anchored = true, CanCollide = true,
+			island = mk(_obczbshz({185,203,221,224}), {
+				Name = _obczbshz({188,210,212,218,181,227,209,185,221,218,212}), Size = Vector3.new(40, 2, 40), Anchored = true, CanCollide = true,
 				Material = Enum.Material.SmoothPlastic, Color = Color3.fromRGB(60, 8, 12),
 				Position = Vector3.new(r.Position.X, 3500, r.Position.Z),
 			}, workspace)
@@ -1903,67 +2460,69 @@ local function buildSelf(pages, say)
 		islandBack = r.CFrame
 		r.AssemblyLinearVelocity = Vector3.zero
 		r.CFrame = CFrame.new(island.Position + Vector3.new(0, 4, 0))
-		say(_obi44m9h({91,111,47,121,125,122,116,52,136,123,126,141,139,123,73,60,114,145,132,64,67,120,146,144,153,135,153,72,141,139,75,149,153,150,144,82,81,163,168,149,163,154,166,88,169,155,174,175,158,176,109}))
+		say(_obczbshz({183,203,139,213,217,214,208,144,228,215,218,233,231,215,165,152,206,237,224,156,159,212,238,236,245,227,245,164,233,231,167,241,245,242,236,174,173,255,4,241,255,246,2,180,5,247,10,11,250,12,201}))
 	end)
-	rowBtn(dp, _obi44m9h({99,125,123,132,114,132,51,120,118,54,128,132,129,123}), function()
+	rowBtn(dp, _obczbshz({191,217,215,224,206,224,143,212,210,146,220,224,221,215}), function()
 		local r = hrp()
 		if r and islandBack then
 			r.AssemblyLinearVelocity = Vector3.zero
 			r.CFrame = islandBack
-			say(_obi44m9h({81,115,47,134,128,126,135,117,67}))
+			say(_obczbshz({173,207,139,226,220,218,227,209,159}))
 		else
-			say(_obi44m9h({99,125,114,211,187,50,116,125,131,122,120,56,135,221,190,139,61,132,142,137,65,146,149,133,69,143,147,144,138,88}))
+			say(_obczbshz({191,217,206,47,23,142,208,217,223,214,212,148,227,57,26,231,153,224,234,229,157,238,241,225,161,235,239,236,230,180}))
 		end
 	end, true)
-	section(dp, _obi44m9h({79,122,126,115,128,133,51,135,132,130,139,135,140}))
-	rowBtn(dp, _obi44m9h({97,115,123,117,116,123,129,121,136,123,81,56,126,141,126,139,137,134,132,146,65,132,143,147,136,149}), function()
+	section(dp, _obczbshz({171,214,218,207,220,225,143,227,224,222,231,227,232}))
+	rowBtn(dp, _obczbshz({189,207,215,209,208,215,221,213,228,215,173,148,218,233,218,231,229,226,224,238,157,224,235,239,228,241}), function()
 		tk.armed = true
-		say(_obi44m9h({97,125,128,133,118,50,129,137,130,54,121,132,136,125,138,60,144,141,139,148,144,66,75,136,138,153,136,150,140,153,157,141,145,157,88,80,149,161,83,161,150,166,152,100,89,160,170,174,158,94,163,175,97,175,168,178,186,116}))
+		say(_obczbshz({189,217,220,225,210,142,221,229,222,146,213,224,228,217,230,152,236,233,231,240,236,158,167,228,230,245,228,242,232,245,249,233,237,249,180,172,241,253,175,253,242,2,244,192,181,252,6,10,250,186,255,11,189,11,4,14,22,208}))
 	end)
-	rowBtn(dp, _obi44m9h({97,115,123,117,116,123,129,121,136,123,81,56,140,137,135,144,126,144,63,130,141,145,134,147}), function() tkRelease(); say(_obi44m9h({79,122,126,115,128,50,134,131,129,138,134,70})) end, true)
-	rowBtn(dp, _obi44m9h({79,122,126,115,128,76,51,135,138,120,128,138,57,75,75}), function() tk.y = tk.y + 10 end, true)
-	rowBtn(dp, _obi44m9h({79,122,126,115,128,76,51,120,122,137,122,125,139,58,76,76}), function() tk.y = tk.y - 10 end, true)
-	toggleRow(dp, _obi44m9h({83,122,120,126,120,50,99,117,135,138,138}), _obi44m9h({93,115,210,183,114,133,51,135,132,130,139,121,140,58,130,133,143,127,140,64,134,143,67,154,148,146,155,137,73,142,144,76,163,157,146,243,219}), function(v)
+	rowBtn(dp, _obczbshz({189,207,215,209,208,215,221,213,228,215,173,148,232,229,227,236,218,236,155,222,233,237,226,239}), function() tkRelease(); say(_obczbshz({171,214,218,207,220,142,226,223,221,230,226,162})) end, true)
+	rowBtn(dp, _obczbshz({171,214,218,207,220,168,143,227,230,212,220,230,149,167,167}), function() tk.y = tk.y + 10 end, true)
+	rowBtn(dp, _obczbshz({171,214,218,207,220,168,143,212,214,229,214,217,231,150,168,168}), function() tk.y = tk.y - 10 end, true)
+	toggleRow(dp, _obczbshz({175,214,212,218,212,142,191,209,227,230,230}), _obczbshz({185,207,46,19,206,225,143,227,224,222,231,213,232,150,222,225,235,219,232,156,226,235,159,246,240,238,247,229,165,234,236,168,255,249,238,79,55}), function(v)
 		fpSet(v)
-		say(v and _obi44m9h({93,128,126,115,134,132,116,130,121,133,55,136,126,221,194,125,144,62,146,143,141,150,132,151,83,84,85}) or _obi44m9h({83,122,120,126,120,50,99,117,135,138,138,56,125,127,142,136,134,133,128,132,144,80}))
+		say(v and _obczbshz({185,220,218,207,226,224,208,222,213,225,147,228,218,57,30,217,236,154,238,235,233,242,224,243,175,176,177}) or _obczbshz({175,214,212,218,212,142,191,209,227,230,230,148,217,219,234,228,226,225,220,224,236,172}))
 	end)
-	sliderRow(dp, _obi44m9h({95,111,120,127,49,118,116,135,53,134,124,219,192,123,142}), _obi44m9h({81,119,130,132,212,180,129,119,126,119,55,124,136,58,126,223,202,144,130,149,141,145}), 8, 40, 14, function(v) fp.radius = v end)
-	section(dp, _obi44m9h({93,128,126,132,118,213,186,215,184,133}))
-	toggleRow(dp, _obi44m9h({78,124,131,121,62,120,127,125,131,125}), _obi44m9h({86,117,125,127,131,115,51,119,132,130,128,139,220,189,138,60,129,131,63,143,150,150,149,147,152,70,145,151,144,139,143,155,159,147,162,80,150,82,173,153,167,151,87,159,162,172,170,107,158,176,177,165,174,167,182,183,180}), function(v) S.antifling = v end)
+	sliderRow(dp, _obczbshz({187,203,212,219,141,210,208,227,145,226,216,55,28,215,234}), _obczbshz({173,211,222,224,48,16,221,211,218,211,147,216,228,150,218,59,38,236,222,241,233,237}), 8, 40, 14, function(v) fp.radius = v end)
+	section(dp, _obczbshz({185,220,218,224,210,49,22,51,20,225}))
+	toggleRow(dp, _obczbshz({170,216,223,213,154,212,219,217,223,217}), _obczbshz({178,209,217,219,223,207,143,211,224,222,220,231,56,25,230,152,221,223,155,235,242,242,241,239,244,162,237,243,236,231,235,247,251,239,254,172,242,174,9,245,3,243,179,251,254,8,6,199,250,12,13,1,10,3,18,19,16}), function(v) S.antifling = v end)
 
-	local pp = pages[_obi44m9h({93,128,126,132,118,213,186,215,202,123,138})]
+	local pp = pages[_obczbshz({185,220,218,224,210,49,22,51,38,215,230})]
 	if pp then
-		section(pp, _obi44m9h({93,128,126,132,118,213,186,215,202,123,138}))
-		toggleRow(pp, _obi44m9h({78,124,131,121,62,120,127,125,131,125}), _obi44m9h({86,117,125,127,131,115,51,119,132,130,128,139,220,189,138,60,129,131,63,143,150,150,149,147,152,70,145,151,144,139,143,155,159,147,162,80,150,82,173,153,167,151,87,159,162,172,170,107,158,176,177,165,174,167,182,183,180}), function(v) S.antifling = v end)
-		toggleRow(pp, _obi44m9h({78,124,131,121,62,136,130,125,121}), _obi44m9h({99,125,123,132,114,50,131,134,132,54,218,210,133,142,132,137,140,62,139,149,136,131,149,68,152,139,142,157,155,153,75,159,146,78,146,145,154,164,83,152,164,86,164,153,169,155}), function(v) S.antivoid = v end)
-		toggleRow(pp, _obi44m9h({96,115,124,48,117,115,129,131,53,122,124,56,138,143,128,128,126}), _obi44m9h({95,115,115,133,139,50,116,52,139,123,131,135,124,131,127,125,129,131,63,132,130,66,148,153,138,138,136}), function(v) S.nofall = v end)
-		toggleRow(pp, _obi44m9h({78,124,131,121,62,133,120,130,137,119,137}), _obi44m9h({91,209,178,127,49,118,120,125,141,119,55,139,126,136,143,125,143,62,132,141,65,133,132,150,151,149,83,72,140,139,143,145,150,160,144,80,159,151,160,84,151,151,165,155,168}), function(v)
+		section(pp, _obczbshz({185,220,218,224,210,49,22,51,38,215,230}))
+		toggleRow(pp, _obczbshz({170,216,223,213,154,212,219,217,223,217}), _obczbshz({178,209,217,219,223,207,143,211,224,222,220,231,56,25,230,152,221,223,155,235,242,242,241,239,244,162,237,243,236,231,235,247,251,239,254,172,242,174,9,245,3,243,179,251,254,8,6,199,250,12,13,1,10,3,18,19,16}), function(v) S.antifling = v end)
+		toggleRow(pp, _obczbshz({170,216,223,213,154,228,222,217,213}), _obczbshz({191,217,215,224,206,142,223,226,224,146,54,46,225,234,224,229,232,154,231,241,228,223,241,160,244,231,234,249,247,245,167,251,238,170,238,237,246,0,175,244,0,178,0,245,5,247}), function(v) S.antivoid = v end)
+		toggleRow(pp, _obczbshz({188,207,216,140,209,207,221,223,145,214,216,148,230,235,220,220,218}), _obczbshz({187,207,207,225,231,142,208,144,231,215,223,227,216,223,219,217,221,223,155,224,222,158,240,245,230,230,228}), function(v) S.nofall = v end)
+		toggleRow(pp, _obczbshz({170,216,223,213,154,225,212,222,229,211,229}), _obczbshz({183,45,14,219,141,210,212,217,233,211,147,231,218,228,235,217,235,154,224,233,157,225,224,242,243,241,175,164,232,231,235,237,242,252,236,172,251,243,252,176,243,243,1,247,4}), function(v)
 			S.antisit = v
 			if not v then
 				local h = hum()
 				if h then h:SetStateEnabled(Enum.HumanoidStateType.Seated, true) end
 			end
 		end)
-		toggleRow(pp, _obi44m9h({78,124,131,121,62,126,116,123}), _obi44m9h({96,115,118,133,131,115,51,122,129,133,134,124,57,126,128,60,141,127,145,148,228,207,134,153,145,135,154,84,73,157,154,154,160,78,148,80,150,170,163,160,164,169,250,237,158,173,91,160,162,94,178,163,179,171,179,184,184,102,171,173,105,182,172,179}), function(v)
+		toggleRow(pp, _obczbshz({170,216,223,213,154,218,208,215}), _obczbshz({188,207,210,225,223,207,143,214,221,225,226,216,149,218,220,152,233,219,237,240,64,43,226,245,237,227,246,176,165,249,246,246,252,170,240,172,242,6,255,252,0,5,86,73,250,9,183,252,254,186,14,255,15,7,15,20,20,194,7,9,197,18,8,15}), function(v)
 			if v then lagStart() else lagStop() end
-			say(v and _obi44m9h({78,124,131,121,62,126,116,123,53,130,128,127,122,126,138,74}) or _obi44m9h({78,124,131,121,62,126,116,123,53,122,124,139,133,131,130,125,129,141,77}))
+			say(v and _obczbshz({170,216,223,213,154,218,208,215,145,222,220,219,214,218,230,166}) or _obczbshz({170,216,223,213,154,218,208,215,145,214,216,231,225,223,222,217,221,233,169}))
 		end)
 	end
 
-	local mp = pages[_obi44m9h({90,125,133,121,126,119,129,136,132})]
+	local mp = pages[_obczbshz({182,217,225,213,218,211,221,228,224})]
 	if mp then
-		section(mp, _obi44m9h({90,125,133,121,126,119,129,136,132}))
-		toggleRow(mp, _obi44m9h({99,125,112,130}), _obi44m9h({92,122,119,117,49,130,133,117,53,121,128,133,122,58,70,60,135,141,152,147,149,139,134,143,69,99,71,155,152,140,144}), function(v) S.fly = v end)
-		toggleRow(mp, _obi44m9h({99,115,123,127,116,123,119,117,121,123}), _obi44m9h({89,119,118,113,49,115,51,138,122,130,134,123,130,126,124,128,130,62,132,147,132,145,143,140,142,138,136,72,138,140,140,149,165,157}), function(v)
+		section(mp, _obczbshz({182,217,225,213,218,211,221,228,224}))
+		do
+			local _, st = toggleRow(mp, _obczbshz({191,217,204,222}), _obczbshz({170,204,221,209,141,221,143,224,210,219,225,217,225,150,219,221,153,240,234,235,157,166,206,206,176,209,201,202,165,235,167,254,238,246,250,239,246,242,240,244,246,187,179,118,21,56,183,7,5,2,0,188,13,16,0,192,4,11,16,5,197,209,199,18,24,35,30,32,22,17,26,208,238,210,38,35,23,27}), function(v) setFlyPanel(v) end)
+			table.insert(flyToggles, st)
+		end
+		toggleRow(mp, _obczbshz({191,207,215,219,208,215,211,209,213,215}), _obczbshz({181,211,210,205,141,207,143,230,214,222,226,215,222,218,216,220,222,154,224,239,224,237,235,232,234,230,228,164,230,232,232,241,1,249}), function(v)
 			S.speed = v
 			if not v then local h = hum(); if h then h.WalkSpeed = 16 end end
 		end)
-		sliderRow(mp, _obi44m9h({99,111,123,127,131,50,119,117,53,140,124,132,136,125,132,128,126,130,132}), _obi44m9h({80,125,129,130,122,118,116}), 16, 120, 50, function(v) S.speedVal = v end)
-		sliderRow(mp, _obi44m9h({99,115,123,127,116,123,119,117,121,123,55,124,136,58,145,139,140}), _obi44m9h({99,125,112,130}), 20, 150, 50, function(v) S.flyVal = v end)
+		sliderRow(mp, _obczbshz({191,203,215,219,223,142,211,209,145,232,216,224,228,217,224,220,218,222,224}), _obczbshz({172,217,221,222,214,210,208}), 16, 120, 50, function(v) S.speedVal = v end)
 
-		flyGui = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.fromOffset(60, 124), Position = UDim2.new(0, 24, 0.55, -62), BackgroundTransparency = 1, Visible = false, ZIndex = 20 }, gui)
+		flyGui = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(60, 124), Position = UDim2.new(0, 24, 0.55, -62), BackgroundTransparency = 1, Visible = false, ZIndex = 20 }, gui)
 		local function holdBtn(txt, y, key)
-			local b = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
+			local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
 				Text = txt, Size = UDim2.fromOffset(60, 56), Position = UDim2.fromOffset(0, y),
 				BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
 				Font = Enum.Font.GothamBold, TextSize = 24, ZIndex = 21,
@@ -1973,27 +2532,27 @@ local function buildSelf(pages, say)
 			b.InputBegan:Connect(function(i) if isHold(i) then S[key] = true end end)
 			b.InputEnded:Connect(function(i) if isHold(i) then S[key] = false end end)
 		end
-		holdBtn(_obi44m9h({239,164,193}), 0, _obi44m9h({115,122,136,101,129}))
-		holdBtn(_obi44m9h({239,164,203}), 68, _obi44m9h({115,122,136,84,128,137,129}))
-		toggleRow(mp, _obi44m9h({79,125,131,211,198,119,134,52,121,123,55,142,136,137,59,68,144,147,129,137,147,81,135,137,152,137,140,154,82}), _obi44m9h({80,125,124,48,128,50,105,131,118,136,55,132,130,129,124,128,140,74,63,141,144,149,151,150,134,70,9,190,219,74,13,194,233,78,157,145,81,166,152,160,150,112,87,171,158,161,176,174,162,94,175,178,162,98,182,185,167,175,185,104,184,191,107,176,178,193,178,181,195,141,115,199,196,194,203,199,121,151,123,194,198,193,192,128,209,195,213,197,201,213,135,214,216,138,204,222}), function(v)
+		holdBtn(_obczbshz({75,0,29}), 0, _obczbshz({207,214,228,193,221}))
+		holdBtn(_obczbshz({75,0,39}), 68, _obczbshz({207,214,228,176,220,229,221}))
+		toggleRow(mp, _obczbshz({171,217,223,47,34,211,226,144,213,215,147,234,228,229,151,160,236,239,221,229,239,173,227,229,244,229,232,246,174}), _obczbshz({172,217,216,140,220,142,197,223,210,228,147,224,222,221,216,220,232,166,155,233,236,241,243,242,226,162,101,26,55,166,105,30,69,170,249,237,173,2,244,252,242,204,179,7,250,253,12,10,254,186,11,14,254,190,18,21,3,11,21,196,20,27,199,12,14,29,14,17,31,233,207,35,32,30,39,35,213,243,215,30,34,29,28,220,45,31,49,33,37,49,227,50,52,230,40,58}), function(v)
 			S.flyBtns = v
 			if not v then S.flyUp = false; S.flyDown = false end
 		end)
-		toggleRow(mp, _obi44m9h({93,131,123,127,49,115,127,136,132}), _obi44m9h({87,131,124,128,97,129,138,121,135,54,80,72}), function(v)
+		toggleRow(mp, _obczbshz({185,223,215,219,141,207,219,228,224}), _obczbshz({179,223,216,220,189,221,230,213,227,146,172,164}), function(v)
 			S.jump = v
 			if not v then local h = hum(); if h then h.JumpPower = 50 end end
 		end)
-		toggleRow(mp, _obi44m9h({93,131,123,127,49,123,129,122,126,132,128,140,136}), _obi44m9h({93,131,123,113,49,128,130,52,118,136,55,137,142,123,137,144,126,145,63,150,134,156,136,151,69,151,156,145,156,143,157}), function(v) S.infjump = v end)
-		toggleRow(mp, _obi44m9h({78,130,129,113,135,119,134,135,118,136,55,136,122,140,128,128,130,145}), _obi44m9h({91,125,114,124,122,130}), function(v) S.noclip = v end)
+		toggleRow(mp, _obczbshz({185,223,215,219,141,215,221,214,218,224,220,232,228}), _obczbshz({185,223,215,205,141,220,222,144,210,228,147,229,234,215,229,236,218,237,155,242,226,248,228,243,161,243,248,237,248,235,249}), function(v) S.infjump = v end)
+		toggleRow(mp, _obczbshz({170,222,221,205,227,211,226,227,210,228,147,228,214,232,220,220,222,237}), _obczbshz({183,217,206,216,214,222}), function(v) S.noclip = v end)
 	end
 
 	do
-		local evp = pages[_obi44m9h({82,132,112,116,118})]
+		local evp = pages[_obczbshz({174,224,204,208,210})]
 		if evp then
 			local EV = {
 				slide = false, hop = false, showSlide = false, showHop = false, locked = false,
 				keyHeld = false, touchIn = nil, wasSliding = false, slideSpeed = 0, lastHop = 0, lastHook = 0,
-				lastTick = 0, lastAnims = _obi44m9h({}), hn = 0, rec = true, spyOut = false, gState = _obi44m9h({}), gAt = 0, hopAlways = false,
+				lastTick = 0, lastAnims = _obczbshz({}), hn = 0, rec = true, spyOut = false, gState = _obczbshz({}), gAt = 0, hopAlways = false,
 			}
 			local evConns, evButtons, recConns = {}, {}, {}
 			local setSlideMenu, setHopMenu, paintSlide, paintHop
@@ -2002,32 +2561,32 @@ local function buildSelf(pages, say)
 			local function ser(v, d)
 				d = d or 0
 				local t = typeof(v)
-				if t == _obi44m9h({128,130,129,121,127,121}) then return string.format(_obi44m9h({50,127}), v:sub(1, 60))
-				elseif t == _obi44m9h({123,131,124,114,118,132}) then return string.format(_obi44m9h({50,60,67,119}), v)
-				elseif t == _obi44m9h({111,125,126,124,118,115,129}) or t == _obi44m9h({123,119,123}) then return tostring(v)
-				elseif t == _obi44m9h({99,115,114,132,128,132,70}) then return string.format(_obi44m9h({99,65,55,53,63,67,121,64,58,68,72,126,69,63,73,77,131,71}), v.X, v.Y, v.Z)
-				elseif t == _obi44m9h({80,84,129,113,126,119}) then local p = v.Position; return string.format(_obi44m9h({80,84,55,53,63,67,121,64,58,68,72,126,69,63,73,77,131,71}), p.X, p.Y, p.Z)
-				elseif t == _obi44m9h({86,124,130,132,114,128,118,121}) then return v:GetFullName()
-				elseif t == _obi44m9h({129,111,113,124,118}) then
-					if d >= 2 then return _obi44m9h({136,60,61,62,142}) end
+				if t == _obczbshz({220,222,221,213,219,213}) then return string.format(_obczbshz({142,219}), v:sub(1, 60))
+				elseif t == _obczbshz({215,223,216,206,210,224}) then return string.format(_obczbshz({142,152,159,211}), v)
+				elseif t == _obczbshz({203,217,218,216,210,207,221}) or t == _obczbshz({215,211,215}) then return tostring(v)
+				elseif t == _obczbshz({191,207,206,224,220,224,162}) then return string.format(_obczbshz({191,157,147,145,155,159,213,156,150,160,164,218,161,155,165,169,223,163}), v.X, v.Y, v.Z)
+				elseif t == _obczbshz({172,176,221,205,218,211}) then local p = v.Position; return string.format(_obczbshz({172,176,147,145,155,159,213,156,150,160,164,218,161,155,165,169,223,163}), p.X, p.Y, p.Z)
+				elseif t == _obczbshz({178,216,222,224,206,220,210,213}) then return v:GetFullName()
+				elseif t == _obczbshz({221,203,205,216,210}) then
+					if d >= 2 then return _obczbshz({228,152,153,154,234}) end
 					local out, n = {}, 0
 					for k, x in pairs(v) do
 						n = n + 1
-						if n > 8 then out[#out + 1] = _obi44m9h({59,60,61}); break end
-						out[#out + 1] = tostring(k) .. _obi44m9h({74}) .. ser(x, d + 1)
+						if n > 8 then out[#out + 1] = _obczbshz({151,152,153}); break end
+						out[#out + 1] = tostring(k) .. _obczbshz({166}) .. ser(x, d + 1)
 					end
-					return _obi44m9h({136}) .. table.concat(out, _obi44m9h({57,46})) .. _obi44m9h({138})
+					return _obczbshz({228}) .. table.concat(out, _obczbshz({149,138})) .. _obczbshz({230})
 				end
-				return _obi44m9h({73}) .. t .. _obi44m9h({75})
+				return _obczbshz({165}) .. t .. _obczbshz({167})
 			end
 			local function push(cat, msg)
 				local now = os.clock()
 				local r = hrp()
 				local sp = r and Vector3.new(r.AssemblyLinearVelocity.X, 0, r.AssemblyLinearVelocity.Z).Magnitude or 0
-				local line = string.format(_obi44m9h({104,51,130,48,60,55,73,66,70,124,138,117,57,63,72,84,144,62,68,147,65,158,67,154,138,146,100,77,87,90,145}), os.date(_obi44m9h({50,86,73,53,94,76,56,103})), now - REC.t0, cat, msg, sp)
+				local line = string.format(_obczbshz({196,143,222,140,152,147,165,158,162,216,230,209,149,155,164,176,236,154,160,239,157,250,159,246,230,238,192,169,179,182,237}), os.date(_obczbshz({142,178,165,145,186,168,148,195})), now - REC.t0, cat, msg, sp)
 				REC.lines[#REC.lines + 1] = line
 				if #REC.lines > 4000 then table.remove(REC.lines, 1) end
-				DSLOG.ev(_obi44m9h({86,92,85,95}), _obi44m9h({114,132,112,116,118}), cat .. _obi44m9h({45}) .. msg)
+				DSLOG.ev(_obczbshz({178,184,177,187}), _obczbshz({206,224,204,208,210}), cat .. _obczbshz({137}) .. msg)
 			end
 
 			local function rec(cat, msg, limit)
@@ -2035,7 +2594,7 @@ local function buildSelf(pages, say)
 				local now = os.clock()
 				local r = REC.rate[cat]
 				if not r or now - r.t >= 1 then
-					if r and r.drop > 0 then push(cat, _obi44m9h({53,57}) .. r.drop .. _obi44m9h({45,122,120,126,121,115,134,52,132,131,128,140,130,126,124,143,87,62,140,149,138,150,146,68,151,233,200,152,146,142,154,85})) end
+					if r and r.drop > 0 then push(cat, _obczbshz({145,149}) .. r.drop .. _obczbshz({137,214,212,218,213,207,226,144,224,223,220,232,222,218,216,235,179,154,232,241,230,242,238,160,243,69,36,244,238,234,246,177})) end
 					r = { t = now, n = 0, drop = 0 }
 					REC.rate[cat] = r
 				end
@@ -2051,61 +2610,61 @@ local function buildSelf(pages, say)
 			local function bindChar()
 				unbindChar()
 				local c, h = lp.Character, hum()
-				if not (c and h) then rec(_obi44m9h({112,118,112,130}), _obi44m9h({110,119,125,116,114,50,134,121,130,54,135,125,139,141,138,138,126,133,132,141,80,138,152,145,134,148,150,145,141})); return end
-				rec(_obi44m9h({112,118,112,130}), _obi44m9h({125,115,129,131,128,128,116,123,122,131,55}) .. c:GetFullName() .. _obi44m9h({45,128,120,119,78}) .. tostring(h.RigType) .. _obi44m9h({45,101,112,124,124,101,131,121,122,122,84}) .. tostring(h.WalkSpeed)
-					.. _obi44m9h({45,88,132,125,129,98,130,139,122,136,84}) .. tostring(h.JumpPower) .. _obi44m9h({45,88,132,125,129,90,120,125,124,126,139,85}) .. tostring(h.JumpHeight))
+				if not (c and h) then rec(_obczbshz({204,210,204,222}), _obczbshz({202,211,217,208,206,142,226,213,222,146,227,217,231,233,230,230,218,225,224,233,172,230,244,237,226,240,242,237,233})); return end
+				rec(_obczbshz({204,210,204,222}), _obczbshz({217,207,221,223,220,220,208,215,214,223,147}) .. c:GetFullName() .. _obczbshz({137,220,212,211,170}) .. tostring(h.RigType) .. _obczbshz({137,193,204,216,216,193,223,213,214,214,176}) .. tostring(h.WalkSpeed)
+					.. _obczbshz({137,180,224,217,221,190,222,231,214,228,176}) .. tostring(h.JumpPower) .. _obczbshz({137,180,224,217,221,182,212,217,216,218,231,177}) .. tostring(h.JumpHeight))
 				local names = {}
-				for n, x in pairs(c:GetAttributes()) do names[#names + 1] = _obi44m9h({112,118,112,130,63}) .. n .. _obi44m9h({74}) .. tostring(x) end
-				for n, x in pairs(h:GetAttributes()) do names[#names + 1] = _obi44m9h({117,131,124,62}) .. n .. _obi44m9h({74}) .. tostring(x) end
-				for n, x in pairs(lp:GetAttributes()) do names[#names + 1] = _obi44m9h({125,122,112,137,118,132,65}) .. n .. _obi44m9h({74}) .. tostring(x) end
-				rec(_obi44m9h({110,130,131,130}), _obi44m9h({110,130,129,121,115,135,135,131,136,54,120,127,136,140,124,86,61}) .. (#names > 0 and table.concat(names, _obi44m9h({57,46})) or _obi44m9h({53,124,116,126,121,135,128,61})))
+				for n, x in pairs(c:GetAttributes()) do names[#names + 1] = _obczbshz({204,210,204,222,155}) .. n .. _obczbshz({166}) .. tostring(x) end
+				for n, x in pairs(h:GetAttributes()) do names[#names + 1] = _obczbshz({209,223,216,154}) .. n .. _obczbshz({166}) .. tostring(x) end
+				for n, x in pairs(lp:GetAttributes()) do names[#names + 1] = _obczbshz({217,214,204,229,210,224,157}) .. n .. _obczbshz({166}) .. tostring(x) end
+				rec(_obczbshz({202,222,223,222}), _obczbshz({202,222,221,213,207,227,227,223,228,146,212,219,228,232,216,178,153}) .. (#names > 0 and table.concat(names, _obczbshz({149,138})) or _obczbshz({145,216,208,218,213,227,220,153})))
 				local kids = {}
-				for _, k in ipairs(c:GetChildren()) do kids[#kids + 1] = k.Name .. _obi44m9h({71}) .. k.ClassName end
-				rec(_obi44m9h({112,118,112,130}), _obi44m9h({115,119,123,120,128,133,51,120,132,54,135,125,139,141,138,138,126,133,132,141,91,66}) .. table.concat(kids, _obi44m9h({57,46})))
+				for _, k in ipairs(c:GetChildren()) do kids[#kids + 1] = k.Name .. _obczbshz({163}) .. k.ClassName end
+				rec(_obczbshz({204,210,204,222}), _obczbshz({207,211,215,212,220,225,143,212,224,146,227,217,231,233,230,230,218,225,224,233,183,158}) .. table.concat(kids, _obczbshz({149,138})))
 				local function add(cn) recConns[#recConns + 1] = cn end
 				local function watch(o, tag)
-					add(o.AttributeChanged:Connect(function(n) rec(_obi44m9h({110,130,131,130}), tag .. _obi44m9h({59}) .. n .. _obi44m9h({45,75,47}) .. ser(o:GetAttribute(n)), 20) end))
+					add(o.AttributeChanged:Connect(function(n) rec(_obczbshz({202,222,223,222}), tag .. _obczbshz({151}) .. n .. _obczbshz({137,167,139}) .. ser(o:GetAttribute(n)), 20) end))
 				end
-				watch(c, _obi44m9h({112,118,112,130})); watch(h, _obi44m9h({117,131,124})); watch(lp, _obi44m9h({125,122,112,137,118,132}))
+				watch(c, _obczbshz({204,210,204,222})); watch(h, _obczbshz({209,223,216})); watch(lp, _obczbshz({217,214,204,229,210,224}))
 				local root = hrp()
-				if root then watch(root, _obi44m9h({127,125,126,132})) end
-				add(c.ChildAdded:Connect(function(k) rec(_obi44m9h({112,118,112,130}), _obi44m9h({56,116,120,124,121,129,51}) .. k.Name .. _obi44m9h({71}) .. k.ClassName, 10) end))
-				add(c.ChildRemoved:Connect(function(k) rec(_obi44m9h({112,118,112,130}), _obi44m9h({58,116,120,124,121,129,51}) .. k.Name, 10) end))
-				for _, prop in ipairs({ _obi44m9h({100,111,123,123,100,130,120,121,121}), _obi44m9h({87,131,124,128,97,129,138,121,135}), _obi44m9h({87,131,124,128,89,119,124,123,125,138}), _obi44m9h({85,119,127,88,118,123,122,124,137}), _obi44m9h({85,115,112,124,133,122}), _obi44m9h({93,122,112,132,119,129,133,129,104,138,120,134,125}), _obi44m9h({96,119,131}) }) do
-					add(h:GetPropertyChangedSignal(prop):Connect(function() rec(_obi44m9h({117,131,124}), prop .. _obi44m9h({45,75,47}) .. ser(h[prop]), 6) end))
+				if root then watch(root, _obczbshz({219,217,218,224})) end
+				add(c.ChildAdded:Connect(function(k) rec(_obczbshz({204,210,204,222}), _obczbshz({148,208,212,216,213,221,143}) .. k.Name .. _obczbshz({163}) .. k.ClassName, 10) end))
+				add(c.ChildRemoved:Connect(function(k) rec(_obczbshz({204,210,204,222}), _obczbshz({150,208,212,216,213,221,143}) .. k.Name, 10) end))
+				for _, prop in ipairs({ _obczbshz({192,203,215,215,192,222,212,213,213}), _obczbshz({179,223,216,220,189,221,230,213,227}), _obczbshz({179,223,216,220,181,211,216,215,217,230}), _obczbshz({177,211,219,180,210,215,214,216,229}), _obczbshz({177,207,204,216,225,214}), _obczbshz({185,214,204,224,211,221,225,221,196,230,212,226,217}), _obczbshz({188,211,223}) }) do
+					add(h:GetPropertyChangedSignal(prop):Connect(function() rec(_obczbshz({209,223,216}), prop .. _obczbshz({137,167,139}) .. ser(h[prop]), 6) end))
 				end
-				add(h.StateChanged:Connect(function(old, new) rec(_obi44m9h({114,129,131,113,117,129}), tostring(old) .. _obi44m9h({45,59,77,48}) .. tostring(new), 20) end))
-				local an = h:FindFirstChildOfClass(_obi44m9h({78,124,120,125,114,134,130,134}))
+				add(h.StateChanged:Connect(function(old, new) rec(_obczbshz({206,221,223,205,209,221}), tostring(old) .. _obczbshz({137,151,169,140}) .. tostring(new), 20) end))
+				local an = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
 				if an then
 					add(an.AnimationPlayed:Connect(function(t)
-						rec(_obi44m9h({110,124,120,125}), _obi44m9h({129,125,114,127,134,50}) .. tostring(t.Name) .. _obi44m9h({45,119,115,77}) .. tostring(t.Animation and t.Animation.AnimationId)
-							.. _obi44m9h({45,114,132,130,78}) .. string.format(_obi44m9h({50,60,65,118}), t.Length) .. _obi44m9h({45,126,129,121,128,79}) .. tostring(t.Priority), 20)
-						t.Stopped:Connect(function() rec(_obi44m9h({110,124,120,125}), _obi44m9h({125,111,129,127,134,50}) .. tostring(t.Name), 20) end)
+						rec(_obczbshz({202,216,212,217}), _obczbshz({221,217,206,219,226,142}) .. tostring(t.Name) .. _obczbshz({137,211,207,169}) .. tostring(t.Animation and t.Animation.AnimationId)
+							.. _obczbshz({137,206,224,222,170}) .. string.format(_obczbshz({142,152,157,210}), t.Length) .. _obczbshz({137,218,221,213,220,171}) .. tostring(t.Priority), 20)
+						t.Stopped:Connect(function() rec(_obczbshz({202,216,212,217}), _obczbshz({217,203,221,219,226,142}) .. tostring(t.Name), 20) end)
 					end))
 				else
-					rec(_obi44m9h({112,118,112,130}), _obi44m9h({128,115,124,48,82,128,124,129,118,138,134,138,57,136,138,60,133,147,140,129,143,145,140,136}))
+					rec(_obczbshz({204,210,204,222}), _obczbshz({220,207,216,140,174,220,216,221,210,230,226,230,149,228,230,152,225,239,232,221,235,237,232,228}))
 				end
 			end
 			table.insert(evConns, lp.CharacterAdded:Connect(function()
-				EV.gState = _obi44m9h({}); EV.gSpeed = nil
-				rec(_obi44m9h({112,118,112,130}), _obi44m9h({123,125,133,127,49,130,120,134,136,133,133,121,128,127,136,60,69,144,132,147,145,131,154,146,84,152,150,140,138,142,140,85}))
+				EV.gState = _obczbshz({}); EV.gSpeed = nil
+				rec(_obczbshz({204,210,204,222}), _obczbshz({215,217,225,219,141,222,212,226,228,225,225,213,220,219,228,152,161,236,224,239,237,223,246,238,176,244,242,232,230,234,232,177}))
 				task.wait(0.6)
 				bindChar()
 			end))
 
-			local watched = setmetatable({}, { __mode = _obi44m9h({120}) })
+			local watched = setmetatable({}, { __mode = _obczbshz({212}) })
 			local function watchRemote(r)
-				if watched[r] or not r:IsA(_obi44m9h({95,115,124,127,133,119,88,138,122,132,139})) then return end
+				if watched[r] or not r:IsA(_obczbshz({187,207,216,219,225,211,180,230,214,224,231})) then return end
 				watched[r] = true
 				table.insert(evConns, r.OnClientEvent:Connect(function(...)
 					local a = table.pack(...)
 					local p = {}
 					for k = 1, math.min(a.n, 6) do p[k] = ser(a[k]) end
-					rec(_obi44m9h({127,115,124,127,133,119,79,65}) .. r.Name, _obi44m9h({53}) .. table.concat(p, _obi44m9h({57,46})) .. _obi44m9h({54}), 5)
+					rec(_obczbshz({219,207,216,219,225,211,171,157}) .. r.Name, _obczbshz({145}) .. table.concat(p, _obczbshz({149,138})) .. _obczbshz({146}), 5)
 				end))
 			end
 			pcall(function()
-				local RS = game:GetService(_obi44m9h({95,115,127,124,122,117,116,136,122,122,106,140,136,140,124,131,130}))
+				local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
 				for _, d in ipairs(RS:GetDescendants()) do watchRemote(d) end
 				table.insert(evConns, RS.DescendantAdded:Connect(function(d) task.defer(watchRemote, d) end))
 			end)
@@ -2117,15 +2676,15 @@ local function buildSelf(pages, say)
 				local nc = newcclosure or function(f) return f end
 				local ok = pcall(function()
 					local old
-					old = hookmetamethod(game, _obi44m9h({108,109,125,113,126,119,118,117,129,130}), nc(function(self, ...)
+					old = hookmetamethod(game, _obczbshz({200,201,217,205,218,211,210,209,221,222}), nc(function(self, ...)
 						local m = getnamecallmethod()
-						if EV.spyOut and (m == _obi44m9h({83,119,129,117,100,119,133,138,122,136}) or m == _obi44m9h({86,124,133,127,124,119,102,121,135,140,124,138})) then
+						if EV.spyOut and (m == _obczbshz({175,211,221,209,192,211,225,230,214,228}) or m == _obczbshz({178,216,225,219,216,211,194,213,227,232,216,230})) then
 							local a = table.pack(...)
 							local okn, nm = pcall(function() return self.Name end)
 							task.defer(function()
 								local p = {}
 								for k = 1, math.min(a.n, 6) do p[k] = ser(a[k]) end
-								rec(_obi44m9h({127,115,124,127,133,119,64,82}), (okn and nm or _obi44m9h({76})) .. _obi44m9h({71}) .. m .. _obi44m9h({53}) .. table.concat(p, _obi44m9h({57,46})) .. _obi44m9h({54}), 15)
+								rec(_obczbshz({219,207,216,219,225,211,156,174}), (okn and nm or _obczbshz({168})) .. _obczbshz({163}) .. m .. _obczbshz({145}) .. table.concat(p, _obczbshz({149,138})) .. _obczbshz({146}), 15)
 							end)
 						end
 						return old(self, ...)
@@ -2141,19 +2700,19 @@ local function buildSelf(pages, say)
 				local nc = newcclosure or function(f) return f end
 				local ok = pcall(function()
 					local old
-					old = hookmetamethod(game, _obi44m9h({108,109,125,113,126,119,118,117,129,130}), nc(function(self, ...)
+					old = hookmetamethod(game, _obczbshz({200,201,217,205,218,211,210,209,221,222}), nc(function(self, ...)
 						local a1, a2, a3 = ...
-						if getnamecallmethod() == _obi44m9h({83,119,129,117,100,119,133,138,122,136}) then
+						if getnamecallmethod() == _obczbshz({175,211,221,209,192,211,225,230,214,228}) then
 							local okn, nm = pcall(function() return self.Name end)
-							if okn and nm == _obi44m9h({98,126,115,113,133,119,86,124,118,136,120,123,141,127,141,96,126,146,128,114,134,137,140,151,153,152,160}) then
+							if okn and nm == _obczbshz({190,218,207,205,225,211,178,216,210,228,212,215,233,219,233,188,218,238,220,206,226,229,232,243,245,244,252}) then
 								pcall(function()
 
-									local list = (type(a1) == _obi44m9h({129,111,113,124,118})) and a1 or { a1, a2, a3 }
+									local list = (type(a1) == _obczbshz({221,203,205,216,210})) and a1 or { a1, a2, a3 }
 									local st, spd
 									for k = 2, 6 do
 										local x = list[k]
-										if type(x) == _obi44m9h({128,130,129,121,127,121}) and not st then st = x
-										elseif type(x) == _obi44m9h({123,131,124,114,118,132}) and not spd then spd = x end
+										if type(x) == _obczbshz({220,222,221,213,219,213}) and not st then st = x
+										elseif type(x) == _obczbshz({215,223,216,206,210,224}) and not spd then spd = x end
 									end
 									if st then EV.gState = st; EV.gAt = os.clock(); EV.gSpeed = spd end
 								end)
@@ -2166,16 +2725,16 @@ local function buildSelf(pages, say)
 				return ok
 			end
 			local hookOk = installStateHook()
-			rec(_obi44m9h({114,132,112,116,118}), _obi44m9h({117,125,126,123,49,118,130,52,122,137,139,121,125,137,59,128,140,62,137,143,136,145,93,68}) .. tostring(hookOk))
+			rec(_obczbshz({206,224,204,208,210}), _obczbshz({209,217,218,215,141,210,222,144,214,229,231,213,217,229,151,220,232,154,229,235,228,237,185,160}) .. tostring(hookOk))
 
 			local function makeFloat(label, pos, onTap)
-				local b = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
+				local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
 					Text = label, Size = UDim2.fromOffset(64, 64), Position = pos, Visible = false,
 					BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
 					Font = Enum.Font.GothamBold, TextSize = 11, TextWrapped = true, AutoButtonColor = false, ZIndex = 25,
 				}, gui)
 				round(b, 32)
-				local st = mk(_obi44m9h({98,87,98,132,131,129,126,121}), { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+				local st = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
 				local dragging, moved, startPos, startIn = false, false, nil, nil
 				b.InputBegan:Connect(function(i)
 					if isPress(i) then
@@ -2207,72 +2766,72 @@ local function buildSelf(pages, say)
 			end
 
 			local slideBtn
-			slideBtn, paintSlide = makeFloat(_obi44m9h({96,122,120,116,118,28,245,156,179}), UDim2.new(1, -90, 0.42, 0), function()
+			slideBtn, paintSlide = makeFloat(_obczbshz({188,214,212,208,210,120,81,248,15}), UDim2.new(1, -90, 0.42, 0), function()
 				EV.slide = not EV.slide
 				paintSlide(EV.slide)
-				rec(_obi44m9h({130,119}), _obi44m9h({111,125,131,211,180,129,51,122,129,139,139,141,122,136,143,129,61,103,141,134,138,144,140,152,138,70,122,148,146,142,144,76,90,108,79}) .. (EV.slide and _obi44m9h({89,87,86,81,85,97}) or _obi44m9h({113,115,130,124,122,121,116,120,132})))
+				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,153,195,233,226,230,236,232,244,230,162,214,240,238,234,236,168,182,200,171}) .. (EV.slide and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
 				if setSlideMenu then setSlideMenu(EV.slide) end
 			end)
 			local hopBtn
-			hopBtn, paintHop = makeFloat(_obi44m9h({78,131,131,127,27,90,130,132}), UDim2.new(1, -90, 0.42, 76), function()
+			hopBtn, paintHop = makeFloat(_obczbshz({170,223,223,219,119,182,222,224}), UDim2.new(1, -90, 0.42, 76), function()
 				EV.hop = not EV.hop
 				paintHop(EV.hop)
-				rec(_obi44m9h({130,119}), _obi44m9h({111,125,131,211,180,129,51,122,129,139,139,141,122,136,143,129,61,95,148,148,144,66,107,147,149,70,84,102,73}) .. (EV.hop and _obi44m9h({89,87,86,81,85,97}) or _obi44m9h({113,115,130,124,122,121,116,120,132})))
+				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,153,187,240,240,236,158,199,239,241,162,176,194,165}) .. (EV.hop and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
 				if setHopMenu then setHopMenu(EV.hop) end
 			end)
 
 			local function slideActive(c, h)
 				local gs = EV.gState
-				if type(gs) == _obi44m9h({128,130,129,121,127,121}) and gs ~= _obi44m9h({}) then
-					if gs:find(_obi44m9h({107,97,123,121,117,119})) then return true, _obi44m9h({114,129,131,113,117,129,51,120,132,54,129,135,128,137,59}) .. gs end
+				if type(gs) == _obczbshz({220,222,221,213,219,213}) and gs ~= _obczbshz({}) then
+					if gs:find(_obczbshz({199,189,215,213,209,211})) then return true, _obczbshz({206,221,223,205,209,221,143,212,224,146,221,227,220,229,151}) .. gs end
 
-					if EV.wasSliding and gs:find(_obi44m9h({107,81,129,127,134,117,123})) then return true, _obi44m9h({128,122,120,116,118,50,120,135,137,123,133,124,130,126,138,60,69}) .. gs .. _obi44m9h({54}) end
+					if EV.wasSliding and gs:find(_obczbshz({199,173,221,219,226,209,215})) then return true, _obczbshz({220,214,212,208,210,142,212,227,229,215,225,216,222,218,230,152,161}) .. gs .. _obczbshz({146}) end
 					return false
 				end
 				for _, o in ipairs({ c, h }) do
 					for n, v in pairs(o:GetAttributes()) do
 						local ln = n:lower()
-						if (ln:find(_obi44m9h({128,122,120,116})) or ln:find(_obi44m9h({112,128,126,133,116,122}))) and v == true then return true, _obi44m9h({110,130,131,130,49}) .. n end
-						if type(v) == _obi44m9h({128,130,129,121,127,121}) then
+						if (ln:find(_obczbshz({220,214,212,208})) or ln:find(_obczbshz({204,220,218,225,208,214}))) and v == true then return true, _obczbshz({202,222,223,222,141}) .. n end
+						if type(v) == _obczbshz({220,222,221,213,219,213}) then
 							local lv = v:lower()
-							if lv:find(_obi44m9h({128,122,120,116})) or lv:find(_obi44m9h({112,128,126,133,116,122})) then return true, _obi44m9h({110,130,131,130,49}) .. n .. _obi44m9h({74}) .. v end
+							if lv:find(_obczbshz({220,214,212,208})) or lv:find(_obczbshz({204,220,218,225,208,214})) then return true, _obczbshz({202,222,223,222,141}) .. n .. _obczbshz({166}) .. v end
 						end
 					end
 				end
-				local an = h:FindFirstChildOfClass(_obi44m9h({78,124,120,125,114,134,130,134}))
+				local an = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
 				local tracks = (an and an:GetPlayingAnimationTracks()) or {}
 				for _, t in ipairs(tracks) do
-					local nm = (t.Name or _obi44m9h({})):lower()
-					local anm = (t.Animation and t.Animation.Name or _obi44m9h({})):lower()
-					if nm:find(_obi44m9h({128,122,120,116})) or anm:find(_obi44m9h({128,122,120,116})) or nm:find(_obi44m9h({112,128,126,133,116,122})) or anm:find(_obi44m9h({112,128,126,133,116,122})) then return true, _obi44m9h({110,124,120,125,49}) .. t.Name end
+					local nm = (t.Name or _obczbshz({})):lower()
+					local anm = (t.Animation and t.Animation.Name or _obczbshz({})):lower()
+					if nm:find(_obczbshz({220,214,212,208})) or anm:find(_obczbshz({220,214,212,208})) or nm:find(_obczbshz({204,220,218,225,208,214})) or anm:find(_obczbshz({204,220,218,225,208,214})) then return true, _obczbshz({202,216,212,217,141}) .. t.Name end
 				end
 				return false
 			end
 
-			local hooked = setmetatable({}, { __mode = _obi44m9h({120}) })
+			local hooked = setmetatable({}, { __mode = _obczbshz({212}) })
 			local function hookJumpButton()
-				local pg = lp:FindFirstChild(_obi44m9h({93,122,112,137,118,132,90,137,126}))
-				local tg = pg and pg:FindFirstChild(_obi44m9h({97,125,132,115,121,89,136,125}))
-				local fr = tg and tg:FindFirstChild(_obi44m9h({97,125,132,115,121,85,130,130,137,136,134,132,95,140,124,137,130}))
-				local jb = fr and fr:FindFirstChild(_obi44m9h({87,131,124,128,83,135,135,136,132,132}))
+				local pg = lp:FindFirstChild(_obczbshz({185,214,204,229,210,224,182,229,218}))
+				local tg = pg and pg:FindFirstChild(_obczbshz({189,217,224,207,213,181,228,217}))
+				local fr = tg and tg:FindFirstChild(_obczbshz({189,217,224,207,213,177,222,222,229,228,226,224,187,232,216,229,222}))
+				local jb = fr and fr:FindFirstChild(_obczbshz({179,223,216,220,175,227,227,228,224,224}))
 				if jb and not hooked[jb] then
 					hooked[jb] = true
 					table.insert(evConns, jb.InputBegan:Connect(function(i) if isPress(i) then EV.touchIn = i end end))
 					table.insert(evConns, jb.InputEnded:Connect(function(i) if isPress(i) then EV.touchIn = nil end end))
-					rec(_obi44m9h({125,131,123,127}), _obi44m9h({111,125,131,211,180,129,51,120,122,54,135,141,133,123,141,60,141,127,131,146,228,197,146,68,137,149,71,139,142,150,160,152,142,160,79,149,159,149,162,162,169,168,152,156,168,116,91}) .. jb:GetFullName())
+					rec(_obczbshz({217,223,215,219}), _obczbshz({203,217,223,47,16,221,143,212,214,146,227,233,225,215,233,152,233,219,223,238,64,33,238,160,229,241,163,231,234,242,252,244,234,252,171,241,251,241,254,254,5,4,244,248,4,208,183}) .. jb:GetFullName())
 				end
 			end
 
 			local function isJumpKey(i) return i.KeyCode == Enum.KeyCode.Space or i.KeyCode == Enum.KeyCode.ButtonA end
 			table.insert(evConns, UIS.InputBegan:Connect(function(i, gp)
 				if i.KeyCode ~= Enum.KeyCode.Unknown then
-					rec(_obi44m9h({129,115,114,124,114}), _obi44m9h({239,148,162,48}) .. tostring(i.KeyCode) .. (gp and _obi44m9h({45,54,120,126,133,119,133,122,118,121,124,65}) or _obi44m9h({})), 20)
+					rec(_obczbshz({221,207,206,216,206}), _obczbshz({75,240,254,140}) .. tostring(i.KeyCode) .. (gp and _obczbshz({137,146,212,218,225,211,225,214,210,213,216,157}) or _obczbshz({})), 20)
 					if isJumpKey(i) and not UIS:GetFocusedTextBox() then EV.keyHeld = true end
 				end
 				if isPress(i) then
-					local pg = lp:FindFirstChild(_obi44m9h({93,122,112,137,118,132,90,137,126}))
+					local pg = lp:FindFirstChild(_obczbshz({185,214,204,229,210,224,182,229,218}))
 					if not pg then return end
-					local inset = game:GetService(_obi44m9h({84,131,120,99,118,132,137,125,120,123})):GetGuiInset()
+					local inset = game:GetService(_obczbshz({176,223,212,191,210,224,229,217,212,215})):GetGuiInset()
 					local seen, names, isJump = {}, {}, false
 					for _, dy in ipairs({ 0, inset.Y }) do
 						local ok, objs = pcall(function() return pg:GetGuiObjectsAtPosition(i.Position.X, i.Position.Y - dy) end)
@@ -2280,26 +2839,26 @@ local function buildSelf(pages, say)
 							for _, o in ipairs(objs) do
 								if not seen[o] then
 									seen[o] = true
-									local path = o:GetFullName():gsub(_obi44m9h({107,94,123,113,138,119,133,135,58,68,114,118,62,72,120,71,66,76,111,140,130,155,136,150,108,155,144,77,87}), _obi44m9h({}))
-									names[#names + 1] = path .. _obi44m9h({53}) .. o.ClassName .. _obi44m9h({54})
-									if o.Name:lower():find(_obi44m9h({119,131,124,128})) or (o.Parent and o.Parent.Name:lower():find(_obi44m9h({119,131,124,128}))) then isJump = true end
+									local path = o:GetFullName():gsub(_obczbshz({199,186,215,205,230,211,225,227,150,160,206,210,154,164,212,163,158,168,203,232,222,247,228,242,200,247,236,169,179}), _obczbshz({}))
+									names[#names + 1] = path .. _obczbshz({145}) .. o.ClassName .. _obczbshz({146})
+									if o.Name:lower():find(_obczbshz({211,223,216,220})) or (o.Parent and o.Parent.Name:lower():find(_obczbshz({211,223,216,220}))) then isJump = true end
 								end
 							end
 						end
 					end
 					if isJump then EV.touchIn = i end
-					rec(_obi44m9h({129,125,128,133,118}), _obi44m9h({239,148,162,48,57}) .. math.floor(i.Position.X) .. _obi44m9h({57}) .. math.floor(i.Position.Y) .. _obi44m9h({54,46}) .. (isJump and _obi44m9h({104,94,100,92,96,111,51}) or _obi44m9h({}))
-						.. (#names > 0 and table.concat(names, _obi44m9h({45,73,47}), 1, math.min(#names, 5)) or _obi44m9h({53,124,116,126,121,135,128,52,119,133,139,219,188,137,59,128,140,62,137,143,136,145,76})), 20)
+					rec(_obczbshz({221,217,220,225,210}), _obczbshz({75,240,254,140,149}) .. math.floor(i.Position.X) .. _obczbshz({149}) .. math.floor(i.Position.Y) .. _obczbshz({146,138}) .. (isJump and _obczbshz({196,186,192,184,188,203,143}) or _obczbshz({}))
+						.. (#names > 0 and table.concat(names, _obczbshz({137,165,139}), 1, math.min(#names, 5)) or _obczbshz({145,216,208,218,213,227,220,144,211,225,231,55,24,229,151,220,232,154,229,235,228,237,168})), 20)
 				end
 			end))
 			table.insert(evConns, UIS.InputEnded:Connect(function(i)
 				if i.KeyCode ~= Enum.KeyCode.Unknown then
-					rec(_obi44m9h({129,115,114,124,114}), _obi44m9h({239,148,160,48}) .. tostring(i.KeyCode), 20)
+					rec(_obczbshz({221,207,206,216,206}), _obczbshz({75,240,252,140}) .. tostring(i.KeyCode), 20)
 					if isJumpKey(i) then EV.keyHeld = false end
 				end
 				if isPress(i) then
 					if EV.touchIn and i == EV.touchIn then EV.touchIn = nil end
-					rec(_obi44m9h({129,125,128,133,118}), _obi44m9h({239,148,160}), 20)
+					rec(_obczbshz({221,217,220,225,210}), _obczbshz({75,240,252}), 20)
 				end
 			end))
 
@@ -2312,10 +2871,10 @@ local function buildSelf(pages, say)
 				if not (m and m.Parent) then
 					killMover()
 					local ok = pcall(function()
-						local att = Instance.new(_obi44m9h({78,130,131,113,116,122,128,121,131,138}))
-						att.Name = _obi44m9h({82,132,98,124,122,118,120,85,137,138}); att.Parent = r
-						local lv = Instance.new(_obi44m9h({89,119,125,117,114,132,105,121,129,133,122,129,141,147}))
-						lv.Name = _obi44m9h({82,132,98,124,122,118,120,96,107})
+						local att = Instance.new(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
+						att.Name = _obczbshz({174,224,190,216,214,210,212,177,229,230}); att.Parent = r
+						local lv = Instance.new(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239}))
+						lv.Name = _obczbshz({174,224,190,216,214,210,212,188,199})
 						lv.Attachment0 = att
 						lv.RelativeTo = Enum.ActuatorRelativeTo.World
 						lv.VelocityConstraintMode = Enum.VelocityConstraintMode.Plane
@@ -2327,10 +2886,50 @@ local function buildSelf(pages, say)
 						EV.mover = lv; EV.moverAtt = att
 					end)
 					if not ok then killMover(); return false end
-					rec(_obi44m9h({128,122,120,116,118}), _obi44m9h({89,119,125,117,114,132,105,121,129,133,122,129,141,147,59,127,143,135,128,132,144}))
+					rec(_obczbshz({220,214,212,208,210}), _obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239,151,219,235,227,220,224,236}))
 				end
 				pcall(function() EV.mover.PlaneVelocity = Vector2.new(vx, vz) end)
 				return true
+			end
+
+			local function gameSlideMovers(r)
+				local all, pref = {}, {}
+				for _, o in ipairs(r:GetChildren()) do
+					if o:IsA(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239})) and o.Name ~= _obczbshz({174,224,190,216,214,210,212,188,199}) and o.Enabled then
+						all[#all + 1] = o
+						local an = o.Attachment0 and o.Attachment0.Name or _obczbshz({})
+						if an:lower():find(_obczbshz({220,214,212,208})) then pref[#pref + 1] = o end
+					end
+				end
+				return #pref > 0 and pref or all
+			end
+
+			local function liftMover(lv, S)
+				local mode = lv.VelocityConstraintMode
+				local world = lv.RelativeTo == Enum.ActuatorRelativeTo.World
+				if mode == Enum.VelocityConstraintMode.Vector then
+					local v = lv.VectorVelocity
+					local hv = world and Vector3.new(v.X, 0, v.Z) or v
+					local dir = (world and hv.Magnitude > 0.5) and hv.Unit or nil
+					if hv.Magnitude > 0.5 and hv.Magnitude < S - 0.3 then
+						lv.VectorVelocity = world and (hv.Unit * S + Vector3.new(0, v.Y, 0)) or (v.Unit * S)
+						return true, dir
+					end
+					return false, dir
+				elseif mode == Enum.VelocityConstraintMode.Line then
+					local sp = lv.LineVelocity
+					if math.abs(sp) > 0.5 and math.abs(sp) < S - 0.3 then lv.LineVelocity = (sp >= 0 and 1 or -1) * S; return true end
+				elseif mode == Enum.VelocityConstraintMode.Plane then
+					local pv = lv.PlaneVelocity
+					local dir
+					if world and pv.Magnitude > 0.5 then
+						dir = lv.PrimaryTangentAxis * pv.X + lv.SecondaryTangentAxis * pv.Y
+						dir = dir.Magnitude > 0.01 and dir.Unit or nil
+					end
+					if pv.Magnitude > 0.5 and pv.Magnitude < S - 0.3 then lv.PlaneVelocity = pv.Unit * S; return true, dir end
+					return false, dir
+				end
+				return false
 			end
 			local function doSlide(c, h, r)
 				local ok, sliding, why = pcall(slideActive, c, h)
@@ -2338,34 +2937,64 @@ local function buildSelf(pages, say)
 					local v = r.AssemblyLinearVelocity
 					local flat = Vector3.new(v.X, 0, v.Z)
 					if not EV.wasSliding then
-						EV.slideSpeed = math.max(flat.Magnitude, EV.gSpeed or 0)
+						EV.slideSpeed = flat.Magnitude; EV.slideT0 = os.clock()
+						killMover()
 						local lk = Vector3.new(r.CFrame.LookVector.X, 0, r.CFrame.LookVector.Z)
 						EV.slideDir = flat.Magnitude > 1 and flat.Unit or (lk.Magnitude > 0.01 and lk.Unit or Vector3.new(0, 0, -1))
-						rec(_obi44m9h({128,122,120,116,118}), _obi44m9h({128,122,120,116,118,50,87,89,105,91,90,108,90,94,106,60,69}) .. tostring(why) .. _obi44m9h({54,46,133,117,125,50,124,130,126,121,128,121,133,87}) .. string.format(_obi44m9h({50,60,64,118}), EV.slideSpeed))
+						rec(_obczbshz({220,214,212,208,210}), _obczbshz({220,214,212,208,210,142,179,181,197,183,182,200,182,186,198,152,161}) .. tostring(why) .. _obczbshz({146,138,225,209,217,142,216,222,218,213,220,213,225,179}) .. string.format(_obczbshz({142,152,156,210}), EV.slideSpeed))
 						local ch = {}
-						for _, d in ipairs(r:GetChildren()) do ch[#ch + 1] = d.Name .. _obi44m9h({71}) .. d.ClassName end
-						rec(_obi44m9h({128,122,120,116,118}), _obi44m9h({115,119,123,120,128,133,51,120,132,54,95,141,134,123,137,139,134,130,113,143,144,150,115,133,151,154,97,72}) .. table.concat(ch, _obi44m9h({57,46})))
+						for _, d in ipairs(r:GetChildren()) do ch[#ch + 1] = d.Name .. _obczbshz({163}) .. d.ClassName end
+						rec(_obczbshz({220,214,212,208,210}), _obczbshz({207,211,215,212,220,225,143,212,224,146,187,233,226,215,229,231,226,222,205,235,236,242,207,225,243,246,189,164}) .. table.concat(ch, _obczbshz({149,138})))
 						local mv = {}
 						for _, d in ipairs(c:GetDescendants()) do
-							if d.Name:sub(1, 7) ~= _obi44m9h({82,132,98,124,122,118,120}) and (d:IsA(_obi44m9h({79,125,115,137,94,129,137,121,135})) or d:IsA(_obi44m9h({89,119,125,117,114,132,105,121,129,133,122,129,141,147})) or d:IsA(_obi44m9h({99,115,114,132,128,132,89,131,135,121,124})) or d:IsA(_obi44m9h({78,122,120,119,127,98,130,135,126,138,128,135,135}))) then
-								mv[#mv + 1] = d:GetFullName() .. _obi44m9h({71}) .. d.ClassName
+							if d.Name:sub(1, 7) ~= _obczbshz({174,224,190,216,214,210,212}) and (d:IsA(_obczbshz({171,217,207,229,186,221,229,213,227})) or d:IsA(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239})) or d:IsA(_obczbshz({191,207,206,224,220,224,181,223,227,213,216})) or d:IsA(_obczbshz({170,214,212,211,219,190,222,227,218,230,220,227,227}))) then
+								mv[#mv + 1] = d:GetFullName() .. _obczbshz({163}) .. d.ClassName
 							end
 						end
-						rec(_obi44m9h({128,122,120,116,118}), _obi44m9h({122,125,133,117,131,133,51,120,132,54,129,135,128,137,59,138,140,62,143,133,147,149,146,146,134,141,140,149,99,74}) .. (#mv > 0 and table.concat(mv, _obi44m9h({57,46})) or _obi44m9h({123,115,125,120,134,127})))
+						rec(_obczbshz({220,214,212,208,210}), _obczbshz({214,217,225,209,223,225,143,212,224,146,221,227,220,229,151,230,232,154,235,225,239,241,238,238,226,233,232,241,191,166}) .. (#mv > 0 and table.concat(mv, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219})))
+							for _, lv in ipairs(r:GetChildren()) do
+								if lv:IsA(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239})) and lv.Name ~= _obczbshz({174,224,190,216,214,210,212,188,199}) then
+									rec(_obczbshz({220,214,212,208,210}), _obczbshz({181,192,139,208,220,142,217,223,216,225,173,148,214,234,235,181}) .. tostring(lv.Attachment0 and lv.Attachment0.Name) .. _obczbshz({137,203,223,213,227,221,172}) .. tostring(lv.Enabled) .. _obczbshz({137,215,218,208,220,171}) .. tostring(lv.VelocityConstraintMode)
+										.. _obczbshz({137,220,208,216,170}) .. tostring(lv.RelativeTo) .. _obczbshz({137,224,208,207,170}) .. ser(lv.VectorVelocity) .. _obczbshz({137,214,212,218,213,207,172}) .. ser(lv.LineVelocity) .. _obczbshz({137,218,215,205,219,221,172}) .. tostring(lv.PlaneVelocity), 8)
+								end
+							end
 					end
 					EV.wasSliding = true
-					if EV.slideSpeed > 8 then
-						local dir = EV.slideDir
-						if flat.Magnitude > 3 then dir = flat.Unit; EV.slideDir = dir end
-						local S = EV.slideSpeed
-						pushMover(r, dir.X * S, dir.Z * S)
-						if flat.Magnitude < S - 0.3 then
-							r.AssemblyLinearVelocity = Vector3.new(dir.X * S, v.Y, dir.Z * S)
-							rec(_obi44m9h({128,122,120,116,118}), _obi44m9h({127,115,117,127,131,213,186,131,53,122,124,56,143,127,135,139,128,135,131,129,133,135,67,76,138,152,136,72}) .. string.format(_obi44m9h({50,60,64,118}), flat.Magnitude) .. _obi44m9h({54}), 4)
-						end
+
+					if os.clock() - (EV.slideT0 or 0) < 0.25 then
+						EV.slideSpeed = math.max(EV.slideSpeed or 0, flat.Magnitude)
 					end
+					local S = EV.slideSpeed or 0
+					local gs = EV.gState or _obczbshz({})
+					if S > 8 then
+						if type(gs) == _obczbshz({220,222,221,213,219,213}) and gs:find(_obczbshz({199,173,221,219,226,209,215})) then
+
+							local md = h.MoveDirection
+							local dd = Vector3.new(md.X, 0, md.Z)
+							if dd.Magnitude > 0.1 then EV.slideDir = dd.Unit end
+							if EV.slideDir then pushMover(r, EV.slideDir.X * S, EV.slideDir.Z * S) end
+							else
+
+								local lifted, gdir = false, nil
+							for _, lv in ipairs(gameSlideMovers(r)) do
+								local okl, ch, dr = pcall(liftMover, lv, S)
+								if okl and ch then lifted = true end
+								if okl and dr then gdir = dr end
+							end
+
+							local pd = gdir or (flat.Magnitude > 0.5 and flat.Unit) or EV.slideDir
+							if pd then EV.slideDir = pd; pushMover(r, pd.X * S, pd.Z * S) end
+							if lifted then rec(_obczbshz({220,214,212,208,210}), _obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239,151,220,232,154,229,235,228,237,159,225,235,247,246,248,230,234,246,168,249,252,236,172}) .. string.format(_obczbshz({142,152,156,210}), S), 3) end
+
+							if flat.Magnitude > 0.5 and flat.Magnitude < S - 0.3 then
+								local dir = flat.Unit
+								r.AssemblyLinearVelocity = Vector3.new(dir.X * S, v.Y, dir.Z * S)
+								if not lifted then rec(_obczbshz({220,214,212,208,210}), _obczbshz({220,207,216,140,185,215,221,213,210,228,201,217,225,229,218,225,237,243,155,224,236,158,233,239,232,241,163,244,247,231,167,233,243,255,254,0,238,0,202,176,4,85,70,180,7,251,253,7,11,253,0,5,189,255,191,22,6,14,18,7,14,10,8,12,14,202,211,17,31,15,207}) .. string.format(_obczbshz({142,152,156,210}), flat.Magnitude) .. _obczbshz({146}), 3) end
+							end
+							end
+						end
 				else
-					if EV.wasSliding then rec(_obi44m9h({128,122,120,116,118}), _obi44m9h({128,122,120,116,118,50,103,89,103,99,96,102,104,111})) end
+					if EV.wasSliding then rec(_obczbshz({220,214,212,208,210}), _obczbshz({220,214,212,208,210,142,195,181,195,191,188,194,196,203})) end
 					EV.wasSliding = false
 					killMover()
 				end
@@ -2386,24 +3015,26 @@ local function buildSelf(pages, say)
 					EV.lastTick = now
 					local v = r.AssemblyLinearVelocity
 					local sp = Vector3.new(v.X, 0, v.Z).Magnitude
-					local an = h:FindFirstChildOfClass(_obi44m9h({78,124,120,125,114,134,130,134}))
+					local an = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
 					local names = {}
 					if an then
 						for _, t in ipairs(an:GetPlayingAnimationTracks()) do names[#names + 1] = tostring(t.Name) end
 					end
 					table.sort(names)
-					local joined = table.concat(names, _obi44m9h({57}))
+					local joined = table.concat(names, _obczbshz({149}))
 					if sp > 5 or joined ~= EV.lastAnims then
 						EV.lastAnims = joined
-						rec(_obi44m9h({129,119,114,123}), string.format(_obi44m9h({114,129,131,113,117,129,80,57,136,54,122,128,122,137,88,65,144,62,143,149,141,145,130,151,138,141,156,154,138,142,154,105,82,161,79,163,157,155,151,153,132,132,116,93,172,90,163,171,173,141,141,125,102,181,99,165,179,175,180,187,134,165,112,191,170}),
+						rec(_obczbshz({221,211,206,215}), string.format(_obczbshz({206,221,223,205,209,221,172,149,228,146,214,220,214,229,180,157,236,154,235,241,233,237,222,243,230,233,248,246,230,234,246,197,174,253,171,255,249,247,243,245,224,224,208,185,8,182,255,7,9,233,233,217,194,17,191,1,15,11,16,23,226,1,204,27,6}),
 							tostring(h:GetState()), tostring(h.FloorMaterial), tostring(EV.keyHeld or EV.touchIn ~= nil),
 							tostring(EV.slide), tostring(EV.hop), joined), 2)
 					end
 				end
 
-				local gs = EV.gState or _obi44m9h({})
-				local busyState = gs == _obi44m9h({81,125,134,126,118,118}) or gs == _obi44m9h({95,111,118,116,128,126,127,125,131,125}) or gs == _obi44m9h({80,111,129,130,122,119,119}) or gs == _obi44m9h({80,122,120,125,115,123,129,123}) or gs:find(_obi44m9h({107,97,123,121,117,119})) ~= nil
-				if EV.hop and not busyState and now - EV.lastHop > 0.1 then
+				local gs = EV.gState or _obczbshz({})
+				local busyState = gs == _obczbshz({173,217,226,218,210,210}) or gs == _obczbshz({187,203,210,208,220,218,219,217,223,217}) or gs == _obczbshz({172,203,221,222,214,211,211}) or gs == _obczbshz({172,214,212,217,207,215,221,215}) or gs:find(_obczbshz({199,189,215,213,209,211})) ~= nil
+				local held = EV.keyHeld or EV.touchIn ~= nil
+				local wantHop = EV.hop or (EV.hopAlways and held)
+				if wantHop and not busyState and now - EV.lastHop > 0.1 then
 					local st = h:GetState()
 					local grounded = st == Enum.HumanoidStateType.Running or st == Enum.HumanoidStateType.RunningNoPhysics or st == Enum.HumanoidStateType.Landed
 							or st == Enum.HumanoidStateType.Idle or (h.FloorMaterial ~= Enum.Material.Air and st ~= Enum.HumanoidStateType.Jumping and st ~= Enum.HumanoidStateType.Freefall)
@@ -2413,11 +3044,18 @@ local function buildSelf(pages, say)
 						h.Jump = true
 						h:ChangeState(Enum.HumanoidStateType.Jumping)
 						EV.hn = EV.hn + 1
-						rec(_obi44m9h({117,125,127}), _obi44m9h({125,131,123,127,49,115,136,136,132,131,218,185,141,131,126,139,61,65}) .. EV.hn .. _obi44m9h({45,115,130,132,114,118,130,81}) .. tostring(st) .. _obi44m9h({45,120,126,119,128,79}) .. gs, 6)
+						rec(_obczbshz({209,217,219}), _obczbshz({217,223,215,219,141,207,228,228,224,223,54,21,233,223,218,231,153,157}) .. EV.hn .. _obczbshz({137,207,222,224,206,210,222,173}) .. tostring(st) .. _obczbshz({137,212,218,211,220,171}) .. gs, 6)
 					end
 				end
 
 				if EV.slide then doSlide(c, h, r) else killMover() end
+			end))
+
+			table.insert(evConns, RunService.RenderStepped:Connect(function()
+				if not EV.slide then return end
+				local c, h, r = lp.Character, hum(), hrp()
+				if not (c and h and r) or h.Health <= 0 then return end
+				doSlide(c, h, r)
 			end))
 
 			table.insert(evConns, RunService.Stepped:Connect(function()
@@ -2427,70 +3065,70 @@ local function buildSelf(pages, say)
 				doSlide(c, h, r)
 			end))
 
-			section(evp, _obi44m9h({82,132,112,116,118}))
-			toggleRow(evp, _obi44m9h({79,125,131,211,180,129,51,122,129,139,139,141,122,136,143,129,87,62,104,142,135,139,145,141,153,139,71,123,149,147,143,145}), _obi44m9h({90,125,130,132,131,115,51,131,53,120,134,140,220,189,138,60,139,127,63,148,134,142,132,68,77,154,150,153,158,143,75,105,77,154,152,151,146,97,151,153,168,162,160,159,154,99}), function(v)
+			section(evp, _obczbshz({174,224,204,208,210}))
+			toggleRow(evp, _obczbshz({171,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,179,154,196,234,227,231,237,233,245,231,163,215,241,239,235,237}), _obczbshz({182,217,222,224,223,207,143,223,145,212,226,232,56,25,230,152,231,219,155,240,226,234,224,160,169,246,242,245,250,235,167,197,169,246,244,243,238,189,243,245,4,254,252,251,246,191}), function(v)
 				EV.showSlide = v
 				slideBtn.Visible = v
-				rec(_obi44m9h({130,119}), _obi44m9h({122,125,130,132,131,115,133,52,119,133,139,219,188,137,59,130,137,147,147,149,130,144,151,137,69,111,149,142,146,152,148,160,146,78,130,156,154,150,152,110,85}) .. tostring(v))
+				rec(_obczbshz({222,211}), _obczbshz({214,217,222,224,223,207,225,144,211,225,231,55,24,229,151,222,229,239,239,241,222,236,243,229,161,203,241,234,238,244,240,252,238,170,222,248,246,242,244,202,177}) .. tostring(v))
 			end)
-			toggleRow(evp, _obi44m9h({79,125,131,211,180,129,51,122,129,139,139,141,122,136,143,129,87,62,96,149,149,145,67,108,148,150}), _obi44m9h({90,125,130,132,131,115,51,131,53,120,134,140,220,189,138,60,139,127,63,148,134,142,132,68,77,154,150,153,158,143,75,105,77,154,152,151,146,97,151,153,168,162,160,159,154,99}), function(v)
+			toggleRow(evp, _obczbshz({171,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,179,154,188,241,241,237,159,200,240,242}), _obczbshz({182,217,222,224,223,207,143,223,145,212,226,232,56,25,230,152,231,219,155,240,226,234,224,160,169,246,242,245,250,235,167,197,169,246,244,243,238,189,243,245,4,254,252,251,246,191}), function(v)
 				EV.showHop = v
 				hopBtn.Visible = v
-				rec(_obi44m9h({130,119}), _obi44m9h({122,125,130,132,131,115,133,52,119,133,139,219,188,137,59,130,137,147,147,149,130,144,151,137,69,103,156,156,152,74,115,155,157,104,79}) .. tostring(v))
+				rec(_obczbshz({222,211}), _obczbshz({214,217,222,224,223,207,225,144,211,225,231,55,24,229,151,222,229,239,239,241,222,236,243,229,161,195,248,248,244,166,207,247,249,196,171}) .. tostring(v))
 			end)
-			rowBtn(evp, _obi44m9h({97,128,112,134,114,132,51,118,132,138,218,205,126,141,59,130,137,147,147,149,130,144,151,137,152}), function()
+			rowBtn(evp, _obczbshz({189,220,204,226,206,224,143,210,224,230,54,41,218,233,151,222,229,239,239,241,222,236,243,229,244}), function()
 				EV.locked = true
-				rec(_obi44m9h({130,119}), _obi44m9h({111,125,131,211,198,119,134,52,123,130,140,140,142,123,137,144,130,145,63,116,115,99,121,101,105,117,122}))
-				say(_obi44m9h({79,125,131,211,198,119,134,52,123,130,140,140,142,123,137,144,130,145,63,148,147,131,153,133,137,149,154,72,81,152,238,207,156,78,144,162,163,147,166,168,150,163,96,102}))
+				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,208,207,191,213,193,197,209,214}))
+				say(_obczbshz({171,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,240,239,223,245,225,229,241,246,164,173,244,74,43,248,170,236,254,255,239,2,4,242,255,188,194}))
 			end, true)
-			rowBtn(evp, _obi44m9h({81,115,130,132,131,115,137,117,135,54,121,135,141,221,208,129,144,62,133,140,150,150,152,133,147,154,140,155}), function()
+			rowBtn(evp, _obczbshz({173,207,222,224,223,207,229,209,227,146,213,227,233,57,44,221,236,154,225,232,242,242,244,225,239,246,232,247}), function()
 				EV.locked = false
-				rec(_obi44m9h({130,119}), _obi44m9h({111,125,131,211,198,119,134,52,123,130,140,140,142,123,137,144,130,145,63,100,102,117,119,118,102,124,104,108,120,125}))
-				say(_obi44m9h({79,125,131,211,198,119,134,52,123,130,140,140,142,123,137,144,130,145,63,132,134,149,151,150,134,156,136,140,152,157,101,76,142,160,161,145,164,166,152,84,165,168,152,88,166,169,177,161,175,108}))
+				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,192,194,209,211,210,194,216,196,200,212,217}))
+				say(_obczbshz({171,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,224,226,241,243,242,226,248,228,232,244,249,193,168,234,252,253,237,0,2,244,176,1,4,244,180,2,5,13,253,11,200}))
 			end, true)
 			local _
-			_, setSlideMenu = toggleRow(evp, _obi44m9h({86,124,117,121,127,123,135,121,53,105,131,129,125,127}), _obi44m9h({89,119,118,113,64,118,120,135,129,127,126,121,57,126,132,142,130,146,142,64,130,147,152,141,81,70,154,141,150,74,154,76,143,157,163,243,212,161,83,154,161,171,171,173,154,168,175,161}), function(v)
+			_, setSlideMenu = toggleRow(evp, _obczbshz({178,216,209,213,219,215,227,213,145,197,223,221,217,219}), _obczbshz({181,211,210,205,156,210,212,227,221,219,218,213,149,218,224,234,222,238,234,156,222,239,244,233,173,162,246,233,242,166,246,168,235,249,255,79,48,253,175,246,253,7,7,9,246,4,11,253}), function(v)
 				EV.slide = v
 				paintSlide(v)
-				rec(_obi44m9h({130,119}), _obi44m9h({122,115,125,133,49,91,129,122,126,132,128,140,126,58,110,136,134,130,132,64,78,96,67}) .. (v and _obi44m9h({89,87,86,81,85,97}) or _obi44m9h({113,115,130,124,122,121,116,120,132})))
+				rec(_obczbshz({222,211}), _obczbshz({214,207,217,225,141,183,221,214,218,224,220,232,218,150,202,228,226,222,224,156,170,188,159}) .. (v and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
 			end)
-			_, setHopMenu = toggleRow(evp, _obi44m9h({78,131,131,127,49,90,130,132}), _obi44m9h({93,131,123,113,49,133,130,142,126,132,127,135,57,141,128,137,61,142,145,133,132,139,150,133,151,70,154,141,144,159,157,141,159,78,158,80,147,161,167,247,216,165,87,156,158,90,171,177,169,159,177}), function(v)
+			_, setHopMenu = toggleRow(evp, _obczbshz({170,223,223,219,141,182,222,224}), _obczbshz({185,223,215,205,141,225,222,234,218,224,219,227,149,229,151,236,222,231,235,235,157,242,238,228,240,174,163,247,234,243,167,251,238,241,0,254,238,0,175,254,242,246,244}), function(v)
 				EV.hop = v
 				paintHop(v)
-				rec(_obi44m9h({130,119}), _obi44m9h({122,115,125,133,49,83,136,136,132,54,95,135,137,58,72,90,61}) .. (v and _obi44m9h({89,87,86,81,85,97}) or _obi44m9h({113,115,130,124,122,121,116,120,132})))
+				rec(_obczbshz({222,211}), _obczbshz({214,207,217,225,141,175,228,228,224,146,187,227,229,150,164,182,153}) .. (v and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
 			end)
-			toggleRow(evp, _obi44m9h({78,131,131,127,49,90,130,132,53,137,124,133,57,141,128,131,146,144,128,146}), _obi44m9h({93,131,123,113,49,133,130,142,126,132,127,135,57,135,128,143,138,141,63,147,134,143,67,151,138,141,156,154,138,156,75,155,77,144,158,164,244,213,162,84,153,155,87,168,174,166,156,174}), function(v)
+			toggleRow(evp, _obczbshz({170,223,223,219,141,182,222,224,145,229,216,219,234,232,216,230,221,233,155,235,157,238,244,236,240}), _obczbshz({188,45,30,140,211,215,210,209,145,226,232,224,214,228,219,231,153,237,234,246,230,236,231,239,161,231,241,245,250,231,245,252,248,170,1,251,240,81,57,176,228,215,218,233,231,215,183,7,185,252,10,16,96,65,14,192,5,7,195,20,26,18,8,26}), function(v)
 				EV.hopAlways = v
-				rec(_obi44m9h({130,119}), _obi44m9h({78,131,131,127,49,90,130,132,53,137,124,133,57,141,128,131,146,144,128,146,65,79,97,68}) .. tostring(v))
+				rec(_obczbshz({222,211}), _obczbshz({170,223,223,219,141,182,222,224,145,229,216,219,234,232,216,230,221,233,155,169,187,158}) .. tostring(v))
 			end)
 
-			section(evp, _obi44m9h({89,125,118,48,117,129,51,89,139,119,123,125}))
-			toggleRow(evp, _obi44m9h({84,128,112,134,114,132,51,136,138,122,134}), _obi44m9h({93,115,129,131,128,128,116,123,122,131,67,56,122,142,141,133,127,147,147,143,148,78,67,133,147,143,148,137,236,209,238,225,146,161,91,80,150,165,167,149,153,165,170,100,89,174,170,173,178,163,178,108,97,182,168,167,177,167,186,104,174,106,189,177,186,189,195,181,196,114,197,185,184,187,185,193,189,201,206}), function(v)
+			section(evp, _obczbshz({181,217,210,140,209,221,143,181,231,211,215,217}))
+			toggleRow(evp, _obczbshz({176,220,204,226,206,224,143,228,230,214,226}), _obczbshz({185,207,221,223,220,220,208,215,214,223,159,148,214,234,233,225,219,239,239,235,240,170,159,225,239,235,240,229,72,45,74,61,238,253,183,172,242,1,3,241,245,1,6,192,181,10,6,9,14,255,14,200,189,18,4,3,13,3,22,196,10,198,25,13,22,25,31,17,32,206,33,21,20,23,21,29,25,37,42}), function(v)
 				EV.rec = v
 				if v then bindChar() end
-				say(v and _obi44m9h({84,128,112,134,114,128,119,131,53,133,55,132,136,129,59,128,140,62,100,150,130,134,136,82}) or _obi44m9h({84,128,112,134,114,213,186,215,184,133,55,124,136,58,135,139,132,62,131,143,65,103,153,133,137,139,71,152,138,159,158,141,145,143,93}))
+				say(v and _obczbshz({176,220,204,226,206,220,211,223,145,225,147,224,228,221,151,220,232,154,192,242,222,226,228,174}) or _obczbshz({176,220,204,226,206,49,22,51,20,225,147,216,228,150,227,231,224,154,223,235,157,195,245,225,229,231,163,244,230,251,250,233,237,235,185}))
 			end, true)
-			toggleRow(evp, _obi44m9h({84,128,112,134,114,132,51,134,122,131,134,140,126,141,59,129,139,148,136,129,133,145,150}), _obi44m9h({92,46,128,133,118,50,130,52,136,123,140,56,131,137,130,139,61,139,128,142,133,131,67,148,151,149,71,155,142,156,161,149,145,157,161,80,89,167,166,149,85,158,166,167,164,117,91,168,166,165,180,165,97,181,6,247,101,182,185,169,105,179,185,194,178,193,195,185,184,179,197,125}), function(v)
+			toggleRow(evp, _obczbshz({176,220,204,226,206,224,143,226,214,223,226,232,218,233,151,221,231,240,228,221,225,237,242}), _obczbshz({184,138,220,225,210,142,222,144,228,215,232,148,223,229,222,231,153,231,220,234,225,223,159,240,243,241,163,247,234,248,253,241,237,249,253,172,181,3,2,241,177,250,2,3,0,209,183,4,2,1,16,1,189,17,98,83,193,18,21,5,197,15,21,30,14,29,31,21,20,15,33,217}), function(v)
 				if v and not installSpy() then
-					say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,146,149,145,145,149,152,134,70,143,151,152,149,152,145,161,143,156,149,165,154,162,152,111,86,165,251,220,169,91,160,0,223,95,176,179,163,99,171,183,167,189,169,187,106,186,191,109,192,180,189,192,198,184,199,117,187,197,206,194,187,191,203,208,140}))
+					say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,238,241,237,237,241,244,226,162,235,243,244,241,244,237,253,235,248,241,1,246,254,244,203,178,1,87,56,5,183,252,92,59,187,12,15,255,191,7,19,3,25,5,23,198,22,27,201,28,16,25,28,34,20,35,209,23,33,42,30,23,27,39,44,232}))
 					return
 				end
 				EV.spyOut = v
-				rec(_obi44m9h({130,119}), _obi44m9h({116,128,112,134,114,132,51,134,122,131,134,140,126,141,59,129,139,148,136,129,133,145,150,94,69}) .. tostring(v))
+				rec(_obczbshz({222,211}), _obczbshz({208,220,204,226,206,224,143,226,214,223,226,232,218,233,151,221,231,240,228,221,225,237,242,186,161}) .. tostring(v))
 			end)
-			rowBtn(evp, _obi44m9h({80,125,127,121,114,132,51,128,132,125,55,124,136,58,96,146,126,130,132}), function()
+			rowBtn(evp, _obczbshz({172,217,219,213,206,224,143,220,224,217,147,216,228,150,188,238,218,222,224}), function()
 				local f = setclipboard or toclipboard
-				local txt = table.concat(REC.lines, _obi44m9h({23}))
-				if txt == _obi44m9h({}) then say(_obi44m9h({92,46,123,127,120,50,119,131,53,91,141,121,125,127,59,129,144,146,226,193,65,152,132,158,142,149,85})); return end
-				if not f then say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,147,133,142,66,150,137,153,137,147,145,153,140,154,141,159,146,93,80,128,82,159,163,156,86,171,153,166,156,254,229,170,94,164,179,181,5,228,100,179,181,103,169,187,187,192,181,195,189,111}) .. DSLOG.file); return end
-				say(pcall(f, txt) and (_obi44m9h({89,125,118,48,117,129,51,89,139,119,123,125,57,125,138,140,134,127,131,143,65,74}) .. #REC.lines .. _obi44m9h({45,122,120,126,121,115,134,61,67})) or _obi44m9h({83,111,123,120,128,135,51,117,132,54,122,135,137,131,124,142,75}))
+				local txt = table.concat(REC.lines, _obczbshz({115}))
+				if txt == _obczbshz({}) then say(_obczbshz({184,138,215,219,212,142,211,223,145,183,233,213,217,219,151,221,236,238,62,29,157,244,224,250,234,241,177})); return end
+				if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,220,174,251,255,248,178,7,245,2,248,90,65,6,186,0,15,17,97,64,192,15,17,195,5,23,23,28,17,31,25,203}) .. DSLOG.file); return end
+				say(pcall(f, txt) and (_obczbshz({181,217,210,140,209,221,143,181,231,211,215,217,149,217,230,232,226,219,223,235,157,166}) .. #REC.lines .. _obczbshz({137,214,212,218,213,207,226,153,159})) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
 			end, true)
-			rowBtn(evp, _obi44m9h({89,119,124,128,114,132,51,128,132,125,55,124,136,58,96,146,126,130,132}), function()
+			rowBtn(evp, _obczbshz({181,211,216,220,206,224,143,220,224,217,147,216,228,150,188,238,218,222,224}), function()
 				REC.lines = {}
-				say(_obi44m9h({89,125,118,48,117,129,51,89,139,119,123,125,57,134,132,137,141,141,77}))
+				say(_obczbshz({181,217,210,140,209,221,143,181,231,211,215,217,149,226,224,229,233,233,169}))
 			end, true)
 
-			rec(_obi44m9h({114,132,112,116,118}), _obi44m9h({110,112,112,48,86,136,116,120,122,54,120,140,130,144,124,60,153,62,111,140,130,133,136,109,137,99}) .. tostring(game.PlaceId) .. _obi44m9h({45,138,47,122,128,121,130,81}) .. tostring(game.Name) .. _obi44m9h({45,138,47,132,128,131,136,121,82}) .. tostring(UIS.TouchEnabled))
+			rec(_obczbshz({206,224,204,208,210}), _obczbshz({202,204,204,140,178,228,208,212,214,146,212,232,222,236,216,152,245,154,203,232,222,225,228,201,229,191}) .. tostring(game.PlaceId) .. _obczbshz({137,230,139,214,220,213,222,173}) .. tostring(game.Name) .. _obczbshz({137,230,139,224,220,223,228,213,174}) .. tostring(UIS.TouchEnabled))
 			bindChar()
 
 			S.evStop = function()
@@ -2518,23 +3156,22 @@ local function buildSelf(pages, say)
 			r.CFrame = CFrame.new(res.Position + Vector3.new(0, 4, 0))
 		end
 	end)
-	local ep = pages[_obi44m9h({82,134,131,130,114,133})]
+	local ep = pages[_obczbshz({174,226,223,222,206,225})]
 	if ep then
-		section(ep, _obi44m9h({97,115,123,117,129,129,133,136,122}))
-		toggleRow(ep, _obi44m9h({97,115,123,117,129,129,133,136,122,54,135,135,139,58,143,139,142,147,132}), _obi44m9h({97,125,128,133,118,65,118,128,126,135,140,125,57,136,144,137,61,138,148,135,130,148,67,137,69,156,150,139,236,212,75,162,142,151,79,160,163,147,83,160,248,215}), function(v) ctp.on = v end)
+		section(ep, _obczbshz({189,207,215,209,221,221,225,228,214}))
+		toggleRow(ep, _obczbshz({189,207,215,209,221,221,225,228,214,146,227,227,231,150,235,231,234,239,224}), _obczbshz({189,217,220,225,210,157,210,220,218,227,232,217,149,228,236,229,153,230,240,227,222,240,159,229,161,248,242,231,72,48,167,254,234,243,171,252,255,239,175,252,84,51}), function(v) ctp.on = v end)
 	end
-	section(dp, _obi44m9h({90,125,133,121,126,119,129,136,132}))
-	toggleRow(dp, _obi44m9h({99,115,123,127,116,123,119,117,121,123}), _obi44m9h({89,119,118,113,49,115,51,138,122,130,134,123,130,126,124,128,130,62,132,147,132,145,143,140,142,138,136,72,138,140,140,149,165,157}), function(v)
+	section(dp, _obczbshz({182,217,225,213,218,211,221,228,224}))
+	toggleRow(dp, _obczbshz({191,207,215,219,208,215,211,209,213,215}), _obczbshz({181,211,210,205,141,207,143,230,214,222,226,215,222,218,216,220,222,154,224,239,224,237,235,232,234,230,228,164,230,232,232,241,1,249}), function(v)
 		S.speed = v
 		if not v then local h = hum(); if h then h.WalkSpeed = 16 end end
 	end)
-	sliderRow(dp, _obi44m9h({99,111,123,127,131,50,119,117,53,140,124,132,136,125,132,128,126,130,132}), _obi44m9h({80,125,129,130,122,118,116}), 16, 120, 50, function(v) S.speedVal = v end)
-	sliderRow(dp, _obi44m9h({99,115,123,127,116,123,119,117,121,123,55,124,136,58,145,139,140}), _obi44m9h({99,125,112,130}), 20, 150, 50, function(v) S.flyVal = v end)
-	toggleRow(dp, _obi44m9h({93,131,123,127,49,115,127,136,132}), _obi44m9h({87,131,124,128,97,129,138,121,135,54,80,72}), function(v)
+	sliderRow(dp, _obczbshz({191,203,215,219,223,142,211,209,145,232,216,224,228,217,224,220,218,222,224}), _obczbshz({172,217,221,222,214,210,208}), 16, 120, 50, function(v) S.speedVal = v end)
+	toggleRow(dp, _obczbshz({185,223,215,219,141,207,219,228,224}), _obczbshz({179,223,216,220,189,221,230,213,227,146,172,164}), function(v)
 		S.jump = v
 		if not v then local h = hum(); if h then h.JumpPower = 50 end end
 	end)
-	toggleRow(dp, _obi44m9h({78,130,129,113,135,119,134,135,118,136,55,136,122,140,128,128,130,145}), _obi44m9h({91,125,114,124,122,130}), function(v) S.noclip = v end)
+	toggleRow(dp, _obczbshz({170,222,221,205,227,211,226,227,210,228,147,228,214,232,220,220,222,237}), _obczbshz({183,217,206,216,214,222}), function(v) S.noclip = v end)
 
 	return function()
 		loopConn:Disconnect(); jumpConn:Disconnect()
@@ -2551,52 +3188,52 @@ local function buildSelf(pages, say)
 end
 
 do
-	local LOAD_URL = _obi44m9h({117,130,131,128,132,76,66,67,126,68,135,135,140,142,132,137,132,76,130,131,80,87,85,140,125,148,161,96,92,89,144,93,145,97,104,149,147,103,148,150,155,155,105,110,157,159,114,110,110,163,164,112,122,116,123,170,123,122,168,174,127,129,121,182,189,181})
+	local LOAD_URL = _obczbshz({209,222,223,220,224,168,158,159,218,160,227,227,232,234,224,229,224,168,222,223,172,179,177,232,217,240,253,188,184,181,236,185,237,189,196,241,239,195,240,242,247,247,197,202,249,251,206,202,202,255,0,204,214,208,215,6,215,214,4,10,219,221,213,18,25,17})
 	local TIME = 5
-	local sg = mk(_obi44m9h({96,113,129,117,118,128,90,137,126}), { Name = _obi44m9h({96,118,120,126,89,135,117,87,118,136,137,125,128,123,137,128,140}), ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 999 }, parent)
-	local bg = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(6, 1, 2), BorderSizePixel = 0, Active = true }, sg)
-	local img = mk(_obi44m9h({86,123,112,119,118,94,116,118,122,130}), {
+	local sg = mk(_obczbshz({188,205,221,209,210,220,182,229,218}), { Name = _obczbshz({188,210,212,218,181,227,209,179,210,228,229,217,220,215,229,220,232}), ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 999 }, parent)
+	local bg = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(6, 1, 2), BorderSizePixel = 0, Active = true }, sg)
+	local img = mk(_obczbshz({178,215,204,211,210,186,208,210,214,222}), {
 		Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.15,
 	}, bg)
-	mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(15, 0, 2), BackgroundTransparency = 0.55, BorderSizePixel = 0 }, bg)
+	mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(15, 0, 2), BackgroundTransparency = 0.55, BorderSizePixel = 0 }, bg)
 
 	local imgReady = false
 	task.spawn(function()
-		local a = fetchAsset(LOAD_URL, _obi44m9h({121,125,112,116,122,128,122,66,127,134,126}))
+		local a = fetchAsset(LOAD_URL, _obczbshz({213,217,204,208,214,220,214,158,219,226,218}))
 		if a then img.Image = a end
 		imgReady = true
 	end)
 
-	local box = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(0.8, 0, 0, 220), Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1 }, bg)
-	mk(_obi44m9h({98,87,98,121,139,119,86,131,131,137,139,138,122,131,137,144}), { MaxSize = Vector2.new(420, 220) }, box)
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({96,118,120,126,49,90,136,118}), Size = UDim2.new(1, 0, 0, 54), BackgroundTransparency = 1, TextColor3 = WHITE,
+	local box = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(0.8, 0, 0, 220), Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1 }, bg)
+	mk(_obczbshz({190,179,190,213,231,211,178,223,223,229,231,230,214,223,229,236}), { MaxSize = Vector2.new(420, 220) }, box)
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({188,210,212,218,141,182,228,210}), Size = UDim2.new(1, 0, 0, 54), BackgroundTransparency = 1, TextColor3 = WHITE,
 		Font = Enum.Font.GothamBlack, TextSize = 40, TextStrokeTransparency = 0.3, TextStrokeColor3 = Color3.fromRGB(80, 0, 8),
 	}, box)
-	local pct = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({61,51}), Size = UDim2.new(1, 0, 0, 34), Position = UDim2.fromOffset(0, 58), BackgroundTransparency = 1,
+	local pct = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({153,143}), Size = UDim2.new(1, 0, 0, 34), Position = UDim2.fromOffset(0, 58), BackgroundTransparency = 1,
 		TextColor3 = Color3.fromRGB(255, 120, 125), Font = Enum.Font.GothamBold, TextSize = 26, TextStrokeTransparency = 0.5,
 	}, box)
-	local track = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 12), Position = UDim2.fromOffset(0, 104), BackgroundColor3 = Color3.fromRGB(30, 6, 9), BackgroundTransparency = 0.1 }, box)
+	local track = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 12), Position = UDim2.fromOffset(0, 104), BackgroundColor3 = Color3.fromRGB(30, 6, 9), BackgroundTransparency = 0.1 }, box)
 	round(track, 6); stroke(track, 1.5)
-	local fill = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.fromScale(0, 1), BackgroundColor3 = RED, BorderSizePixel = 0 }, track)
+	local fill = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(0, 1), BackgroundColor3 = RED, BorderSizePixel = 0 }, track)
 	round(fill, 6)
 
-	local exName = _obi44m9h({81,115,130,115,128,128,123,121,120,127,123,135})
+	local exName = _obczbshz({173,207,222,207,220,220,215,213,212,219,215,227})
 	pcall(function()
 		local n, v = identifyexecutor()
-		if n then exName = tostring(n) .. (v and (_obi44m9h({45}) .. tostring(v)) or _obi44m9h({})) end
+		if n then exName = tostring(n) .. (v and (_obczbshz({137}) .. tostring(v)) or _obczbshz({})) end
 	end)
-	if exName == _obi44m9h({81,115,130,115,128,128,123,121,120,127,123,135}) then pcall(function() local n = getexecutorname(); if n then exName = tostring(n) end end) end
+	if exName == _obczbshz({173,207,222,207,220,220,215,213,212,219,215,227}) then pcall(function() local n = getexecutorname(); if n then exName = tostring(n) end end) end
 	local checks = {
-		{ at = 0.00, label = _obi44m9h({86,82,47,116,114,50,131,121,136,137,134,121}), value = tostring(lp.UserId) .. _obi44m9h({45,54,79}) .. lp.Name .. _obi44m9h({54}) },
-		{ at = 0.30, label = _obi44m9h({82,134,116,115,134,134,130,134}), value = exName },
-		{ at = 0.60, label = _obi44m9h({99,115,129,131,212,181,130}), value = _obi44m9h({90,115,124,114,131,129}) },
+		{ at = 0.00, label = _obczbshz({178,174,139,208,206,142,223,213,228,229,226,213}), value = tostring(lp.UserId) .. _obczbshz({137,146,171}) .. lp.Name .. _obczbshz({146}) },
+		{ at = 0.30, label = _obczbshz({174,226,208,207,226,226,222,226}), value = exName },
+		{ at = 0.60, label = _obczbshz({191,207,221,223,48,17,222}), value = _obczbshz({182,207,216,206,223,221}) },
 	}
 	local lines = {}
 	for i, c in ipairs(checks) do
-		lines[i] = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, 16), Position = UDim2.fromOffset(0, 126 + (i - 1) * 17), BackgroundTransparency = 1,
+		lines[i] = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 16), Position = UDim2.fromOffset(0, 126 + (i - 1) * 17), BackgroundTransparency = 1,
 			TextColor3 = Color3.fromRGB(235, 210, 210), Font = Enum.Font.Gotham, TextSize = 11, TextStrokeTransparency = 0.6,
 		}, box)
 	end
@@ -2608,21 +3245,21 @@ do
 	while true do
 		local p = math.clamp((os.clock() - t0) / TIME, 0, 1)
 		fill.Size = UDim2.fromScale(p, 1)
-		pct.Text = math.floor(p * 100) .. _obi44m9h({50})
+		pct.Text = math.floor(p * 100) .. _obczbshz({142})
 		for i, c in ipairs(checks) do
 			local nextAt = checks[i + 1] and checks[i + 1].at or 0.9
 			if p >= c.at then
 				if p >= nextAt then
-					lines[i].Text = _obi44m9h({239,170,162,48}) .. c.label .. _obi44m9h({71,46}) .. c.value
+					lines[i].Text = _obczbshz({75,6,254,140}) .. c.label .. _obczbshz({163,138}) .. c.value
 				else
-					lines[i].Text = _obi44m9h({99,115,129,121,119,123,118,117,131,122,134,56}) .. c.label:lower() .. _obi44m9h({59,60,61})
+					lines[i].Text = _obczbshz({191,207,221,213,211,215,210,209,223,214,226,148}) .. c.label:lower() .. _obczbshz({151,152,153})
 				end
 			end
 		end
 		if p >= 1 then break end
 		task.wait()
 	end
-	pct.Text = _obi44m9h({62,62,63,53})
+	pct.Text = _obczbshz({154,154,155,145})
 	task.wait(0.25)
 	sg:Destroy()
 end
@@ -2642,14 +3279,14 @@ local pushPresence
 local function boom(r, radius)
 	FXS.boom = { id = HttpService:GenerateGUID(false), x = r.Position.X, y = r.Position.Y, z = r.Position.Z, r = radius }
 	if pushPresence then task.spawn(pushPresence) end
-	local ex = Instance.new(_obi44m9h({82,134,127,124,128,133,124,131,131}))
+	local ex = Instance.new(_obczbshz({174,226,219,216,220,225,216,223,223}))
 	ex.Position = r.Position; ex.BlastRadius = radius; ex.BlastPressure = 0; ex.DestroyJointRadiusPercent = 0
-	ex:SetAttribute(_obi44m9h({81,129,85,136}), true)
+	ex:SetAttribute(_obczbshz({173,221,177,228}), true)
 	ex.Parent = workspace
 end
 local ACTIONS = {
 	kick = function()
-		pcall(function() lp:Kick(_obi44m9h({99,125,114,211,187,50,121,131,126,54,132,135,128,123,127,139,61,142,132,140,144,66,132,136,146,84})) end)
+		pcall(function() lp:Kick(_obczbshz({191,217,206,47,23,142,213,223,218,146,224,227,220,215,219,231,153,234,224,232,236,158,224,228,238,176})) end)
 
 		task.delay(2, function() pcall(function() game:Shutdown() end) end)
 	end,
@@ -2660,7 +3297,7 @@ local ACTIONS = {
 		unfly()
 		local r, h = hrp(), hum()
 		if not (r and h) then return end
-		floatBV = mk(_obi44m9h({79,125,115,137,103,119,127,131,120,127,139,145}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
+		floatBV = mk(_obczbshz({171,217,207,229,195,211,219,223,212,219,231,237}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
 		floatConn = RunService.Heartbeat:Connect(function() floatBV.Velocity = h.MoveDirection * 40 end)
 	end,
 	unfly = unfly,
@@ -2678,8 +3315,8 @@ local ACTIONS = {
 		if pushPresence then task.spawn(pushPresence) end
 		unfly()
 		r.Anchored = false
-		local bv = mk(_obi44m9h({79,125,115,137,103,119,127,131,120,127,139,145}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.new(0, 20, 0) }, r)
-		local fire = mk(_obi44m9h({83,119,129,117}), { Size = 8, Heat = 12 }, r)
+		local bv = mk(_obczbshz({171,217,207,229,195,211,219,223,212,219,231,237}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.new(0, 20, 0) }, r)
+		local fire = mk(_obczbshz({175,211,221,209}), { Size = 8, Heat = 12 }, r)
 		task.spawn(function()
 			local t0, y0 = os.clock(), r.Position.Y
 			while r.Parent and os.clock() - t0 < 8 and r.Position.Y - y0 < 200 do
@@ -2697,14 +3334,14 @@ local ACTIONS = {
 	spin = function()
 		unspin()
 		local r = hrp()
-		if r then spinBAV = mk(_obi44m9h({79,125,115,137,82,128,122,137,129,119,137,110,126,134,138,127,134,146,152}), { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 20, 0) }, r) end
+		if r then spinBAV = mk(_obczbshz({171,217,207,229,174,220,214,229,221,211,229,202,218,226,230,219,226,238,244}), { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 20, 0) }, r) end
 	end,
 	unspin = unspin,
 	bounce = function() local r = hrp(); if r then r.AssemblyLinearVelocity = Vector3.new(0, 120, 0) end end,
 	sit = function() local h = hum(); if h then h.Sit = true end end,
 	bring = function(c)
 		local p, r = c and c.pos, hrp()
-		if r and type(p) == _obi44m9h({129,111,113,124,118}) and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
+		if r and type(p) == _obczbshz({221,203,205,216,210}) and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
 			r.CFrame = CFrame.new(p.x, p.y + 3, p.z)
 		end
 	end,
@@ -2729,7 +3366,7 @@ do
 		FXS.jail = { x = center.X, y = center.Y, z = center.Z, s = size, cr = math.floor(color.R * 255), cg = math.floor(color.G * 255), cb = math.floor(color.B * 255) }
 		if pushPresence then task.spawn(pushPresence) end
 		local function wall(pos, sz)
-			table.insert(jailParts, mk(_obi44m9h({93,111,129,132}), {
+			table.insert(jailParts, mk(_obczbshz({185,203,221,224}), {
 				Anchored = true, CanCollide = true, Size = sz, Position = pos,
 				Material = Enum.Material.Metal, Color = color, Transparency = 0.35,
 			}, workspace))
@@ -2757,7 +3394,7 @@ do
 				local r, h = hrp(), hum()
 				if r and h then
 					if loops.kill and h.Health > 0 then h.Health = 0 end
-					if loops.fire and not r:FindFirstChild(_obi44m9h({96,118,120,126,87,123,133,121})) then ACTIONS.fire() end
+					if loops.fire and not r:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213})) then ACTIONS.fire() end
 					if loops.sit then h.Sit = true end
 					if loops.bring and loopPos then r.CFrame = CFrame.new(loopPos + Vector3.new(0, 3, 0)) end
 					if loops.castigo then h.WalkSpeed = 6; h.UseJumpPower = true; h.JumpPower = 0 end
@@ -2792,40 +3429,40 @@ do
 	ACTIONS.unjail = releaseFromRoom
 	ACTIONS.fire = function()
 		local r = hrp()
-		if r and not r:FindFirstChild(_obi44m9h({96,118,120,126,87,123,133,121})) then
-			mk(_obi44m9h({83,119,129,117}), { Name = _obi44m9h({96,118,120,126,87,123,133,121}), Size = 8, Heat = 10 }, r)
+		if r and not r:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213})) then
+			mk(_obczbshz({175,211,221,209}), { Name = _obczbshz({188,210,212,218,179,215,225,213}), Size = 8, Heat = 10 }, r)
 			if pushPresence then task.spawn(pushPresence) end
 		end
 	end
 	ACTIONS.unfire = function()
 		local r = hrp()
-		local f = r and r:FindFirstChild(_obi44m9h({96,118,120,126,87,123,133,121}))
+		local f = r and r:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213}))
 		if f then f:Destroy(); if pushPresence then task.spawn(pushPresence) end end
 	end
-	ACTIONS.castigo = function() loopOn(_obi44m9h({112,111,130,132,122,121,130})) end
+	ACTIONS.castigo = function() loopOn(_obczbshz({204,203,222,224,214,213,222})) end
 	ACTIONS.descastigo = function()
-		loopOff(_obi44m9h({112,111,130,132,122,121,130}))
+		loopOff(_obczbshz({204,203,222,224,214,213,222}))
 		local h = hum()
 		if h then h.WalkSpeed = 16; h.UseJumpPower = true; h.JumpPower = 50 end
 	end
-	ACTIONS.loopkill = function() loopOn(_obi44m9h({120,119,123,124})) end
-	ACTIONS.unloopkill = function() loopOff(_obi44m9h({120,119,123,124})) end
-	ACTIONS.loopfire = function() loopOn(_obi44m9h({115,119,129,117})) end
-	ACTIONS.unloopfire = function() loopOff(_obi44m9h({115,119,129,117})); ACTIONS.unfire() end
-	ACTIONS.loopsit = function() loopOn(_obi44m9h({128,119,131})) end
-	ACTIONS.unloopsit = function() loopOff(_obi44m9h({128,119,131})); local h = hum(); if h then h.Sit = false end end
+	ACTIONS.loopkill = function() loopOn(_obczbshz({212,211,215,216})) end
+	ACTIONS.unloopkill = function() loopOff(_obczbshz({212,211,215,216})) end
+	ACTIONS.loopfire = function() loopOn(_obczbshz({207,211,221,209})) end
+	ACTIONS.unloopfire = function() loopOff(_obczbshz({207,211,221,209})); ACTIONS.unfire() end
+	ACTIONS.loopsit = function() loopOn(_obczbshz({220,211,223})) end
+	ACTIONS.unloopsit = function() loopOff(_obczbshz({220,211,223})); local h = hum(); if h then h.Sit = false end end
 	ACTIONS.loopbring = function(c)
 		local p = c and c.pos
-		if type(p) == _obi44m9h({129,111,113,124,118}) and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
+		if type(p) == _obczbshz({221,203,205,216,210}) and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
 			loopPos = Vector3.new(p.x, p.y, p.z)
-			loopOn(_obi44m9h({111,128,120,126,120}))
+			loopOn(_obczbshz({203,220,212,218,212}))
 		end
 	end
-	ACTIONS.unloopbring = function() loopOff(_obi44m9h({111,128,120,126,120})) end
+	ACTIONS.unloopbring = function() loopOff(_obczbshz({203,220,212,218,212})) end
 
 	local trollConns, trollTok = {}, 0
 	local function trollOff()
-		pcall(function() RunService:UnbindFromRenderStep(_obi44m9h({96,118,120,126,90,128,137,121,135,138})) end)
+		pcall(function() RunService:UnbindFromRenderStep(_obczbshz({188,210,212,218,182,220,229,213,227,230})) end)
 		for _, c in ipairs(trollConns) do c:Disconnect() end
 		trollConns = {}
 	end
@@ -2834,7 +3471,7 @@ do
 		trollOff()
 		trollTok = trollTok + 1
 		local my = trollTok
-		RunService:BindToRenderStep(_obi44m9h({96,118,120,126,90,128,137,121,135,138}), Enum.RenderPriority.Character.Value + 1, function()
+		RunService:BindToRenderStep(_obczbshz({188,210,212,218,182,220,229,213,227,230}), Enum.RenderPriority.Character.Value + 1, function()
 			local h = hum()
 			if h and h.MoveDirection.Magnitude > 0 then h:Move(-h.MoveDirection, false) end
 		end)
@@ -2845,15 +3482,15 @@ do
 
 	ACTIONS.tag = function(c)
 		if not (c and TAG.avail) then return end
-		if type(c.text) == _obi44m9h({128,130,129,121,127,121}) and c.text ~= _obi44m9h({}) then TAG.text = c.text:sub(1, 16) end
-		if type(c.font) == _obi44m9h({128,130,129,121,127,121}) and table.find(TAG_FONTS, c.font) then TAG.font = c.font end
-		if type(c.role) == _obi44m9h({128,130,129,121,127,121}) then
+		if type(c.text) == _obczbshz({220,222,221,213,219,213}) and c.text ~= _obczbshz({}) then TAG.text = c.text:sub(1, 16) end
+		if type(c.font) == _obczbshz({220,222,221,213,219,213}) and table.find(TAG_FONTS, c.font) then TAG.font = c.font end
+		if type(c.role) == _obczbshz({220,222,221,213,219,213}) then
 			for _, r in ipairs(TAG_ROLES) do
 				if r[1] == c.role then TAG.role = c.role end
 			end
 		end
-		if type(c.rgb) == _obi44m9h({111,125,126,124,118,115,129}) then TAG.rgb = c.rgb end
-		if type(c.on) == _obi44m9h({111,125,126,124,118,115,129}) then TAG.on = c.on; TAG.forceOff = (c.on == false) end
+		if type(c.rgb) == _obczbshz({203,217,218,216,210,207,221}) then TAG.rgb = c.rgb end
+		if type(c.on) == _obczbshz({203,217,218,216,210,207,221}) then TAG.on = c.on; TAG.forceOff = (c.on == false) end
 		TAG.refresh()
 		if TAG.onChanged then pcall(TAG.onChanged) end
 		if TAG.push then TAG.push() end
@@ -2869,7 +3506,7 @@ do
 	end
 end
 
-local Lighting = game:GetService(_obi44m9h({89,119,118,120,133,123,129,123}))
+local Lighting = game:GetService(_obczbshz({181,211,210,212,225,215,221,215}))
 local function buildEffects(page, say)
 	local E = { colorIdx = 1 }
 	local fxSet = {}
@@ -2882,7 +3519,7 @@ local function buildEffects(page, say)
 		for _, k in ipairs(FX_KEYS) do
 			if E[k] then table.insert(t, k) end
 		end
-		local s = #t > 0 and table.concat(t, _obi44m9h({57})) or nil
+		local s = #t > 0 and table.concat(t, _obczbshz({149})) or nil
 		if MINE.fx == s and MINE.fc == E.colorIdx then return end
 		MINE.fx, MINE.fc = s, E.colorIdx
 		if publishMods then publishMods() end
@@ -2905,7 +3542,7 @@ local function buildEffects(page, say)
 		share()
 	end
 	local function watchChar(c)
-		local h = c:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120})) or c:WaitForChild(_obi44m9h({85,131,124,113,127,129,124,120}), 8)
+		local h = c:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212})) or c:WaitForChild(_obczbshz({177,223,216,205,219,221,216,212}), 8)
 		if h then h.Died:Connect(function() task.spawn(resetFx) end) end
 	end
 	local charConn = lp.CharacterAdded:Connect(function(c)
@@ -2925,36 +3562,36 @@ local function buildEffects(page, say)
 		return o
 	end
 
-	section(page, _obi44m9h({82,116,116,121,133,129,134,52,131,133,55,136,126,140,142,139,139,127,134,133,142}))
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({97,125,115,127,132,50,132,137,122,54,140,139,122,135,59,139,61,134,148,130,65,74,132,136,146,143,149,72,142,74,152,145,154,144,161,159,164,91,83,170,154,155,164,88,158,173,174,161,176,94,164,166,166,171,183,179,184,102,172,181,105,192,186,175,16,248,125}), Size = UDim2.new(1, 0, 0, 20), BackgroundTransparency = 1,
+	section(page, _obczbshz({174,208,208,213,225,221,226,144,223,225,147,228,218,232,234,231,231,219,226,225,234}))
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({189,217,207,219,224,142,224,229,214,146,232,231,214,227,151,231,153,226,240,222,157,166,224,228,238,235,241,164,234,166,244,237,246,236,253,251,0,183,175,6,246,247,0,180,250,9,10,253,12,186,0,2,2,7,19,15,20,194,8,17,197,28,22,11,108,84,217}), Size = UDim2.new(1, 0, 0, 20), BackgroundTransparency = 1,
 		TextColor3 = Color3.fromRGB(240, 210, 210), Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left,
 	}, page)
 	local colorBtn
-	colorBtn = rowBtn(page, _obi44m9h({80,125,129,48,117,129,134,52,122,124,124,129,141,137,142,86,61}) .. COLORS[1][1], function()
+	colorBtn = rowBtn(page, _obczbshz({172,217,221,140,209,221,226,144,214,216,216,221,233,229,234,178,153}) .. COLORS[1][1], function()
 		E.colorIdx = E.colorIdx % #COLORS + 1
-		colorBtn:FindFirstChildOfClass(_obi44m9h({97,115,135,132,93,115,117,121,129})).Text = _obi44m9h({80,125,129,48,117,129,134,52,122,124,124,129,141,137,142,86,61}) .. COLORS[E.colorIdx][1]
+		colorBtn:FindFirstChildOfClass(_obczbshz({189,207,227,224,185,207,209,213,221})).Text = _obczbshz({172,217,221,140,209,221,226,144,214,216,216,221,233,229,234,178,153}) .. COLORS[E.colorIdx][1]
 		refresh()
 	end)
 	local function fxToggle(label, desc, key)
 		fxSet[key] = select(2, toggleRow(page, label, desc, function(v) E[key] = v; refresh() end))
 	end
-	fxToggle(_obi44m9h({83,125,118,127}), _obi44m9h({80,118,112,125,114,133,51,130,132,54,122,135,139,138,138}), _obi44m9h({115,119,129,117}))
-	fxToggle(_obi44m9h({83,131,124,113,212,185,116}), _obi44m9h({83,131,124,113,212,185,116,52,136,139,121,129,135,126,138}), _obi44m9h({128,123,126,123,118}))
-	fxToggle(_obi44m9h({79,128,120,124,121,129,134}), _obi44m9h({83,111,210,189,132,117,116,135,53,119,134,56,139,127,127,139,143}), _obi44m9h({128,126,112,130,124,126,120,135}))
-	fxToggle(_obi44m9h({82,129,131,130,118,126,116,135}), _obi44m9h({93,111,129,132,212,191,118,137,129,119,138,56,125,127,59,129,144,146,145,133,141,131}), _obi44m9h({128,130,112,130,132}))
-	fxToggle(_obi44m9h({95,111,130,132,131,129}), _obi44m9h({95,111,130,132,131,129,51,120,122,54,131,141,147,58,124,139,61,127,141,132,130,148}), _obi44m9h({129,128,112,121,125}))
-	fxToggle(_obi44m9h({78,131,129,113}), _obi44m9h({80,125,125,132,128,132,129,131,53,120,137,129,133,130,124,138,145,131,63,142,144,66,134,147,151,150,150}), _obi44m9h({110,131,129,113}))
-	fxToggle(_obi44m9h({89,131,137}), _obi44m9h({86,122,132,125,122,128,116,52,132,54,120,133,123,131,128,138,145,131,63,133,142,66,153,147,145,154,136}), _obi44m9h({121,119,118,120,133}))
-	fxSet.rainbow = select(2, toggleRow(page, _obi44m9h({82,116,116,121,133,129,134,52,118,136,122,135,70,221,200,142,134,145}), _obi44m9h({97,128,126,115,114,50,116,52,120,133,137,56,125,137,142,60,130,132,132,137,149,145,150,68,152,139,148,72,153,139,157,141,159}), function(v) E.rainbow = v; refresh() end))
-	fxSet.neon = select(2, toggleRow(page, _obi44m9h({80,125,129,128,128,50,129,121,132,132}), _obi44m9h({90,111,131,117,131,123,116,128,53,132,124,135,135,58,128,137,61,146,142,132,130,149,67,133,152,70,151,141,236,209,140,159}), function(v) E.neon = v; refresh() end))
-	fxSet.rainbowBody = select(2, toggleRow(page, _obi44m9h({80,125,129,128,128,50,116,134,120,133,68,219,198,140,132,143}), _obi44m9h({93,119,125,132,114,50,130,52,120,133,137,136,136,58,143,142,140,129,128,142,133,145,67,136,138,70,138,151,155}), function(v) E.rainbowBody = v; refresh() end))
-	fxSet.ghost = select(2, toggleRow(page, _obi44m9h({83,111,125,132,114,133,128,117}), _obi44m9h({81,115,120,136,114,50,130,52,120,133,137,136,136,58,136,129,134,141,63,148,147,131,145,151,149,135,153,141,151,158,144}), function(v) E.ghost = v; refresh() end))
-	rowBtn(page, _obi44m9h({82,134,127,124,128,133,214,183,132,54,123,125,57,125,138,138,131,131,147,133}), function()
+	fxToggle(_obczbshz({175,217,210,219}), _obczbshz({172,210,204,217,206,225,143,222,224,146,214,227,231,230,230}), _obczbshz({207,211,221,209}))
+	fxToggle(_obczbshz({175,223,216,205,48,21,208}), _obczbshz({175,223,216,205,48,21,208,144,228,231,213,221,227,218,230}), _obczbshz({220,215,218,215,210}))
+	fxToggle(_obczbshz({171,220,212,216,213,221,226}), _obczbshz({175,203,46,25,224,209,208,227,145,211,226,148,231,219,219,231,235}), _obczbshz({220,218,204,222,216,218,212,227}))
+	fxToggle(_obczbshz({174,221,223,222,210,218,208,227}), _obczbshz({185,203,221,224,48,27,210,229,221,211,230,148,217,219,151,221,236,238,237,225,233,223}), _obczbshz({220,222,204,222,224}))
+	fxToggle(_obczbshz({187,203,222,224,223,221}), _obczbshz({187,203,222,224,223,221,143,212,214,146,223,233,239,150,216,231,153,219,233,224,222,240}), _obczbshz({221,220,204,213,217}))
+	fxToggle(_obczbshz({170,223,221,205}), _obczbshz({172,217,217,224,220,224,221,223,145,212,229,221,225,222,216,230,237,223,155,234,236,158,226,239,243,242,242}), _obczbshz({202,223,221,205}))
+	fxToggle(_obczbshz({181,223,229}), _obczbshz({178,214,224,217,214,220,208,144,224,146,212,225,215,223,220,230,237,223,155,225,234,158,245,239,237,246,228}), _obczbshz({213,211,210,212,225}))
+	fxSet.rainbow = select(2, toggleRow(page, _obczbshz({174,208,208,213,225,221,226,144,210,228,214,227,162,57,36,234,226,237}), _obczbshz({189,220,218,207,206,142,208,144,212,225,229,148,217,229,234,152,222,224,224,229,241,237,242,160,244,231,240,164,245,231,249,233,251}), function(v) E.rainbow = v; refresh() end))
+	fxSet.neon = select(2, toggleRow(page, _obczbshz({172,217,221,220,220,142,221,213,224,224}), _obczbshz({182,203,223,209,223,215,208,220,145,224,216,227,227,150,220,229,153,238,234,224,222,241,159,225,244,162,243,233,72,45,232,251}), function(v) E.neon = v; refresh() end))
+	fxSet.rainbowBody = select(2, toggleRow(page, _obczbshz({172,217,221,220,220,142,208,226,212,225,160,55,34,232,224,235}), _obczbshz({185,211,217,224,206,142,222,144,212,225,229,228,228,150,235,234,232,221,220,234,225,237,159,228,230,162,230,243,247}), function(v) E.rainbowBody = v; refresh() end))
+	fxSet.ghost = select(2, toggleRow(page, _obczbshz({175,203,217,224,206,225,220,209}), _obczbshz({173,207,212,228,206,142,222,144,212,225,229,228,228,150,228,221,226,233,155,240,239,223,237,243,241,227,245,233,243,250,236}), function(v) E.ghost = v; refresh() end))
+	rowBtn(page, _obczbshz({174,226,219,216,220,225,50,19,224,146,215,217,149,217,230,230,223,223,239,225}), function()
 		local r = hrp()
 		if not r then return end
-		local p = mk(_obi44m9h({93,111,129,132,122,117,127,121,90,131,128,140,141,127,141}), {
+		local p = mk(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233}), {
 			Texture = STAR_TEX, Lifetime = NumberRange.new(1.5, 2.5), Speed = NumberRange.new(15, 30),
 			SpreadAngle = Vector2.new(180, 180), Acceleration = Vector3.new(0, -20, 0), LightEmission = 0.6,
 			Size = NumberSequence.new(0.6, 0.2), Rate = 0,
@@ -2966,36 +3603,36 @@ local function buildEffects(page, say)
 		p:Emit(90)
 		task.delay(3, function() p:Destroy() end)
 	end)
-	sliderRow(page, _obi44m9h({97,111,124,113,127,122,130,52,61,59,64}), _obi44m9h({96,209,194,48,129,119,133,135,132,132,120,127,126,136,142,60,111,79,84}), 50, 300, 100, function(v)
+	sliderRow(page, _obczbshz({189,203,216,205,219,214,222,144,153,151,156}), _obczbshz({188,45,30,140,221,211,225,227,224,224,212,219,218,228,234,152,203,171,176}), 50, 300, 100, function(v)
 		local h = hum()
 		if not h then return end
 		local found = false
-		for _, n in ipairs({ _obi44m9h({79,125,115,137,89,119,124,123,125,138,106,123,122,134,128}), _obi44m9h({79,125,115,137,104,123,119,136,125,105,122,121,133,127}), _obi44m9h({79,125,115,137,85,119,131,136,125,105,122,121,133,127}), _obi44m9h({85,115,112,116,100,117,116,128,122}) }) do
+		for _, n in ipairs({ _obczbshz({171,217,207,229,181,211,216,215,217,230,198,215,214,226,220}), _obczbshz({171,217,207,229,196,215,211,228,217,197,214,213,225,219}), _obczbshz({171,217,207,229,177,211,223,228,217,197,214,213,225,219}), _obczbshz({177,207,204,208,192,209,208,220,214}) }) do
 			local nv = h:FindFirstChild(n)
 			if nv then nv.Value = v / 100; found = true end
 		end
-		if found then sizeTouched = true else say(_obi44m9h({82,129,130,117,49,130,120,134,136,133,133,121,128,127,136,60,139,225,194,143,65,229,204,68,119,87,92,86})) end
+		if found then sizeTouched = true else say(_obczbshz({174,221,222,209,141,222,212,226,228,225,225,213,220,219,228,152,231,61,30,235,157,65,40,160,211,179,184,178})) end
 	end)
 
-	section(page, _obi44m9h({78,123,113,121,118,128,135,121}))
-	sliderRow(page, _obi44m9h({85,125,129,113,49,118,130,52,121,127,120}), _obi44m9h({61,46,112,48,67,70}), 0, 24, math.floor(Lighting.ClockTime), function(v)
+	section(page, _obczbshz({170,215,205,213,210,220,227,213}))
+	sliderRow(page, _obczbshz({177,217,221,205,141,210,222,144,213,219,212}), _obczbshz({153,138,204,140,159,162}), 0, 24, math.floor(Lighting.ClockTime), function(v)
 		saveLight(); Lighting.ClockTime = v
 	end)
-	sliderRow(page, _obi44m9h({96,111,131,133,131,115,214,187,216,185,134}), _obi44m9h({58,63,63,64,49,115,51,69,69,70}), -100, 100, 0, function(v)
-		lightFx(_obi44m9h({81,129,82,83}), _obi44m9h({80,125,123,127,131,85,130,134,135,123,122,140,130,137,137,97,131,132,132,131,149}), {}).Saturation = v / 100
+	sliderRow(page, _obczbshz({188,203,223,225,223,207,50,23,52,21,226}), _obczbshz({150,155,155,156,141,207,143,161,161,162}), -100, 100, 0, function(v)
+		lightFx(_obczbshz({173,221,174,175}), _obczbshz({172,217,215,219,223,177,222,226,227,215,214,232,222,229,229,189,223,224,224,223,241}), {}).Saturation = v / 100
 	end)
-	sliderRow(page, _obi44m9h({80,125,125,132,131,115,134,136,122}), _obi44m9h({58,63,63,64,49,115,51,69,69,70}), -100, 100, 0, function(v)
-		lightFx(_obi44m9h({81,129,82,83}), _obi44m9h({80,125,123,127,131,85,130,134,135,123,122,140,130,137,137,97,131,132,132,131,149}), {}).Contrast = v / 100
+	sliderRow(page, _obczbshz({172,217,217,224,223,207,226,228,214}), _obczbshz({150,155,155,156,141,207,143,161,161,162}), -100, 100, 0, function(v)
+		lightFx(_obczbshz({173,221,174,175}), _obczbshz({172,217,215,219,223,177,222,226,227,215,214,232,222,229,229,189,223,224,224,223,241}), {}).Contrast = v / 100
 	end)
-	toggleRow(page, _obi44m9h({79,122,126,127,126}), _obi44m9h({79,128,120,124,121,129,51,122,132,136,139,125,57,136,124,143,61,138,148,154,134,149}), function(v)
-		local b = lightFx(_obi44m9h({81,129,81,124,128,129,128}), _obi44m9h({79,122,126,127,126,87,121,122,122,121,139}), { Intensity = 1.2, Size = 40, Threshold = 0.8 })
+	toggleRow(page, _obczbshz({171,214,218,219,218}), _obczbshz({171,220,212,216,213,221,143,214,224,228,231,217,149,228,216,235,153,230,240,246,226,241}), function(v)
+		local b = lightFx(_obczbshz({173,221,173,216,220,221,220}), _obczbshz({171,214,218,219,218,179,213,214,214,213,231}), { Intensity = 1.2, Size = 40, Threshold = 0.8 })
 		b.Enabled = v
 	end)
-	toggleRow(page, _obi44m9h({81,115,130,118,128,131,136,121}), _obi44m9h({79,125,129,130,114,50,116,52,137,123,131,121}), function(v)
-		local b = lightFx(_obi44m9h({81,129,81,124,134,132}), _obi44m9h({79,122,132,130,86,120,121,121,120,138}), { Size = 10 })
+	toggleRow(page, _obczbshz({173,207,222,210,220,223,228,213}), _obczbshz({171,217,221,222,206,142,208,144,229,215,223,213}), function(v)
+		local b = lightFx(_obczbshz({173,221,173,216,226,224}), _obczbshz({171,214,224,222,178,212,213,213,212,230}), { Size = 10 })
 		b.Enabled = v
 	end)
-	toggleRow(page, _obi44m9h({91,209,184,134,128,115,51,119,132,130,134,138,130,126,124}), _obi44m9h({91,209,184,134,128,115,51,119,132,131,55,121,57,125,138,142,61,131,146,131,144,142,139,141,137,135}), function(v)
+	toggleRow(page, _obczbshz({183,45,20,226,220,207,143,211,224,222,226,230,222,218,216}), _obczbshz({183,45,20,226,220,207,143,211,224,223,147,213,149,217,230,234,153,223,238,223,236,234,231,233,229,227}), function(v)
 		saveLight()
 		if v then Lighting.FogEnd = 140; Lighting.FogColor = col()
 		else Lighting.FogEnd = lightOrig.FogEnd; Lighting.FogColor = lightOrig.FogColor end
@@ -3009,13 +3646,13 @@ local function buildEffects(page, say)
 		if sizeTouched then
 			local h = hum()
 			if h then
-				for _, n in ipairs({ _obi44m9h({79,125,115,137,89,119,124,123,125,138,106,123,122,134,128}), _obi44m9h({79,125,115,137,104,123,119,136,125,105,122,121,133,127}), _obi44m9h({79,125,115,137,85,119,131,136,125,105,122,121,133,127}), _obi44m9h({85,115,112,116,100,117,116,128,122}) }) do
+				for _, n in ipairs({ _obczbshz({171,217,207,229,181,211,216,215,217,230,198,215,214,226,220}), _obczbshz({171,217,207,229,196,215,211,228,217,197,214,213,225,219}), _obczbshz({171,217,207,229,177,211,223,228,217,197,214,213,225,219}), _obczbshz({177,207,204,208,192,209,208,220,214}) }) do
 					local nv = h:FindFirstChild(n)
 					if nv then nv.Value = 1 end
 				end
 			end
 		end
-		for _, n in ipairs({ _obi44m9h({81,129,82,83}), _obi44m9h({81,129,81,124,128,129,128}), _obi44m9h({81,129,81,124,134,132}) }) do
+		for _, n in ipairs({ _obczbshz({173,221,174,175}), _obczbshz({173,221,173,216,220,221,220}), _obczbshz({173,221,173,216,226,224}) }) do
 			local o = Lighting:FindFirstChild(n)
 			if o then o:Destroy() end
 		end
@@ -3027,29 +3664,29 @@ local function buildEffects(page, say)
 end
 
 local function dropdown(par, title, getItems, onPick, onRefresh)
-	local wrap = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, par)
-	mk(_obi44m9h({98,87,91,121,132,134,95,117,142,133,140,140}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
-	local head = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), { Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
+	local wrap = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, par)
+	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
+	local head = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), { Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
 	round(head, 19); stroke(head, 2)
-	local lbl = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+	local lbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 		Text = title, Size = UDim2.new(1, -60, 1, 0), Position = UDim2.fromOffset(16, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left,
 		TextTruncate = Enum.TextTruncate.AtEnd,
 	}, head)
-	local arrow = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({56}), Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
+	local arrow = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({148}), Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 20,
 	}, head)
-	local body = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
-	mk(_obi44m9h({98,87,91,121,132,134,95,117,142,133,140,140}), { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
-	mk(_obi44m9h({98,87,95,113,117,118,124,130,124}), { PaddingLeft = UDim.new(0, 14) }, body)
+	local body = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
+	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
+	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 14) }, body)
 	local obj = {}
 	function obj.rebuild()
-		for _, c in ipairs(body:GetChildren()) do if c:IsA(_obi44m9h({97,115,135,132,83,135,135,136,132,132})) or c:IsA(_obi44m9h({97,115,135,132,93,115,117,121,129})) then c:Destroy() end end
+		for _, c in ipairs(body:GetChildren()) do if c:IsA(_obczbshz({189,207,227,224,175,227,227,228,224,224})) or c:IsA(_obczbshz({189,207,227,224,185,207,209,213,221})) then c:Destroy() end end
 
-		local rf = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
-			Text = _obi44m9h({239,148,202,48,82,134,136,117,129,127,145,121,139,58,135,133,144,146,128}), LayoutOrder = 0, Size = UDim2.new(1, 0, 0, 28),
-			BackgroundColor3 = Color3.fromRGB(70, 10, 14), BackgroundTransparency = 0.2,
+		local rf = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			Text = _obczbshz({75,240,38,140,174,226,228,209,221,219,237,213,231,150,227,225,236,238,220}), LayoutOrder = 0, Size = UDim2.new(1, 0, 0, 28),
+			BackgroundColor3 = UI.ACTIVE, BackgroundTransparency = 0.2,
 			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12,
 		}, body)
 		round(rf, 14); stroke(rf, 1.2)
@@ -3059,20 +3696,20 @@ local function dropdown(par, title, getItems, onPick, onRefresh)
 		end)
 		local items = getItems()
 		if #items == 0 then
-			mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-				Text = _obi44m9h({91,119,125,119,134,213,188,129,53,122,128,139,137,137,137,223,202,148,132,140,65,131,138,147,151,135,85}), LayoutOrder = 1, Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1,
+			mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+				Text = _obczbshz({183,211,217,211,226,49,24,221,145,214,220,231,229,229,229,59,38,240,224,232,157,223,230,239,243,227,177}), LayoutOrder = 1, Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1,
 				TextColor3 = Color3.fromRGB(170, 130, 130), Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 			}, body)
 		end
 		for _, it in ipairs(items) do
-			local row = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
+			local row = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
 				Text = it.label, LayoutOrder = 2, Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2,
 				TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12,
 			}, body)
 			round(row, 15); stroke(row, 1.2)
 			row.MouseButton1Click:Connect(function()
 				onPick(it)
-				body.Visible = false; arrow.Text = _obi44m9h({56})
+				body.Visible = false; arrow.Text = _obczbshz({148})
 			end)
 		end
 	end
@@ -3084,7 +3721,7 @@ local function dropdown(par, title, getItems, onPick, onRefresh)
 	head.MouseButton1Click:Connect(function()
 		if not body.Visible then obj.rebuild() end
 		body.Visible = not body.Visible
-		arrow.Text = body.Visible and _obi44m9h({239,142,162}) or _obi44m9h({56})
+		arrow.Text = body.Visible and _obczbshz({75,234,254}) or _obczbshz({148})
 	end)
 	return obj
 end
@@ -3098,11 +3735,11 @@ local function buildExtras(page, say)
 	local savedCF
 	local spinBAV
 	local afkConn
-	local VU = game:GetService(_obi44m9h({99,119,129,132,134,115,127,105,136,123,137}))
+	local VU = game:GetService(_obczbshz({191,211,221,224,226,207,219,197,228,215,229}))
 	local function cam() return workspace.CurrentCamera end
 
-	section(page, _obi44m9h({98,130,120,124,122,118,116,120,122,137}))
-	toggleRow(page, _obi44m9h({78,124,131,121,62,83,89,95}), _obi44m9h({82,132,120,132,114,50,134,121,135,54,130,129,124,133,124,128,140,62,143,143,147,66,137,141,136,135,153,72,153,139,157,141,145,157}), function(v)
+	section(page, _obczbshz({190,222,212,216,214,210,208,212,214,229}))
+	toggleRow(page, _obczbshz({170,216,223,213,154,175,181,187}), _obczbshz({174,224,212,224,206,142,226,213,227,146,222,221,216,225,216,220,232,154,235,235,239,158,229,233,228,227,245,164,245,231,249,233,237,249}), function(v)
 		if afkConn then afkConn:Disconnect(); afkConn = nil end
 		if v then
 			afkConn = lp.Idled:Connect(function()
@@ -3110,7 +3747,7 @@ local function buildExtras(page, say)
 			end)
 		end
 	end)
-	toggleRow(page, _obi44m9h({89,131,137,48,133,129,135,117,129,54,63,126,142,134,135,126,143,135,134,136,149,75}), _obi44m9h({97,119,129,113,49,115,51,121,136,121,140,138,130,126,222,191,140,62,131,143,65,143,132,148,134}), function(v)
+	toggleRow(page, _obczbshz({181,223,229,140,225,221,227,209,221,146,155,218,234,226,227,218,235,227,226,228,241,167}), _obczbshz({189,211,221,205,141,207,143,213,228,213,232,230,222,218,58,27,232,154,223,235,157,235,224,240,226}), function(v)
 		if v and not fbOrig then
 			fbOrig = {
 				Brightness = Lighting.Brightness, Ambient = Lighting.Ambient,
@@ -3122,7 +3759,7 @@ local function buildExtras(page, say)
 			for k, val in pairs(fbOrig) do Lighting[k] = val end
 		end
 	end)
-	toggleRow(page, _obi44m9h({82,97,95,48,117,119,51,126,132,125,120,124,136,140,128,143}), _obi44m9h({80,125,125,132,128,132,129,131,53,65,55,134,136,135,128,60,130,62,131,137,148,150,230,198,147,137,144,137}), function(v)
+	toggleRow(page, _obczbshz({174,189,187,140,209,211,143,218,224,217,212,216,228,232,220,235}), _obczbshz({172,217,217,224,220,224,221,223,145,157,147,226,228,227,220,152,222,154,223,229,240,242,66,34,239,229,236,229}), function(v)
 		X.esp = v
 		if not v then
 			for _, e in pairs(espObjs) do
@@ -3131,22 +3768,22 @@ local function buildExtras(page, say)
 			espObjs = {}
 		end
 	end)
-	toggleRow(page, _obi44m9h({84,119,129,113,131,50,131,121,135,137,134,134,122,129,128,137}), _obi44m9h({84,119,129,113,49,136,130,119,216,192,55,139,126,135,59,140,126,144,128,146}), function(v)
+	toggleRow(page, _obczbshz({176,211,221,205,223,142,223,213,227,229,226,226,214,221,220,229}), _obczbshz({176,211,221,205,141,228,222,211,52,28,147,231,218,227,151,232,218,236,220,238}), function(v)
 		if spinBAV then spinBAV:Destroy(); spinBAV = nil end
 		local r = hrp()
 		if v and r then
-			spinBAV = mk(_obi44m9h({79,125,115,137,82,128,122,137,129,119,137,110,126,134,138,127,134,146,152}), { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 10, 0) }, r)
+			spinBAV = mk(_obczbshz({171,217,207,229,174,220,214,229,221,211,229,202,218,226,230,219,226,238,244}), { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 10, 0) }, r)
 		end
 	end)
 
 	local origZoom = lp.CameraMaxZoomDistance
 	local fpsLbl
 	local fpsAcc, fpsN = 0, 0
-	toggleRow(page, _obi44m9h({90,125,130,132,131,115,133,52,91,102,106}), _obi44m9h({80,125,125,132,114,118,130,134,53,132,134,56,124,123,137,144,140,62,131,129,65,150,136,144,134}), function(v)
+	toggleRow(page, _obczbshz({182,217,222,224,223,207,225,144,183,194,198}), _obczbshz({172,217,217,224,206,210,222,226,145,224,226,148,216,215,229,236,232,154,223,221,157,242,228,236,226}), function(v)
 		X.fps = v
 		if v and not fpsLbl then
-			fpsLbl = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-				Text = _obi44m9h({83,94,98,74,49,63,64}), Size = UDim2.fromOffset(80, 22), Position = UDim2.new(1, -90, 0, 8),
+			fpsLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+				Text = _obczbshz({175,186,190,166,141,155,156}), Size = UDim2.fromOffset(80, 22), Position = UDim2.new(1, -90, 0, 8),
 				BackgroundColor3 = Color3.fromRGB(20, 0, 0), BackgroundTransparency = 0.3, TextColor3 = WHITE,
 				Font = Enum.Font.GothamBold, TextSize = 12,
 			}, gui)
@@ -3154,20 +3791,20 @@ local function buildExtras(page, say)
 		end
 		if fpsLbl then fpsLbl.Visible = v end
 	end)
-	toggleRow(page, _obi44m9h({103,125,126,125,49,123,127,125,130,127,139,121,125,137}), _obi44m9h({78,116,112,131,133,115,51,117,53,121,218,186,134,127,141,125,61,127,139,227,202,143,67,136,148,70,147,145,150,147,159,145}), function(v)
+	toggleRow(page, _obczbshz({195,217,218,217,141,215,219,217,222,219,231,213,217,229}), _obczbshz({170,208,204,223,225,207,143,209,145,213,54,22,226,219,233,217,153,219,231,63,38,235,159,228,240,162,239,237,242,239,251,237}), function(v)
 		lp.CameraMaxZoomDistance = v and 5000 or origZoom
 	end)
 
-	section(page, _obi44m9h({80,209,177,125,118,132,116,52,122,54,125,219,198,141,132,127,126}))
-	toggleRow(page, _obi44m9h({83,93,101,48,129,119,133,135,132,132,120,132,130,148,124,128,140}), _obi44m9h({98,129,112,48,128,50,137,117,129,133,137,56,125,137,59,127,140,140,147,146,144,142,136,68,134,136,136,145,161,153}), function(v)
+	section(page, _obczbshz({172,45,13,217,210,224,208,144,214,146,217,55,34,233,224,219,218}))
+	toggleRow(page, _obczbshz({175,185,193,140,221,211,225,227,224,224,212,224,222,240,216,220,232}), _obczbshz({190,221,204,140,220,142,229,209,221,225,229,148,217,229,151,219,232,232,239,238,236,234,228,160,226,228,228,237,253,245}), function(v)
 		X.fovOn = v
 		if not v and cam() then cam().FieldOfView = 70 end
 	end)
-	sliderRow(page, _obi44m9h({83,93,101}), _obi44m9h({80,111,124,128,128,50,119,121,53,140,128,139,220,189,138}), 30, 120, 70, function(v) X.fov = v end)
-	sliderRow(page, _obi44m9h({84,128,112,134,122,118,116,120,122}), _obi44m9h({93,111,115,130,212,181,130,78,53,71,80,78}), 20, 300, math.floor(origGravity), function(v) workspace.Gravity = v end)
-	rowBtn(page, _obi44m9h({95,115,130,132,114,135,133,117,135,54,126,138,122,144,132,128,126,130,132}), function() workspace.Gravity = origGravity; say(_obi44m9h({84,128,112,134,122,118,116,120,122,54,137,125,140,142,124,145,143,127,131,129,79})) end)
+	sliderRow(page, _obczbshz({175,185,193}), _obczbshz({172,203,216,220,220,142,211,213,145,232,220,231,56,25,230}), 30, 120, 70, function(v) X.fov = v end)
+	sliderRow(page, _obczbshz({176,220,204,226,214,210,208,212,214}), _obczbshz({185,203,207,222,48,17,222,170,145,163,172,170}), 20, 300, math.floor(origGravity), function(v) workspace.Gravity = v end)
+	rowBtn(page, _obczbshz({187,207,222,224,206,227,225,209,227,146,218,230,214,236,224,220,218,222,224}), function() workspace.Gravity = origGravity; say(_obczbshz({176,220,204,226,214,210,208,212,214,146,229,217,232,234,216,237,235,219,223,221,171})) end)
 
-	section(page, _obi44m9h({87,125,118,113,117,129,133,121,136}))
+	section(page, _obczbshz({179,217,210,205,209,221,225,213,228}))
 	local function others()
 		local t = {}
 		for _, pl in ipairs(Players:GetPlayers()) do
@@ -3176,47 +3813,47 @@ local function buildExtras(page, say)
 		return t
 	end
 	local tgtDD
-	tgtDD = dropdown(page, _obi44m9h({82,129,114,127,125,122,120,134,53,128,134,127,122,126,138,142,61,70,141,133,143,138,152,145,78}), function()
+	tgtDD = dropdown(page, _obczbshz({174,221,206,219,217,214,212,226,145,220,226,219,214,218,230,234,153,162,233,225,235,230,244,237,170}), function()
 		local t = {}
 		for _, pl in ipairs(others()) do
-			table.insert(t, { label = pl.DisplayName .. _obi44m9h({45,54,79}) .. pl.Name .. _obi44m9h({54}), value = pl })
+			table.insert(t, { label = pl.DisplayName .. _obczbshz({137,146,171}) .. pl.Name .. _obczbshz({146}), value = pl })
 		end
 		return t
 	end, function(it)
 		X.target = it.value
-		tgtDD.setText(_obi44m9h({87,125,118,113,117,129,133,78,53}) .. it.value.DisplayName)
+		tgtDD.setText(_obczbshz({179,217,210,205,209,221,225,170,145}) .. it.value.DisplayName)
 	end)
-	rowBtn(page, _obi44m9h({86,128,47,113,133,213,188,52,132,54,129,135,128,123,127,139,143}), function()
+	rowBtn(page, _obczbshz({178,220,139,205,225,49,24,144,224,146,221,227,220,215,219,231,235}), function()
 		local tc = X.target and X.target.Character
-		local tr = tc and tc:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}))
+		local tr = tc and tc:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
 		local r = hrp()
-		if tr and r then r.CFrame = tr.CFrame * CFrame.new(0, 0, 4); say(_obi44m9h({97,115,123,117,129,129,133,136,118,122,134,70})) else say(_obi44m9h({82,129,114,127,125,122,116,52,138,131,55,130,136,129,124,128,140,144,63,144,147,139,144,137,142,152,150,86})) end
+		if tr and r then r.CFrame = tr.CFrame * CFrame.new(0, 0, 4); say(_obczbshz({189,207,215,209,221,221,225,228,210,214,226,162})) else say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})) end
 	end)
-	toggleRow(page, _obi44m9h({92,112,130,117,131,136,116,134,53,128,134,127,122,126,138,142}), _obi44m9h({80,209,177,125,118,132,116,52,136,123,126,141,126,58,138,60,135,141,134,129,133,145,149,68,138,153,138,151,149,146,148,144,156}), function(v)
+	toggleRow(page, _obczbshz({184,204,222,209,223,228,208,226,145,220,226,219,214,218,230,234}), _obczbshz({172,45,13,217,210,224,208,144,228,215,218,233,218,150,230,152,227,233,226,221,225,237,241,160,230,245,230,243,241,238,240,236,248}), function(v)
 		local tc = X.target and X.target.Character
-		local th = tc and tc:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
+		local th = tc and tc:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
 		if v and th then cam().CameraSubject = th
 		else
 			local h = hum()
 			if h then cam().CameraSubject = h end
-			if v then say(_obi44m9h({82,129,114,127,125,122,116,52,138,131,55,130,136,129,124,128,140,144,63,144,147,139,144,137,142,152,150,86})) end
+			if v then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})) end
 		end
 	end)
-	rowBtn(page, _obi44m9h({96,111,123,134,114,132,51,129,126,132,127,121,57,138,138,143,134,225,198,227,196,145}), function()
+	rowBtn(page, _obczbshz({188,203,215,226,206,224,143,221,218,224,219,213,149,230,230,235,226,61,34,63,32,237}), function()
 		local r = hrp()
-		if r then savedCF = r.CFrame; say(_obi44m9h({93,125,130,121,212,185,214,183,132,54,138,121,133,144,124,74})) end
+		if r then savedCF = r.CFrame; say(_obczbshz({185,217,222,213,48,21,50,19,224,146,230,213,225,236,216,166})) end
 	end)
-	rowBtn(page, _obi44m9h({99,125,123,132,114,132,51,215,181,54,135,135,140,131,222,195,224,193,142,64,148,131,143,154,134}), function()
+	rowBtn(page, _obczbshz({191,217,215,224,206,224,143,51,17,146,227,227,232,223,58,31,60,29,234,156,240,223,235,246,226}), function()
 		local r = hrp()
-		if r and savedCF then r.CFrame = savedCF; say(_obi44m9h({99,125,123,132,128,135,65})) else say(_obi44m9h({91,115,125,120,134,127,116,52,133,133,138,129,220,193,222,191,140,62,146,129,141,152,132,82})) end
+		if r and savedCF then r.CFrame = savedCF; say(_obczbshz({191,217,215,224,220,227,157})) else say(_obczbshz({183,207,217,212,226,219,208,144,225,225,230,221,56,29,58,27,232,154,238,221,233,244,224,174})) end
 	end)
-	rowBtn(page, _obi44m9h({95,115,130,117,133,115,133,52,133,123,137,139,136,136,124,131,130,139}), function()
+	rowBtn(page, _obczbshz({187,207,222,209,225,207,225,144,225,215,229,231,228,228,216,223,222,231}), function()
 		local h = hum()
 		if h then h.Health = 0 end
 	end)
-	rowBtn(page, _obi44m9h({95,115,116,126,133,132,116,134,53,132,134,56,131,137,130,139}), function()
-		say(_obi44m9h({95,115,116,126,133,132,116,130,121,133,69,70,71}))
-		pcall(function() game:GetService(_obi44m9h({97,115,123,117,129,129,133,136,104,123,137,142,130,125,128})):Teleport(game.PlaceId, lp) end)
+	rowBtn(page, _obczbshz({187,207,208,218,225,224,208,226,145,224,226,148,223,229,222,231}), function()
+		say(_obczbshz({187,207,208,218,225,224,208,222,213,225,161,162,163}))
+		pcall(function() game:GetService(_obczbshz({189,207,215,209,221,221,225,228,196,215,229,234,222,217,220})):Teleport(game.PlaceId, lp) end)
 	end)
 
 	local acc = 0
@@ -3230,21 +3867,21 @@ local function buildExtras(page, say)
 		acc = acc + dt
 		if X.fps and fpsLbl then
 			fpsAcc = fpsAcc + dt; fpsN = fpsN + 1
-			if fpsAcc >= 0.5 then fpsLbl.Text = _obi44m9h({83,94,98,74,49}) .. math.floor(fpsN / fpsAcc + 0.5); fpsAcc, fpsN = 0, 0 end
+			if fpsAcc >= 0.5 then fpsLbl.Text = _obczbshz({175,186,190,166,141}) .. math.floor(fpsN / fpsAcc + 0.5); fpsAcc, fpsN = 0, 0 end
 		end
 		if X.esp and acc >= 0.3 then
 			acc = 0
 			local r = hrp()
 			for _, pl in ipairs(others()) do
 				local c = pl.Character
-				local head = c and c:FindFirstChild(_obi44m9h({85,115,112,116}))
+				local head = c and c:FindFirstChild(_obczbshz({177,207,204,208}))
 				if head then
 					local e = espObjs[pl]
 					if not e or e.hl.Adornee ~= c or not e.hl.Parent then
 						if e then pcall(function() e.hl:Destroy(); e.bb:Destroy() end) end
-						local hl = mk(_obi44m9h({85,119,118,120,125,123,122,124,137}), { Adornee = c, FillTransparency = 0.7, FillColor = RED, OutlineColor = WHITE }, gui)
-						local bb = mk(_obi44m9h({79,119,123,124,115,129,116,134,121,93,140,129}), { Adornee = head, Size = UDim2.fromOffset(120, 20), StudsOffset = Vector3.new(0, 2.5, 0), AlwaysOnTop = true }, gui)
-						local lbl = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+						local hl = mk(_obczbshz({177,211,210,212,217,215,214,216,229}), { Adornee = c, FillTransparency = 0.7, FillColor = RED, OutlineColor = WHITE }, gui)
+						local bb = mk(_obczbshz({171,211,215,216,207,221,208,226,213,185,232,221}), { Adornee = head, Size = UDim2.fromOffset(120, 20), StudsOffset = Vector3.new(0, 2.5, 0), AlwaysOnTop = true }, gui)
+						local lbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 							Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, TextColor3 = WHITE,
 							TextStrokeTransparency = 0.3, Font = Enum.Font.GothamBold, TextSize = 12,
 						}, bb)
@@ -3252,7 +3889,7 @@ local function buildExtras(page, say)
 						espObjs[pl] = e
 					end
 					local d = r and math.floor((head.Position - r.Position).Magnitude) or 0
-					e.lbl.Text = pl.DisplayName .. _obi44m9h({45,105}) .. d .. _obi44m9h({106})
+					e.lbl.Text = pl.DisplayName .. _obczbshz({137,197}) .. d .. _obczbshz({198})
 				end
 			end
 		end
@@ -3277,15 +3914,15 @@ end
 
 local MUSIC_CATS = {}
 local function buildBrookhaven(pages, say)
-	local page = pages[_obi44m9h({91,125,124,117})]
-	local RS = game:GetService(_obi44m9h({95,115,127,124,122,117,116,136,122,122,106,140,136,140,124,131,130}))
-	local NAME_REMOTES = { _obi44m9h({62,96,95,94,114,127,68,121,105,123,143,73,141}) }
-	local COLOR_REMOTES = { _obi44m9h({62,96,95,94,114,127,68,121,88,133,131,135,74,140}) }
+	local page = pages[_obczbshz({183,217,216,209})]
+	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
+	local NAME_REMOTES = { _obczbshz({154,188,187,186,206,219,160,213,197,215,235,165,233}) }
+	local COLOR_REMOTES = { _obczbshz({154,188,187,186,206,219,160,213,180,225,223,227,166,232}) }
 	local alive = true
 	local rgbName, rgbBio, speed, hue = false, false, 5, 0
 
 	local function findRE(names)
-		local re = RS:FindFirstChild(_obi44m9h({95,83}))
+		local re = RS:FindFirstChild(_obczbshz({187,175}))
 		if not re then return nil end
 		for _, n in ipairs(names) do
 			local r = re:FindFirstChild(n)
@@ -3294,45 +3931,45 @@ local function buildBrookhaven(pages, say)
 		return nil
 	end
 	local function inputRow(placeholder)
-		local row = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obi44m9h({97,115,135,132,83,129,139}), {
+		return mk(_obczbshz({189,207,227,224,175,221,231}), {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = _obi44m9h({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function digits(s)
-		local d = (tostring(s or _obi44m9h({}))):gsub(_obi44m9h({50,82}), _obi44m9h({}))
+		local d = (tostring(s or _obczbshz({}))):gsub(_obczbshz({142,174}), _obczbshz({}))
 		if #d >= 5 then return d end
 		return nil
 	end
 
-	section(page, _obi44m9h({91,125,124,117,49,119,51,86,126,133,55,64,107,106,68}))
-	local nameBox = inputRow(_obi44m9h({91,125,124,117,49,131,136,121,53,119,135,121,139,127,126,129,61,131,140,64,132,139,144,133,69,138,150,72,153,143,157,159,156,156,144,151,150,159}))
-	rowBtn(page, _obi44m9h({78,126,123,121,116,115,133,52,131,133,132,125}), function()
+	section(page, _obczbshz({183,217,216,209,141,211,143,178,218,225,147,156,199,198,160}))
+	local nameBox = inputRow(_obczbshz({183,217,216,209,141,223,228,213,145,211,227,213,231,219,218,221,153,223,232,156,224,231,236,225,161,230,242,164,245,235,249,251,248,248,236,243,242,251}))
+	rowBtn(page, _obczbshz({170,218,215,213,208,207,225,144,223,225,224,217}), function()
 		local r = findRE(NAME_REMOTES)
-		if not r then say(_obi44m9h({95,115,124,127,133,119,51,120,132,54,133,135,134,127,59,138,224,193,142,64,134,144,134,147,147,154,153,137,141,153,75,84,156,78,153,159,152,161,83,164,164,154,156,88,173,159,173,92,170,179,163,161,165,177,108,114})); return end
-		local ok = pcall(function() r:FireServer(_obi44m9h({95,125,123,117,97,126,116,141,99,119,132,125}), nameBox.Text) end)
-		say(ok and _obi44m9h({91,125,124,117,49,115,131,128,126,121,120,124,136,72}) or _obi44m9h({83,111,123,120,128,135,51,117,132,54,120,136,133,131,126,125,143,62,142,64,143,145,144,137,83}))
+		if not r then say(_obczbshz({187,207,216,219,225,211,143,212,224,146,225,227,226,219,151,230,60,29,234,156,226,236,226,239,239,246,245,229,233,245,167,176,248,170,245,251,244,253,175,0,0,246,248,180,9,251,9,184,6,15,255,253,1,13,200,206})); return end
+		local ok = pcall(function() r:FireServer(_obczbshz({187,217,215,209,189,218,208,233,191,211,224,217}), nameBox.Text) end)
+		say(ok and _obczbshz({183,217,216,209,141,207,223,220,218,213,212,216,228,164}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,212,228,225,223,218,217,235,154,234,156,235,237,236,229,175}))
 	end, true)
-	local bioBox = inputRow(_obi44m9h({79,119,126}))
-	rowBtn(page, _obi44m9h({78,126,123,121,116,115,133,52,119,127,134}), function()
+	local bioBox = inputRow(_obczbshz({171,211,218}))
+	rowBtn(page, _obczbshz({170,218,215,213,208,207,225,144,211,219,226}), function()
 		local r = findRE(NAME_REMOTES)
-		if not r then say(_obi44m9h({95,115,124,127,133,119,51,120,118,54,121,129,136,58,137,223,192,141,63,133,143,133,146,146,153,152,136,140,152,74,83,155,77,152,158,151,160,82,163,163,153,155,87,172,158,172,91,169,178,162,160,164,176,107,113})); return end
-		local ok = pcall(function() r:FireServer(_obi44m9h({95,125,123,117,97,126,116,141,87,127,134}), bioBox.Text) end)
-		say(ok and _obi44m9h({79,119,126,48,114,130,127,125,120,119,123,121,71}) or _obi44m9h({83,111,123,120,128,135,51,117,132,54,120,136,133,131,126,125,143,62,128,64,131,139,146,82}))
+		if not r then say(_obczbshz({187,207,216,219,225,211,143,212,210,146,213,221,228,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,166,175,247,169,244,250,243,252,174,255,255,245,247,179,8,250,8,183,5,14,254,252,0,12,199,205})); return end
+		local ok = pcall(function() r:FireServer(_obczbshz({187,217,215,209,189,218,208,233,179,219,226}), bioBox.Text) end)
+		say(ok and _obczbshz({171,211,218,140,206,222,219,217,212,211,215,213,163}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,212,228,225,223,218,217,235,154,220,156,223,231,238,174}))
 	end, true)
-	toggleRow(page, _obi44m9h({91,125,124,117,49,100,90,86}), _obi44m9h({78,46,114,127,131,50,119,131,53,132,134,133,126,58,136,145,129,127,63,147,134,143,67,148,134,152,136,154}), function(v)
+	toggleRow(page, _obczbshz({183,217,216,209,141,192,182,178}), _obczbshz({170,138,206,219,223,142,211,223,145,224,226,225,218,150,228,237,221,219,155,239,226,235,159,240,226,244,228,246}), function(v)
 		rgbName = v
-		if v and not findRE(COLOR_REMOTES) then say(_obi44m9h({95,115,124,127,133,119,51,120,122,54,122,135,139,58,137,223,192,141,63,133,143,133,146,146,153,152,136,140,152,88})) end
+		if v and not findRE(COLOR_REMOTES) then say(_obczbshz({187,207,216,219,225,211,143,212,214,146,214,227,231,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,180})) end
 	end)
-	toggleRow(page, _obi44m9h({79,119,126,48,99,89,85}), _obi44m9h({78,46,114,127,131,50,119,117,53,120,128,135,57,135,144,128,126,62,146,133,142,66,147,133,151,135,153}), function(v)
+	toggleRow(page, _obczbshz({171,211,218,140,191,181,177}), _obczbshz({170,138,206,219,223,142,211,209,145,212,220,227,149,227,236,220,218,154,238,225,234,158,239,225,243,227,245}), function(v)
 		rgbBio = v
-		if v and not findRE(COLOR_REMOTES) then say(_obi44m9h({95,115,124,127,133,119,51,120,122,54,122,135,139,58,137,223,192,141,63,133,143,133,146,146,153,152,136,140,152,88})) end
+		if v and not findRE(COLOR_REMOTES) then say(_obczbshz({187,207,216,219,225,211,143,212,214,146,214,227,231,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,180})) end
 	end)
-	sliderRow(page, _obi44m9h({99,115,123,127,116,123,119,117,121,123,55,106,96,92}), _obi44m9h({62,46,123,117,127,134,130,52,215,205,55,73,73,58,141,223,190,142,136,132,144}), 1, 10, 5, function(v) speed = v end)
+	sliderRow(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,198,188,184}), _obczbshz({154,138,215,209,219,226,222,144,51,41,147,165,165,150,233,59,26,234,228,224,236}), 1, 10, 5, function(v) speed = v end)
 
 	task.spawn(function()
 		while alive do
@@ -3341,187 +3978,187 @@ local function buildBrookhaven(pages, say)
 				local col = Color3.fromHSV(hue, 1, 1)
 				local r = findRE(COLOR_REMOTES)
 				if r then
-					if rgbName then pcall(function() r:FireServer(_obi44m9h({93,119,114,123,122,128,122,102,101,100,120,133,126,93,138,136,140,144}), col) end) end
-					if rgbBio then pcall(function() r:FireServer(_obi44m9h({93,119,114,123,122,128,122,102,101,88,128,135,92,137,135,139,143}), col) end) end
+					if rgbName then pcall(function() r:FireServer(_obczbshz({185,211,206,215,214,220,214,194,193,192,212,225,218,185,230,228,232,236}), col) end) end
+					if rgbBio then pcall(function() r:FireServer(_obczbshz({185,211,206,215,214,220,214,194,193,180,220,227,184,229,227,231,235}), col) end) end
 				end
 			end
 			task.wait(0.25)
 		end
 	end)
 
-	page = pages[_obi44m9h({90,209,201,131,122,117,116})]
-	section(page, _obi44m9h({90,209,201,131,122,117,116,52,61,136,218,185,125,131,138,60,130,62,135,143,151,135,149,134,148,135,153,140,82}))
-	local idBox = inputRow(_obi44m9h({86,82,47,116,114,50,128,215,207,137,128,123,122}))
+	page = pages[_obczbshz({182,45,37,223,214,209,208})]
+	section(page, _obczbshz({182,45,37,223,214,209,208,144,153,228,54,21,217,223,230,152,222,154,227,235,243,227,241,226,240,227,245,232,174}))
+	local idBox = inputRow(_obczbshz({178,174,139,208,206,142,220,51,43,229,220,215,214}))
 
 	local function reByPlain(plain)
-		local re = RS:FindFirstChild(_obi44m9h({95,83}))
+		local re = RS:FindFirstChild(_obczbshz({187,175}))
 		if not re then return nil end
 		for _, c in ipairs(re:GetChildren()) do
-			if (c.Name:gsub(_obi44m9h({62}), _obi44m9h({}))) == plain then return c end
+			if (c.Name:gsub(_obczbshz({154}), _obczbshz({}))) == plain then return c end
 		end
 		return nil
 	end
 	local function send(plain, kind, id, okMsg)
 		local r = reByPlain(plain)
-		if not r then say(_obi44m9h({95,115,124,127,133,119,51,130,216,185,134,56,126,136,126,139,139,146,145,129,133,145,67,76,148,70,145,151,144,153,75,156,156,146,148,80,165,151,165,84,162,171,155,153,157,169,100,106})); return end
+		if not r then say(_obczbshz({187,207,216,219,225,211,143,222,52,21,226,148,218,228,218,231,231,238,237,221,225,237,159,168,240,162,237,243,236,245,167,248,248,238,240,172,1,243,1,176,254,7,247,245,249,5,192,198})); return end
 		local ok, err = pcall(function() r:FireServer(kind, id, nil, true) end)
-		say(ok and okMsg or (_obi44m9h({83,111,123,120,128,135,77,52}) .. tostring(err):sub(1, 50)))
+		say(ok and okMsg or (_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(err):sub(1, 50)))
 	end
 
-	rowBtn(page, _obi44m9h({97,125,114,113,131,50,129,131,53,136,218,185,125,131,138,60,69,129,142,141,65,145,67,150,232,199,139,145,152,74,153,141,77,155,242,211,160,91}), function()
+	rowBtn(page, _obczbshz({189,217,206,205,223,142,221,223,145,228,54,21,217,223,230,152,161,221,234,233,157,237,159,242,68,35,231,237,244,166,245,233,169,247,78,47,252,183}), function()
 		local id = digits(idBox.Text)
-		if not id then say(_obi44m9h({81,119,118,121,133,119,51,137,130,54,96,92,57,126,128,60,138,225,217,147,138,133,132,68,155,233,200,148,146,142,154,90})); return end
-		send(_obi44m9h({93,122,112,137,118,132,103,131,132,130,92,142,126,136,143}), _obi44m9h({97,125,126,124,94,135,134,125,120,106,124,144,141}), id, _obi44m9h({97,125,114,113,127,118,130,52}) .. id .. _obi44m9h({45,124,126,48,131,213,180,120,126,133,69}))
+		if not id then say(_obczbshz({173,211,210,213,225,211,143,229,222,146,188,184,149,218,220,152,230,61,53,239,230,225,224,160,247,69,36,240,238,234,246,182})); return end
+		send(_obczbshz({185,214,204,229,210,224,195,223,224,222,184,234,218,228,235}), _obczbshz({189,217,218,216,186,227,226,217,212,198,216,236,233}), id, _obczbshz({189,217,206,205,219,210,222,144}) .. id .. _obczbshz({137,216,218,140,223,49,16,212,218,225,161}))
 	end, true)
-	rowBtn(page, _obi44m9h({93,111,129,113,131,50,133,215,182,122,128,135}), function()
-		send(_obi44m9h({93,122,112,137,118,132,103,131,132,130,92,142,126,136,143}), _obi44m9h({97,125,126,124,94,135,134,125,120,105,139,135,137}), _obi44m9h({}), _obi44m9h({93,115,115,121,117,129,51,120,122,54,135,121,139,123,141,60,130,140,149,137,130,134,146,68,77,152,234,201,141,147,154,85,91}))
+	rowBtn(page, _obczbshz({185,203,221,205,223,142,225,51,18,214,220,227}), function()
+		send(_obczbshz({185,214,204,229,210,224,195,223,224,222,184,234,218,228,235}), _obczbshz({189,217,218,216,186,227,226,217,212,197,231,227,229}), _obczbshz({}), _obczbshz({185,207,207,213,209,221,143,212,214,146,227,213,231,215,233,152,222,232,241,229,222,226,238,160,169,244,70,37,233,239,246,177,183}))
 	end, true)
-	rowBtn(page, _obi44m9h({97,125,114,113,131,50,129,131,53,126,134,142,126,140,125,139,126,144,131,64,73,135,144,68,136,143,148,137,73,142,144,152,146,87}), function()
+	rowBtn(page, _obczbshz({189,217,206,205,223,142,221,223,145,218,226,234,218,232,217,231,218,236,223,156,165,227,236,160,228,235,240,229,165,234,236,244,238,179}), function()
 		local id = digits(idBox.Text)
-		if not id then say(_obi44m9h({81,119,118,121,133,119,51,137,130,54,96,92,57,126,128,60,138,225,217,147,138,133,132,68,155,233,200,148,146,142,154,90})); return end
-		send(_obi44m9h({91,125,92,127,133,129,133,106,122,126,128,123,133,127,142}), _obi44m9h({93,119,114,123,122,128,122,103,120,133,134,140,126,140,104,145,144,135,130,116,134,154,151}), id, _obi44m9h({97,125,114,113,127,118,130,52}) .. id .. _obi44m9h({45,124,126,48,121,129,137,121,135,120,134,121,139,126,73}))
+		if not id then say(_obczbshz({173,211,210,213,225,211,143,229,222,146,188,184,149,218,220,152,230,61,53,239,230,225,224,160,247,69,36,240,238,234,246,182})); return end
+		send(_obczbshz({183,217,184,219,225,221,225,198,214,218,220,215,225,219,234}), _obczbshz({185,211,206,215,214,220,214,195,212,225,226,232,218,232,196,237,236,227,222,208,226,246,243}), id, _obczbshz({189,217,206,205,219,210,222,144}) .. id .. _obczbshz({137,216,218,140,213,221,229,213,227,212,226,213,231,218,165}))
 	end, true)
-	rowBtn(page, _obi44m9h({93,111,129,113,131,50,123,131,139,123,137,122,136,123,141,128}), function()
-		send(_obi44m9h({91,125,92,127,133,129,133,106,122,126,128,123,133,127,142}), _obi44m9h({93,119,114,123,122,128,122,103,120,133,134,140,126,140,104,145,144,135,130,115,149,145,147}), _obi44m9h({}), _obi44m9h({93,115,115,121,117,129,51,120,122,54,135,121,139,123,141,60,130,140,149,137,130,134,146,68,77,142,150,158,142,156,141,155,142,160,147,89,95}))
+	rowBtn(page, _obczbshz({185,203,221,205,223,142,215,223,231,215,229,214,228,215,233,220}), function()
+		send(_obczbshz({183,217,184,219,225,221,225,198,214,218,220,215,225,219,234}), _obczbshz({185,211,206,215,214,220,214,195,212,225,226,232,218,232,196,237,236,227,222,207,241,237,239}), _obczbshz({}), _obczbshz({185,207,207,213,209,221,143,212,214,146,227,213,231,215,233,152,222,232,241,229,222,226,238,160,169,234,242,250,234,248,233,247,234,252,239,181,187}))
 	end, true)
 
 	local CATS = {
-		{ _obi44m9h({83,131,125,123}), {
-			{ _obi44m9h({89,125,123,127,135,119,68,70}), _obi44m9h({69,69,63,68,72,72,76,69,77,73,80,80,74,81}) },
-			{ _obi44m9h({93,111,129,137,125,119,116,127}), _obi44m9h({62,65,70,65,67,68,76,76,78,71,75,75,76,78,80}) },
-			{ _obi44m9h({78,126,123,121,116,129}), _obi44m9h({69,68,71,70,71,71,71,73,77,76,72,73,75,79}) },
-			{ _obi44m9h({98,124,120,211,180,129}), _obi44m9h({62,62,70,73,74,67,69,71,74,79,72,79,82,82,78}) },
-			{ _obi44m9h({85,125,130,128,122,134,116,128,118,136}), _obi44m9h({70,68,65,69,74,69,72,69,76,72,80,72,77,83}) },
-			{ _obi44m9h({93,209,184,48,85,123,133,121,126,138,134}), _obi44m9h({62,64,70,72,72,66,73,70,78,79,78,75,73,80,83}) },
-			{ _obi44m9h({97,125,132,48,95,115,51,99,131,122,120}), _obi44m9h({70,65,67,72,68,73,72,69,71,71,71,78,79,81}) },
-			{ _obi44m9h({90,125,125,132,114,121,120,129,53,108,120,136,136}), _obi44m9h({62,64,68,70,66,74,74,68,71,73,77,76,78,79,81}) },
-			{ _obi44m9h({83,131,125,123,49,84,133,137,141,119,137,129,122}), _obi44m9h({62,65,63,72,65,72,74,76,77,70,72,74,81,78,76}) },
-			{ _obi44m9h({90,125,125,132,114,121,120,129,53,99,120,132,143,123,127,125}), _obi44m9h({70,65,68,65,72,70,76,70,72,76,80,80,78,82}) },
-			{ _obi44m9h({87,111,125,132,114,132,51,90,118,131,218,197,133,131,124}), _obi44m9h({62,62,66,64,69,69,74,70,76,71,79,80,76,75,84}) },
-			{ _obi44m9h({97,125,124,113,49,102,130,129,118}), _obi44m9h({62,63,63,68,72,68,69,76,73,75,79,77,76,82,82}) },
-			{ _obi44m9h({93,111,123,120,114,213,186,215,184,133}), _obi44m9h({69,64,71,70,70,68,74,72,78,78,77,73,74,80}) },
-			{ _obi44m9h({97,128,116,125,128,50,96,121,141,127,122,121,135,123}), _obi44m9h({62,63,63,67,66,73,76,75,77,79,78,75,82,77,83}) },
-			{ _obi44m9h({97,128,116,128,114,50,103,134,122,134,120}), _obi44m9h({62,64,70,68,69,75,71,69,75,77,73,78,74,75,78}) },
-			{ _obi44m9h({90,115,118,113,49,83,136,136,132,131,134,140,130,144,138}), _obi44m9h({62,64,66,66,66,67,69,69,73,74,78,81,81,80,76}) },
-			{ _obi44m9h({96,115,47,90,128,121,116}), _obi44m9h({69,63,64,64,67,72,70,70,78,79,72,75,75,74}) },
-			{ _obi44m9h({81,111,115,116,138,50,95,131,139,123}), _obi44m9h({70,68,65,66,68,66,75,74,70,73,76,74,81,82}) },
-			{ _obi44m9h({95,125,124,113,127,129,51,97,118,132,123,125,133,123,127,139}), _obi44m9h({62,64,71,69,71,68,71,69,78,70,75,73,78,76,76}) },
-			{ _obi44m9h({90,125,125,132,114,121,120,129,53,102,120,137,142,131,142,144,224,193,142}), _obi44m9h({70,71,71,65,67,70,76,71,78,77,79,78,81,78}) },
-			{ _obi44m9h({80,46,102,113,125,125}), _obi44m9h({68,64,67,69,66,68,74,69,78,72,79,81,80,79}) },
-			{ _obi44m9h({90,119,114,127,49,94,116,130,216,189,120}), _obi44m9h({68,70,66,69,67,68,69,68,72,74,72,76,75,78}) },
-			{ _obi44m9h({97,128,116,125,49,84,116,128,118}), _obi44m9h({62,65,70,72,67,74,73,71,78,74,71,75,79,77,75}) },
-			{ _obi44m9h({81,88,47,91,128,115,127,117}), _obi44m9h({62,62,67,71,71,73,74,72,73,76,74,74,78,79,80}) },
-			{ _obi44m9h({97,128,126,128,114,50,102,121,130,54,88,133,136,140}), _obi44m9h({62,64,68,71,73,70,70,74,72,74,77,75,77,80,81}) },
-			{ _obi44m9h({83,119,125,127,49,83,122,131,131,127,120,134,141,127}), _obi44m9h({62,64,70,66,72,71,69,72,71,75,78,76,77,81,80}) },
-			{ _obi44m9h({83,119,128,133,118,123,51,96,132,139,122,121}), _obi44m9h({70,66,66,70,70,66,72,68,74,75,75,73,73,75}) },
-			{ _obi44m9h({99,115,124,48,87,135,119,121,135}), _obi44m9h({62,64,63,72,74,68,73,69,69,72,79,75,82,76,83}) },
-			{ _obi44m9h({97,128,126,126,128,50,119,131,53,95,133,126,126,140,137,139}), _obi44m9h({68,64,67,65,66,74,69,73,71,78,74,81,74,74}) },
-			{ _obi44m9h({99,111,120,48,100,119,129,136,118,132,123,135}), _obi44m9h({62,64,68,70,73,67,68,72,72,75,73,76,82,74,75}) },
-			{ _obi44m9h({79,128,132,136,114,132,124,117,53,89,120,138,135,131,129,133,128,135,141,129}), _obi44m9h({62,65,66,66,70,68,70,75,78,76,72,78,80,77,77}) },
+		{ _obczbshz({175,223,217,215}), {
+			{ _obczbshz({181,217,215,219,227,211,160,162}), _obczbshz({161,161,155,160,164,164,168,161,169,165,172,172,166,173}) },
+			{ _obczbshz({185,203,221,229,217,211,208,219}), _obczbshz({154,157,162,157,159,160,168,168,170,163,167,167,168,170,172}) },
+			{ _obczbshz({170,218,215,213,208,221}), _obczbshz({161,160,163,162,163,163,163,165,169,168,164,165,167,171}) },
+			{ _obczbshz({190,216,212,47,16,221}), _obczbshz({154,154,162,165,166,159,161,163,166,171,164,171,174,174,170}) },
+			{ _obczbshz({177,217,222,220,214,226,208,220,210,228}), _obczbshz({162,160,157,161,166,161,164,161,168,164,172,164,169,175}) },
+			{ _obczbshz({185,45,20,140,177,215,225,213,218,230,226}), _obczbshz({154,156,162,164,164,158,165,162,170,171,170,167,165,172,175}) },
+			{ _obczbshz({189,217,224,140,187,207,143,191,223,214,212}), _obczbshz({162,157,159,164,160,165,164,161,163,163,163,170,171,173}) },
+			{ _obczbshz({182,217,217,224,206,213,212,221,145,200,212,228,228}), _obczbshz({154,156,160,162,158,166,166,160,163,165,169,168,170,171,173}) },
+			{ _obczbshz({175,223,217,215,141,176,225,229,233,211,229,221,214}), _obczbshz({154,157,155,164,157,164,166,168,169,162,164,166,173,170,168}) },
+			{ _obczbshz({182,217,217,224,206,213,212,221,145,191,212,224,235,215,219,217}), _obczbshz({162,157,160,157,164,162,168,162,164,168,172,172,170,174}) },
+			{ _obczbshz({179,203,217,224,206,224,143,182,210,223,54,33,225,223,216}), _obczbshz({154,154,158,156,161,161,166,162,168,163,171,172,168,167,176}) },
+			{ _obczbshz({189,217,216,205,141,194,222,221,210}), _obczbshz({154,155,155,160,164,160,161,168,165,167,171,169,168,174,174}) },
+			{ _obczbshz({185,203,215,212,206,49,22,51,20,225}), _obczbshz({161,156,163,162,162,160,166,164,170,170,169,165,166,172}) },
+			{ _obczbshz({189,220,208,217,220,142,188,213,233,219,214,213,227,215}), _obczbshz({154,155,155,159,158,165,168,167,169,171,170,167,174,169,175}) },
+			{ _obczbshz({189,220,208,220,206,142,195,226,214,226,212}), _obczbshz({154,156,162,160,161,167,163,161,167,169,165,170,166,167,170}) },
+			{ _obczbshz({182,207,210,205,141,175,228,228,224,223,226,232,222,236,230}), _obczbshz({154,156,158,158,158,159,161,161,165,166,170,173,173,172,168}) },
+			{ _obczbshz({188,207,139,182,220,213,208}), _obczbshz({161,155,156,156,159,164,162,162,170,171,164,167,167,166}) },
+			{ _obczbshz({173,203,207,208,230,142,187,223,231,215}), _obczbshz({162,160,157,158,160,158,167,166,162,165,168,166,173,174}) },
+			{ _obczbshz({187,217,216,205,219,221,143,189,210,224,215,217,225,215,219,231}), _obczbshz({154,156,163,161,163,160,163,161,170,162,167,165,170,168,168}) },
+			{ _obczbshz({182,217,217,224,206,213,212,221,145,194,212,229,234,223,234,236,60,29,234}), _obczbshz({162,163,163,157,159,162,168,163,170,169,171,170,173,170}) },
+			{ _obczbshz({172,138,194,205,217,217}), _obczbshz({160,156,159,161,158,160,166,161,170,164,171,173,172,171}) },
+			{ _obczbshz({182,211,206,219,141,186,208,222,52,25,212}), _obczbshz({160,162,158,161,159,160,161,160,164,166,164,168,167,170}) },
+			{ _obczbshz({189,220,208,217,141,176,208,220,210}), _obczbshz({154,157,162,164,159,166,165,163,170,166,163,167,171,169,167}) },
+			{ _obczbshz({173,180,139,183,220,207,219,209}), _obczbshz({154,154,159,163,163,165,166,164,165,168,166,166,170,171,172}) },
+			{ _obczbshz({189,220,218,220,206,142,194,213,222,146,180,225,228,232}), _obczbshz({154,156,160,163,165,162,162,166,164,166,169,167,169,172,173}) },
+			{ _obczbshz({175,211,217,219,141,175,214,223,223,219,212,226,233,219}), _obczbshz({154,156,162,158,164,163,161,164,163,167,170,168,169,173,172}) },
+			{ _obczbshz({175,211,220,225,210,215,143,188,224,231,214,213}), _obczbshz({162,158,158,162,162,158,164,160,166,167,167,165,165,167}) },
+			{ _obczbshz({191,207,216,140,179,227,211,213,227}), _obczbshz({154,156,155,164,166,160,165,161,161,164,171,167,174,168,175}) },
+			{ _obczbshz({189,220,218,218,220,142,211,223,145,187,225,218,218,232,229,231}), _obczbshz({160,156,159,157,158,166,161,165,163,170,166,173,166,166}) },
+			{ _obczbshz({191,203,212,140,192,211,221,228,210,224,215,227}), _obczbshz({154,156,160,162,165,159,160,164,164,167,165,168,174,166,167}) },
+			{ _obczbshz({171,220,224,228,206,224,216,209,145,181,212,230,227,223,221,225,220,227,233,221}), _obczbshz({154,157,158,158,162,160,162,167,170,168,164,170,172,169,169}) },
 		} },
-		{ _obi44m9h({93,118,126,126,124}), {
-			{ _obi44m9h({97,125,124,113,49,88,136,130,128,54,103,128,136,136,134}), _obi44m9h({62,64,72,64,74,74,68,69,75,79,80,80,77,82,78}) },
-			{ _obi44m9h({90,111,125,127,49,95,116,129,118,54,93,141,135,133,59,108,133,141,141,139,65,74,118,144,148,157,140,140,82}), _obi44m9h({62,62,65,72,67,73,68,69,73,70,73,79,82,77,75}) },
-			{ _obi44m9h({83,131,125,123,49,91,129,122,122,136,133,121,57,112,77,60,69,98,132,133,145,66,118,144,148,157,140,140,82}), _obi44m9h({69,68,66,71,70,67,72,69,71,79,77,79,73,80}) },
-			{ _obi44m9h({93,118,126,126,124,50,119,131,53,88,137,121,147,131,135,60,69,113,139,143,152,135,135,77}), _obi44m9h({62,65,63,73,72,69,72,69,70,79,77,78,79,78,81}) },
-			{ _obi44m9h({90,125,125,132,114,121,120,129,53,87,140,138,122}), _obi44m9h({62,64,69,65,68,68,67,77,71,73,77,80,82,77,80}) },
-			{ _obi44m9h({78,131,129,113,49,58,85,134,118,144,128,132,130,123,137,60,109,134,142,142,140,75}), _obi44m9h({70,67,64,67,66,73,74,68,70,74,75,78,78,78}) },
-			{ _obi44m9h({63,46,95,120,134,134,51,92,132,132,55,64,91,140,124,150,134,138,136,129,143,66,115,140,148,148,146,81}), _obi44m9h({68,66,70,73,68,74,73,68,73,78,72,79,76,76}) },
-			{ _obi44m9h({79,131,129,126,122,128,122,52,98,123,132,135,139,147,59,108,133,141,141,139,65,104,152,146,144}), _obi44m9h({62,65,71,70,65,74,70,77,74,79,73,81,74,83,76}) },
-			{ _obi44m9h({95,125,113,124,128,138,51,100,125,133,133,131}), _obi44m9h({62,65,69,73,68,68,68,77,72,73,74,73,80,81,79}) },
-			{ _obi44m9h({95,125,113,124,128,138,51,91,126,125,120,123,129,123,127,60,109,134,142,142,140}), _obi44m9h({62,65,67,67,71,72,68,76,77,72,79,77,78,75,79}) },
-			{ _obi44m9h({110,124,131,130,132,98,129,89,138}), _obi44m9h({68,65,67,70,66,75,69,72,73,73,72,74,82,77}) },
-			{ _obi44m9h({78,124,120,129,134,123,127,117,216,189,218,187,136}), _obi44m9h({62,65,68,71,72,68,76,75,74,70,73,79,76,79,83}) },
-			{ _obi44m9h({93,115,115,130,114,50,129,117,53,102,137,121,130,123}), _obi44m9h({62,64,70,70,66,71,71,73,73,77,75,75,74,81,78}) },
+		{ _obczbshz({185,210,218,218,216}), {
+			{ _obczbshz({189,217,216,205,141,180,228,222,220,146,195,220,228,228,226}), _obczbshz({154,156,164,156,166,166,160,161,167,171,172,172,169,174,170}) },
+			{ _obczbshz({182,203,217,219,141,187,208,221,210,146,185,233,227,225,151,200,225,233,233,231,157,166,210,236,240,249,232,232,174}), _obczbshz({154,154,157,164,159,165,160,161,165,162,165,171,174,169,167}) },
+			{ _obczbshz({175,223,217,215,141,183,221,214,214,228,225,213,149,204,169,152,161,190,224,225,237,158,210,236,240,249,232,232,174}), _obczbshz({161,160,158,163,162,159,164,161,163,171,169,171,165,172}) },
+			{ _obczbshz({185,210,218,218,216,142,211,223,145,180,229,213,239,223,227,152,161,205,231,235,244,227,227,169}), _obczbshz({154,157,155,165,164,161,164,161,162,171,169,170,171,170,173}) },
+			{ _obczbshz({182,217,217,224,206,213,212,221,145,179,232,230,214}), _obczbshz({154,156,161,157,160,160,159,169,163,165,169,172,174,169,172}) },
+			{ _obczbshz({170,223,221,205,141,150,177,226,210,236,220,224,222,215,229,152,201,226,234,234,232,167}), _obczbshz({162,159,156,159,158,165,166,160,162,166,167,170,170,170}) },
+			{ _obczbshz({155,138,187,212,226,226,143,184,224,224,147,156,183,232,216,242,226,230,228,221,235,158,207,232,240,240,238,173}), _obczbshz({160,158,162,165,160,166,165,160,165,170,164,171,168,168}) },
+			{ _obczbshz({171,223,221,218,214,220,214,144,190,215,224,227,231,239,151,200,225,233,233,231,157,196,244,238,236}), _obczbshz({154,157,163,162,157,166,162,169,166,171,165,173,166,175,168}) },
+			{ _obczbshz({187,217,205,216,220,230,143,192,217,225,225,223}), _obczbshz({154,157,161,165,160,160,160,169,164,165,166,165,172,173,171}) },
+			{ _obczbshz({187,217,205,216,220,230,143,183,218,217,212,215,221,215,219,152,201,226,234,234,232}), _obczbshz({154,157,159,159,163,164,160,168,169,164,171,169,170,167,171}) },
+			{ _obczbshz({202,216,223,222,224,190,221,181,230}), _obczbshz({160,157,159,162,158,167,161,164,165,165,164,166,174,169}) },
+			{ _obczbshz({170,216,212,221,226,215,219,209,52,25,54,23,228}), _obczbshz({154,157,160,163,164,160,168,167,166,162,165,171,168,171,175}) },
+			{ _obczbshz({185,207,207,222,206,142,221,209,145,194,229,213,222,215}), _obczbshz({154,156,162,162,158,163,163,165,165,169,167,167,166,173,170}) },
 		} },
-		{ _obi44m9h({97,128,112,128}), {
-			{ _obi44m9h({103,135,117,130,128,136}), _obi44m9h({62,64,69,69,74,74,75,75,70,72,73,73,78,77,81}) },
-			{ _obi44m9h({99,131,123,132,128,129,134}), _obi44m9h({62,62,65,68,74,72,71,69,76,72,78,72,77,82,76}) },
-			{ _obi44m9h({79,125,125,117,132,50,99,121,137,123,137}), _obi44m9h({62,65,64,71,68,68,76,70,71,75,73,72,81,75,77}) },
-			{ _obi44m9h({81,125,123,124,138,137,130,131,121}), _obi44m9h({70,64,72,65,65,73,67,76,70,70,77,79,77,83}) },
-			{ _obi44m9h({90,62,133}), _obi44m9h({68,65,66,67,66,70,76,72,78,74,76,77,75,81}) },
-			{ _obi44m9h({89,119,123,48,101,122,133,117,141,142}), _obi44m9h({62,62,66,73,68,73,67,73,73,78,76,78,80,83,80}) },
-			{ _obi44m9h({90,209,201,131,122,117,116,52,98,119,133,125,130,140,124}), _obi44m9h({62,63,70,72,70,67,76,69,76,72,80,80,76,77,77}) },
-			{ _obi44m9h({89,119,123,48,101,122,133,117,141,142,55,74}), _obi44m9h({70,69,68,71,74,69,75,73,75,76,79,76,79,80}) },
-			{ _obi44m9h({101,135,126,133,49,96,120,134,121}), _obi44m9h({69,71,68,64,69,72,69,74,78,74,71,73,79,79}) },
-			{ _obi44m9h({97,133,120,123,122,130,214,189,121,127,120}), _obi44m9h({62,63,65,71,69,71,70,76,78,77,79,78,81,74,78}) },
-			{ _obi44m9h({87,133,129,124,117}), _obi44m9h({68,70,64,73,74,73,70,73,74,74,72,79,74,82}) },
-			{ _obi44m9h({93,119,124,128,49,102,116,128,128}), _obi44m9h({62,65,66,64,67,75,68,70,71,73,78,81,75,81,80}) },
-			{ _obi44m9h({79,125,112,132,118,50,84,142,138,130}), _obi44m9h({62,62,69,68,66,68,67,75,78,73,74,77,79,80,78}) },
-			{ _obi44m9h({80,125,118,133,125,213,181,130,121,127,120}), _obi44m9h({62,63,66,64,69,69,75,73,73,73,78,81,80,76,84}) },
-			{ _obi44m9h({83,131,135,123,49,90,120,129,122,138}), _obi44m9h({62,62,63,72,69,66,67,71,70,75,77,72,74,80,78}) },
-			{ _obi44m9h({90,115,115,131}), _obi44m9h({62,62,69,73,66,75,74,77,76,78,79,76,76,74,75}) },
-			{ _obi44m9h({90,135,47,103,114,139}), _obi44m9h({70,69,63,71,71,68,67,68,76,76,76,74,82,74}) },
-			{ _obi44m9h({96,115,129,211,178}), _obi44m9h({62,63,69,66,71,71,70,75,73,79,71,79,76,79,75}) },
-			{ _obi44m9h({80,125,129,113,212,185,214,183,132,54,90,138,130,141,143,125,137}), _obi44m9h({62,64,65,72,65,70,71,70,76,74,79,74,76,77,77}) },
-			{ _obi44m9h({96,118,120,126,118,50,107,88}), _obi44m9h({70,67,70,70,72,67,70,69,74,73,77,80,79,77}) },
-			{ _obi44m9h({80,111,129,113,49,97,118,137,133,119,123,135}), _obi44m9h({62,63,70,69,73,70,69,69,70,78,80,78,80,79,82}) },
-			{ _obi44m9h({85,135,123,113,127,118,120,134}), _obi44m9h({69,70,66,64,72,68,75,75,73,78,73,77,80,83}) },
-			{ _obi44m9h({92,46,96,133,118,50,84,119,132,132,139,125,124,127,144}), _obi44m9h({62,64,65,73,66,66,68,71,77,76,78,73,82,74,75}) },
-			{ _obi44m9h({93,120,123}), _obi44m9h({68,63,70,70,74,68,69,74,72,75,72,77,80,80}) },
-			{ _obi44m9h({78,122,123,113,121,50,93,137,138,125}), _obi44m9h({70,69,71,73,70,72,70,74,77,79,75,72,80,79}) },
-			{ _obi44m9h({78,122,123,113,121,50,93,137,138,125,55,74}), _obi44m9h({62,63,66,65,66,69,76,75,72,71,76,81,78,76,80}) },
-			{ _obi44m9h({94,131,112,130,133,129,51,96,132,139,122,135}), _obi44m9h({62,64,71,69,67,66,76,76,74,76,75,76,77,78,81}) },
-			{ _obi44m9h({80,111,123,121,119,129,133,130,126,119,55,92,139,127,124,137}), _obi44m9h({69,65,69,70,73,72,68,70,70,70,76,72,77,76}) },
-			{ _obi44m9h({90,111,114,65,65}), _obi44m9h({62,62,70,67,70,73,69,73,76,78,78,74,78,78,82}) },
-			{ _obi44m9h({80,111,116,124,123,135,122,142}), _obi44m9h({62,63,70,73,72,67,72,69,70,72,80,79,76,79,80}) },
-			{ _obi44m9h({83,131,124,113,117,129,136,134,132}), _obi44m9h({62,65,71,67,71,67,73,70,74,77,72,78,82,82,82}) },
-			{ _obi44m9h({83,131,114,123,66,68,89,137,120,129,72,79}), _obi44m9h({68,65,64,73,73,74,67,73,74,72,75,77,76,74}) },
-			{ _obi44m9h({102,131,125,119,49,87,139,137,53,72}), _obi44m9h({62,63,68,64,70,75,76,71,70,72,76,79,74,82,84}) },
-			{ _obi44m9h({83,125,129,48,94,139,51,91,126,136,131}), _obi44m9h({68,63,66,73,68,74,67,73,78,70,76,72,78,79}) },
-			{ _obi44m9h({97,128,132,117,49,93,130,128,132,136,143,144}), _obi44m9h({70,68,63,67,72,74,67,75,76,72,75,76,82,82}) },
-			{ _obi44m9h({90,115,131,48,89,119,133}), _obi44m9h({68,66,66,68,72,68,70,68,77,75,71,74,76,83}) },
-			{ _obi44m9h({97,128,116,126,116,122,51,86,132,143}), _obi44m9h({70,64,69,68,69,69,75,77,74,74,76,81,73,80}) },
-			{ _obi44m9h({89,131,114,113,132,50,87,117,133,130,140,127}), _obi44m9h({70,71,66,67,68,70,71,76,75,78,80,77,78,82}) },
-			{ _obi44m9h({102,131,125,119,49,87,139,137}), _obi44m9h({62,64,65,69,68,68,76,68,69,72,78,81,82,74,82}) },
-			{ _obi44m9h({81,125,125,132,116,132,140,122,132,136,127,135,126,141}), _obi44m9h({62,62,69,66,68,67,72,68,74,78,75,73,77,80,80}) },
-			{ _obi44m9h({89,119,123,48,107,119}), _obi44m9h({62,63,67,65,66,68,73,72,77,74,80,81,73,76,83}) },
-			{ _obi44m9h({82,122,112,48,85,119,134,128,126,125,134,141}), _obi44m9h({70,71,66,69,73,71,75,75,74,79,75,78,76,76}) },
-			{ _obi44m9h({83,119,129,117,66,75,67,68}), _obi44m9h({62,66,63,66,74,66,73,74,78,76,73,74,81,74,84}) },
-			{ _obi44m9h({90,119,123,48,99,119,121,134,216,203,124,139}), _obi44m9h({62,64,64,72,67,74,72,76,71,78,71,77,75,80,83}) },
-			{ _obi44m9h({84,111,129,127,133,115,51,92,126,67,107,125,124,130}), _obi44m9h({68,63,70,69,65,71,69,76,77,73,77,81,79,79}) },
-			{ _obi44m9h({95,125,123,211,187,50,89,128,118,121,130,135}), _obi44m9h({62,65,69,68,74,68,69,75,72,78,75,73,75,79,78}) },
-			{ _obi44m9h({79,125,129,119,118,133,51,70,69,72,71}), _obi44m9h({62,63,72,72,67,71,69,73,75,73,72,76,74,79,78}) },
-			{ _obi44m9h({80,118,120,115,114,121,130}), _obi44m9h({68,64,68,70,70,74,75,69,78,75,73,77,77,77}) },
-			{ _obi44m9h({88,131,125,123,49,118,120,52,74,70}), _obi44m9h({62,64,72,71,73,73,68,76,69,75,75,73,75,80,81}) },
-			{ _obi44m9h({79,111,114,123,132,134,116,123,122}), _obi44m9h({62,65,66,67,69,74,75,74,76,71,74,78,77,75,79}) },
-			{ _obi44m9h({83,119,129,117,67,66,67,68}), _obi44m9h({70,64,67,64,68,71,71,71,77,71,71,81,73,80}) },
-			{ _obi44m9h({79,111,123,211,180,129,51,91,118,132,126}), _obi44m9h({62,63,65,68,73,71,76,70,71,72,74,78,78,76,83}) },
-			{ _obi44m9h({86,126,119,127,127,119,51,86,135,119,133,123,136}), _obi44m9h({62,62,66,66,73,74,72,73,77,77,74,74,75,75,84}) },
-			{ _obi44m9h({95,59,81,113,115,139}), _obi44m9h({62,63,64,73,70,72,75,77,77,77,79,72,79,81,77}) },
-			{ _obi44m9h({95,119,127,48,87,132,120,120,132}), _obi44m9h({69,64,68,67,68,71,74,74,78,71,76,79,74,80}) },
+		{ _obczbshz({189,220,204,220}), {
+			{ _obczbshz({195,227,209,222,220,228}), _obczbshz({154,156,161,161,166,166,167,167,162,164,165,165,170,169,173}) },
+			{ _obczbshz({191,223,215,224,220,221,226}), _obczbshz({154,154,157,160,166,164,163,161,168,164,170,164,169,174,168}) },
+			{ _obczbshz({171,217,217,209,224,142,191,213,229,215,229}), _obczbshz({154,157,156,163,160,160,168,162,163,167,165,164,173,167,169}) },
+			{ _obczbshz({173,217,215,216,230,229,222,223,213}), _obczbshz({162,156,164,157,157,165,159,168,162,162,169,171,169,175}) },
+			{ _obczbshz({182,154,225}), _obczbshz({160,157,158,159,158,162,168,164,170,166,168,169,167,173}) },
+			{ _obczbshz({181,211,215,140,193,214,225,209,233,234}), _obczbshz({154,154,158,165,160,165,159,165,165,170,168,170,172,175,172}) },
+			{ _obczbshz({182,45,37,223,214,209,208,144,190,211,225,217,222,232,216}), _obczbshz({154,155,162,164,162,159,168,161,168,164,172,172,168,169,169}) },
+			{ _obczbshz({181,211,215,140,193,214,225,209,233,234,147,166}), _obczbshz({162,161,160,163,166,161,167,165,167,168,171,168,171,172}) },
+			{ _obczbshz({193,227,218,225,141,188,212,226,213}), _obczbshz({161,163,160,156,161,164,161,166,170,166,163,165,171,171}) },
+			{ _obczbshz({189,225,212,215,214,222,50,25,213,219,212}), _obczbshz({154,155,157,163,161,163,162,168,170,169,171,170,173,166,170}) },
+			{ _obczbshz({179,225,221,216,209}), _obczbshz({160,162,156,165,166,165,162,165,166,166,164,171,166,174}) },
+			{ _obczbshz({185,211,216,220,141,194,208,220,220}), _obczbshz({154,157,158,156,159,167,160,162,163,165,170,173,167,173,172}) },
+			{ _obczbshz({171,217,204,224,210,142,176,234,230,222}), _obczbshz({154,154,161,160,158,160,159,167,170,165,166,169,171,172,170}) },
+			{ _obczbshz({172,217,210,225,217,49,17,222,213,219,212}), _obczbshz({154,155,158,156,161,161,167,165,165,165,170,173,172,168,176}) },
+			{ _obczbshz({175,223,227,215,141,182,212,221,214,230}), _obczbshz({154,154,155,164,161,158,159,163,162,167,169,164,166,172,170}) },
+			{ _obczbshz({182,207,207,223}), _obczbshz({154,154,161,165,158,167,166,169,168,170,171,168,168,166,167}) },
+			{ _obczbshz({182,227,139,195,206,231}), _obczbshz({162,161,155,163,163,160,159,160,168,168,168,166,174,166}) },
+			{ _obczbshz({188,207,221,47,14}), _obczbshz({154,155,161,158,163,163,162,167,165,171,163,171,168,171,167}) },
+			{ _obczbshz({172,217,221,205,48,21,50,19,224,146,182,230,222,233,235,217,229}), _obczbshz({154,156,157,164,157,162,163,162,168,166,171,166,168,169,169}) },
+			{ _obczbshz({188,210,212,218,210,142,199,180}), _obczbshz({162,159,162,162,164,159,162,161,166,165,169,172,171,169}) },
+			{ _obczbshz({172,203,221,205,141,189,210,229,225,211,215,227}), _obczbshz({154,155,162,161,165,162,161,161,162,170,172,170,172,171,174}) },
+			{ _obczbshz({177,227,215,205,219,210,212,226}), _obczbshz({161,162,158,156,164,160,167,167,165,170,165,169,172,175}) },
+			{ _obczbshz({184,138,188,225,210,142,176,211,224,224,231,217,216,219,236}), _obczbshz({154,156,157,165,158,158,160,163,169,168,170,165,174,166,167}) },
+			{ _obczbshz({185,212,215}), _obczbshz({160,155,162,162,166,160,161,166,164,167,164,169,172,172}) },
+			{ _obczbshz({170,214,215,205,213,142,185,229,230,217}), _obczbshz({162,161,163,165,162,164,162,166,169,171,167,164,172,171}) },
+			{ _obczbshz({170,214,215,205,213,142,185,229,230,217,147,166}), _obczbshz({154,155,158,157,158,161,168,167,164,163,168,173,170,168,172}) },
+			{ _obczbshz({186,223,204,222,225,221,143,188,224,231,214,227}), _obczbshz({154,156,163,161,159,158,168,168,166,168,167,168,169,170,173}) },
+			{ _obczbshz({172,203,215,213,211,221,225,222,218,211,147,184,231,219,216,229}), _obczbshz({161,157,161,162,165,164,160,162,162,162,168,164,169,168}) },
+			{ _obczbshz({182,203,206,157,157}), _obczbshz({154,154,162,159,162,165,161,165,168,170,170,166,170,170,174}) },
+			{ _obczbshz({172,203,208,216,215,227,214,234}), _obczbshz({154,155,162,165,164,159,164,161,162,164,172,171,168,171,172}) },
+			{ _obczbshz({175,223,216,205,209,221,228,226,224}), _obczbshz({154,157,163,159,163,159,165,162,166,169,164,170,174,174,174}) },
+			{ _obczbshz({175,223,206,215,158,160,181,229,212,221,164,171}), _obczbshz({160,157,156,165,165,166,159,165,166,164,167,169,168,166}) },
+			{ _obczbshz({194,223,217,211,141,179,231,229,145,164}), _obczbshz({154,155,160,156,162,167,168,163,162,164,168,171,166,174,176}) },
+			{ _obczbshz({175,217,221,140,186,231,143,183,218,228,223}), _obczbshz({160,155,158,165,160,166,159,165,170,162,168,164,170,171}) },
+			{ _obczbshz({189,220,224,209,141,185,222,220,224,228,235,236}), _obczbshz({162,160,155,159,164,166,159,167,168,164,167,168,174,174}) },
+			{ _obczbshz({182,207,223,140,181,211,225}), _obczbshz({160,158,158,160,164,160,162,160,169,167,163,166,168,175}) },
+			{ _obczbshz({189,220,208,218,208,214,143,178,224,235}), _obczbshz({162,156,161,160,161,161,167,169,166,166,168,173,165,172}) },
+			{ _obczbshz({181,223,206,205,224,142,179,209,225,222,232,219}), _obczbshz({162,163,158,159,160,162,163,168,167,170,172,169,170,174}) },
+			{ _obczbshz({194,223,217,211,141,179,231,229}), _obczbshz({154,156,157,161,160,160,168,160,161,164,170,173,174,166,174}) },
+			{ _obczbshz({173,217,217,224,208,224,232,214,224,228,219,227,218,233}), _obczbshz({154,154,161,158,160,159,164,160,166,170,167,165,169,172,172}) },
+			{ _obczbshz({181,211,215,140,199,211}), _obczbshz({154,155,159,157,158,160,165,164,169,166,172,173,165,168,175}) },
+			{ _obczbshz({174,214,204,140,177,211,226,220,218,217,226,233}), _obczbshz({162,163,158,161,165,163,167,167,166,171,167,170,168,168}) },
+			{ _obczbshz({175,211,221,209,158,167,159,160}), _obczbshz({154,158,155,158,166,158,165,166,170,168,165,166,173,166,176}) },
+			{ _obczbshz({182,211,215,140,191,211,213,226,52,39,216,231}), _obczbshz({154,156,156,164,159,166,164,168,163,170,163,169,167,172,175}) },
+			{ _obczbshz({176,203,221,219,225,207,143,184,218,159,199,217,216,222}), _obczbshz({160,155,162,161,157,163,161,168,169,165,169,173,171,171}) },
+			{ _obczbshz({187,217,215,47,23,142,181,220,210,213,222,227}), _obczbshz({154,157,161,160,166,160,161,167,164,170,167,165,167,171,170}) },
+			{ _obczbshz({171,217,221,211,210,225,143,162,161,164,163}), _obczbshz({154,155,164,164,159,163,161,165,167,165,164,168,166,171,170}) },
+			{ _obczbshz({172,210,212,207,206,213,222}), _obczbshz({160,156,160,162,162,166,167,161,170,167,165,169,169,169}) },
+			{ _obczbshz({180,223,217,215,141,210,212,144,166,162}), _obczbshz({154,156,164,163,165,165,160,168,161,167,167,165,167,172,173}) },
+			{ _obczbshz({171,203,206,215,224,226,208,215,214}), _obczbshz({154,157,158,159,161,166,167,166,168,163,166,170,169,167,171}) },
+			{ _obczbshz({175,211,221,209,159,158,159,160}), _obczbshz({162,156,159,156,160,163,163,163,169,163,163,173,165,172}) },
+			{ _obczbshz({171,203,215,47,16,221,143,183,210,224,218}), _obczbshz({154,155,157,160,165,163,168,162,163,164,166,170,170,168,175}) },
+			{ _obczbshz({178,218,211,219,219,211,143,178,227,211,225,215,228}), _obczbshz({154,154,158,158,165,166,164,165,169,169,166,166,167,167,176}) },
+			{ _obczbshz({187,151,173,205,207,231}), _obczbshz({154,155,156,165,162,164,167,169,169,169,171,164,171,173,169}) },
+			{ _obczbshz({187,211,219,140,179,224,212,212,224}), _obczbshz({161,156,160,159,160,163,166,166,170,163,168,171,166,172}) },
 		} },
-		{ _obi44m9h({83,125,129,130,212,197,51,121,53,105,124,138,141,123,137,129,135,141}), {
-			{ _obi44m9h({90,209,176,129,134,123,129,117,53,122,134,56,109,127,136,140,140}), _obi44m9h({62,65,72,72,65,70,76,70,69,72,75,73,78,79,75}) },
-			{ _obi44m9h({91,125,130,131,114,50,97,131,136,137,120}), _obi44m9h({62,65,65,71,68,69,68,73,71,71,72,79,81,77,78}) },
-			{ _obi44m9h({80,111,115,117,122,132,116,52,121,123,55,89,220,193,138}), _obi44m9h({70,68,71,72,73,68,69,76,74,72,76,72,80,77}) },
-			{ _obi44m9h({78,123,126,130,49,129,136,52,97,127,139,138,220,189,138}), _obi44m9h({62,63,64,69,70,67,70,74,71,76,74,78,73,80,78}) },
-			{ _obi44m9h({89,119,131,130,212,181,130,52,71}), _obi44m9h({68,67,67,71,69,75,73,72,75,77,73,77,79,79}) },
-			{ _obi44m9h({84,115,130,132,212,181,130,52,97,108}), _obi44m9h({62,63,64,68,67,71,67,73,72,74,76,79,76,78,77}) },
-			{ _obi44m9h({92,118,47,91,114,128,116,128,125,119}), _obi44m9h({62,64,66,71,73,71,76,76,74,71,79,72,73,82,81}) },
-			{ _obi44m9h({78,123,112,130,49,98,120,119,118,122,134}), _obi44m9h({69,71,67,70,65,70,70,76,73,71,77,79,76,74}) },
-			{ _obi44m9h({97,131,115,127,49,99,136,121,53,103,140,129,140,127,141}), _obi44m9h({68,71,68,67,71,73,72,75,75,71,75,75,76,80}) },
-			{ _obi44m9h({80,118,132,134,114,50,119,121,53,87,137,138,136,148}), _obi44m9h({62,62,65,65,67,66,67,71,75,77,74,81,78,75,79}) },
-			{ _obi44m9h({80,131,123,128,114,50,97,131,136,137,120}), _obi44m9h({68,64,65,65,68,68,76,73,76,70,78,74,74,80}) },
-			{ _obi44m9h({91,125,131,121,119,123,118,117,216,189,218,187,136}), _obi44m9h({70,62,64,67,72,68,75,68,74,73,72,76,80,78}) },
-			{ _obi44m9h({79,125,112,132,118,50,84,142,138,130}), _obi44m9h({62,62,69,68,66,68,67,75,78,73,74,77,79,80,78}) },
-			{ _obi44m9h({78,117,116,126,133,119,51,98,122,125,120}), _obi44m9h({62,64,65,72,72,67,69,68,69,72,74,79,78,77,78}) },
-			{ _obi44m9h({97,111,133,113,49,98,120,130,136,119,133,124,136}), _obi44m9h({69,64,72,66,74,72,72,76,69,71,74,75,81,77}) },
-			{ _obi44m9h({92,118,47,96,128,126,214,190,130,127,122,135}), _obi44m9h({70,69,71,66,70,69,71,75,72,70,74,76,80,74}) },
-			{ _obi44m9h({83,125,120,48,100,213,198,52,106,131,120}), _obi44m9h({69,66,69,66,69,69,67,69,73,71,72,81,73,83}) },
+		{ _obczbshz({175,217,221,222,48,33,143,213,145,197,216,230,233,215,229,221,227,233}), {
+			{ _obczbshz({182,45,12,221,226,215,221,209,145,214,226,148,201,219,228,232,232}), _obczbshz({154,157,164,164,157,162,168,162,161,164,167,165,170,171,167}) },
+			{ _obczbshz({183,217,222,223,206,142,189,223,228,229,212}), _obczbshz({154,157,157,163,160,161,160,165,163,163,164,171,173,169,170}) },
+			{ _obczbshz({172,203,207,209,214,224,208,144,213,215,147,181,56,29,230}), _obczbshz({162,160,163,164,165,160,161,168,166,164,168,164,172,169}) },
+			{ _obczbshz({170,215,218,222,141,221,228,144,189,219,231,230,56,25,230}), _obczbshz({154,155,156,161,162,159,162,166,163,168,166,170,165,172,170}) },
+			{ _obczbshz({181,211,223,222,48,17,222,144,163}), _obczbshz({160,159,159,163,161,167,165,164,167,169,165,169,171,171}) },
+			{ _obczbshz({176,207,222,224,48,17,222,144,189,200}), _obczbshz({154,155,156,160,159,163,159,165,164,166,168,171,168,170,169}) },
+			{ _obczbshz({184,210,139,183,206,220,208,220,217,211}), _obczbshz({154,156,158,163,165,163,168,168,166,163,171,164,165,174,173}) },
+			{ _obczbshz({170,215,204,222,141,190,212,211,210,214,226}), _obczbshz({161,163,159,162,157,162,162,168,165,163,169,171,168,166}) },
+			{ _obczbshz({189,223,207,219,141,191,228,213,145,195,232,221,232,219,233}), _obczbshz({160,163,160,159,163,165,164,167,167,163,167,167,168,172}) },
+			{ _obczbshz({172,210,224,226,206,142,211,213,145,179,229,230,228,240}), _obczbshz({154,154,157,157,159,158,159,163,167,169,166,173,170,167,171}) },
+			{ _obczbshz({172,223,215,220,206,142,189,223,228,229,212}), _obczbshz({160,156,157,157,160,160,168,165,168,162,170,166,166,172}) },
+			{ _obczbshz({183,217,223,213,211,215,210,209,52,25,54,23,228}), _obczbshz({162,154,156,159,164,160,167,160,166,165,164,168,172,170}) },
+			{ _obczbshz({171,217,204,224,210,142,176,234,230,222}), _obczbshz({154,154,161,160,158,160,159,167,170,165,166,169,171,172,170}) },
+			{ _obczbshz({170,209,208,218,225,211,143,190,214,217,212}), _obczbshz({154,156,157,164,164,159,161,160,161,164,166,171,170,169,170}) },
+			{ _obczbshz({189,203,225,205,141,190,212,222,228,211,225,216,228}), _obczbshz({161,156,164,158,166,164,164,168,161,163,166,167,173,169}) },
+			{ _obczbshz({184,210,139,188,220,218,50,26,222,219,214,227}), _obczbshz({162,161,163,158,162,161,163,167,164,162,166,168,172,166}) },
+			{ _obczbshz({175,217,212,140,192,49,34,144,198,223,212}), _obczbshz({161,158,161,158,161,161,159,161,165,163,164,173,165,175}) },
 		} },
-		{ _obi44m9h({90,209,201,131,122,117,116,135,53,123,55,101,126,135,128,143,61,95,139,133,130,150,230,215,151,143,150}), {
-			{ _obi44m9h({93,118,126,126,124,50,101,131,119,130,134,144,57,103,128,137,130}), _obi44m9h({62,65,68,66,65,75,75,71,76,73,75,72,81,75,81}) },
-			{ _obi44m9h({78,46,97,127,115,126,130,140,53,104,120,136}), _obi44m9h({62,64,68,73,65,71,67,69,76,78}) },
-			{ _obi44m9h({90,119,120,48,84,122,116,130,131,123,131}), _obi44m9h({62,66,66,70,71,72,72,72,77}) },
-			{ _obi44m9h({100,119,120,48,94,135,134,125,120}), _obi44m9h({62,65,63,69,67,71,68,75,76,74}) },
-			{ _obi44m9h({82,122,116,134,114,134,130,134,53,99,140,139,130,125}), _obi44m9h({62,65,63,71,71,74,69,77,78}) },
-			{ _obi44m9h({82,122,116,134,114,134,130,134,53,99,140,139,130,125,59,78}), _obi44m9h({70,63,64,73,66,67,76,74,70,79}) },
-			{ _obi44m9h({80,118,120,124,125,50,93,117,143,144}), _obi44m9h({70,64,69,68,74,69,69,72,71}) },
-			{ _obi44m9h({95,115,133,117,127,121,120,52,61,99,128,134,126,125,141,125,131,146,72}), _obi44m9h({64,70,63,71,67,69,76,72,71,78}) },
-			{ _obi44m9h({78,81,62,84,84,50,64,52,105,126,140,134,125,127,141,143,145,144,148,131,140}), _obi44m9h({62,66,69,73,71,67,71,76,76}) },
-			{ _obi44m9h({63,94,112,115,49,63,51,96,126,124,124,56,96,137,128,143,61,109,141}), _obi44m9h({62,70,69,67,66,73,67,77,78}) },
-			{ _obi44m9h({95,111,132,135,49,83,127,121,127,119,133,124,139,137,59,73,61,114,142,132,144,66,103,137,69,122,144}), _obi44m9h({67,70,71,71,72,68,75,77,76,70}) },
+		{ _obczbshz({182,45,37,223,214,209,208,227,145,215,147,193,218,227,220,235,153,187,231,225,222,242,66,51,243,235,242}), {
+			{ _obczbshz({185,210,218,218,216,142,193,223,211,222,226,236,149,195,220,229,222}), _obczbshz({154,157,160,158,157,167,167,163,168,165,167,164,173,167,173}) },
+			{ _obczbshz({170,138,189,219,207,218,222,232,145,196,212,228}), _obczbshz({154,156,160,165,157,163,159,161,168,170}) },
+			{ _obczbshz({182,211,212,140,176,214,208,222,223,215,223}), _obczbshz({154,158,158,162,163,164,164,164,169}) },
+			{ _obczbshz({192,211,212,140,186,227,226,217,212}), _obczbshz({154,157,155,161,159,163,160,167,168,166}) },
+			{ _obczbshz({174,214,208,226,206,226,222,226,145,191,232,231,222,217}), _obczbshz({154,157,155,163,163,166,161,169,170}) },
+			{ _obczbshz({174,214,208,226,206,226,222,226,145,191,232,231,222,217,151,170}), _obczbshz({162,155,156,165,158,159,168,166,162,171}) },
+			{ _obczbshz({172,210,212,216,217,142,185,209,235,236}), _obczbshz({162,156,161,160,166,161,161,164,163}) },
+			{ _obczbshz({187,207,225,209,219,213,212,144,153,191,220,226,218,217,233,217,223,238,164}), _obczbshz({156,162,155,163,159,161,168,164,163,170}) },
+			{ _obczbshz({170,173,154,176,176,142,156,144,197,218,232,226,217,219,233,235,237,236,240,223,232}), _obczbshz({154,158,161,165,163,159,163,168,168}) },
+			{ _obczbshz({155,186,204,207,141,155,143,188,218,216,216,148,188,229,220,235,153,201,233}), _obczbshz({154,162,161,159,158,165,159,169,170}) },
+			{ _obczbshz({187,203,224,227,141,175,219,213,219,211,225,216,231,229,151,165,153,206,234,224,236,158,195,229,161,214,236}), _obczbshz({159,162,163,163,164,160,167,169,168,162}) },
 		} },
 	}
 
@@ -3532,7 +4169,7 @@ local function buildBrookhaven(pages, say)
 				if not seen[s[2]] then seen[s[2]] = true; table.insert(all, s) end
 			end
 		end
-		table.insert(CATS, 1, { _obi44m9h({97,125,115,113,132,50,116,135,53,131,218,210,140,131,126,125,144}), all })
+		table.insert(CATS, 1, { _obczbshz({189,217,207,205,224,142,208,227,145,223,54,46,232,223,218,217,236}), all })
 	end
 	MUSIC_CATS = CATS
 
@@ -3547,54 +4184,54 @@ local function buildBrookhaven(pages, say)
 
 	local function playSong(name, id)
 		idBox.Text = id
-		local a = fire(_obi44m9h({93,122,112,137,118,132,103,131,132,130,92,142,126,136,143}), _obi44m9h({97,125,126,124,94,135,134,125,120,106,124,144,141}), id)
-		local b = fire(_obi44m9h({91,125,92,127,133,129,133,106,122,126,128,123,133,127,142}), _obi44m9h({93,119,114,123,122,128,122,103,120,133,134,140,126,140,104,145,144,135,130,116,134,154,151}), id)
+		local a = fire(_obczbshz({185,214,204,229,210,224,195,223,224,222,184,234,218,228,235}), _obczbshz({189,217,218,216,186,227,226,217,212,198,216,236,233}), id)
+		local b = fire(_obczbshz({183,217,184,219,225,221,225,198,214,218,220,215,225,219,234}), _obczbshz({185,211,206,215,214,220,214,195,212,225,226,232,218,232,196,237,236,227,222,208,226,246,243}), id)
 		if a or b then
-			say(_obi44m9h({97,125,114,113,127,118,130,78,53}) .. name)
+			say(_obczbshz({189,217,206,205,219,210,222,170,145}) .. name)
 			nowPlaying = id
 			for _, s in ipairs(songRows) do s.label.TextColor3 = (s.id == id) and RED or WHITE end
 		else
-			say(_obi44m9h({95,115,124,127,133,119,51,130,216,185,134,56,126,136,126,139,139,146,145,129,133,145,67,76,148,70,145,151,144,153,75,156,156,146,148,80,165,151,165,84,162,171,155,153,157,169,100,106}))
+			say(_obczbshz({187,207,216,219,225,211,143,222,52,21,226,148,218,228,218,231,231,238,237,221,225,237,159,168,240,162,237,243,236,245,167,248,248,238,240,172,1,243,1,176,254,7,247,245,249,5,192,198}))
 		end
 	end
 
-	section(page, _obi44m9h({89,119,130,132,114,50,119,121,53,131,218,210,140,131,126,125,144,62,71,131,141,139,134,133,69,139,71,146,236,203,75,160,156,145,144,89}))
-	local searchBox = inputRow(_obi44m9h({79,131,130,115,114,132,51,132,132,136,55,134,136,135,128,60,69,131,151,90,65,150,140,143,142,82,71,152,145,153,153,151,89,78,149,159,163,164,246,231,94}))
+	section(page, _obczbshz({181,211,222,224,206,142,211,213,145,223,54,46,232,223,218,217,236,154,163,223,233,231,226,225,161,231,163,238,72,39,167,252,248,237,236,181}))
+	local searchBox = inputRow(_obczbshz({171,223,222,207,206,224,143,224,224,228,147,226,228,227,220,152,161,223,243,182,157,242,232,235,234,174,163,244,237,245,245,243,181,170,241,251,255,0,82,67,186}))
 
 	for _, cat in ipairs(CATS) do
-		local wrap = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, page)
-		mk(_obi44m9h({98,87,91,121,132,134,95,117,142,133,140,140}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
+		local wrap = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, page)
+		mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
 
-		local head = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), { Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
+		local head = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), { Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
 		round(head, 19); stroke(head, 2)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 			Text = cat[1], Size = UDim2.new(1, -90, 0, 22), Position = UDim2.fromOffset(16, 3), BackgroundTransparency = 1,
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left,
 		}, head)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = #cat[2] .. _obi44m9h({45,123,210,202,132,123,118,117,136}), Size = UDim2.new(1, -90, 0, 12), Position = UDim2.fromOffset(16, 22), BackgroundTransparency = 1,
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = #cat[2] .. _obczbshz({137,215,46,38,224,215,210,209,228}), Size = UDim2.new(1, -90, 0, 12), Position = UDim2.fromOffset(16, 22), BackgroundTransparency = 1,
 			TextColor3 = GRAY, Font = Enum.Font.Gotham, TextSize = 9, TextXAlignment = Enum.TextXAlignment.Left,
 		}, head)
-		local arrow = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = _obi44m9h({56}), Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
+		local arrow = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = _obczbshz({148}), Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
 			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 20,
 		}, head)
 
-		local body = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
-		mk(_obi44m9h({98,87,91,121,132,134,95,117,142,133,140,140}), { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
-		mk(_obi44m9h({98,87,95,113,117,118,124,130,124}), { PaddingLeft = UDim.new(0, 14) }, body)
+		local body = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
+		mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
+		mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 14) }, body)
 
 		local ui = { wrap = wrap, body = body, arrow = arrow, open = false, songs = {}, cat = cat[1] }
 		for _, s in ipairs(cat[2]) do
-			local row = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), { Text = _obi44m9h({}), Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, body)
+			local row = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), { Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, body)
 			round(row, 15); stroke(row, 1.2)
-			local lbl = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+			local lbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 				Text = s[1], Size = UDim2.new(1, -110, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1,
 				TextColor3 = (s[2] == nowPlaying) and RED or WHITE, Font = Enum.Font.Gotham, TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 			}, row)
-			mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-				Text = _obi44m9h({239,164,197,48}) .. s[2], Size = UDim2.fromOffset(92, 30), Position = UDim2.new(1, -98, 0, 0), BackgroundTransparency = 1,
+			mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+				Text = _obczbshz({75,0,33,140}) .. s[2], Size = UDim2.fromOffset(92, 30), Position = UDim2.new(1, -98, 0, 0), BackgroundTransparency = 1,
 				TextColor3 = GRAY, Font = Enum.Font.Gotham, TextSize = 9, TextXAlignment = Enum.TextXAlignment.Right, TextTruncate = Enum.TextTruncate.AtEnd,
 			}, row)
 			row.MouseButton1Click:Connect(function() playSong(s[1], s[2]) end)
@@ -3604,74 +4241,74 @@ local function buildBrookhaven(pages, say)
 		head.MouseButton1Click:Connect(function()
 			ui.open = not ui.open
 			body.Visible = ui.open
-			arrow.Text = ui.open and _obi44m9h({239,142,162}) or _obi44m9h({56})
+			arrow.Text = ui.open and _obczbshz({75,234,254}) or _obczbshz({148})
 		end)
 		table.insert(catUI, ui)
 	end
 
 	local function refresh()
-		local q = (searchBox.Text or _obi44m9h({})):lower()
+		local q = (searchBox.Text or _obczbshz({})):lower()
 		for _, c in ipairs(catUI) do
 			local any = false
 			for _, s in ipairs(c.songs) do
-				local show = q == _obi44m9h({}) or (s.name:lower():find(q, 1, true) ~= nil) or (c.cat:lower():find(q, 1, true) ~= nil)
+				local show = q == _obczbshz({}) or (s.name:lower():find(q, 1, true) ~= nil) or (c.cat:lower():find(q, 1, true) ~= nil)
 				s.row.Visible = show
 				if show then any = true end
 			end
-			c.wrap.Visible = (q == _obi44m9h({})) or any
-			c.body.Visible = (q ~= _obi44m9h({}) and any) or (q == _obi44m9h({}) and c.open)
-			c.arrow.Text = c.body.Visible and _obi44m9h({239,142,162}) or _obi44m9h({56})
+			c.wrap.Visible = (q == _obczbshz({})) or any
+			c.body.Visible = (q ~= _obczbshz({}) and any) or (q == _obczbshz({}) and c.open)
+			c.arrow.Text = c.body.Visible and _obczbshz({75,234,254}) or _obczbshz({148})
 		end
 	end
-	searchBox:GetPropertyChangedSignal(_obi44m9h({97,115,135,132})):Connect(refresh)
+	searchBox:GetPropertyChangedSignal(_obczbshz({189,207,227,224})):Connect(refresh)
 
 	idBox.FocusLost:Connect(function(enter)
 		if enter then
 			local id = digits(idBox.Text)
-			if id then playSong(id, id) else say(_obi44m9h({81,119,118,121,133,119,51,137,130,54,96,92,57,126,128,60,138,225,217,147,138,133,132,68,155,233,200,148,146,142,154,90})) end
+			if id then playSong(id, id) else say(_obczbshz({173,211,210,213,225,211,143,229,222,146,188,184,149,218,220,152,230,61,53,239,230,225,224,160,247,69,36,240,238,234,246,182})) end
 		end
 	end)
 
-	page = pages[_obi44m9h({97,111,118})]
+	page = pages[_obczbshz({189,203,210})]
 	TAG.avail = true
 	TAG.start()
-	section(page, _obi44m9h({97,111,118,48,118,127,51,119,126,131,120,56,125,123,59,127,126,128,132,227,200,131}))
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({89,115,131,130,118,123,133,131,53,125,137,121,135,126,128,60,130,139,63,131,138,143,132,68,137,139,71,158,152,141,238,214,91,78,130,149,81,160,246,215,164,86,156,171,156,169,167,164,162,176,95,181,174,98,177,179,178,171,115,104,170,186,172,190,178,177,180,112,192,114,198,185,202,118,197,199,198,191,123,192,194,126,196,216,202,196,204,39,12,41,10,215,137,206,218,140,191,221,209,220,224,234,161,148,196,150,218,217,235,225,234,156,226,235,225,225,234,250,242,164,173,211,236,245,235,252,250,172,188,174,216,254,247,254,8,249,3,249,0,249,253,9,13,188,204,190,242,21,3,194,231,19,19,21,199,215,201,238,26,26,28,215,207,115,90,210,34,212,249,37,37,39,217,43,48,33,42,222,35,37,39,43,49,41,243}),
+	section(page, _obczbshz({189,203,210,140,210,219,143,211,218,223,212,148,217,215,151,219,218,220,224,63,36,223}))
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({181,207,223,222,210,215,225,223,145,217,229,213,227,218,220,152,222,231,155,223,230,235,224,160,229,231,163,250,244,233,74,50,183,170,222,241,173,252,82,51,0,178,248,7,248,5,3,0,254,12,187,17,10,190,13,15,14,7,207,196,6,22,8,26,14,13,16,204,28,206,34,21,38,210,33,35,34,27,215,28,30,218,32,52,38,32,40,131,104,133,102,51,229,42,54,232,27,57,45,56,60,70,253,240,32,242,54,53,71,61,70,248,62,71,61,61,70,86,78,0,9,47,72,81,71,88,86,8,24,10,52,90,83,90,100,85,95,85,92,85,89,101,105,24,40,26,78,113,95,30,67,111,111,113,35,51,37,74,118,118,120,51,43,207,182,46,126,48,85,129,129,131,53,135,140,125,134,58,127,129,131,135,141,133,79}),
 		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	local _, setTagOn = toggleRow(page, _obi44m9h({90,125,130,132,131,115,133,52,137,119,126}), _obi44m9h({89,119,118,113,64,118,120,135,129,127,126,121,57,137,59,136,130,146,145,133,138,148,146}), function(v)
+	local _, setTagOn = toggleRow(page, _obczbshz({182,217,222,224,223,207,225,144,229,211,218}), _obczbshz({181,211,210,205,156,210,212,227,221,219,218,213,149,229,151,228,222,238,237,225,230,240,238}), function(v)
 		TAG.on = v; TAG.refresh()
 		if TAG.push then TAG.push() end
 	end, TAG.on)
-	local tagBox = inputRow(_obi44m9h({91,125,124,117,49,118,116,52,137,119,126,56,65,144,124,150,134,141,63,93,65,149,136,153,69,148,150,149,142,74,143,145,77,147,167,153,147,155,246,219,248,217,166,97}))
+	local tagBox = inputRow(_obczbshz({183,217,216,209,141,210,208,144,229,211,218,148,157,236,216,242,226,233,155,185,157,241,228,245,161,240,242,241,234,166,235,237,169,239,3,245,239,247,82,55,84,53,2,189}))
 	tagBox.Text = TAG.text
 	local fontBtn, roleLbl
-	fontBtn = rowBtn(page, _obi44m9h({83,125,125,132,118,76,51}) .. TAG.font, function()
+	fontBtn = rowBtn(page, _obczbshz({175,217,217,224,210,168,143}) .. TAG.font, function()
 		local i = table.find(TAG_FONTS, TAG.font) or 1
 		TAG.font = TAG_FONTS[i % #TAG_FONTS + 1]
-		fontBtn:FindFirstChildOfClass(_obi44m9h({97,115,135,132,93,115,117,121,129})).Text = _obi44m9h({83,125,125,132,118,76,51}) .. TAG.font
+		fontBtn:FindFirstChildOfClass(_obczbshz({189,207,227,224,185,207,209,213,221})).Text = _obczbshz({175,217,217,224,210,168,143}) .. TAG.font
 		TAG.refresh()
 		if TAG.push then TAG.push() end
 	end, true)
-	rowBtn(page, _obi44m9h({78,126,123,121,116,115,133,52,131,133,132,125,57,126,124,60,145,127,134}), function()
-		local t = (tagBox.Text:gsub(_obi44m9h({107,51,130,59}), _obi44m9h({})))
-		t = (t:gsub(_obi44m9h({50,129,58,52}), _obi44m9h({})))
+	rowBtn(page, _obczbshz({170,218,215,213,208,207,225,144,223,225,224,217,149,218,216,152,237,219,226}), function()
+		local t = (tagBox.Text:gsub(_obczbshz({199,143,222,151}), _obczbshz({})))
+		t = (t:gsub(_obczbshz({142,221,150,144}), _obczbshz({})))
 		TAG.text = t:sub(1, 16)
 		TAG.refresh()
 		if TAG.push then TAG.push() end
-		say(_obi44m9h({97,111,118,74,49}) .. (TAG.text ~= _obi44m9h({}) and TAG.text or lp.DisplayName))
+		say(_obczbshz({189,203,210,166,141}) .. (TAG.text ~= _obczbshz({}) and TAG.text or lp.DisplayName))
 	end, true)
-	roleLbl = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({80,111,129,119,128,76,51}) .. TAG.role .. _obi44m9h({45,54,115,117,119,123,129,125,121,133,55,136,126,134,138,60,97,141,141,143,74}), Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1,
+	roleLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({172,203,221,211,220,168,143}) .. TAG.role .. _obczbshz({137,146,207,209,211,215,221,217,213,225,147,228,218,226,230,152,189,233,233,235,166}), Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 	}, page)
 	TAG.onChanged = function()
 		tagBox.Text = TAG.text
-		fontBtn:FindFirstChildOfClass(_obi44m9h({97,115,135,132,93,115,117,121,129})).Text = _obi44m9h({83,125,125,132,118,76,51}) .. TAG.font
-		roleLbl.Text = _obi44m9h({80,111,129,119,128,76,51}) .. TAG.role .. _obi44m9h({45,54,115,117,119,123,129,125,121,133,55,136,126,134,138,60,97,141,141,143,74})
+		fontBtn:FindFirstChildOfClass(_obczbshz({189,207,227,224,185,207,209,213,221})).Text = _obczbshz({175,217,217,224,210,168,143}) .. TAG.font
+		roleLbl.Text = _obczbshz({172,203,221,211,220,168,143}) .. TAG.role .. _obczbshz({137,146,207,209,211,215,221,217,213,225,147,228,218,226,230,152,189,233,233,235,166})
 		setTagOn(TAG.on)
 	end
 
@@ -3680,80 +4317,61 @@ end
 
 local GAMES = {
 	Brookhaven = { 4924922222 },
-	[_obi44m9h({91,111,131,133,131,115,127,52,89,127,138,121,140,142,128,142})] = { 189707 },
+	[_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})] = { 189707 },
 	Evade = { 9872472334 },
 }
 local function inGame(name)
 	for _, id in ipairs(GAMES[name] or {}) do
 		if game.PlaceId == id then return true end
 	end
-	if name == _obi44m9h({82,132,112,116,118}) then
+	if name == _obczbshz({174,224,204,208,210}) then
 		local ok, nm = pcall(function() return tostring(game.Name):lower() end)
-		return ok and nm:find(_obi44m9h({114,132,112,116,118})) ~= nil
+		return ok and nm:find(_obczbshz({206,224,204,208,210})) ~= nil
 	end
 	return false
 end
+
+local BROOKHAVEN_TABS = { _obczbshz({183,217,216,209}), _obczbshz({182,45,37,223,214,209,208}), _obczbshz({189,203,210}), _obczbshz({185,220,218,224,210,49,22,51,38,215,230}), _obczbshz({182,217,225,213,218,211,221,228,224}), _obczbshz({170,221,204}), _obczbshz({172,203,221}), _obczbshz({170,224,204,224,206,224}) }
 local function buildTabs(last)
-	local t = { _obi44m9h({86,82}), _obi44m9h({80,128,210,185,117,123,135,131,136}), _obi44m9h({96,113,129,121,129,134,134}) }
-	if inGame(_obi44m9h({79,128,126,127,124,122,116,138,122,132})) then table.insert(t, _obi44m9h({79,128,126,127,124,122,116,138,122,132})) end
-	if inGame(_obi44m9h({91,111,131,133,131,115,127,52,89,127,138,121,140,142,128,142})) then table.insert(t, _obi44m9h({91,111,131,133,131,115,127,52,89,127,138,121,140,142,128,142})) end
-	if inGame(_obi44m9h({82,132,112,116,118})) then table.insert(t, _obi44m9h({82,132,112,116,118})) end
-	for _, n in ipairs({ _obi44m9h({90,125,115}), _obi44m9h({82,116,116,121,133,129,134}), _obi44m9h({82,134,131,130,114,133}) }) do table.insert(t, n) end
+	local t = { _obczbshz({178,174}), _obczbshz({172,220,46,21,209,215,227,223,228}), _obczbshz({188,205,221,213,221,226,226}) }
+	if inGame(_obczbshz({171,220,218,219,216,214,208,230,214,224})) then
+		for _, n in ipairs(BROOKHAVEN_TABS) do table.insert(t, n) end
+	end
+	if inGame(_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})) then table.insert(t, _obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})) end
+	if inGame(_obczbshz({174,224,204,208,210})) then table.insert(t, _obczbshz({174,224,204,208,210})) end
+	for _, n in ipairs({ _obczbshz({182,217,207}), _obczbshz({174,208,208,213,225,221,226}), _obczbshz({174,226,223,222,206,225}) }) do table.insert(t, n) end
 	for _, n in ipairs(last) do table.insert(t, n) end
 	return t
-end
-
-local function addSubTabs(host, names)
-	local bar = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, LayoutOrder = 1 }, host)
-	mk(_obi44m9h({98,87,86,130,122,118,95,117,142,133,140,140}), { CellSize = UDim2.new(0.333, -5, 0, 26), CellPadding = UDim2.fromOffset(5, 5), SortOrder = Enum.SortOrder.LayoutOrder }, bar)
-	local subs, chips = {}, {}
-	local function pick(n)
-		for k, f in pairs(subs) do f.Visible = (k == n) end
-		for k, c in pairs(chips) do c.BackgroundColor3 = (k == n) and Color3.fromRGB(70, 10, 14) or PANEL end
-	end
-	for i, n in ipairs(names) do
-		local c = mk(_obi44m9h({97,115,135,132,83,135,135,136,132,132}), {
-			Text = n, LayoutOrder = i, BackgroundColor3 = PANEL, BackgroundTransparency = 0.1,
-			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11,
-		}, bar)
-		round(c, 13); stroke(c, 1.5)
-		local f = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, host)
-		mk(_obi44m9h({98,87,91,121,132,134,95,117,142,133,140,140}), { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, f)
-		subs[n], chips[n] = f, c
-		c.MouseButton1Click:Connect(function() pick(n) end)
-	end
-	pick(names[1])
-	return subs
 end
 
 local HUBLOG = { list = {}, on = false, self = false, hooked = false, t0 = os.clock(), listeners = {} }
 function HUBLOG.ser(v, d)
 	d = d or 0
 	local t = typeof(v)
-	if t == _obi44m9h({128,130,129,121,127,121}) then return string.format(_obi44m9h({50,127}), v)
-	elseif t == _obi44m9h({123,131,124,114,118,132}) or t == _obi44m9h({111,125,126,124,118,115,129}) or t == _obi44m9h({123,119,123}) then return tostring(v)
-	elseif t == _obi44m9h({80,125,123,127,131,69}) then return string.format(_obi44m9h({80,125,123,127,131,69,65,122,135,133,132,106,96,92,67,65,129,74,68,132,77,71,135,77}), math.floor(v.R * 255 + 0.5), math.floor(v.G * 255 + 0.5), math.floor(v.B * 255 + 0.5))
-	elseif t == _obi44m9h({99,115,114,132,128,132,70}) then return string.format(_obi44m9h({99,115,114,132,128,132,70,66,131,123,142,64,62,129,71,65,132,74,68,135,74}), v.X, v.Y, v.Z)
-	elseif t == _obi44m9h({80,84,129,113,126,119}) then local p = v.Position; return string.format(_obi44m9h({80,84,129,113,126,119,65,130,122,141,63,61,128,70,64,131,73,67,134,73}), p.X, p.Y, p.Z)
-	elseif t == _obi44m9h({86,124,130,132,114,128,118,121}) then return _obi44m9h({116,111,124,117,63}) .. v:GetFullName()
-	elseif t == _obi44m9h({129,111,113,124,118}) then
-		if d >= 4 then return _obi44m9h({136,60,61,62,142}) end
+	if t == _obczbshz({220,222,221,213,219,213}) then return string.format(_obczbshz({142,219}), v)
+	elseif t == _obczbshz({215,223,216,206,210,224}) or t == _obczbshz({203,217,218,216,210,207,221}) or t == _obczbshz({215,211,215}) then return tostring(v)
+	elseif t == _obczbshz({172,217,215,219,223,161}) then return string.format(_obczbshz({172,217,215,219,223,161,157,214,227,225,224,198,188,184,159,157,221,166,160,224,169,163,227,169}), math.floor(v.R * 255 + 0.5), math.floor(v.G * 255 + 0.5), math.floor(v.B * 255 + 0.5))
+	elseif t == _obczbshz({191,207,206,224,220,224,162}) then return string.format(_obczbshz({191,207,206,224,220,224,162,158,223,215,234,156,154,221,163,157,224,166,160,227,166}), v.X, v.Y, v.Z)
+	elseif t == _obczbshz({172,176,221,205,218,211}) then local p = v.Position; return string.format(_obczbshz({172,176,221,205,218,211,157,222,214,233,155,153,220,162,156,223,165,159,226,165}), p.X, p.Y, p.Z)
+	elseif t == _obczbshz({178,216,222,224,206,220,210,213}) then return _obczbshz({208,203,216,209,155}) .. v:GetFullName()
+	elseif t == _obczbshz({221,203,205,216,210}) then
+		if d >= 4 then return _obczbshz({228,152,153,154,234}) end
 		local out, n = {}, 0
 		for k, x in pairs(v) do
 			n = n + 1
-			if n > 40 then out[#out + 1] = _obi44m9h({59,60,61}); break end
-			out[#out + 1] = (type(k) == _obi44m9h({123,131,124,114,118,132}) and _obi44m9h({}) or (_obi44m9h({104}) .. HUBLOG.ser(k, d + 1) .. _obi44m9h({106,75}))) .. HUBLOG.ser(x, d + 1)
+			if n > 40 then out[#out + 1] = _obczbshz({151,152,153}); break end
+			out[#out + 1] = (type(k) == _obczbshz({215,223,216,206,210,224}) and _obczbshz({}) or (_obczbshz({196}) .. HUBLOG.ser(k, d + 1) .. _obczbshz({198,167}))) .. HUBLOG.ser(x, d + 1)
 		end
-		return _obi44m9h({136}) .. table.concat(out, _obi44m9h({57,46})) .. _obi44m9h({138})
+		return _obczbshz({228}) .. table.concat(out, _obczbshz({149,138})) .. _obczbshz({230})
 	end
-	return _obi44m9h({73}) .. t .. _obi44m9h({75})
+	return _obczbshz({165}) .. t .. _obczbshz({167})
 end
 function HUBLOG.path(inst)
 	local names, p = {}, inst
 	while p and p ~= game do table.insert(names, 1, p.Name); p = p.Parent end
-	local svc = table.remove(names, 1) or _obi44m9h({76})
-	local s = _obi44m9h({116,111,124,117,75,89,120,136,104,123,137,142,130,125,128,68,63}) .. tostring(svc) .. _obi44m9h({47,55})
-	for _, n in ipairs(names) do s = s .. _obi44m9h({104}) .. string.format(_obi44m9h({50,127}), n) .. _obi44m9h({106}) end
+	local svc = table.remove(names, 1) or _obczbshz({168})
+	local s = _obczbshz({208,203,216,209,167,181,212,228,196,215,229,234,222,217,220,160,155}) .. tostring(svc) .. _obczbshz({139,147})
+	for _, n in ipairs(names) do s = s .. _obczbshz({196}) .. string.format(_obczbshz({142,219}), n) .. _obczbshz({198}) end
 	return s
 end
 local function hubPush(line)
@@ -3762,24 +4380,24 @@ local function hubPush(line)
 	if last and last.line == line then last.n = last.n + 1; return end
 	list[#list + 1] = { t = os.clock() - HUBLOG.t0, line = line, n = 1 }
 	if #list > 2000 then table.remove(list, 1) end
-	if DSLOG and DSLOG.ev then DSLOG.ev(_obi44m9h({86,92,85,95}), _obi44m9h({127,115,124,127,133,119}), line) end
+	if DSLOG and DSLOG.ev then DSLOG.ev(_obczbshz({178,184,177,187}), _obczbshz({219,207,216,219,225,211}), line) end
 end
 
 function HUBLOG.add(remote, method, args, own, _, incoming)
 	local parts = {}
 	for i = 1, args.n do parts[i] = HUBLOG.ser(args[i]) end
-	hubPush((own and _obi44m9h({58,59,47,107,89,103,85,113,53}) or _obi44m9h({})) .. (incoming and _obi44m9h({73,59,60,48}) or _obi44m9h({})) .. HUBLOG.path(remote) .. _obi44m9h({71}) .. method .. _obi44m9h({53}) .. table.concat(parts, _obi44m9h({57,46})) .. _obi44m9h({54}))
+	hubPush((own and _obczbshz({150,151,139,199,181,195,177,205,145}) or _obczbshz({})) .. (incoming and _obczbshz({165,151,152,140}) or _obczbshz({})) .. HUBLOG.path(remote) .. _obczbshz({163}) .. method .. _obczbshz({145}) .. table.concat(parts, _obczbshz({149,138})) .. _obczbshz({146}))
 end
 
 function HUBLOG.addResult(remote, res, own)
 	local rp = {}
 	for i = 1, res.n do rp[i] = HUBLOG.ser(res[i]) end
-	hubPush((own and _obi44m9h({58,59,47,107,89,103,85,113,53}) or _obi44m9h({})) .. _obi44m9h({45,46,47,242,151,197,51,134,122,137,135,135,140,142,124,60,129,131,63}) .. HUBLOG.path(remote) .. _obi44m9h({45,75,47}) .. (res.n > 0 and table.concat(rp, _obi44m9h({57,46})) or _obi44m9h({53,129,116,125,49,132,120,136,132,136,133,135,66})))
+	hubPush((own and _obczbshz({150,151,139,199,181,195,177,205,145}) or _obczbshz({})) .. _obczbshz({137,138,139,78,243,33,143,226,214,229,227,227,232,234,216,152,221,223,155}) .. HUBLOG.path(remote) .. _obczbshz({137,167,139}) .. (res.n > 0 and table.concat(rp, _obczbshz({149,138})) or _obczbshz({145,221,208,217,141,224,212,228,224,228,225,227,158})))
 end
 function HUBLOG.mark(text)
-	local line = _obi44m9h({74,75,76,77,78,50}) .. tostring(text) .. _obi44m9h({45}) .. os.date(_obi44m9h({50,86,73,53,94,76,56,103})) .. _obi44m9h({45,75,76,77,78,79})
+	local line = _obczbshz({166,167,168,169,170,142}) .. tostring(text) .. _obczbshz({137}) .. os.date(_obczbshz({142,178,165,145,186,168,148,195})) .. _obczbshz({137,167,168,169,170,171})
 	table.insert(HUBLOG.list, { t = os.clock() - HUBLOG.t0, line = line, n = 1 })
-	if DSLOG and DSLOG.ev then DSLOG.ev(_obi44m9h({86,92,85,95}), _obi44m9h({127,115,124,127,133,119}), line) end
+	if DSLOG and DSLOG.ev then DSLOG.ev(_obczbshz({178,184,177,187}), _obczbshz({219,207,216,219,225,211}), line) end
 end
 
 function HUBLOG.watchIncoming(on)
@@ -3789,13 +4407,13 @@ function HUBLOG.watchIncoming(on)
 	if not on then return end
 	local seen = {}
 	local function hook(r)
-		if seen[r] or not r:IsA(_obi44m9h({95,115,124,127,133,119,88,138,122,132,139})) then return end
+		if seen[r] or not r:IsA(_obczbshz({187,207,216,219,225,211,180,230,214,224,231})) then return end
 		seen[r] = true
 		table.insert(HUBLOG.inConns, r.OnClientEvent:Connect(function(...)
-			if HUBLOG.on and HUBLOG.incoming then pcall(HUBLOG.add, r, _obi44m9h({92,124,82,124,122,119,129,136,90,140,124,134,141}), table.pack(...), false, nil, true) end
+			if HUBLOG.on and HUBLOG.incoming then pcall(HUBLOG.add, r, _obczbshz({184,216,174,216,214,211,221,228,182,232,216,226,233}), table.pack(...), false, nil, true) end
 		end))
 	end
-	local RS = game:GetService(_obi44m9h({95,115,127,124,122,117,116,136,122,122,106,140,136,140,124,131,130}))
+	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
 	for _, d in ipairs(RS:GetDescendants()) do pcall(hook, d) end
 	table.insert(HUBLOG.inConns, RS.DescendantAdded:Connect(function(d) pcall(hook, d) end))
 end
@@ -3809,10 +4427,10 @@ function HUBLOG.install()
 	if HUBLOG.hooked then return true end
 	local ok = pcall(function()
 		local old
-		old = hookmetamethod(game, _obi44m9h({108,109,125,113,126,119,118,117,129,130}), newcclosure(function(self, ...)
+		old = hookmetamethod(game, _obczbshz({200,201,217,205,218,211,210,209,221,222}), newcclosure(function(self, ...)
 			local m = getnamecallmethod()
 			local own = checkcaller()
-			if (m == _obi44m9h({83,119,129,117,100,119,133,138,122,136}) or m == _obi44m9h({86,124,133,127,124,119,102,121,135,140,124,138})) and typeof(self) == _obi44m9h({86,124,130,132,114,128,118,121}) and (not own or (HUBLOG.self and HUBLOG.on)) then
+			if (m == _obczbshz({175,211,221,209,192,211,225,230,214,228}) or m == _obczbshz({178,216,225,219,216,211,194,213,227,232,216,230})) and typeof(self) == _obczbshz({178,216,222,224,206,220,210,213}) and (not own or (HUBLOG.self and HUBLOG.on)) then
 				local pk = table.pack(...)
 				task.defer(function()
 					if not own then
@@ -3820,7 +4438,7 @@ function HUBLOG.install()
 					end
 					if HUBLOG.on then pcall(HUBLOG.add, self, m, pk, own) end
 				end)
-				if m == _obi44m9h({86,124,133,127,124,119,102,121,135,140,124,138}) and HUBLOG.on then
+				if m == _obczbshz({178,216,225,219,216,211,194,213,227,232,216,230}) and HUBLOG.on then
 
 					local res = table.pack(old(self, ...))
 					task.defer(function()
@@ -3837,39 +4455,39 @@ function HUBLOG.install()
 end
 
 local function buildCar(page, say)
-	local RS = game:GetService(_obi44m9h({95,115,127,124,122,117,116,136,122,122,106,140,136,140,124,131,130}))
+	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
 	local alive = true
 	local cons = {}
 	local onFire
 
 	local function topModel(part)
-		local m = part and part:FindFirstAncestorOfClass(_obi44m9h({90,125,115,117,125}))
-		while m and m.Parent and m.Parent:IsA(_obi44m9h({90,125,115,117,125})) do m = m.Parent end
+		local m = part and part:FindFirstAncestorOfClass(_obczbshz({182,217,207,209,217}))
+		while m and m.Parent and m.Parent:IsA(_obczbshz({182,217,207,209,217})) do m = m.Parent end
 		return m
 	end
 
-	local CAR_REMOTE = _obi44m9h({93,122,112,137,118,132,134,87,118,136})
+	local CAR_REMOTE = _obczbshz({185,214,204,229,210,224,226,179,210,228})
 
 	local function reByPlain(plain)
-		local re = RS:FindFirstChild(_obi44m9h({95,83}))
+		local re = RS:FindFirstChild(_obczbshz({187,175}))
 		if not re then return nil end
 		for _, c in ipairs(re:GetChildren()) do
-			if (c.Name:gsub(_obi44m9h({62}), _obi44m9h({}))) == plain then return c end
+			if (c.Name:gsub(_obczbshz({154}), _obczbshz({}))) == plain then return c end
 		end
 		return nil
 	end
 	local function inputRow(placeholder)
-		local row = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obi44m9h({97,115,135,132,83,129,139}), {
+		return mk(_obczbshz({189,207,227,224,175,221,231}), {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = _obi44m9h({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function note(text, h)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
@@ -3879,25 +4497,25 @@ local function buildCar(page, say)
 	local function currentSeat()
 		local h = hum()
 		local s = h and h.SeatPart
-		if s and (s:IsA(_obi44m9h({99,115,119,121,116,126,120,103,122,119,139})) or s:IsA(_obi44m9h({96,115,112,132}))) then return s end
+		if s and (s:IsA(_obczbshz({191,207,211,213,208,218,212,195,214,211,231})) or s:IsA(_obczbshz({188,207,204,224}))) then return s end
 		return nil
 	end
 
-	section(page, _obi44m9h({99,115,123,127,116,123,119,117,121,123,55,124,136,58,126,125,143,144,142}))
-	note(_obi44m9h({83,131,125,115,122,129,129,117,53,122,128,138,130,129,132,138,129,141,63,72,151,145,134,231,207,70,138,151,151,158,157,155,153,143,79,145,81,152,246,225,168,159,154,153,89,158,170,92,160,159,177,178,176,110,99,169,179,186,10,235,184,106,191,187,177,189,111,189,198,192,183,195,117,204,26,2,121,191,199,193,125,191,205,196,194,208,199,211,133,199,218,219,210,215,148,154}))
+	section(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,216,228,150,218,217,235,236,234}))
+	note(_obczbshz({175,223,217,207,214,221,221,209,145,214,220,230,222,221,224,230,221,233,155,164,243,237,226,67,43,162,230,243,243,250,249,247,245,235,171,237,173,244,82,61,4,251,246,245,181,250,6,184,252,251,13,14,12,202,191,5,15,22,102,71,20,198,27,23,13,25,203,25,34,28,19,31,209,40,118,94,213,27,35,29,217,27,41,32,30,44,35,47,225,35,54,55,46,51,240,246}))
 	local spd = { on = false, val = 120, thr = 0, fwd = nil, fwdSeat = nil, warned = nil }
-	toggleRow(page, _obi44m9h({97,131,129,114,128,50,119,131,53,121,120,138,139,137}), _obi44m9h({99,111,120,48,114,134,214,189,53,119,55,142,126,134,138,127,134,130,128,132,134,66,136,151,136,149,147,144,146,142,140,76,146,156,160,165,146,160,167,163,85,172,166,155,252,228,91,157,160,163,171,165,179,163}), function(v) spd.on = v end)
-	sliderRow(page, _obi44m9h({99,115,123,127,116,123,119,117,121,123,55,133,220,187,147,133,138,127}), _obi44m9h({128,130,132,116,132,50,131,131,135,54,138,125,128,143,137,128,140}), 40, 400, 120, function(v) spd.val = v end)
+	toggleRow(page, _obczbshz({189,223,221,206,220,142,211,223,145,213,212,230,231,229}), _obczbshz({191,203,212,140,206,226,50,25,145,211,147,234,218,226,230,219,226,222,220,224,226,158,228,243,228,241,239,236,238,234,232,168,238,248,252,1,238,252,3,255,177,8,2,247,88,64,183,249,252,255,7,1,15,255}), function(v) spd.on = v end)
+	sliderRow(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,225,56,23,239,225,230,219}), _obczbshz({220,222,224,208,224,142,223,223,227,146,230,217,220,235,229,220,232}), 40, 400, 120, function(v) spd.val = v end)
 
 	local controls
 	pcall(function()
-		controls = require(lp:WaitForChild(_obi44m9h({93,122,112,137,118,132,102,119,135,127,135,140,140})):WaitForChild(_obi44m9h({93,122,112,137,118,132,96,131,121,139,131,125}), 5)):GetControls()
+		controls = require(lp:WaitForChild(_obczbshz({185,214,204,229,210,224,194,211,227,219,227,232,232})):WaitForChild(_obczbshz({185,214,204,229,210,224,188,223,213,231,223,217}), 5)):GetControls()
 	end)
 
 	local function readThrottle(seat)
 		if spd.thr ~= 0 then return spd.thr end
 		local ok, v = pcall(function() return seat.ThrottleFloat end)
-		if ok and type(v) == _obi44m9h({123,131,124,114,118,132}) and v ~= 0 then return v > 0 and 1 or -1 end
+		if ok and type(v) == _obczbshz({215,223,216,206,210,224}) and v ~= 0 then return v > 0 and 1 or -1 end
 		if controls then
 			local ok2, mv = pcall(function() return controls:GetMoveVector() end)
 			if ok2 and mv and math.abs(mv.Z) > 0.2 then return (-mv.Z) > 0 and 1 or -1 end
@@ -3935,37 +4553,37 @@ local function buildCar(page, say)
 			local okN, own = pcall(isnetworkowner, root)
 			if okN and own == false then
 				spd.warned = root
-				say(_obi44m9h({97,131,129,114,128,76,51,131,53,137,124,138,143,131,127,139,143,62,130,143,143,150,149,147,145,135,71,137,73,144,238,217,160,151,146,145,81,150,152,167,168,155,87,155,154,172,173,171,105,94,164,174,181,5,230,179,101,181,103,177,182,186,192,184,192,189,111,192,192,182,184,116,195,25,250,199,121,192,208,202,192,199,206,206,194,212,145}))
+				say(_obczbshz({189,223,221,206,220,168,143,223,145,229,216,230,235,223,219,231,235,154,222,235,235,242,241,239,237,227,163,229,165,236,74,53,252,243,238,237,173,242,244,3,4,247,179,247,246,8,9,7,197,186,0,10,17,97,66,15,193,17,195,13,18,22,28,20,28,25,203,28,28,18,20,208,31,117,86,35,213,28,44,38,28,35,42,42,30,48,237}))
 			end
 		end
 		local nxt = cur + (spd.val - cur) * 0.08 + 0.4
 		root.AssemblyLinearVelocity = hv.Unit * nxt + Vector3.new(0, v.Y, 0)
 	end)
 
-	section(page, _obi44m9h({96,131,130,128,118,128,134,215,184,133,55,64,122,134,143,145,143,127,63,132,144,66,134,133,151,152,150,81}))
-	note(_obi44m9h({98,129,112,48,114,50,134,137,136,134,124,134,140,221,190,139,61,130,142,64,145,148,230,215,149,152,144,151,73,148,154,147,156,78,87,164,160,150,162,84,162,171,165,156,168,90,177,255,231,103,109,96,135,171,180,185,170,102,186,173,183,190,172,176,188,110,189,191,113,181,180,198,199,197,133}))
+	section(page, _obczbshz({188,223,222,220,210,220,226,51,20,225,147,156,214,226,235,237,235,219,155,224,236,158,226,225,243,244,242,173}))
+	note(_obczbshz({190,221,204,140,206,142,226,229,228,226,216,226,232,57,26,231,153,222,234,156,237,240,66,51,241,244,236,243,165,240,246,239,248,170,179,0,252,242,254,176,254,7,1,248,4,182,13,91,67,195,201,188,227,7,16,21,6,194,22,9,19,26,8,12,24,202,25,27,205,17,16,34,35,33,225}))
 	local function susRemote()
-		local folder = RS:FindFirstChild(_obi44m9h({95,115,124,127,133,119,134}))
-		return folder and folder:FindFirstChild(_obi44m9h({96,115,131,94,118,138,135,103,138,137,135,125,135,141,132,139,139,102,132,137,136,138,151}))
+		local folder = RS:FindFirstChild(_obczbshz({187,207,216,219,225,211,226}))
+		return folder and folder:FindFirstChild(_obczbshz({188,207,223,186,210,230,227,195,230,229,227,217,227,233,224,231,231,194,224,229,228,230,243}))
 	end
 	local function nextHeight(times)
 		local f = susRemote()
-		if not f then say(_obi44m9h({95,115,124,127,133,119,51,120,118,54,138,141,140,138,128,138,144,225,194,143,65,144,230,199,148,70,140,150,140,153,153,160,159,143,147,159,95})); return end
+		if not f then say(_obczbshz({187,207,216,219,225,211,143,212,210,146,230,233,232,230,220,230,236,61,30,235,157,236,66,35,240,162,232,242,232,245,245,252,251,235,239,251,187})); return end
 		task.spawn(function()
 			local last
 			for i = 1, times do
 				local ok, res = pcall(function() return f:InvokeServer() end)
-				if not ok then say(_obi44m9h({83,111,123,120,128,135,77,52}) .. tostring(res):sub(1, 50)); return end
+				if not ok then say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(res):sub(1, 50)); return end
 				last = res
 				if i < times then task.wait(0.25) end
 			end
-			say(_obi44m9h({78,122,131,133,131,115,51,136,135,133,122,121,125,123}) .. (last ~= nil and (_obi44m9h({45,54}) .. tostring(last) .. _obi44m9h({54})) or _obi44m9h({})) .. _obi44m9h({59}))
+			say(_obczbshz({170,214,223,225,223,207,143,228,227,225,214,213,217,215}) .. (last ~= nil and (_obczbshz({137,146}) .. tostring(last) .. _obczbshz({146})) or _obczbshz({})) .. _obczbshz({151}))
 		end)
 	end
-	rowBtn(page, _obi44m9h({93,128,210,195,137,123,128,117,53,119,131,140,142,140,124,60,129,127,63,147,150,149,147,137,147,153,234,203,152}), function() nextHeight(1) end)
-	rowBtn(page, _obi44m9h({93,131,123,113,131,50,69,52,118,130,139,141,139,123,142}), function() nextHeight(2) end, true)
+	rowBtn(page, _obczbshz({185,220,46,31,229,215,220,209,145,211,223,232,234,232,216,152,221,219,155,239,242,241,239,229,239,245,70,39,244}), function() nextHeight(1) end)
+	rowBtn(page, _obczbshz({185,223,215,205,223,142,161,144,210,222,231,233,231,215,234}), function() nextHeight(2) end, true)
 
-	note(_obi44m9h({95,115,113,113,122,138,116,134,53,124,134,138,220,193,124,138,129,141,89,64,134,143,147,153,151,152,136,72,152,74,142,141,159,160,158,80,161,164,148,84,151,151,160,176,168,90,158,171,171,178,177,161,97,163,99,183,186,185,183,173,183,189,14,239,188,122,111,185,191,182,194,116,182,194,26,1,198,122,191,189,125,191,203,212,214,212,196,132,210,199,208,219,137,204,204,213,229,207,143,212,224,146,221,227,220,229,165,152,204,61,46,156,227,243,237,227,234,241,241,229,165,249,236,168,248,170,238,237,255,0,254,176,247,1,5,180,8,255,4,13,5,251,255,11,189,14,14,18,193,24,18,7,104,80,213}), 54)
+	note(_obczbshz({187,207,205,205,214,230,208,226,145,216,226,230,56,29,216,230,221,233,181,156,226,235,239,245,243,244,228,164,244,166,234,233,251,252,250,172,253,0,240,176,243,243,252,12,4,182,250,7,7,14,13,253,189,255,191,19,22,21,19,9,19,25,106,75,24,214,203,21,27,18,30,208,18,30,118,93,34,214,27,25,217,27,39,48,50,48,32,224,46,35,44,55,229,40,40,49,65,43,235,48,60,238,57,63,56,65,1,244,40,153,138,248,63,79,73,63,70,77,77,65,1,85,72,4,84,6,74,73,91,92,90,12,83,93,97,16,100,91,96,105,97,87,91,103,25,106,106,110,29,116,110,99,196,172,49}), 54)
 	local low = { on = false, k = 2, vf = nil, root = nil }
 	local function lowClear()
 		if low.vf then
@@ -3974,11 +4592,11 @@ local function buildCar(page, say)
 		end
 		low.vf, low.root = nil, nil
 	end
-	toggleRow(page, _obi44m9h({95,115,113,113,122,138,116,134,53,124,134,138,220,193,124,138,129,141,63,143,65,133,132,150,151,149}), _obi44m9h({82,123,127,133,131,132,116,52,132,54,122,121,139,140,138,60,141,144,128,64,131,131,140,156,148,70,140,150,154,159,140,154,161,157,79,166,160,149,246,222,85,155,170,172,252,219,91,175,162,172,179,161,165,177}), function(v)
+	toggleRow(page, _obczbshz({187,207,205,205,214,230,208,226,145,216,226,230,56,29,216,230,221,233,155,235,157,225,224,242,243,241}), _obczbshz({174,215,219,225,223,224,208,144,224,146,214,213,231,232,230,152,233,236,220,156,223,223,232,248,240,162,232,242,246,251,232,246,253,249,171,2,252,241,82,58,177,247,6,8,88,55,183,11,254,8,15,253,1,13}), function(v)
 		low.on = v
 		if not v then lowClear() end
 	end)
-	sliderRow(page, _obi44m9h({83,125,129,211,184,115,51,120,132,54,137,125,123,123,132,148,126,139,132,142,149,145}), _obi44m9h({90,209,201,124,133,123,131,128,132,137,55,124,136,58,139,129,144,141,63,132,144,66,134,133,151,152,150,72,81,91,75,141,77,102,88}), 1, 8, 2, function(v) low.k = v end)
+	sliderRow(page, _obczbshz({175,217,221,47,20,207,143,212,224,146,229,217,215,215,224,240,218,231,224,234,241,237}), _obczbshz({182,45,37,216,225,215,223,220,224,229,147,216,228,150,231,221,236,233,155,224,236,158,226,225,243,244,242,164,173,183,167,233,169,194,180}), 1, 8, 2, function(v) low.k = v end)
 	task.spawn(function()
 		while alive do
 			local h = hum()
@@ -3987,8 +4605,8 @@ local function buildCar(page, say)
 			if low.on and root then
 				if low.root ~= root or not low.vf or not low.vf.Parent then
 					lowClear()
-					local att = mk(_obi44m9h({78,130,131,113,116,122,128,121,131,138}), { Name = _obi44m9h({96,118,120,126,89,135,117,96,132,141}) }, root)
-					low.vf = mk(_obi44m9h({99,115,114,132,128,132,89,131,135,121,124}), {
+					local att = mk(_obczbshz({170,222,223,205,208,214,220,213,223,230}), { Name = _obczbshz({188,210,212,218,181,227,209,188,224,233}) }, root)
+					low.vf = mk(_obczbshz({191,207,206,224,220,224,181,223,227,213,216}), {
 						Attachment0 = att, RelativeTo = Enum.ActuatorRelativeTo.World,
 						ApplyAtCenterOfMass = true, Force = Vector3.zero,
 					}, root)
@@ -4004,8 +4622,8 @@ local function buildCar(page, say)
 	end)
 
 	onFire = function(remote, method, a)
-		if not alive or method ~= _obi44m9h({83,119,129,117,100,119,133,138,122,136}) then return end
-		if remote.Name == _obi44m9h({96,115,131,100,121,132,130,136,137,130,124,94,133,137,124,144}) then
+		if not alive or method ~= _obczbshz({175,211,221,209,192,211,225,230,214,228}) then return end
+		if remote.Name == _obczbshz({188,207,223,192,213,224,222,228,229,222,216,186,225,229,216,236}) then
 			local tv = tonumber(a[1])
 			if tv then spd.thr = tv end
 		end
@@ -4022,24 +4640,24 @@ local function buildCar(page, say)
 end
 
 local function buildLog(page, say)
-	local RS = game:GetService(_obi44m9h({95,115,127,124,122,117,116,136,122,122,106,140,136,140,124,131,130}))
+	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
 	local function topModel(part)
-		local m = part and part:FindFirstAncestorOfClass(_obi44m9h({90,125,115,117,125}))
-		while m and m.Parent and m.Parent:IsA(_obi44m9h({90,125,115,117,125})) do m = m.Parent end
+		local m = part and part:FindFirstAncestorOfClass(_obczbshz({182,217,207,209,217}))
+		while m and m.Parent and m.Parent:IsA(_obczbshz({182,217,207,209,217})) do m = m.Parent end
 		return m
 	end
 	local function inputRow(placeholder)
-		local row = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obi44m9h({97,115,135,132,83,129,139}), {
+		return mk(_obczbshz({189,207,227,224,175,221,231}), {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = _obi44m9h({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function note(text, h)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
@@ -4047,9 +4665,9 @@ local function buildLog(page, say)
 	end
 	local function copy(txt)
 		local f = setclipboard or toclipboard
-		if not f then say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,147,133,142,66,150,137,153,137,147,145,153,140,154,141,159,146,93})); return end
+		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185})); return end
 		local ok = pcall(f, txt)
-		say(ok and _obi44m9h({80,125,127,121,114,118,130,53}) or _obi44m9h({83,111,123,120,128,135,51,117,132,54,122,135,137,131,124,142,75}))
+		say(ok and _obczbshz({172,217,219,213,206,210,222,145}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
 	end
 
 	return function() HUBLOG.on = false end
@@ -4070,66 +4688,66 @@ local function buildAvatarCopy(page, say)
 			end
 		end
 		local okA, acc = pcall(function() return desc:GetAccessories(true) end)
-		if okA and type(acc) == _obi44m9h({129,111,113,124,118}) then
+		if okA and type(acc) == _obczbshz({221,203,205,216,210}) then
 			for _, a in ipairs(acc) do add(a.AssetId) end
 		end
-		for _, k in ipairs({ _obi44m9h({96,118,120,130,133}), _obi44m9h({93,111,125,132,132}), _obi44m9h({84,128,112,128,121,123,118,104,104,126,128,138,141}), _obi44m9h({83,111,114,117}), _obi44m9h({85,115,112,116}), _obi44m9h({97,125,129,131,128}), _obi44m9h({89,115,117,132,82,132,128}), _obi44m9h({95,119,118,120,133,83,133,129}), _obi44m9h({89,115,117,132,93,119,122}), _obi44m9h({95,119,118,120,133,94,120,123}) }) do
+		for _, k in ipairs({ _obczbshz({188,210,212,222,225}), _obczbshz({185,203,217,224,224}), _obczbshz({176,220,204,220,213,215,210,196,196,218,220,230,233}), _obczbshz({175,203,206,209}), _obczbshz({177,207,204,208}), _obczbshz({189,217,221,223,220}), _obczbshz({181,207,209,224,174,224,220}), _obczbshz({187,211,210,212,225,175,225,221}), _obczbshz({181,207,209,224,185,211,214}), _obczbshz({187,211,210,212,225,186,212,215}) }) do
 			local okP, v = pcall(function() return desc[k] end)
 			if okP then add(v) end
 		end
 		local function hex(c)
-			return string.format(_obi44m9h({50,62,65,136,54,66,69,140,58,70,73,144}), math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
+			return string.format(_obczbshz({142,154,157,228,146,158,161,232,150,162,165,236}), math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
 		end
 		local bc = table.concat({
 			hex(desc.HeadColor), hex(desc.TorsoColor), hex(desc.LeftArmColor),
 			hex(desc.RightArmColor), hex(desc.LeftLegColor), hex(desc.RightLegColor),
-		}, _obi44m9h({57}))
+		}, _obczbshz({149}))
 		return ids, bc
 	end
 
-	section(page, _obi44m9h({80,125,127,121,114,132,51,117,139,119,139,121,139,58,67,94,143,141,142,139,137,131,153,137,147,79}))
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({82,129,114,127,125,122,116,52,118,130,126,141,220,195,136,60,142,147,132,64,134,149,151,231,198,70,149,151,73,148,154,147,156,78,148,80,148,161,163,157,154,86,166,88,154,176,156,176,158,176,109,96,149,177,167,179,101,179,188,182,173,185,107,189,194,179,111,197,196,179,115,195,117,190,204,186,121,208,30,6,125,195,204,128,215,209,198,39,15,148}),
+	section(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,159,186,235,233,234,231,229,223,245,229,239,171}))
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({174,221,206,219,217,214,208,144,210,222,218,233,56,31,228,152,234,239,224,156,226,241,243,67,34,162,241,243,165,240,246,239,248,170,240,172,240,253,255,249,246,178,2,180,246,12,248,12,250,12,201,188,241,13,3,15,193,15,24,18,9,21,199,25,30,15,203,33,32,15,207,31,209,26,40,22,213,44,122,98,217,31,40,220,51,45,34,131,107,240}),
 		Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
 	local dd
-	dd = dropdown(page, _obi44m9h({82,129,114,127,125,122,120,134,53,128,134,127,122,126,138,142,61,70,141,133,143,138,152,145,78}), function()
+	dd = dropdown(page, _obczbshz({174,221,206,219,217,214,212,226,145,220,226,219,214,218,230,234,153,162,233,225,235,230,244,237,170}), function()
 		local t = {}
 		for _, pl in ipairs(Players:GetPlayers()) do
 			if pl ~= lp then
-				table.insert(t, { label = pl.DisplayName .. _obi44m9h({45,46,55,80}) .. pl.Name .. _obi44m9h({54}), value = pl.UserId, name = pl.DisplayName })
+				table.insert(t, { label = pl.DisplayName .. _obczbshz({137,138,147,172}) .. pl.Name .. _obczbshz({146}), value = pl.UserId, name = pl.DisplayName })
 			end
 		end
 		table.sort(t, function(x, y) return x.label:lower() < y.label:lower() end)
 		return t
 	end, function(it)
 		picked = it
-		dd.setText(_obi44m9h({87,125,118,113,117,129,133,78,53}) .. it.name)
+		dd.setText(_obczbshz({179,217,210,205,209,221,225,170,145}) .. it.name)
 	end)
 	local busy = false
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,117,139,119,139,121,139,58,127,139,61,136,142,135,130,134,146,150}), function()
-		if not picked then say(_obi44m9h({82,129,114,127,125,122,116,52,138,131,55,130,136,129,124,128,140,144,63,144,147,139,144,137,142,152,150,86})); return end
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,219,231,153,228,234,227,222,226,238,242}), function()
+		if not picked then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
 		if busy then return end
 		busy = true
 		task.spawn(function()
 			local ids, bc = collect(picked.value)
 			busy = false
-			if not ids or #ids == 0 then say(_obi44m9h({91,209,178,127,49,117,130,130,136,123,126,141,130,58,135,129,143,62,142,64,130,152,132,152,134,152,71,140,142,74}) .. picked.name .. _obi44m9h({59})); return end
+			if not ids or #ids == 0 then say(_obczbshz({183,45,14,219,141,209,222,222,228,215,218,233,222,150,227,221,235,154,234,156,222,244,224,244,226,244,163,232,234,166}) .. picked.name .. _obczbshz({151})); return end
 			MINE.ids = ids
 			MINE.bc = bc
 			if MINE.onList then MINE.onList() end
 			if publishMods then publishMods() end
-			say(_obi44m9h({78,132,112,132,114,132,51,120,122,54}) .. picked.name .. _obi44m9h({45,113,126,128,122,115,119,131,53,62}) .. #ids .. _obi44m9h({45,119,131,117,127,133,60,66,53,87,135,121,139,127,126,129,61,131,140,64,130,142,138,153,147,153,71,155,142,145,160,154,145,157,162,94}))
+			say(_obczbshz({170,224,204,224,206,224,143,212,214,146}) .. picked.name .. _obczbshz({137,205,218,220,214,207,211,223,145,154}) .. #ids .. _obczbshz({137,211,223,209,219,225,152,158,145,179,227,213,231,219,218,221,153,223,232,156,222,234,230,245,239,245,163,247,234,237,252,246,237,249,254,186}))
 		end)
 	end)
-	rowBtn(page, _obi44m9h({99,125,123,132,114,132,51,117,132,54,132,125,142,58,124,146,126,146,128,146}), function()
+	rowBtn(page, _obczbshz({191,217,215,224,206,224,143,209,224,146,224,217,234,150,216,238,218,238,220,238}), function()
 		MINE.ids = {}
 		MINE.bc = nil
 		if MINE.onList then MINE.onList() end
 		if publishMods then publishMods() end
-		say(_obi44m9h({78,132,112,132,114,132,51,119,132,134,128,121,125,137,59,142,130,139,142,150,138,134,146,82}))
+		say(_obczbshz({170,224,204,224,206,224,143,211,224,226,220,213,217,229,151,234,222,231,234,242,230,226,238,174}))
 	end, true)
 end
 
@@ -4137,84 +4755,84 @@ local function buildWings(page, say)
 	local rawSay = say
 	local trace, T0 = {}, os.clock()
 	local function say(s)
-		trace[#trace + 1] = string.format(_obi44m9h({104,51,61,65,119,133,112,52,58,137}), os.clock() - T0, tostring(s))
+		trace[#trace + 1] = string.format(_obczbshz({196,143,153,157,211,225,204,144,150,229}), os.clock() - T0, tostring(s))
 		if #trace > 60 then table.remove(trace, 1) end
 		rawSay(s)
 	end
-	local RS = game:GetService(_obi44m9h({95,115,127,124,122,117,116,136,122,122,106,140,136,140,124,131,130}))
+	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
 	local alive, animating, busyBuild = true, false, false
 	local animGen = 0
 	local recs = {}
 	local cfg = { per = 3, scale = 10, speed = 5, interval = 300, full = true, hide = true }
-	local blockName = _obi44m9h({79,122,126,115,124,69})
+	local blockName = _obczbshz({171,214,218,207,216,161})
 	local spacing = 2
 	local t0 = os.clock()
 	local wconns = {}
 
 	local function inputRow(placeholder, text)
-		local row = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obi44m9h({97,115,135,132,83,129,139}), {
+		return mk(_obczbshz({189,207,227,224,175,221,231}), {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = text or _obi44m9h({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = text or _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function clip(txt)
-		if setclipboard then pcall(setclipboard, txt); say(_obi44m9h({80,125,127,121,114,118,130,66})) else say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,147,133,142,66,150,137,153,137,147,145,153,140,154,141,159,146,93})) end
+		if setclipboard then pcall(setclipboard, txt); say(_obczbshz({172,217,219,213,206,210,222,158})) else say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185})) end
 	end
 	local function getRoot()
-		return lp.Character and lp.Character:FindFirstChild(_obi44m9h({85,131,124,113,127,129,124,120,103,133,134,140,105,123,141,144}))
+		return lp.Character and lp.Character:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
 	end
 	local function remoteRE(name)
-		local re = RS:FindFirstChild(_obi44m9h({95,83}))
+		local re = RS:FindFirstChild(_obczbshz({187,175}))
 		return re and re:FindFirstChild(name)
 	end
 	local function propTool()
 		local c = lp.Character
-		return c and c:FindFirstChild(_obi44m9h({93,128,126,128,94,115,126,121,135}))
+		return c and c:FindFirstChild(_obczbshz({185,220,218,220,186,207,218,213,227}))
 	end
 	local function findTool(name)
 		local c = lp.Character
 		local t = c and c:FindFirstChild(name)
-		if t then return t, _obi44m9h({112,118,112,130,114,117,135,121,135}) end
-		local bp = lp:FindFirstChildOfClass(_obi44m9h({79,111,114,123,129,115,118,127}))
+		if t then return t, _obczbshz({204,210,204,222,206,209,227,213,227}) end
+		local bp = lp:FindFirstChildOfClass(_obczbshz({171,203,206,215,221,207,210,219}))
 		t = bp and bp:FindFirstChild(name)
-		if t then return t, _obi44m9h({111,111,114,123,129,115,118,127}) end
+		if t then return t, _obczbshz({203,203,206,215,221,207,210,219}) end
 		return nil
 	end
 	local function equipPropMaker(re1)
-		local t, where = findTool(_obi44m9h({93,128,126,128,94,115,126,121,135}))
-		if t and where == _obi44m9h({112,118,112,130,114,117,135,121,135}) then return t end
+		local t, where = findTool(_obczbshz({185,220,218,220,186,207,218,213,227}))
+		if t and where == _obczbshz({204,210,204,222,206,209,227,213,227}) then return t end
 		if not t then
-			local ok, res = pcall(function() return re1:InvokeServer(_obi44m9h({93,119,114,123,122,128,122,104,132,133,131,139}), _obi44m9h({93,128,126,128,94,115,126,121,135})) end)
-			say(_obi44m9h({93,119,114,123,122,128,122,104,132,133,131,139,83,58}) .. (ok and (_obi44m9h({127,115,130,128,128,133,135,117,82}) .. tostring(res)) or (_obi44m9h({114,128,129,127,78}) .. tostring(res):sub(1, 60))))
+			local ok, res = pcall(function() return re1:InvokeServer(_obczbshz({185,211,206,215,214,220,214,196,224,225,223,231}), _obczbshz({185,220,218,220,186,207,218,213,227})) end)
+			say(_obczbshz({185,211,206,215,214,220,214,196,224,225,223,231,175,150}) .. (ok and (_obczbshz({219,207,222,220,220,225,227,209,174}) .. tostring(res)) or (_obczbshz({206,220,221,219,170}) .. tostring(res):sub(1, 60))))
 			for _ = 1, 30 do
 				task.wait(0.1)
-				t, where = findTool(_obi44m9h({93,128,126,128,94,115,126,121,135}))
+				t, where = findTool(_obczbshz({185,220,218,220,186,207,218,213,227}))
 				if t then break end
 			end
 		end
-		if t and where == _obi44m9h({111,111,114,123,129,115,118,127}) then
-			local h = lp.Character and lp.Character:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
+		if t and where == _obczbshz({203,203,206,215,221,207,210,219}) then
+			local h = lp.Character and lp.Character:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
 			if h then pcall(function() h:EquipTool(t) end) end
 			for _ = 1, 20 do
 				task.wait(0.1)
-				if lp.Character and lp.Character:FindFirstChild(_obi44m9h({93,128,126,128,94,115,126,121,135})) then break end
+				if lp.Character and lp.Character:FindFirstChild(_obczbshz({185,220,218,220,186,207,218,213,227})) then break end
 			end
 		end
-		return lp.Character and lp.Character:FindFirstChild(_obi44m9h({93,128,126,128,94,115,126,121,135}))
+		return lp.Character and lp.Character:FindFirstChild(_obczbshz({185,220,218,220,186,207,218,213,227}))
 	end
 	local function scanProps(deep)
 		local out = {}
-		local wc = workspace:FindFirstChild(_obi44m9h({100,125,129,123,132,130,116,119,122,89,134,133}))
+		local wc = workspace:FindFirstChild(_obczbshz({192,217,221,215,224,222,208,211,214,181,226,225}))
 		if not wc then return out end
-		local want = _obi44m9h({93,128,126,128}) .. lp.Name
+		local want = _obczbshz({185,220,218,220}) .. lp.Name
 		local function isMine(n) return n:sub(1, #want) == want end
 		if deep then
 			for _, d in ipairs(wc:GetDescendants()) do
-				if d.Name == _obi44m9h({96,115,131,83,134,132,133,121,131,138,90,94,139,123,136,129}) and d.Parent and isMine(d.Parent.Name) then out[d.Parent] = true end
+				if d.Name == _obczbshz({188,207,223,175,226,224,225,213,223,230,182,186,231,215,228,221}) and d.Parent and isMine(d.Parent.Name) then out[d.Parent] = true end
 			end
 		else
 			for _, c in ipairs(wc:GetChildren()) do
@@ -4227,7 +4845,7 @@ local function buildWings(page, say)
 		return out
 	end
 
-	local REMOTES = { begin = _obi44m9h({79,115,118,121,127,98,133,121,139,127,124,143}), setcf = _obi44m9h({96,115,131,83,134,132,133,121,131,138,90,94,139,123,136,129}), setsc = _obi44m9h({96,115,131,83,134,132,133,121,131,138,106,123,122,134,128}), endp = _obi44m9h({82,124,115,96,131,119,137,125,122,141}), resume = _obi44m9h({95,115,130,133,126,119,99,134,132,134,89,125,129,123,145,133,140,144}) }
+	local REMOTES = { begin = _obczbshz({171,207,210,213,219,190,225,213,231,219,216,235}), setcf = _obczbshz({188,207,223,175,226,224,225,213,223,230,182,186,231,215,228,221}), setsc = _obczbshz({188,207,223,175,226,224,225,213,223,230,198,215,214,226,220}), endp = _obczbshz({174,216,207,188,223,211,229,217,214,233}), resume = _obczbshz({187,207,222,225,218,211,191,226,224,226,181,217,221,215,237,225,232,236}) }
 	local function makeRec(model)
 		return { model = model, fails = 0, stuck = 0, heals = 0, busy = false, lastCF = nil, lastP = nil, lastErr = nil }
 	end
@@ -4241,24 +4859,24 @@ local function buildWings(page, say)
 	local function touchOf(rec)
 		local t = rec.touch
 		if t and t.Parent then return t end
-		t = rec.model:FindFirstChild(_obi44m9h({97,125,132,115,121}), true)
+		t = rec.model:FindFirstChild(_obczbshz({189,217,224,207,213}), true)
 		rec.touch = t
 		return t
 	end
 	local function waitRemotes(rec, secs)
 		local t = os.clock()
 		while os.clock() - t < secs do
-			if rem(rec, _obi44m9h({111,115,118,121,127})) and rem(rec, _obi44m9h({128,115,131,115,119})) and rem(rec, _obi44m9h({114,124,115,128})) then return true end
+			if rem(rec, _obczbshz({203,207,210,213,219})) and rem(rec, _obczbshz({220,207,223,207,211})) and rem(rec, _obczbshz({206,216,207,220})) then return true end
 			task.wait(0.1)
 		end
 		return false
 	end
 	local function sizeOf(model)
 		local ok, s = pcall(function()
-			if model:IsA(_obi44m9h({90,125,115,117,125})) then return model:GetExtentsSize() end
+			if model:IsA(_obczbshz({182,217,207,209,217})) then return model:GetExtentsSize() end
 			return model.Size
 		end)
-		if ok and typeof(s) == _obi44m9h({99,115,114,132,128,132,70}) then return s end
+		if ok and typeof(s) == _obczbshz({191,207,206,224,220,224,162}) then return s end
 		return Vector3.new(2, 2, 2)
 	end
 	local function groundAt(x, z, y0)
@@ -4280,16 +4898,16 @@ local function buildWings(page, say)
 		SphereHandleAdornment = true, Highlight = true,
 	}
 	local function playerGui()
-		return lp:FindFirstChildOfClass(_obi44m9h({93,122,112,137,118,132,90,137,126}))
+		return lp:FindFirstChildOfClass(_obczbshz({185,214,204,229,210,224,182,229,218}))
 	end
 	local function guiOn(g)
-		if g:IsA(_obi44m9h({96,113,129,117,118,128,90,137,126})) then return g.Enabled end
-		if g:IsA(_obi44m9h({84,131,120,95,115,124,120,119,137})) then return g.Visible end
+		if g:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) then return g.Enabled end
+		if g:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then return g.Visible end
 		return false
 	end
 	local function guiOff(g)
 		pcall(function()
-			if g:IsA(_obi44m9h({96,113,129,117,118,128,90,137,126})) then g.Enabled = false elseif g:IsA(_obi44m9h({84,131,120,95,115,124,120,119,137})) then g.Visible = false end
+			if g:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) then g.Enabled = false elseif g:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then g.Visible = false end
 		end)
 	end
 
@@ -4297,15 +4915,15 @@ local function buildWings(page, say)
 		local pg = playerGui()
 		if not pg then return end
 		for _, sg in ipairs(pg:GetChildren()) do
-			if sg:IsA(_obi44m9h({96,113,129,117,118,128,90,137,126})) then
+			if sg:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) then
 				fn(sg, 1)
 				if guiOn(sg) then
 					for _, c in ipairs(sg:GetChildren()) do
-						if c:IsA(_obi44m9h({84,131,120,95,115,124,120,119,137})) then
+						if c:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then
 							fn(c, 2)
 							if c.Visible then
 								for _, d in ipairs(c:GetChildren()) do
-									if d:IsA(_obi44m9h({84,131,120,95,115,124,120,119,137})) then fn(d, 3) end
+									if d:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then fn(d, 3) end
 								end
 							end
 						end
@@ -4344,7 +4962,7 @@ local function buildWings(page, say)
 		end)
 	end
 	local function isMine(inst)
-		local want = _obi44m9h({93,128,126,128}) .. lp.Name
+		local want = _obczbshz({185,220,218,220}) .. lp.Name
 		local p = inst
 		while p and p ~= workspace do
 			if p.Name:sub(1, #want) == want then return true end
@@ -4361,7 +4979,7 @@ local function buildWings(page, say)
 		end)
 		if ok and mine then
 			pcall(function()
-				if inst:IsA(_obi44m9h({85,119,118,120,125,123,122,124,137})) then inst.Enabled = false else inst.Visible = false end
+				if inst:IsA(_obczbshz({177,211,210,212,217,215,214,216,229})) then inst.Enabled = false else inst.Visible = false end
 			end)
 		end
 	end
@@ -4416,28 +5034,28 @@ local function buildWings(page, say)
 	end
 
 	local function cycle(rec, cf, scale, full)
-		local b, s, e = rem(rec, _obi44m9h({111,115,118,121,127})), rem(rec, _obi44m9h({128,115,131,115,119})), rem(rec, _obi44m9h({114,124,115,128}))
-		if not (b and s and e) then error(_obi44m9h({111,122,126,115,128,50,134,121,130,54,137,125,134,137,143,129,144,62,71,129,138,144,135,133,69,152,140,152,149,147,142,141,155,146,158,89}), 0) end
+		local b, s, e = rem(rec, _obczbshz({203,207,210,213,219})), rem(rec, _obczbshz({220,207,223,207,211})), rem(rec, _obczbshz({206,216,207,220}))
+		if not (b and s and e) then error(_obczbshz({203,214,218,207,220,142,226,213,222,146,229,217,226,229,235,221,236,154,163,221,230,236,227,225,161,244,232,244,241,239,234,233,247,238,250,181}), 0) end
 		rec.lastCF = cf
 		local tool = propTool()
-		local pm = tool and tool:FindFirstChild(_obi44m9h({97,125,126,124,112,98,133,131,133,99,120,131,126}))
+		local pm = tool and tool:FindFirstChild(_obczbshz({189,217,218,216,204,190,225,223,225,191,212,223,218}))
 		local touch = touchOf(rec)
 		if full and pm and touch then
 			hide.expect = os.clock() + 1.2
 			pm:FireServer(touch, touch.Position)
 		end
 		b:InvokeServer()
-		local sc = rem(rec, _obi44m9h({128,115,131,131,116}))
+		local sc = rem(rec, _obczbshz({220,207,223,223,208}))
 		if scale and sc then sc:InvokeServer(scale) end
 		s:InvokeServer(cf)
 		e:InvokeServer()
-		local rs = rem(rec, _obi44m9h({127,115,130,133,126,119}))
+		local rs = rem(rec, _obczbshz({219,207,222,225,218,211}))
 		if full and rs then rs:InvokeServer() end
 	end
 
 	local function runCycle(rec, cf, scale, full)
 
-		if rec.busy and os.clock() - (rec.busyAt or 0) < 8 then return false, _obi44m9h({124,113,132,128,114,118,130}) end
+		if rec.busy and os.clock() - (rec.busyAt or 0) < 8 then return false, _obczbshz({216,205,224,220,206,210,222}) end
 		rec.busy, rec.busyAt = true, os.clock()
 		local ok, err = pcall(cycle, rec, cf, scale, full)
 		rec.busy = false
@@ -4472,7 +5090,7 @@ local function buildWings(page, say)
 					if root then
 						local cf = targetCF(root, side, i, per, os.clock() - t0)
 						local ok, err = runCycle(rec, cf, nil, cfg.full or rec.forceFull)
-						if err == _obi44m9h({124,113,132,128,114,118,130}) then
+						if err == _obczbshz({216,205,224,220,206,210,222}) then
 
 						elseif ok then
 							rec.fails = 0
@@ -4480,13 +5098,13 @@ local function buildWings(page, say)
 							rec.fails = rec.fails + 1
 							rec.lastErr = tostring(err):sub(1, 80)
 							if rec.fails >= 3 then rec.forceFull = true end
-							if rec.fails == 6 then say(_obi44m9h({79,122,126,115,128,50}) .. idx .. _obi44m9h({45,116,112,124,121,115,129,120,132,80,55}) .. rec.lastErr) end
+							if rec.fails == 6 then say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({137,208,204,216,213,207,221,212,224,172,147}) .. rec.lastErr) end
 						end
 					end
 					task.wait(cfg.interval / 1000)
 				end
 				if alive and animating and gen == animGen and not rec.model.Parent then
-					say(_obi44m9h({79,122,126,115,128,50}) .. idx .. _obi44m9h({45,129,132,125,122,135,51,120,132,54,132,121,137,123,73}))
+					say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({137,221,224,217,214,227,143,212,224,146,224,213,229,215,165}))
 				end
 			end)
 		end
@@ -4510,7 +5128,7 @@ local function buildWings(page, say)
 								local root = getRoot()
 								if root then
 									local side, i, per = slotOf(idx, #recs)
-									say(_obi44m9h({79,122,126,115,128,50}) .. idx .. _obi44m9h({45,126,112,130,114,118,130,66,53,104,124,126,122,148,128,138,129,141,63,72}) .. rec.heals .. _obi44m9h({60,68,56,62,63,64}))
+									say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({137,218,204,222,206,210,222,158,145,196,216,218,214,240,220,230,221,233,155,164}) .. rec.heals .. _obczbshz({152,160,148,154,155,156}))
 									waitRemotes(rec, 2)
 									runCycle(rec, targetCF(root, side, i, per, os.clock() - t0), nil, true)
 								end
@@ -4520,11 +5138,11 @@ local function buildWings(page, say)
 				end
 			end
 		end)
-		say(_obi44m9h({78,129,112,48,115,115,135,121,131,122,134,70}))
+		say(_obczbshz({170,221,204,140,207,207,227,213,223,214,226,162}))
 	end
 
 	local function buildWing()
-		if busyBuild then say(_obi44m9h({87,209,176,48,118,133,135,131,138,54,122,138,130,123,137,128,140,62,128,64,130,149,132,82,83,84})); return end
+		if busyBuild then say(_obczbshz({179,45,12,140,210,225,227,223,230,146,214,230,222,215,229,220,232,154,220,156,222,241,224,174,175,176})); return end
 		busyBuild = true
 		task.spawn(function()
 			stopAnim()
@@ -4532,16 +5150,16 @@ local function buildWings(page, say)
 			if cfg.hide then hideStart(true) end
 			local ok, err = pcall(function()
 				local root0 = getRoot()
-				if not root0 then say(_obi44m9h({93,115,129,131,128,128,116,123,122,131,55,134,220,189,138,60,130,140,130,143,143,150,149,133,137,149,85})); return end
-				local re1, re2 = remoteRE(_obi44m9h({62,98,126,127,66,126})), remoteRE(_obi44m9h({62,81,123,117,114,67,133,104,132,133,131,73,140}))
-				if not (re1 and re2) then say(_obi44m9h({95,115,124,127,133,119,134,52,121,133,55,104,139,137,139,60,106,127,138,133,147,66,145,231,200,149,71,141,151,141,154,154,161,160,144,148,160,165,97})); return end
-				say(_obi44m9h({82,127,132,121,129,115,129,120,132,54,134,56,105,140,138,140,61,107,128,139,134,148,81,82,83}))
+				if not root0 then say(_obczbshz({185,207,221,223,220,220,208,215,214,223,147,226,56,25,230,152,222,232,222,235,235,242,241,225,229,241,177})); return end
+				local re1, re2 = remoteRE(_obczbshz({154,190,218,219,158,218})), remoteRE(_obczbshz({154,173,215,209,206,159,225,196,224,225,223,165,232}))
+				if not (re1 and re2) then say(_obczbshz({187,207,216,219,225,211,226,144,213,225,147,196,231,229,231,152,198,219,230,225,239,158,237,67,36,241,163,233,243,233,246,246,253,252,236,240,252,1,189})); return end
+				say(_obczbshz({174,219,224,213,221,207,221,212,224,146,226,148,197,232,230,232,153,199,220,231,226,240,173,174,175}))
 				local tool = equipPropMaker(re1)
 				if not tool then
-					say(_obi44m9h({93,128,126,128,49,95,116,127,122,136,55,134,220,189,138,60,126,142,128,146,134,133,136,153,83,70,124,155,142,74,82,111,156,158,152,145,163,82,151,157,150,157,165,251,236,173,175,165,160,173,95,164,176,181,99,166,177,181,170,183,188,113,121})); return
+					say(_obczbshz({185,220,218,220,141,187,208,219,214,228,147,226,56,25,230,152,218,234,220,238,226,225,228,245,175,162,216,247,234,166,174,203,248,250,244,237,255,174,243,249,242,249,1,87,72,9,11,1,252,9,187,0,12,17,191,2,13,17,6,19,24,205,213})); return
 				end
-				local pm = tool:WaitForChild(_obi44m9h({97,125,126,124,112,98,133,131,133,99,120,131,126}), 3)
-				if not pm then say(_obi44m9h({97,125,126,124,112,98,133,131,133,99,120,131,126,58,137,223,192,141,63,133,143,133,146,146,153,152,136,140,152,74,143,145,155,162,161,159,81,150,162,84,133,168,166,168,89,135,156,167,162,176,109})); return end
+				local pm = tool:WaitForChild(_obczbshz({189,217,218,216,204,190,225,223,225,191,212,223,218}), 3)
+				if not pm then say(_obczbshz({189,217,218,216,204,190,225,223,225,191,212,223,218,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,166,235,237,247,254,253,251,173,242,254,176,225,4,2,4,181,227,248,3,254,12,201})); return end
 
 				local total = cfg.per * 2
 				local per = cfg.per
@@ -4552,8 +5170,8 @@ local function buildWings(page, say)
 				local scaleF = cfg.scale / 10
 				local function selectBlock()
 					hide.expect = os.clock() + 1.2
-					pcall(function() re2:FireServer(_obi44m9h({92,126,116,126,97,132,130,132,98,123,133,141})) end)
-					pcall(function() re2:FireServer(_obi44m9h({95,115,128,133,118,133,135,125,131,125,103,138,136,138,105,125,138,131}), blockName, _obi44m9h({79,131,120,124,117,123,129,123}), nil) end)
+					pcall(function() re2:FireServer(_obczbshz({184,218,208,218,189,224,222,224,190,215,225,233})) end)
+					pcall(function() re2:FireServer(_obczbshz({187,207,220,225,210,225,227,217,223,217,195,230,228,230,197,217,230,223}), blockName, _obczbshz({171,223,212,216,209,215,221,215}), nil) end)
 					task.wait(0.35)
 				end
 				local function waitNew(seconds)
@@ -4571,11 +5189,11 @@ local function buildWings(page, say)
 
 				for i = 1, total do
 					if not alive then return end
-					say(_obi44m9h({80,128,120,113,127,118,130,52,119,130,134,123,136,58}) .. i .. _obi44m9h({45,114,116,48}) .. total .. _obi44m9h({59,60,61}))
+					say(_obczbshz({172,220,212,205,219,210,222,144,211,222,226,215,228,150}) .. i .. _obczbshz({137,206,208,140}) .. total .. _obczbshz({151,152,153}))
 					local found
 					for attempt = 1, 3 do
 						local r0 = getRoot()
-						if not r0 then say(_obi44m9h({93,115,129,131,128,128,116,123,122,131,55,139,142,135,132,145,75})); return end
+						if not r0 then say(_obczbshz({185,207,221,223,220,220,208,215,214,223,147,231,234,227,224,237,167})); return end
 						local ang = (i / total) * math.pi * 2 + (attempt - 1) * 0.6
 						local dist = 10 + (attempt - 1) * 3
 						local hit, pos = groundAt(r0.Position.X + math.cos(ang) * dist, r0.Position.Z + math.sin(ang) * dist, r0.Position.Y)
@@ -4586,7 +5204,7 @@ local function buildWings(page, say)
 							if not found and recs[#recs] then
 
 								pcall(function()
-									local rs = rem(recs[#recs], _obi44m9h({127,115,130,133,126,119}))
+									local rs = rem(recs[#recs], _obczbshz({219,207,222,225,218,211}))
 									if rs then rs:InvokeServer() end
 								end)
 								task.wait(0.4)
@@ -4598,14 +5216,14 @@ local function buildWings(page, say)
 						if found then break end
 					end
 					if not found then
-						say(_obi44m9h({79,122,126,115,128,50}) .. i .. _obi44m9h({45,124,210,179,128,50,116,132,118,136,124,123,126,143,73,60,112,131,134,149,138,144,135,147,69,137,150,149,73,153,158,76,156,163,163,162,160,165,97}))
+						say(_obczbshz({171,214,218,207,220,142}) .. i .. _obczbshz({137,216,46,15,220,142,208,224,210,228,216,215,218,235,165,152,204,223,226,241,230,236,227,239,161,229,242,241,165,245,250,168,248,255,255,254,252,1,189}))
 					else
 						known[found] = true
 						local rec = makeRec(found)
 						recs[#recs + 1] = rec
-						pcall(function() re2:FireServer(_obi44m9h({80,122,126,131,118,98,133,131,133,99,124,134,142})) end)
+						pcall(function() re2:FireServer(_obczbshz({172,214,218,223,210,190,225,223,225,191,216,226,234})) end)
 
-						if not waitRemotes(rec, 4) then say(_obi44m9h({79,122,126,115,128,50}) .. i .. _obi44m9h({71,46,129,117,126,129,135,121,136,54,123,125,134,137,141,125,143,127,140,64,130,66,149,137,149,146,144,139,138,156,89})) end
+						if not waitRemotes(rec, 4) then say(_obczbshz({171,214,218,207,220,142}) .. i .. _obczbshz({163,138,221,209,218,221,227,213,228,146,215,217,226,229,233,217,235,219,232,156,222,158,241,229,241,238,236,231,230,248,181})) end
 
 						if #recs == 1 then
 							local base = sizeOf(found).X
@@ -4623,11 +5241,11 @@ local function buildWings(page, say)
 							task.wait(0.5)
 							waitRemotes(rec, 2)
 						end
-						if not okc then say(_obi44m9h({79,122,126,115,128,50}) .. i .. _obi44m9h({71,46}) .. tostring(e2):sub(1, 60)) end
+						if not okc then say(_obczbshz({171,214,218,207,220,142}) .. i .. _obczbshz({163,138}) .. tostring(e2):sub(1, 60)) end
 						task.wait(0.3)
 					end
 				end
-				pcall(function() re2:FireServer(_obi44m9h({80,122,126,131,118,98,133,131,133,99,124,134,142})) end)
+				pcall(function() re2:FireServer(_obczbshz({172,214,218,223,210,190,225,223,225,191,216,226,234})) end)
 
 				do
 					local reg = {}
@@ -4643,7 +5261,7 @@ local function buildWings(page, say)
 							end
 						end
 					end
-					if extra > 0 then say(extra .. _obi44m9h({45,112,123,127,116,129,59,135,62,54,124,144,141,140,124,60,130,140,147,146,130,148,132,145,69,148,136,72,138,157,140,90})) end
+					if extra > 0 then say(extra .. _obczbshz({137,204,215,219,208,221,151,227,154,146,216,236,233,232,216,152,222,232,239,238,222,240,224,237,161,240,228,164,230,249,232,182})) end
 				end
 				if #recs == 0 then return end
 
@@ -4667,12 +5285,12 @@ local function buildWings(page, say)
 					if good == #recs then break end
 					task.wait(0.6)
 				end
-				say(good .. _obi44m9h({45,114,116,48}) .. #recs .. _obi44m9h({45,112,123,127,116,129,134,52,131,133,55,132,142,129,124,142,75}))
+				say(good .. _obczbshz({137,206,208,140}) .. #recs .. _obczbshz({137,204,215,219,208,221,226,144,223,225,147,224,234,221,216,234,167}))
 			end)
 			busyBuild = false
 			hide.learning = false
 			if not ok then
-				say(_obi44m9h({82,128,129,127,75,50}) .. tostring(err):sub(1, 70))
+				say(_obczbshz({174,220,221,219,167,142}) .. tostring(err):sub(1, 70))
 				hideStop()
 				return
 			end
@@ -4680,24 +5298,24 @@ local function buildWings(page, say)
 		end)
 	end
 
-	section(page, _obi44m9h({78,129,112,48,117,119,51,118,129,133,122,135,140,58,67,108,143,141,143,64,110,131,142,137,151,79}))
-	mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-		Text = _obi44m9h({80,128,120,113,49,116,127,131,120,133,138,56,125,137,59,134,140,133,142,64,130,150,149,231,198,153,71,140,142,74,161,155,144,241,217,80,150,82,153,149,175,86,156,164,158,173,91,158,158,178,164,178,97,165,178,177,180,102,188,181,170,106,172,191,174,124,111,160,195,183,182,189,200,183,119,204,190,204,123,203,125,174,209,207,209,130,176,197,208,203,217,136,206,138,209,213,208,207,225,144,225,215,229,232,228,150,219,231,153,221,227,63,32,237,173,160,213,241,231,243,248,166,253,237,238,247,171,251,0,174,241,252,0,245,2,7,195}),
+	section(page, _obczbshz({170,221,204,140,209,211,143,210,221,225,214,227,232,150,159,200,235,233,235,156,202,223,234,229,243,171}))
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({172,220,212,205,141,208,219,223,212,225,230,148,217,229,151,226,232,225,234,156,222,242,241,67,34,245,163,232,234,166,253,247,236,77,53,172,242,174,245,241,11,178,248,0,250,9,183,250,250,14,0,14,189,1,14,13,16,194,24,17,6,198,8,27,10,216,203,252,31,19,18,25,36,19,211,40,26,40,215,39,217,10,45,43,45,222,12,33,44,39,53,228,42,230,45,49,44,43,61,236,61,51,65,68,64,242,55,67,245,57,63,155,124,73,9,252,49,77,67,79,84,2,89,73,74,83,7,87,92,10,77,88,92,81,94,99,31}),
 		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	local nameBox = inputRow(_obi44m9h({91,125,124,117,49,118,130,52,119,130,134,123,136,58,67,140,126,130,145,227,196,145,67,102,145,149,138,147,92,83}), blockName)
+	local nameBox = inputRow(_obczbshz({183,217,216,209,141,210,222,144,211,222,226,215,228,150,159,232,218,222,237,63,32,237,159,194,237,241,230,239,184,175}), blockName)
 	nameBox.FocusLost:Connect(function()
-		local t = nameBox.Text:gsub(_obi44m9h({50,129}), _obi44m9h({}))
-		if t ~= _obi44m9h({}) then blockName = t end
+		local t = nameBox.Text:gsub(_obczbshz({142,221}), _obczbshz({}))
+		if t ~= _obczbshz({}) then blockName = t end
 	end)
-	sliderRow(page, _obi44m9h({79,122,126,115,128,133,51,132,132,136,55,121,140,123}), _obi44m9h({63,46,112,48,70,50,131,131,135,54,131,121,125,137}), 2, 5, 3, function(v) cfg.per = v end)
-	sliderRow(page, _obi44m9h({97,111,124,113,127,122,130,52,121,133,55,122,133,137,126,139}), _obi44m9h({62,62,47,77,49,128,130,134,130,119,131,56,65,79,59,125,61,80,79,73}), 5, 20, 10, function(v) cfg.scale = v end)
-	sliderRow(page, _obi44m9h({99,115,123,127,116,123,119,117,121,123,55,124,122,58,125,125,145,135,131,129}), _obi44m9h({62,46,123,117,127,134,130,52,215,205,55,73,73,58,141,223,190,142,136,132,144}), 1, 10, 5, function(v) cfg.speed = v end)
-	sliderRow(page, _obi44m9h({86,124,131,117,131,136,116,128,132,54,63,133,140,67}), _obi44m9h({122,115,125,127,131,50,80,52,130,119,128,139,57,141,144,125,147,131,63,133,65,143,132,141,152,70,151,141,156,139,143,155}), 150, 600, 300, function(v) cfg.interval = v end)
-	toggleRow(page, _obi44m9h({90,125,115,127,49,117,130,129,133,130,124,140,136}), _obi44m9h({80,122,120,115,114,50,129,131,53,120,131,135,124,137,59,125,61,129,128,132,130,66,133,133,153,143,139,137,87,74,111,145,160,154,152,151,166,151,83,167,154,86,167,157,172,155,173}), function(v) cfg.full = v end, true)
-	toggleRow(page, _obi44m9h({82,129,114,127,127,118,120,134,53,123,123,129,220,193,222,191,140,62,131,143,148,66,133,144,148,137,150,155}), _obi44m9h({96,125,124,117,49,117,130,129,53,133,55,133,126,136,144,60,130,62,128,147,65,149,136,152,134,153,71,140,152,74,123,158,156,158,79,125,146,157,152,166}), function(v)
+	sliderRow(page, _obczbshz({171,214,218,207,220,225,143,224,224,228,147,213,232,215}), _obczbshz({155,138,204,140,162,142,223,223,227,146,223,213,217,229}), 2, 5, 3, function(v) cfg.per = v end)
+	sliderRow(page, _obczbshz({189,203,216,205,219,214,222,144,213,225,147,214,225,229,218,231}), _obczbshz({154,154,139,169,141,220,222,226,222,211,223,148,157,171,151,217,153,172,171,165}), 5, 20, 10, function(v) cfg.scale = v end)
+	sliderRow(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,216,214,150,217,217,237,227,223,221}), _obczbshz({154,138,215,209,219,226,222,144,51,41,147,165,165,150,233,59,26,234,228,224,236}), 1, 10, 5, function(v) cfg.speed = v end)
+	sliderRow(page, _obczbshz({178,216,223,209,223,228,208,220,224,146,155,225,232,159}), _obczbshz({214,207,217,219,223,142,172,144,222,211,220,231,149,233,236,217,239,223,155,225,157,235,224,233,244,162,243,233,248,231,235,247}), 150, 600, 300, function(v) cfg.interval = v end)
+	toggleRow(page, _obczbshz({182,217,207,219,141,209,222,221,225,222,216,232,228}), _obczbshz({172,214,212,207,206,142,221,223,145,212,223,227,216,229,151,217,153,221,220,224,222,158,225,225,245,235,231,229,179,166,203,237,252,246,244,243,2,243,175,3,246,178,3,249,8,247,9}), function(v) cfg.full = v end, true)
+	toggleRow(page, _obczbshz({174,221,206,219,219,210,212,226,145,215,215,221,56,29,58,27,232,154,223,235,240,158,225,236,240,229,242,247}), _obczbshz({188,217,216,209,141,209,222,221,145,225,147,225,218,228,236,152,222,154,220,239,157,241,228,244,226,245,163,232,244,166,215,250,248,250,171,217,238,249,244,2}), function(v)
 		cfg.hide = v
 		if v then
 			if animating or busyBuild then hideStart(false) end
@@ -4705,13 +5323,13 @@ local function buildWings(page, say)
 			hideStop()
 		end
 	end, true)
-	rowBtn(page, _obi44m9h({80,128,120,113,131,50,116,135,118,54,124,56,123,123,143,129,143}), buildWing, true)
-	toggleRow(page, _obi44m9h({79,111,131,117,131,50,116,135,118,137}), _obi44m9h({89,119,118,113,64,118,120,135,129,127,126,121,57,123,59,125,139,135,140,129,228,201,230,199,148}), function(v)
-		if v then startAnim() else stopAnim(); say(_obi44m9h({78,124,120,125,114,213,186,215,184,133,55,136,122,140,124,128,126,76})) end
+	rowBtn(page, _obczbshz({172,220,212,205,223,142,208,227,210,146,216,148,215,215,235,221,235}), buildWing, true)
+	toggleRow(page, _obczbshz({171,203,223,209,223,142,208,227,210,229}), _obczbshz({181,211,210,205,156,210,212,227,221,219,218,213,149,215,151,217,231,227,232,221,64,37,66,35,240}), function(v)
+		if v then startAnim() else stopAnim(); say(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,228,214,232,216,220,218,168})) end
 	end, true)
-	rowBtn(page, _obi44m9h({95,115,127,113,131,115,133,52,119,130,134,123,136,141,59,68,143,131,133,129,155,66,146,151,69,151,156,141,73,144,148,143,142,160,144,157,81,160,162,84,152,158,250,219,168,99}), function()
-		if #recs == 0 then say(_obi44m9h({80,128,120,117,49,115,51,117,136,119,55,136,139,131,136,129,134,144,142,78})); return end
-		if busyBuild then say(_obi44m9h({82,129,127,117,131,119,51,117,53,121,137,129,122,221,194,223,192,141,63,148,134,148,144,141,147,135,153,86})); return end
+	rowBtn(page, _obczbshz({187,207,219,205,223,207,225,144,211,222,226,215,228,233,151,160,235,223,225,221,247,158,238,243,161,243,248,233,165,236,240,235,234,252,236,249,173,252,254,176,244,250,86,55,4,191}), function()
+		if #recs == 0 then say(_obczbshz({172,220,212,209,141,207,143,209,228,211,147,228,231,223,228,221,226,236,234,170})); return end
+		if busyBuild then say(_obczbshz({174,221,219,209,223,211,143,209,145,213,229,221,214,57,30,59,28,233,155,240,226,240,236,233,239,227,245,178})); return end
 		local was = animating
 		stopAnim()
 		busyBuild = true
@@ -4726,85 +5344,85 @@ local function buildWings(page, say)
 						waitRemotes(rec, 2)
 						rec.heals, rec.fails, rec.stuck, rec.lastP = 0, 0, 0, nil
 						local okc, e = runCycle(rec, targetCF(root, side, i, per, 0), scaleF, true)
-						if not okc then say(_obi44m9h({79,122,126,115,128,50}) .. idx .. _obi44m9h({71,46}) .. tostring(e):sub(1, 60)) end
+						if not okc then say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({163,138}) .. tostring(e):sub(1, 60)) end
 						task.wait(0.2)
 					end
 				end
-				say(_obi44m9h({95,115,127,113,131,129,51,122,122,127,139,135,71}))
+				say(_obczbshz({187,207,219,205,223,221,143,214,214,219,231,227,163}))
 			end
 			busyBuild = false
 			if was and alive then startAnim() else hideStop() end
 		end)
 	end, true)
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,120,126,119,126,134,220,205,142,144,134,129,142,64,133,145,150,68,135,146,150,139,152,157}), function()
-		local L = { _obi44m9h({58,59,47,124,128,121,51,120,118,54,120,139,122,84}) }
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,212,218,211,218,226,56,41,234,236,226,221,234,156,225,237,242,160,227,238,242,231,244,249}), function()
+		local L = { _obczbshz({150,151,139,216,220,213,143,212,210,146,212,231,214,176}) }
 		for _, s in ipairs(trace) do L[#L + 1] = s end
 		local function names(inst, limit)
 			local out = {}
 			if inst then
 				for _, c in ipairs(inst:GetChildren()) do
-					if #out < (limit or 25) then out[#out + 1] = c.Name .. _obi44m9h({104}) .. c.ClassName .. _obi44m9h({106}) end
+					if #out < (limit or 25) then out[#out + 1] = c.Name .. _obczbshz({196}) .. c.ClassName .. _obczbshz({198}) end
 				end
 			end
-			return table.concat(out, _obi44m9h({57,46}))
+			return table.concat(out, _obczbshz({149,138}))
 		end
-		L[#L + 1] = _obi44m9h({93,128,126,128,94,115,126,121,135,54,124,137,142,131,139,125,129,141,89,64}) .. tostring(propTool() ~= nil)
-		L[#L + 1] = _obi44m9h({80,118,112,130,114,117,135,121,135,80,55}) .. names(lp.Character)
-		L[#L + 1] = _obi44m9h({79,111,114,123,129,115,118,127,79,54}) .. names(lp:FindFirstChildOfClass(_obi44m9h({79,111,114,123,129,115,118,127})))
-		local wc0 = workspace:FindFirstChild(_obi44m9h({100,125,129,123,132,130,116,119,122,89,134,133}))
-		L[#L + 1] = _obi44m9h({93,128,126,128,93,129,118,117,137,127,134,134,140,84,59}) .. names(wc0 and wc0:FindFirstChild(_obi44m9h({93,128,126,128,93,129,118,117,137,127,134,134,140})), 20)
-		L[#L + 1] = _obi44m9h({114,129,114,127,127,118,120,134,53,123,123,129,220,193,222,191,140,88,63}) .. tostring(cfg.hide) .. _obi44m9h({45,138,47,121,127,134,120,134,123,119,122,125,140,58,124,140,143,131,141,132,138,134,132,151,95,70}) .. hide.count
+		L[#L + 1] = _obczbshz({185,220,218,220,186,207,218,213,227,146,216,229,234,223,231,217,221,233,181,156}) .. tostring(propTool() ~= nil)
+		L[#L + 1] = _obczbshz({172,210,204,222,206,209,227,213,227,172,147}) .. names(lp.Character)
+		L[#L + 1] = _obczbshz({171,203,206,215,221,207,210,219,171,146}) .. names(lp:FindFirstChildOfClass(_obczbshz({171,203,206,215,221,207,210,219})))
+		local wc0 = workspace:FindFirstChild(_obczbshz({192,217,221,215,224,222,208,211,214,181,226,225}))
+		L[#L + 1] = _obczbshz({185,220,218,220,185,221,210,209,229,219,226,226,232,176,151}) .. names(wc0 and wc0:FindFirstChild(_obczbshz({185,220,218,220,185,221,210,209,229,219,226,226,232})), 20)
+		L[#L + 1] = _obczbshz({206,221,206,219,219,210,212,226,145,215,215,221,56,29,58,27,232,180,155}) .. tostring(cfg.hide) .. _obczbshz({137,230,139,213,219,226,212,226,215,211,214,217,232,150,216,232,235,223,233,224,230,226,224,243,187,162}) .. hide.count
 		do
 			local nm = {}
 			for g in pairs(hide.set) do
 				if #nm < 15 then
 					local full = g:GetFullName()
-					nm[#nm + 1] = (full:gsub(_obi44m9h({107,60,60,96,125,115,140,121,135,93,140,129,62,72}), _obi44m9h({})))
+					nm[#nm + 1] = (full:gsub(_obczbshz({199,152,152,188,217,207,232,213,227,185,232,221,154,164}), _obczbshz({})))
 				end
 			end
-			L[#L + 1] = _obi44m9h({118,124,131,117,131,120,116,119,122,137,55,125,140,125,138,138,129,135,131,129,148,92,67}) .. table.concat(nm, _obi44m9h({45,138,47}))
+			L[#L + 1] = _obczbshz({210,216,223,209,223,212,208,211,214,229,147,217,232,217,230,230,221,227,223,221,240,184,159}) .. table.concat(nm, _obczbshz({137,230,139}))
 		end
 		do
 			local sgs = {}
 			local pg = playerGui()
 			if pg then
 				for _, sg in ipairs(pg:GetChildren()) do
-					if sg:IsA(_obi44m9h({96,113,129,117,118,128,90,137,126})) and #sgs < 70 then sgs[#sgs + 1] = sg.Name .. (sg.Enabled and _obi44m9h({}) or _obi44m9h({53,125,117,118,58})) end
+					if sg:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) and #sgs < 70 then sgs[#sgs + 1] = sg.Name .. (sg.Enabled and _obczbshz({}) or _obczbshz({145,217,209,210,150})) end
 				end
 			end
-			L[#L + 1] = _obi44m9h({93,122,112,137,118,132,90,137,126,80,55}) .. table.concat(sgs, _obi44m9h({57,46}))
+			L[#L + 1] = _obczbshz({185,214,204,229,210,224,182,229,218,172,147}) .. table.concat(sgs, _obczbshz({149,138}))
 		end
-		L[#L + 1] = _obi44m9h({111,122,126,115,128,133,51,134,122,125,128,139,141,140,124,128,140,145,89,64}) .. #recs
+		L[#L + 1] = _obczbshz({203,214,218,207,220,225,143,226,214,217,220,231,233,232,216,220,232,237,181,156}) .. #recs
 		for idx, rec in ipairs(recs) do
 			local kids = {}
-			for _, c in ipairs(rec.model:GetChildren()) do kids[#kids + 1] = c.Name .. _obi44m9h({104}) .. c.ClassName .. _obi44m9h({106}) end
+			for _, c in ipairs(rec.model:GetChildren()) do kids[#kids + 1] = c.Name .. _obczbshz({196}) .. c.ClassName .. _obczbshz({198}) end
 			local ok, p = pcall(function() return rec.model:GetPivot().Position end)
-			L[#L + 1] = idx .. _obi44m9h({54,46}) .. rec.model:GetFullName() .. _obi44m9h({45,126,126,131,78}) .. (ok and tostring(p) or _obi44m9h({76}))
-			L[#L + 1] = _obi44m9h({45,46,47,130,118,127,130,136,122,137,81,56,123,127,130,133,139,91}) .. tostring(rem(rec, _obi44m9h({111,115,118,121,127})) ~= nil) .. _obi44m9h({45,129,116,132,78}) .. tostring(rem(rec, _obi44m9h({128,115,131,115,119})) ~= nil)
-				.. _obi44m9h({45,115,125,116,78}) .. tostring(rem(rec, _obi44m9h({114,124,115,128})) ~= nil) .. _obi44m9h({45,130,126,133,116,122,80}) .. tostring(touchOf(rec) ~= nil)
-				.. _obi44m9h({45,138,47,118,114,126,123,117,136,83}) .. rec.fails .. _obi44m9h({45,128,116,118,118,123,135,131,136,83}) .. rec.heals .. _obi44m9h({45,115,129,130,128,79}) .. tostring(rec.lastErr)
-			L[#L + 1] = _obi44m9h({45,46,47,118,122,126,123,131,136,80,55}) .. table.concat(kids, _obi44m9h({57,46}))
+			L[#L + 1] = idx .. _obczbshz({146,138}) .. rec.model:GetFullName() .. _obczbshz({137,218,218,223,170}) .. (ok and tostring(p) or _obczbshz({168}))
+			L[#L + 1] = _obczbshz({137,138,139,222,210,219,222,228,214,229,173,148,215,219,222,225,231,183}) .. tostring(rem(rec, _obczbshz({203,207,210,213,219})) ~= nil) .. _obczbshz({137,221,208,224,170}) .. tostring(rem(rec, _obczbshz({220,207,223,207,211})) ~= nil)
+				.. _obczbshz({137,207,217,208,170}) .. tostring(rem(rec, _obczbshz({206,216,207,220})) ~= nil) .. _obczbshz({137,222,218,225,208,214,172}) .. tostring(touchOf(rec) ~= nil)
+				.. _obczbshz({137,230,139,210,206,218,215,209,228,175}) .. rec.fails .. _obczbshz({137,220,208,210,210,215,227,223,228,175}) .. rec.heals .. _obczbshz({137,207,221,222,220,171}) .. tostring(rec.lastErr)
+			L[#L + 1] = _obczbshz({137,138,139,210,214,218,215,223,228,172,147}) .. table.concat(kids, _obczbshz({149,138}))
 		end
-		local wc = workspace:FindFirstChild(_obi44m9h({100,125,129,123,132,130,116,119,122,89,134,133}))
+		local wc = workspace:FindFirstChild(_obczbshz({192,217,221,215,224,222,208,211,214,181,226,225}))
 		if wc then
-			L[#L + 1] = _obi44m9h({58,59,47,103,128,132,126,135,133,119,122,125,92,137,136,60,69,135,147,133,143,149,67,135,148,147,71,151,73,157,144,161,77,156,158,157,150,82,162,169,85,93,135,170,168,170,98,101,119})
+			L[#L + 1] = _obczbshz({150,151,139,195,220,224,218,227,225,211,214,217,184,229,228,152,161,227,239,225,235,241,159,227,240,239,163,243,165,249,236,253,169,248,250,249,242,174,254,5,177,185,227,6,4,6,190,193,211})
 			local n = 0
 			for _, c in ipairs(wc:GetChildren()) do
-				if n < 40 and (c.Name:find(lp.Name, 1, true) or c.Name:find(_obi44m9h({93,128,126,128}), 1, true)) then
+				if n < 40 and (c.Name:find(lp.Name, 1, true) or c.Name:find(_obczbshz({185,220,218,220}), 1, true)) then
 					n = n + 1
 					local kids = {}
 					for _, k in ipairs(c:GetChildren()) do
-						if #kids < 8 then kids[#kids + 1] = k.Name .. _obi44m9h({104}) .. k.ClassName .. _obi44m9h({106}) end
+						if #kids < 8 then kids[#kids + 1] = k.Name .. _obczbshz({196}) .. k.ClassName .. _obczbshz({198}) end
 					end
-					L[#L + 1] = c:GetFullName() .. _obi44m9h({45,59,77,48}) .. table.concat(kids, _obi44m9h({57,46}))
+					L[#L + 1] = c:GetFullName() .. _obczbshz({137,151,169,140}) .. table.concat(kids, _obczbshz({149,138}))
 				end
 			end
 		end
-		clip(table.concat(L, _obi44m9h({23})))
+		clip(table.concat(L, _obczbshz({115})))
 	end, true)
-	rowBtn(page, _obi44m9h({93,111,129,113,131,50,120,52,136,133,131,140,122,140,59,126,137,141,130,143,148}), function()
+	rowBtn(page, _obczbshz({185,203,221,205,223,142,212,144,228,225,223,232,214,232,151,218,229,233,222,235,240}), function()
 		stopAnim()
-		say(_obi44m9h({78,124,120,125,114,213,186,215,184,133,55,136,122,140,124,128,126,76,63,111,148,66,133,144,148,137,150,155,73,144,148,143,142,155,79,158,160,82,160,149,165,151,87,96,154,170,156,163,178,163,95,176,166,174,178,100,178,171,181,189,105,174,186,108,157,192,190,192,113,159,180,191,186,200,128,134}))
+		say(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,228,214,232,216,220,218,168,155,203,240,158,225,236,240,229,242,247,165,236,240,235,234,247,171,250,252,174,252,241,1,243,179,188,246,6,248,255,14,255,187,12,2,10,14,192,14,7,17,25,197,10,22,200,249,28,26,28,205,251,16,27,22,36,220,226}))
 	end, true)
 
 	return function()
@@ -4818,12 +5436,12 @@ local function execName()
 	local name, ver
 	pcall(function() name, ver = identifyexecutor() end)
 	if not name then pcall(function() name = getexecutorname() end) end
-	if not name then return _obi44m9h({81,115,130,115,128,128,123,121,120,127,123,135}) end
-	return tostring(name) .. (ver and (_obi44m9h({45}) .. tostring(ver)) or _obi44m9h({}))
+	if not name then return _obczbshz({173,207,222,207,220,220,215,213,212,219,215,227}) end
+	return tostring(name) .. (ver and (_obczbshz({137}) .. tostring(ver)) or _obczbshz({}))
 end
 local function toBase36(n)
-	local chars = _obi44m9h({61,63,65,67,69,71,73,75,77,79,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138})
-	local s = _obi44m9h({})
+	local chars = _obczbshz({153,155,157,159,161,163,165,167,169,171,180,182,184,186,188,190,192,194,196,198,200,202,204,206,208,210,212,214,216,218,220,222,224,226,228,230})
+	local s = _obczbshz({})
 	repeat
 		local r = n % 36
 		s = chars:sub(r + 1, r + 1) .. s
@@ -4833,38 +5451,68 @@ local function toBase36(n)
 end
 
 local function hubId(uid)
-	return _obi44m9h({81,97,60}) .. toBase36(uid) .. _obi44m9h({58}) .. toBase36((uid * 31 + 7) % 1296)
+	return _obczbshz({173,189,152}) .. toBase36(uid) .. _obczbshz({150}) .. toBase36((uid * 31 + 7) % 1296)
 end
 local function buildId(page, say)
 	local function fmt(sec)
 		sec = math.max(0, math.floor(sec))
-		return string.format(_obi44m9h({50,62,65,116,75,55,67,70,121,80,60,72,75,126}), math.floor(sec / 3600), math.floor(sec / 60) % 60, sec % 60)
+		return string.format(_obczbshz({142,154,157,208,167,147,159,162,213,172,152,164,167,218}), math.floor(sec / 3600), math.floor(sec / 60) % 60, sec % 60)
 	end
-	local function row(title, value)
-		local f = mk(_obi44m9h({83,128,112,125,118}), { Size = UDim2.new(1, 0, 0, 46), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
-		round(f, 12); stroke(f, 1.5)
-		mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = title, Size = UDim2.new(1, -24, 0, 16), Position = UDim2.fromOffset(14, 5), BackgroundTransparency = 1,
-			TextColor3 = Color3.fromRGB(220, 140, 140), Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left,
+	local function esc(s) return (tostring(s):gsub(_obczbshz({143}), _obczbshz({143,203,216,220,168})):gsub(_obczbshz({165}), _obczbshz({143,214,223,167})):gsub(_obczbshz({167}), _obczbshz({143,209,223,167}))) end
+	local DIMC = Color3.fromRGB(205, 168, 171)
+
+	local card = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 64), BackgroundTransparency = 1 }, page)
+	local av = mk(_obczbshz({178,215,204,211,210,186,208,210,214,222}), {
+		Size = UDim2.fromOffset(54, 54), Position = UDim2.fromOffset(4, 5), BackgroundColor3 = Color3.fromRGB(14, 4, 6),
+		Image = _obczbshz({}), ScaleType = Enum.ScaleType.Crop,
+	}, card)
+	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, av)
+	local avs = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = WHITE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, av)
+	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
+		Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 80, 96)), ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 12, 22)) }),
+		Rotation = 45,
+	}, avs)
+	task.spawn(function()
+		local ok, img = pcall(function()
+			return Players:GetUserThumbnailAsync(lp.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+		end)
+		if ok and img and av.Parent then av.Image = img end
+	end)
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = lp.DisplayName, Size = UDim2.new(1, -72, 0, 22), Position = UDim2.fromOffset(68, 11), BackgroundTransparency = 1,
+		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 16, TextXAlignment = Enum.TextXAlignment.Left,
+		TextTruncate = Enum.TextTruncate.AtEnd,
+	}, card)
+	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({169}) .. lp.Name, Size = UDim2.new(1, -72, 0, 16), Position = UDim2.fromOffset(68, 33), BackgroundTransparency = 1,
+		TextColor3 = DIMC, Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
+		TextTruncate = Enum.TextTruncate.AtEnd,
+	}, card)
+	local ln = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -4, 0, 1), BackgroundColor3 = UI.EDGE, BorderSizePixel = 0, LayoutOrder = 0 }, page)
+	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), { Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.1), NumberSequenceKeypoint.new(1, 1) }) }, ln)
+
+	local function line(title, value)
+		local f = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 18), BackgroundTransparency = 1 }, page)
+		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = title, Size = UDim2.fromOffset(82, 18), Position = UDim2.fromOffset(6, 0), BackgroundTransparency = 1,
+			TextColor3 = DIMC, Font = Enum.Font.Gotham, TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left,
 		}, f)
-		return mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-			Text = value, Size = UDim2.new(1, -24, 0, 22), Position = UDim2.fromOffset(14, 21), BackgroundTransparency = 1,
-			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left,
+		return mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			Text = value, Size = UDim2.new(1, -92, 1, 0), Position = UDim2.fromOffset(88, 0), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 			TextTruncate = Enum.TextTruncate.AtEnd,
 		}, f)
 	end
-	section(page, _obi44m9h({96,115,132,48,129,119,133,122,126,130,55,134,136,58,131,145,127}))
-	local up = row(_obi44m9h({97,115,124,128,128,50,116,136,126,140,134}), fmt(0))
-	row(_obi44m9h({91,119,114,123}), lp.DisplayName .. _obi44m9h({45,46,55,80}) .. lp.Name .. _obi44m9h({54}))
-	row(_obi44m9h({82,134,116,115,134,134,130,134}), execName())
 	local id = hubId(lp.UserId)
-	row(_obi44m9h({86,82,47,211,203,128,124,119,132}), id)
-	row(_obi44m9h({98,129,116,130,90,118,51,120,132,54,105,135,123,134,138,148}), tostring(lp.UserId))
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,129,122,139,55,97,93}), function()
+	local up = line(_obczbshz({189,207,216,220,220,142,208,228,218,232,226}), fmt(0))
+	line(_obczbshz({174,226,208,207,226,226,222,226}), execName())
+	line(_obczbshz({178,174,139,47,39,220,216,211,224}), id)
+	line(_obczbshz({190,221,208,222,182,210}), tostring(lp.UserId))
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,221,214,231,147,189,185}), function()
 		local f = setclipboard or toclipboard
-		if not f then say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,147,133,142,66,150,137,153,137,147,145,153,140,154,141,159,146,93,80,132,151,168,84,126,122,113,88}) .. id); return end
-		say(pcall(f, id) and (_obi44m9h({86,82,47,115,128,130,124,117,121,133,81,56}) .. id) or _obi44m9h({83,111,123,120,128,135,51,117,132,54,122,135,137,131,124,142,75}))
-	end)
+		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,224,243,4,176,218,214,205,180}) .. id); return end
+		say(pcall(f, id) and (_obczbshz({178,174,139,207,220,222,216,209,213,225,173,148}) .. id) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
+	end, true)
 	task.spawn(function()
 		while page.Parent do
 			up.Text = fmt(os.time() - HUB_START_T)
@@ -4875,9 +5523,9 @@ end
 
 local AVATAR = {
 	wear = function(kind, id)
-		local folder = game:GetService(_obi44m9h({95,115,127,124,122,117,116,136,122,122,106,140,136,140,124,131,130})):FindFirstChild(_obi44m9h({95,115,124,127,133,119,134}))
-		local r = folder and folder:FindFirstChild(_obi44m9h({100,115,112,130}))
-		if not r then error(_obi44m9h({127,115,124,127,133,119,51,107,122,119,137,56,135,221,190,139,61,131,141,131,144,144,151,150,134,138,150})) end
+		local folder = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222})):FindFirstChild(_obczbshz({187,207,216,219,225,211,226}))
+		local r = folder and folder:FindFirstChild(_obczbshz({192,207,204,222}))
+		if not r then error(_obczbshz({219,207,216,219,225,211,143,199,214,211,229,148,227,57,26,231,153,223,233,223,236,236,243,242,226,230,242})) end
 		return r:InvokeServer(id, nil)
 	end,
 }
@@ -4885,25 +5533,25 @@ local function buildAvatar(page, say)
 	local target
 	local items = {}
 	local BODY = { Head = true, Torso = true, LeftArm = true, RightArm = true, LeftLeg = true, RightLeg = true }
-	local COLOR_KEYS = { _obi44m9h({85,115,112,116,84,129,127,131,135}), _obi44m9h({97,125,129,131,128,85,130,128,132,136}), _obi44m9h({89,115,117,132,82,132,128,87,132,130,134,138}), _obi44m9h({95,119,118,120,133,83,133,129,88,133,131,135,139}), _obi44m9h({89,115,117,132,93,119,122,87,132,130,134,138}), _obi44m9h({95,119,118,120,133,94,120,123,88,133,131,135,139}) }
-	local SCALE_KEYS = { _obi44m9h({85,115,120,119,121,134,102,119,118,130,124}), _obi44m9h({100,119,115,132,121,101,118,117,129,123}), _obi44m9h({81,115,127,132,121,101,118,117,129,123}), _obi44m9h({85,115,112,116,100,117,116,128,122}), _obi44m9h({79,125,115,137,101,139,131,121,104,121,120,132,126}), _obi44m9h({93,128,126,128,128,132,135,125,132,132,106,123,122,134,128}) }
+	local COLOR_KEYS = { _obczbshz({177,207,204,208,176,221,219,223,227}), _obczbshz({189,217,221,223,220,177,222,220,224,228}), _obczbshz({181,207,209,224,174,224,220,179,224,222,226,230}), _obczbshz({187,211,210,212,225,175,225,221,180,225,223,227,231}), _obczbshz({181,207,209,224,185,211,214,179,224,222,226,230}), _obczbshz({187,211,210,212,225,186,212,215,180,225,223,227,231}) }
+	local SCALE_KEYS = { _obczbshz({177,207,212,211,213,226,194,211,210,222,216}), _obczbshz({192,211,207,224,213,193,210,209,221,215}), _obczbshz({173,207,219,224,213,193,210,209,221,215}), _obczbshz({177,207,204,208,192,209,208,220,214}), _obczbshz({171,217,207,229,193,231,223,213,196,213,212,224,218}), _obczbshz({185,220,218,220,220,224,227,217,224,224,198,215,214,226,220}) }
 	local targetEx
 
 	local alog = { lines = {}, view = nil, t0 = os.clock() }
 	local function logLine(text)
-		local line = string.format(_obi44m9h({104,51,68,62,66,120,134,113,53,59,138}), os.clock() - alog.t0, text)
+		local line = string.format(_obczbshz({196,143,160,154,158,212,226,205,145,151,230}), os.clock() - alog.t0, text)
 		alog.lines[#alog.lines + 1] = line
 		if #alog.lines > 400 then table.remove(alog.lines, 1) end
 		if alog.view and alog.view.Parent then
-			local bad = text:find(_obi44m9h({83,79,91,88,96,103}), 1, true) or text:find(_obi44m9h({83,79,91,100,96,103}), 1, true) or text:find(_obi44m9h({91,209,146,95,49,101,84,93,106}), 1, true)
-			mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+			local bad = text:find(_obczbshz({175,171,183,180,188,195}), 1, true) or text:find(_obczbshz({175,171,183,192,188,195}), 1, true) or text:find(_obczbshz({183,45,238,187,141,193,176,185,198}), 1, true)
+			mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 				Text = line, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
 				TextColor3 = bad and Color3.fromRGB(255, 140, 140) or WHITE, Font = Enum.Font.Code, TextSize = 11,
 				TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, LayoutOrder = #alog.lines,
 			}, alog.view)
 			local kids = {}
 			for _, c in ipairs(alog.view:GetChildren()) do
-				if c:IsA(_obi44m9h({97,115,135,132,93,115,117,121,129})) then kids[#kids + 1] = c end
+				if c:IsA(_obczbshz({189,207,227,224,185,207,209,213,221})) then kids[#kids + 1] = c end
 			end
 			if #kids > 150 then kids[1]:Destroy() end
 		end
@@ -4914,7 +5562,7 @@ local function buildAvatar(page, say)
 	end
 
 	local function note(text, h)
-		return mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+		return mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
 			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
@@ -4922,31 +5570,31 @@ local function buildAvatar(page, say)
 	end
 
 	local function readAvatar(pl)
-		local h = pl.Character and pl.Character:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
-		if not h then return nil, _obi44m9h({124,46,121,127,120,115,119,131,135,54,124,139,141,221,188,60,144,131,140,64,145,135,149,151,148,148,136,143,142,151}) end
+		local h = pl.Character and pl.Character:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		if not h then return nil, _obczbshz({216,138,213,219,212,207,211,223,227,146,216,231,233,57,24,152,236,223,232,156,237,227,241,243,240,240,228,235,234,243}) end
 		local ok, d = pcall(function() return h:GetAppliedDescription() end)
-		if not ok or not d then return nil, _obi44m9h({123,209,178,127,49,117,130,130,136,123,126,141,130,58,135,129,143,62,142,64,130,152,132,152,134,152,71,140,142,150,144}) end
+		if not ok or not d then return nil, _obczbshz({215,45,14,219,141,209,222,222,228,215,218,233,222,150,227,221,235,154,234,156,222,244,224,244,226,244,163,232,234,242,236}) end
 		local out = {}
 		local function add(kind, id)
 			id = tonumber(id)
 			if id and id > 0 then out[#out + 1] = { kind = kind, id = math.floor(id) } end
 		end
 		local okA, acc = pcall(function() return d:GetAccessories(true) end)
-		if okA and type(acc) == _obi44m9h({129,111,113,124,118}) then
-			for _, a in ipairs(acc) do add((tostring(a.AccessoryType):gsub(_obi44m9h({107,83,125,133,126,55,65,85,120,121,124,139,140,137,141,149,113,151,143,133,70,80}), _obi44m9h({}))), a.AssetId) end
+		if okA and type(acc) == _obczbshz({221,203,205,216,210}) then
+			for _, a in ipairs(acc) do add((tostring(a.AccessoryType):gsub(_obczbshz({199,175,217,225,218,147,157,177,212,213,216,231,232,229,233,241,205,243,235,225,162,172}), _obczbshz({}))), a.AssetId) end
 		end
-		for _, k in ipairs({ _obi44m9h({96,118,120,130,133}), _obi44m9h({93,111,125,132,132}), _obi44m9h({84,128,112,128,121,123,118,104,104,126,128,138,141}), _obi44m9h({83,111,114,117}), _obi44m9h({85,115,112,116}), _obi44m9h({97,125,129,131,128}), _obi44m9h({89,115,117,132,82,132,128}), _obi44m9h({95,119,118,120,133,83,133,129}), _obi44m9h({89,115,117,132,93,119,122}), _obi44m9h({95,119,118,120,133,94,120,123}) }) do
+		for _, k in ipairs({ _obczbshz({188,210,212,222,225}), _obczbshz({185,203,217,224,224}), _obczbshz({176,220,204,220,213,215,210,196,196,218,220,230,233}), _obczbshz({175,203,206,209}), _obczbshz({177,207,204,208}), _obczbshz({189,217,221,223,220}), _obczbshz({181,207,209,224,174,224,220}), _obczbshz({187,211,210,212,225,175,225,221}), _obczbshz({181,207,209,224,185,211,214}), _obczbshz({187,211,210,212,225,186,212,215}) }) do
 			local okP, v = pcall(function() return d[k] end)
 			if okP then add(k, v) end
 		end
 		local ex = { colors = {}, scales = {}, zero = {} }
 		for _, k in ipairs(COLOR_KEYS) do
 			local okC, c = pcall(function() return d[k] end)
-			if okC and typeof(c) == _obi44m9h({80,125,123,127,131,69}) then ex.colors[k] = c end
+			if okC and typeof(c) == _obczbshz({172,217,215,219,223,161}) then ex.colors[k] = c end
 		end
 		for _, k in ipairs(SCALE_KEYS) do
 			local okS, v = pcall(function() return d[k] end)
-			if okS and type(v) == _obi44m9h({123,131,124,114,118,132}) then ex.scales[k] = v end
+			if okS and type(v) == _obczbshz({215,223,216,206,210,224}) then ex.scales[k] = v end
 		end
 		for k in pairs(BODY) do
 			local okZ, v = pcall(function() return d[k] end)
@@ -4956,7 +5604,7 @@ local function buildAvatar(page, say)
 		return out, nil, ex
 	end
 	local function fmtColor(c)
-		return string.format(_obi44m9h({127,117,113,56,54,118,63,57,121,66,60,124,66}), math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
+		return string.format(_obczbshz({219,209,205,148,146,210,155,149,213,158,152,216,158}), math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
 	end
 	local function sameColor(a, b)
 		return math.abs(a.R - b.R) < 0.012 and math.abs(a.G - b.G) < 0.012 and math.abs(a.B - b.B) < 0.012
@@ -4965,14 +5613,14 @@ local function buildAvatar(page, say)
 		if not ex then return end
 		local cs, ss = {}, {}
 		for _, k in ipairs(COLOR_KEYS) do
-			if ex.colors[k] then cs[#cs + 1] = (k:gsub(_obi44m9h({80,125,123,127,131,54}), _obi44m9h({}))) .. _obi44m9h({74}) .. fmtColor(ex.colors[k]) end
+			if ex.colors[k] then cs[#cs + 1] = (k:gsub(_obczbshz({172,217,215,219,223,146}), _obczbshz({}))) .. _obczbshz({166}) .. fmtColor(ex.colors[k]) end
 		end
 		for _, k in ipairs(SCALE_KEYS) do
-			if ex.scales[k] then ss[#ss + 1] = (k:gsub(_obi44m9h({96,113,112,124,118,54}), _obi44m9h({}))) .. _obi44m9h({74}) .. string.format(_obi44m9h({50,60,65,118}), ex.scales[k]) end
+			if ex.scales[k] then ss[#ss + 1] = (k:gsub(_obczbshz({188,205,204,216,210,146}), _obczbshz({}))) .. _obczbshz({166}) .. string.format(_obczbshz({142,152,157,210}), ex.scales[k]) end
 		end
-		logLine(prefix .. _obi44m9h({80,125,129,117,132,76,51}) .. (#cs > 0 and table.concat(cs, _obi44m9h({45})) or _obi44m9h({76})))
-		logLine(prefix .. _obi44m9h({93,128,126,128,128,132,214,187,216,203,124,139,83,58}) .. (#ss > 0 and table.concat(ss, _obi44m9h({45})) or _obi44m9h({76})))
-		logLine(prefix .. _obi44m9h({93,111,129,132,118,133,51,120,132,54,122,135,139,138,138,60,144,131,140,64,138,150,136,145,69,78,151,137,141,156,238,207,156,78,147,159,81,156,162,155,164,95,113,88}) .. (#ex.zero > 0 and table.concat(ex.zero, _obi44m9h({57,46})) or _obi44m9h({123,115,125,120,134,127,116})))
+		logLine(prefix .. _obczbshz({172,217,221,209,224,168,143}) .. (#cs > 0 and table.concat(cs, _obczbshz({137})) or _obczbshz({168})))
+		logLine(prefix .. _obczbshz({185,220,218,220,220,224,50,23,52,39,216,231,175,150}) .. (#ss > 0 and table.concat(ss, _obczbshz({137})) or _obczbshz({168})))
+		logLine(prefix .. _obczbshz({185,203,221,224,210,225,143,212,224,146,214,227,231,230,230,152,236,223,232,156,230,242,228,237,161,170,243,229,233,248,74,43,248,170,239,251,173,248,254,247,0,187,205,180}) .. (#ex.zero > 0 and table.concat(ex.zero, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219,208})))
 	end
 
 	local function compareExtra(theirs, mine)
@@ -4981,40 +5629,40 @@ local function buildAvatar(page, say)
 			local a, b = theirs.colors[k], mine.colors[k]
 			if a and b and not sameColor(a, b) then
 				n = n + 1
-				logLine(_obi44m9h({81,87,85,85,99,87,97,104,90,54}) .. k .. _obi44m9h({71,46,115,117,125,119,51}) .. fmtColor(a) .. _obi44m9h({45,61,47,131,118,135,51}) .. fmtColor(b))
+				logLine(_obczbshz({173,179,177,177,191,179,189,196,182,146}) .. k .. _obczbshz({163,138,207,209,217,211,143}) .. fmtColor(a) .. _obczbshz({137,153,139,223,210,227,143}) .. fmtColor(b))
 			end
 		end
 		for _, k in ipairs(SCALE_KEYS) do
 			local a, b = theirs.scales[k], mine.scales[k]
 			if a and b and math.abs(a - b) > 0.01 then
 				n = n + 1
-				logLine(string.format(_obi44m9h({81,87,85,85,99,87,97,104,90,54,60,139,83,58,127,129,137,131,63,69,79,84,137,68,84,70,154,141,158,74,80,90,95,148}), k, a, b))
+				logLine(string.format(_obczbshz({173,179,177,177,191,179,189,196,182,146,152,231,175,150,219,221,229,223,155,161,171,176,229,160,176,162,246,233,250,166,172,182,187,240}), k, a, b))
 			end
 		end
 		return n
 	end
 
-	section(page, _obi44m9h({80,125,127,121,114,132,51,117,139,119,139,121,139,58,127,139,61,96,145,143,144,141,139,133,155,139,149}))
-	note(_obi44m9h({80,125,127,121,114,50,130,135,53,127,139,125,135,141,59,141,146,131,63,129,65,146,136,151,152,149,136,72,142,157,159,239,206,78,164,163,146,160,151,163,85,166,169,167,89,173,160,177,93,159,181,161,181,163,181,100,169,181,103,138,187,185,186,183,181,175,197,181,191,128,115,167,24,9,119,206,190,205,207,193,125,205,127,209,214,199,131,218,212,201,42,18,137,212,46,13,141,226,212,221,172,146,226,148,221,235,217,152,231,61,30,235,157,225,238,237,241,244,228,164,243,231,235,233,183}), 44)
+	section(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,219,231,153,188,237,235,236,233,231,225,247,231,241}))
+	note(_obczbshz({172,217,219,213,206,142,222,227,145,219,231,217,227,233,151,233,238,223,155,221,157,238,228,243,244,241,228,164,234,249,251,75,42,170,0,255,238,252,243,255,177,2,5,3,181,9,252,13,185,251,17,253,17,255,17,192,5,17,195,230,23,21,22,19,17,11,33,17,27,220,207,3,116,101,211,42,26,41,43,29,217,41,219,45,50,35,223,54,48,37,134,110,229,48,138,105,233,62,48,57,8,238,62,240,57,71,53,244,67,153,122,71,249,61,74,73,77,80,64,0,79,67,71,69,19}), 44)
 	local ddA
-	ddA = dropdown(page, _obi44m9h({82,129,114,127,125,122,120,134,53,128,134,127,122,126,138,142,61,70,141,133,143,138,152,145,78}), function()
+	ddA = dropdown(page, _obczbshz({174,221,206,219,217,214,212,226,145,220,226,219,214,218,230,234,153,162,233,225,235,230,244,237,170}), function()
 		local t = {}
 		for _, pl in ipairs(Players:GetPlayers()) do
 			if pl ~= lp then
-				table.insert(t, { label = pl.DisplayName .. _obi44m9h({45,46,55,80}) .. pl.Name .. _obi44m9h({54}), value = pl, name = pl.DisplayName })
+				table.insert(t, { label = pl.DisplayName .. _obczbshz({137,138,147,172}) .. pl.Name .. _obczbshz({146}), value = pl, name = pl.DisplayName })
 			end
 		end
 		table.sort(t, function(a, b) return a.label:lower() < b.label:lower() end)
 		return t
 	end, function(it)
 		target = it.value
-		ddA.setText(_obi44m9h({87,125,118,113,117,129,133,78,53}) .. it.name)
+		ddA.setText(_obczbshz({179,217,210,205,209,221,225,170,145}) .. it.name)
 	end)
-	local summary = note(_obi44m9h({91,115,125,120,134,127,51,117,139,119,139,121,139,58,135,133,129,141,63,129,138,144,135,133,83}), 34)
-	rowBtn(page, _obi44m9h({89,115,129,48,114,136,116,136,118,136,55,124,136,58,133,139,132,127,131,143,147}), function()
-		if not target or not target.Parent then say(_obi44m9h({82,129,114,127,125,122,116,52,138,131,55,130,136,129,124,128,140,144,63,144,147,139,144,137,142,152,150,86})); return end
+	local summary = note(_obczbshz({183,207,217,212,226,219,143,209,231,211,231,213,231,150,227,225,221,233,155,221,230,236,227,225,175}), 34)
+	rowBtn(page, _obczbshz({181,207,221,140,206,228,208,228,210,228,147,216,228,150,225,231,224,219,223,235,239}), function()
+		if not target or not target.Parent then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
 		local list, err, ex = readAvatar(target)
-		if not list then logLine(_obi44m9h({83,79,91,88,96,103,51,117,132,54,131,125,139,58}) .. target.Name .. _obi44m9h({71,46}) .. tostring(err)); say(_obi44m9h({83,111,123,120,128,135,77,52}) .. tostring(err)); return end
+		if not list then logLine(_obczbshz({175,171,183,180,188,195,143,209,224,146,223,217,231,150}) .. target.Name .. _obczbshz({163,138}) .. tostring(err)); say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(err)); return end
 		items = list
 		local counts, order = {}, {}
 		for _, it in ipairs(items) do
@@ -5022,13 +5670,13 @@ local function buildAvatar(page, say)
 			counts[it.kind] = counts[it.kind] + 1
 		end
 		local parts = {}
-		for _, k in ipairs(order) do parts[#parts + 1] = k .. _obi44m9h({45}) .. counts[k] end
-		summary.Text = _obi44m9h({86,130,116,126,132,50,127,125,121,133,138,56,125,127,59}) .. target.DisplayName .. _obi44m9h({71,46}) .. #items .. (#items > 0 and (_obi44m9h({45,54}) .. table.concat(parts, _obi44m9h({57,46})) .. _obi44m9h({54})) or _obi44m9h({}))
-		logLine(_obi44m9h({89,87,47,113,135,115,135,117,135,54,123,125,57}) .. target.DisplayName .. _obi44m9h({45,54,79}) .. target.Name .. _obi44m9h({54,72,47}) .. #items .. _obi44m9h({45,119,131,117,127,133}))
-		for _, it in ipairs(items) do logLine(_obi44m9h({45,46,47}) .. it.kind .. _obi44m9h({71,46}) .. it.id) end
+		for _, k in ipairs(order) do parts[#parts + 1] = k .. _obczbshz({137}) .. counts[k] end
+		summary.Text = _obczbshz({178,222,208,218,224,142,219,217,213,225,230,148,217,219,151}) .. target.DisplayName .. _obczbshz({163,138}) .. #items .. (#items > 0 and (_obczbshz({137,146}) .. table.concat(parts, _obczbshz({149,138})) .. _obczbshz({146})) or _obczbshz({}))
+		logLine(_obczbshz({181,179,139,205,227,207,227,209,227,146,215,217,149}) .. target.DisplayName .. _obczbshz({137,146,171}) .. target.Name .. _obczbshz({146,164,139}) .. #items .. _obczbshz({137,211,223,209,219,225}))
+		for _, it in ipairs(items) do logLine(_obczbshz({137,138,139}) .. it.kind .. _obczbshz({163,138}) .. it.id) end
 		targetEx = ex
-		logExtra(_obi44m9h({45,46,47}), ex)
-		say(#items .. _obi44m9h({45,119,131,117,127,133,51,128,126,122,134,139,71}))
+		logExtra(_obczbshz({137,138,139}), ex)
+		say(#items .. _obczbshz({137,211,223,209,219,225,143,220,218,214,226,231,163}))
 	end)
 
 	local function wornSet()
@@ -5050,12 +5698,12 @@ local function buildAvatar(page, say)
 			local ok, res, msg = pcall(AVATAR.wear, it.kind, it.id)
 			lastWear = os.clock()
 			local good = ok and res ~= false
-			local shown = (ok and (ser(res) .. (msg ~= nil and (_obi44m9h({57,46}) .. ser(msg)) or _obi44m9h({}))) or (_obi44m9h({114,128,129,127,75,50}) .. tostring(res))):sub(1, 70)
-			logLine((good and _obi44m9h({}) or _obi44m9h({83,79,91,88,96,103,51})) .. action .. _obi44m9h({45}) .. it.kind .. _obi44m9h({45}) .. it.id .. _obi44m9h({45,59,77,48}) .. shown
-				.. (attempt > 1 and (_obi44m9h({45,46,55,132,118,128,135,117,137,127,141,121,57}) .. attempt .. _obi44m9h({54})) or _obi44m9h({})))
+			local shown = (ok and (ser(res) .. (msg ~= nil and (_obczbshz({149,138}) .. ser(msg)) or _obczbshz({}))) or (_obczbshz({206,220,221,219,167,142}) .. tostring(res))):sub(1, 70)
+			logLine((good and _obczbshz({}) or _obczbshz({175,171,183,180,188,195,143})) .. action .. _obczbshz({137}) .. it.kind .. _obczbshz({137}) .. it.id .. _obczbshz({137,151,169,140}) .. shown
+				.. (attempt > 1 and (_obczbshz({137,138,147,224,210,220,227,209,229,219,233,213,149}) .. attempt .. _obczbshz({146})) or _obczbshz({})))
 			if good then return true end
 			if ok and msg ~= nil then refusedWhy[it.id] = tostring(msg) end
-			if msg == _obi44m9h({86,124,133,113,125,123,119,52,94,90}) then break end
+			if msg == _obczbshz({178,216,225,205,217,215,211,144,186,182}) then break end
 		end
 		return false
 	end
@@ -5066,19 +5714,19 @@ local function buildAvatar(page, say)
 		for _, it in ipairs(list) do
 			local replaced = SLOT[it.kind] and targetKinds and targetKinds[it.kind]
 			if not BODY[it.kind] and not replaced and not (keep and keep[it.id]) and not fixed[it.id] then
-				if toggle(it, action or _obi44m9h({97,87,97,81,99})) then n = n + 1 end
+				if toggle(it, action or _obczbshz({189,179,189,173,191})) then n = n + 1 end
 			end
 		end
 		return n
 	end
 	local busy = false
 	local function run(fn)
-		if busy then say(_obi44m9h({87,209,176,48,118,133,135,215,182,54,137,135,125,123,137,128,140,74,63,133,148,146,136,150,134,70,155,141,155,151,148,154,142,160,93})); return end
+		if busy then say(_obczbshz({179,45,12,140,210,225,227,51,18,146,229,227,217,215,229,220,232,166,155,225,240,238,228,242,226,162,247,233,247,243,240,246,234,252,185})); return end
 		busy = true
 		task.spawn(function()
 			local ok, err = pcall(fn)
 			busy = false
-			if not ok then logLine(_obi44m9h({83,79,91,88,96,103,77,52}) .. tostring(err)); say(_obi44m9h({83,111,123,120,128,135,77,52}) .. tostring(err):sub(1, 60)) end
+			if not ok then logLine(_obczbshz({175,171,183,180,188,195,169,144}) .. tostring(err)); say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(err):sub(1, 60)) end
 		end)
 	end
 
@@ -5093,7 +5741,7 @@ local function buildAvatar(page, say)
 	end
 
 	local function strip(keep, targetKinds)
-		local removed = removeWorn(keep, _obi44m9h({97,87,97,81,99}), targetKinds)
+		local removed = removeWorn(keep, _obczbshz({189,179,189,173,191}), targetKinds)
 		for pass = 1, 2 do
 			task.wait(2)
 			local both = stableWorn()
@@ -5106,23 +5754,23 @@ local function buildAvatar(page, say)
 			if pass == 2 then
 				for _, it in ipairs(left) do
 					fixed[it.id] = true
-					logLine(_obi44m9h({83,87,103,95,49,58,118,131,131,138,128,134,142,123,59,137,130,145,140,143,65,150,140,150,134,148,139,151,100,74,143,145,163,147,79,163,150,164,83,164,150,154,169,251,220,169,91,160,172,94,169,175,168,177,108,126,101}) .. it.kind .. _obi44m9h({45}) .. it.id)
+					logLine(_obczbshz({175,179,195,187,141,150,210,223,223,230,220,226,234,215,151,229,222,237,232,235,157,242,232,242,226,240,231,243,192,166,235,237,255,239,171,255,242,0,175,0,242,246,5,87,56,5,183,252,8,186,5,11,4,13,200,218,193}) .. it.kind .. _obczbshz({137}) .. it.id)
 				end
 				break
 			end
-			logLine(_obi44m9h({91,209,146,95,49,101,84,93,106,54}) .. #left .. _obi44m9h({45,119,131,117,126,58,129,135,62,66,55,140,126,136,143,125,139,130,142,64,133,135,67,146,148,156,150,72,81,156,154,144,142,146,144,80}) .. pass .. _obi44m9h({54}))
+			logLine(_obczbshz({183,45,238,187,141,193,176,185,198,146}) .. #left .. _obczbshz({137,211,223,209,218,150,221,227,154,158,147,232,218,228,235,217,231,222,234,156,225,227,159,238,240,248,242,164,173,248,246,236,234,238,236,172}) .. pass .. _obczbshz({146}))
 			for _, it in ipairs(left) do
-				if toggle(it, _obi44m9h({97,87,97,81,99,50,59,120,122,54,133,135,143,137,68})) then removed = removed + 1 end
+				if toggle(it, _obczbshz({189,179,189,173,191,142,151,212,214,146,225,227,235,229,160})) then removed = removed + 1 end
 			end
 		end
 		return removed
 	end
 
 	local ANIM = { orig = {}, applied = nil, tested = {} }
-	local function animateOf(char) return char and char:FindFirstChild(_obi44m9h({78,124,120,125,114,134,120})) end
-	local function animKey(d) return d.Parent.Name .. _obi44m9h({60}) .. d.Name end
+	local function animateOf(char) return char and char:FindFirstChild(_obczbshz({170,216,212,217,206,226,212})) end
+	local function animKey(d) return d.Parent.Name .. _obczbshz({152}) .. d.Name end
 	local function rigOf(char)
-		local h = char and char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
+		local h = char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
 		return h and h.RigType
 	end
 	local function readAnims(pl)
@@ -5131,35 +5779,35 @@ local function buildAvatar(page, say)
 		local an = animateOf(char)
 		if an then
 			for _, d in ipairs(an:GetDescendants()) do
-				if d:IsA(_obi44m9h({78,124,120,125,114,134,124,131,131})) and d.AnimationId ~= _obi44m9h({}) then ids[animKey(d)] = d.AnimationId; n = n + 1 end
+				if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) and d.AnimationId ~= _obczbshz({}) then ids[animKey(d)] = d.AnimationId; n = n + 1 end
 			end
 		end
 		if n > 0 then return ids, n end
 
-		local h = char and char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
+		local h = char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
 		local ok, d = pcall(function() return h and h:GetAppliedDescription() end)
-		if not ok or not d then return nil, _obi44m9h({123,209,178,127,49,117,130,130,136,123,126,141,130,58,135,129,143,62,128,64,130,144,140,145,134,233,206,235,204,153,75,144,146,154,148}) end
+		if not ok or not d then return nil, _obczbshz({215,45,14,219,141,209,222,222,228,215,218,233,222,150,227,221,235,154,220,156,222,236,232,237,226,69,42,71,40,245,167,236,238,246,240}) end
 		local map = {
-			IdleAnimation = { _obi44m9h({118,114,123,117,64,83,129,125,130,119,139,129,136,136,76}), _obi44m9h({118,114,123,117,64,83,129,125,130,119,139,129,136,136,77}) }, WalkAnimation = { _obi44m9h({132,111,123,123,64,105,116,128,128,87,133,129,134}) },
-			RunAnimation = { _obi44m9h({127,131,125,63,99,135,129,85,131,127,132}) }, JumpAnimation = { _obi44m9h({119,131,124,128,64,92,136,129,133,87,133,129,134}) }, FallAnimation = { _obi44m9h({115,111,123,124,64,88,116,128,129,87,133,129,134}) },
-			ClimbAnimation = { _obi44m9h({112,122,120,125,115,65,86,128,126,131,121,89,135,131,136}) }, SwimAnimation = { _obi44m9h({128,133,120,125,64,101,138,125,130}), _obi44m9h({128,133,120,125,122,118,127,121,68,105,142,129,134,99,127,136,130}) },
+			IdleAnimation = { _obczbshz({210,206,215,209,156,175,221,217,222,211,231,221,228,228,168}), _obczbshz({210,206,215,209,156,175,221,217,222,211,231,221,228,228,169}) }, WalkAnimation = { _obczbshz({224,203,215,215,156,197,208,220,220,179,225,221,226}) },
+			RunAnimation = { _obczbshz({219,223,217,155,191,227,221,177,223,219,224}) }, JumpAnimation = { _obczbshz({211,223,216,220,156,184,228,221,225,179,225,221,226}) }, FallAnimation = { _obczbshz({207,203,215,216,156,180,208,220,221,179,225,221,226}) },
+			ClimbAnimation = { _obczbshz({204,214,212,217,207,157,178,220,218,223,213,181,227,223,228}) }, SwimAnimation = { _obczbshz({220,225,212,217,156,193,230,217,222}), _obczbshz({220,225,212,217,214,210,219,213,160,197,234,221,226,191,219,228,222}) },
 		}
 		for field, keys in pairs(map) do
 			local okF, v = pcall(function() return d[field] end)
 			v = okF and tonumber(v) or 0
 			if v and v > 0 then
-				for _, k in ipairs(keys) do ids[k] = _obi44m9h({117,130,131,128,75,65,66,139,140,141,69,138,136,124,135,139,149,76,130,143,142,81,132,151,152,139,155,87,104,147,143,105}) .. math.floor(v); n = n + 1 end
+				for _, k in ipairs(keys) do ids[k] = _obczbshz({209,222,223,220,167,157,158,231,232,233,161,230,228,216,227,231,241,168,222,235,234,173,224,243,244,231,247,179,196,239,235,197}) .. math.floor(v); n = n + 1 end
 			end
 		end
-		if n == 0 then return nil, _obi44m9h({114,122,116,48,118,133,135,215,182,54,122,135,134,58,124,60,126,140,136,141,130,229,202,231,200,149,71,152,138,142,157,239,208,157,79,88,159,147,151,149,85,166,169,153,89,157,170,172,166,159,177,105}) end
+		if n == 0 then return nil, _obczbshz({206,214,208,140,210,225,227,51,18,146,214,227,226,150,216,152,218,232,228,233,222,65,38,67,36,241,163,244,230,234,249,75,44,249,171,180,251,239,243,241,177,2,5,245,181,249,6,8,2,251,13,197}) end
 		return ids, n
 	end
 	local function reloadAnimate(char)
-		local an, hum = animateOf(char), char and char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
+		local an, hum = animateOf(char), char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
 		if not (an and hum) then return end
 		pcall(function()
 			an.Disabled = true
-			local animator = hum:FindFirstChildOfClass(_obi44m9h({78,124,120,125,114,134,130,134}))
+			local animator = hum:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
 			for _, tr in ipairs((animator or hum):GetPlayingAnimationTracks()) do tr:Stop(0) end
 			task.wait(0.1)
 		end)
@@ -5168,10 +5816,10 @@ local function buildAvatar(page, say)
 	local function applyAnims(ids)
 		local char = lp.Character
 		local an = animateOf(char)
-		if not an then return false, _obi44m9h({128,115,132,48,129,119,133,135,132,132,120,127,126,135,59,129,144,146,226,193,65,149,136,145,69,149,71,155,140,156,148,156,161,78,112,158,154,159,148,168,154}) end
+		if not an then return false, _obczbshz({220,207,224,140,221,211,225,227,224,224,212,219,218,227,151,221,236,238,62,29,157,241,228,237,161,241,163,247,232,248,240,248,253,170,204,250,246,251,240,4,246}) end
 		local n = 0
 		for _, d in ipairs(an:GetDescendants()) do
-			if d:IsA(_obi44m9h({78,124,120,125,114,134,124,131,131})) then
+			if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) then
 				local key = animKey(d)
 				local id = ids[key]
 				if id and d.AnimationId ~= id then
@@ -5189,7 +5837,7 @@ local function buildAvatar(page, say)
 		local an = animateOf(lp.Character)
 		if an then
 			for _, d in ipairs(an:GetDescendants()) do
-				if d:IsA(_obi44m9h({78,124,120,125,114,134,124,131,131})) then
+				if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) then
 					local o = ANIM.orig[animKey(d)]
 					if o then d.AnimationId = o end
 				end
@@ -5200,15 +5848,15 @@ local function buildAvatar(page, say)
 	end
 
 	local function assetNum(id)
-		return tostring(id):match(_obi44m9h({50,114,58})) or tostring(id)
+		return tostring(id):match(_obczbshz({142,206,150})) or tostring(id)
 	end
 
 	local function canLoadAnim(animId)
 		local char = lp.Character
-		local h = char and char:FindFirstChildOfClass(_obi44m9h({85,131,124,113,127,129,124,120}))
-		local animator = h and h:FindFirstChildOfClass(_obi44m9h({78,124,120,125,114,134,130,134}))
+		local h = char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		local animator = h and h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
 		if not animator then return nil end
-		local a = Instance.new(_obi44m9h({78,124,120,125,114,134,124,131,131}))
+		local a = Instance.new(_obczbshz({170,216,212,217,206,226,216,223,223}))
 		a.AnimationId = animId
 		local ok, track = pcall(function() return animator:LoadAnimation(a) end)
 		local loaded = false
@@ -5225,19 +5873,19 @@ local function buildAvatar(page, say)
 		return loaded
 	end
 	local function copyAnim(pl)
-		if not pl or not pl.Parent then return false, _obi44m9h({114,129,114,127,125,122,116,52,138,131,55,130,136,129,124,128,140,144,63,144,147,139,144,137,142,152,150}) end
+		if not pl or not pl.Parent then return false, _obczbshz({206,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242}) end
 		local mine, theirs = rigOf(lp.Character), rigOf(pl.Character)
-		if mine and theirs and mine ~= theirs then return false, _obi44m9h({127,119,118,48,117,123,121,121,135,123,133,140,126,58,67,110,83,77,113,81,86,75,93,68,134,70,136,150,146,151,140,239,212,241,210,159,81,150,152,160,154,86,165,251,220,169,91,162,178,172,162,169,176,176,164,100,179,181,103,187,174,191}) end
+		if mine and theirs and mine ~= theirs then return false, _obczbshz({219,211,210,140,209,215,213,213,227,215,225,232,218,150,159,202,175,169,205,173,178,167,185,160,226,162,228,242,238,243,232,75,48,77,46,251,173,242,244,252,246,178,1,87,56,5,183,254,14,8,254,5,12,12,0,192,15,17,195,23,10,27}) end
 		local ids, n = readAnims(pl)
 		if not ids then return false, n end
 		local an = animateOf(lp.Character)
-		if not an then return false, _obi44m9h({128,115,132,48,129,119,133,135,132,132,120,127,126,135,59,129,144,146,226,193,65,149,136,145,69,149,71,155,140,156,148,156,161,78,112,158,154,159,148,168,154}) end
+		if not an then return false, _obczbshz({220,207,224,140,221,211,225,227,224,224,212,219,218,227,151,221,236,238,62,29,157,241,228,237,161,241,163,247,232,248,240,248,253,170,204,250,246,251,240,4,246}) end
 
 		local keys, mineIds = {}, {}
 		for k in pairs(ids) do keys[#keys + 1] = k end
 		table.sort(keys)
 		for _, d in ipairs(an:GetDescendants()) do
-			if d:IsA(_obi44m9h({78,124,120,125,114,134,124,131,131})) then mineIds[animKey(d)] = d.AnimationId end
+			if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) then mineIds[animKey(d)] = d.AnimationId end
 		end
 
 		local results, started, pending = {}, {}, 0
@@ -5264,35 +5912,35 @@ local function buildAvatar(page, say)
 		local good, bad, same, onlyTheirs = {}, 0, 0, 0
 		for _, k in ipairs(keys) do
 			local id = ids[k]
-			local label = k .. _obi44m9h({71,46,115,117,125,119,51}) .. assetNum(id)
+			local label = k .. _obczbshz({163,138,207,209,217,211,143}) .. assetNum(id)
 			if not mineIds[k] then
 				onlyTheirs = onlyTheirs + 1
-				logLine(_obi44m9h({78,92,88,93,49}) .. label .. _obi44m9h({45,208,198,48,135,129,118,215,191,54,133,219,188,137,59,144,130,139,63,133,148,149,136,68,138,153,155,137,141,153,75,84,155,241,210,159,81,150,246,213,85,166,169,153,89,155,171,168,166,161,160,178,106}))
+				logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,227,221,210,51,27,146,225,55,24,229,151,236,222,231,155,225,240,241,228,160,230,245,247,229,233,245,167,176,247,77,46,251,173,242,82,49,177,2,5,245,181,247,7,4,2,253,252,14,198}))
 			elseif mineIds[k] == id then
 				same = same + 1
-				logLine(_obi44m9h({78,92,88,93,49}) .. label .. _obi44m9h({45,208,198,48,122,121,136,117,129,54,218,184,57,141,144,125}))
+				logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,214,213,228,209,221,146,54,20,149,233,236,217}))
 			else
 				local r = results[id]
 				if r == false then
 					bad = bad + 1
-					logLine(_obi44m9h({78,92,88,93,49}) .. label .. _obi44m9h({45,208,198,48,132,119,136,52}) .. assetNum(mineIds[k]) .. _obi44m9h({45,208,198,48,95,213,150,99,53,106,102,91,90,58,67,139,61,136,142,135,144,66,145,231,200,149,71,139,138,156,157,145,148,157,164,89,108,82,160,149,163,170,160,174,158,90,156,92,176,179,160}))
+					logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,224,211,228,144}) .. assetNum(mineIds[k]) .. _obczbshz({137,44,34,140,187,49,242,191,145,198,194,183,182,150,159,231,153,228,234,227,236,158,237,67,36,241,163,231,230,248,249,237,240,249,0,181,200,174,252,241,255,6,252,10,250,182,248,184,12,15,252}))
 				else
 					good[k] = id
-					logLine(_obi44m9h({78,92,88,93,49}) .. label .. _obi44m9h({45,208,198,48,132,119,136,52}) .. assetNum(mineIds[k]) .. _obi44m9h({45,208,198,48,101,100,98,87,86,90,88}) .. (r == nil and _obi44m9h({45,54,125,211,180,129,51,119,132,132,138,125,128,143,132,60,145,131,146,148,130,148,76}) or _obi44m9h({45,54,131,117,132,134,116,120,118,66,55,123,122,140,141,129,132,127,72})))
+					logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,224,211,228,144}) .. assetNum(mineIds[k]) .. _obczbshz({137,44,34,140,193,192,190,179,178,182,180}) .. (r == nil and _obczbshz({137,146,217,47,16,221,143,211,224,224,230,217,220,235,224,152,237,223,238,240,222,240,168}) or _obczbshz({137,146,223,209,224,226,208,212,210,158,147,215,214,232,233,221,224,219,164})))
 				end
 			end
 		end
 		local ok, res = applyAnims(good)
 		if not ok then return false, res end
 		ANIM.applied = good
-		logLine(_obi44m9h({78,92,88,93,82,213,154,215,152,101,55,124,126,58}) .. pl.DisplayName .. _obi44m9h({71,46}) .. n .. _obi44m9h({45,119,115,131,49,126,124,120,132,137,55,218,208,58}) .. res .. _obi44m9h({45,130,129,127,116,115,119,131,136,54,217,207,57}) .. same .. _obi44m9h({45,119,118,133,114,123,134,52,215,205,55}) .. bad .. _obi44m9h({45,124,210,179,128,50,135,131,120,119,132,56,219,209,59}) .. onlyTheirs .. _obi44m9h({45,129,210,195,49,118,120,128,122}))
-		return true, _obi44m9h({110,124,120,125,114,213,186,215,184,133,55,123,136,138,132,125,129,127,63,72}) .. res .. _obi44m9h({45,130,129,127,116,115,119,117,136}) .. (bad > 0 and (_obi44m9h({57,46}) .. bad .. _obi44m9h({45,124,210,179,128,50,135,131,120,119,132,56,126,58,129,133,128,127,145,129,142,66,132,151,69,153,156,137,156})) or _obi44m9h({})) .. _obi44m9h({54})
+		logLine(_obczbshz({170,184,180,185,174,49,246,51,244,193,147,216,218,150}) .. pl.DisplayName .. _obczbshz({163,138}) .. n .. _obczbshz({137,211,207,223,141,218,216,212,224,229,147,54,44,150}) .. res .. _obczbshz({137,222,221,219,208,207,211,223,228,146,53,43,149}) .. same .. _obczbshz({137,211,210,225,206,215,226,144,51,41,147}) .. bad .. _obczbshz({137,216,46,15,220,142,227,223,212,211,224,148,55,45,151}) .. onlyTheirs .. _obczbshz({137,221,46,31,141,210,212,220,214}))
+		return true, _obczbshz({202,216,212,217,206,49,22,51,20,225,147,215,228,230,224,217,221,219,155,164}) .. res .. _obczbshz({137,222,221,219,208,207,211,209,228}) .. (bad > 0 and (_obczbshz({149,138}) .. bad .. _obczbshz({137,216,46,15,220,142,227,223,212,211,224,148,218,150,221,225,220,219,237,221,234,158,224,243,161,245,248,229,248})) or _obczbshz({})) .. _obczbshz({146})
 	end
 
 	table.insert(conns, lp.CharacterAdded:Connect(function(char)
 		if not ANIM.applied then return end
 		task.spawn(function()
-			if not char:WaitForChild(_obi44m9h({78,124,120,125,114,134,120}), 10) then return end
+			if not char:WaitForChild(_obczbshz({170,216,212,217,206,226,212}), 10) then return end
 			task.wait(1.5)
 			if ANIM.applied then pcall(applyAnims, ANIM.applied) end
 		end)
@@ -5322,30 +5970,30 @@ local function buildAvatar(page, say)
 	end
 
 	local withAnim = true
-	toggleRow(page, _obi44m9h({80,125,127,121,114,132,51,136,118,131,121,219,194,135,59,125,61,127,141,137,142,131,230,203,232,201,150}), _obi44m9h({93,111,129,113,117,129,63,52,118,132,123,121,139,70,59,127,140,144,145,133,147,78,67,148,154,146,136,154,85,74,142,141,150,160,91,80,150,165,150,149,161,151,169,88,158,90,169,157,161,159,177}), function(v) withAnim = v end, true)
+	toggleRow(page, _obczbshz({172,217,219,213,206,224,143,228,210,223,213,55,30,227,151,217,153,219,233,229,234,223,66,39,68,37,242}), _obczbshz({185,203,221,205,209,221,155,144,210,224,215,213,231,162,151,219,232,236,237,225,239,170,159,240,246,238,228,246,177,166,234,233,242,252,183,172,242,1,242,241,253,243,5,180,250,182,5,249,253,251,13}), function(v) withAnim = v end, true)
 	local defaultBody = true
-	toggleRow(page, _obi44m9h({86,117,132,113,125,115,133,52,133,119,137,140,126,141,59,128,140,62,130,143,147,146,146,68,149,135,139,154,236,205,154}), _obi44m9h({96,115,47,127,49,115,127,138,132,54,140,139,122,58,139,129,143,140,128,79,131,148,132,231,204,149,71,152,138,142,157,239,208,157,91,80,165,155,165,149,85,165,87,171,158,175,91,172,162,176,178,175,175,163,175,173,191,167,171,183}), function(v) defaultBody = v end, true)
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,117,139,119,139,121,139,58,139,142,126,62,140,137,142}), function()
-		if #items == 0 then say(_obi44m9h({89,115,120,113,49,129,51,117,139,119,139,121,139,58,127,129,61,147,140,64,139,145,138,133,137,149,153,72,153,156,148,153,146,151,161,159,95})); return end
+	toggleRow(page, _obczbshz({178,209,224,205,217,207,225,144,225,211,229,232,218,233,151,220,232,154,222,235,239,238,238,160,241,227,231,246,72,41,246}), _obczbshz({188,207,139,219,141,207,219,230,224,146,232,231,214,150,231,221,235,232,220,171,223,240,224,67,40,241,163,244,230,234,249,75,44,249,183,172,1,247,1,241,177,1,179,7,250,11,183,8,254,12,14,11,11,255,11,9,27,3,7,19}), function(v) defaultBody = v end, true)
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,231,234,218,154,232,229,234}), function()
+		if #items == 0 then say(_obczbshz({181,207,212,205,141,221,143,209,231,211,231,213,231,150,219,221,153,239,232,156,231,237,230,225,229,241,245,164,245,248,240,245,238,243,253,251,187})); return end
 		run(function()
-			logLine(_obi44m9h({74,75,76,48,84,97,99,93,86,104,55,121,143,123,143,125,143,62,131,133,65}) .. (target and target.DisplayName or _obi44m9h({76})) .. _obi44m9h({45,54}) .. #items .. _obi44m9h({45,119,131,117,127,133,60,52,82,83,84}))
+			logLine(_obczbshz({166,167,168,140,176,189,191,185,178,196,147,213,235,215,235,217,235,154,223,225,157}) .. (target and target.DisplayName or _obczbshz({168})) .. _obczbshz({137,146}) .. #items .. _obczbshz({137,211,223,209,219,225,152,144,174,175,176}))
 			local wornBefore, before = wornSet()
-			logLine(_obi44m9h({90,115,132,48,114,136,116,136,118,136,55,121,135,142,128,143,87,62}) .. #before .. _obi44m9h({45,119,131,117,127,133}))
-			for _, it in ipairs(before) do logLine(_obi44m9h({45,46,47,107,114,128,135,121,136,115,55}) .. it.kind .. _obi44m9h({71,46}) .. it.id) end
+			logLine(_obczbshz({182,207,224,140,206,228,208,228,210,228,147,213,227,234,220,235,179,154}) .. #before .. _obczbshz({137,211,223,209,219,225}))
+			for _, it in ipairs(before) do logLine(_obczbshz({137,138,139,199,206,220,227,213,228,207,147}) .. it.kind .. _obczbshz({163,138}) .. it.id) end
 			local keep, kinds = {}, {}
 			for _, it in ipairs(items) do keep[it.id] = true; kinds[it.kind] = true end
 
-			say(_obi44m9h({62,61,66,48,101,123,133,117,131,122,134,56,141,143,127,139,61,143,148,133,65,152,146,135,232,208,71,141,156,158,238,205,77,163,162,145,159,150,162,84,93,162,156,174,154,90,176,170,176,94,178,165,168,183,177,168,180,185,112,118,119,120}))
+			say(_obczbshz({154,153,158,140,193,215,225,209,223,214,226,148,233,235,219,231,153,235,240,225,157,244,238,227,68,44,163,233,248,250,74,41,169,255,254,237,251,242,254,176,185,254,248,10,246,182,12,6,12,186,14,1,4,19,13,4,16,21,204,210,211,212}))
 			hubRemoveAll()
 			local removed = strip(keep, nil)
 
-			say(_obi44m9h({63,61,66,48,103,119,134,136,126,132,123,135,57,137,59,125,147,127,147,129,147,66,134,147,149,143,136,140,152,88,89,90}))
+			say(_obczbshz({155,153,158,140,195,211,226,228,218,224,215,227,149,229,151,217,239,219,239,221,239,158,226,239,241,235,228,232,244,180,181,182}))
 			local done, skipped, failed, refused = 0, 0, {}, {}
 			for _, it in ipairs(items) do
 				if wornBefore[it.id] then
 					skipped = skipped + 1
-					logLine(_obi44m9h({87,209,144,48,86,101,103,85,107,87,55}) .. it.kind .. _obi44m9h({45}) .. it.id)
-				elseif toggle(it, _obi44m9h({99,83,98,100,90,100})) then
+					logLine(_obczbshz({179,45,236,140,178,193,195,177,199,179,147}) .. it.kind .. _obczbshz({137}) .. it.id)
+				elseif toggle(it, _obczbshz({191,175,190,192,182,192})) then
 					done = done + 1
 				else
 					failed[#failed + 1] = it.kind
@@ -5359,15 +6007,15 @@ local function buildAvatar(page, say)
 				local nowWorn = wornSet()
 				for _, it in ipairs(before) do
 					if BODY[it.kind] and isDefault[it.kind] and nowWorn[it.id] then
-						say(_obi44m9h({63,61,66,48,101,123,133,117,131,122,134,56,140,143,124,60}) .. it.kind .. _obi44m9h({45,54,126,48,114,126,137,131,53,139,138,121,57,123,59,140,126,130,145,227,196,145,76,82,83,84}))
-						if toggle(it, _obi44m9h({97,87,97,81,99,50,59,132,118,136,139,125,57,138,124,128,143,225,194,143,65,134,146,68,134,146,157,151,82})) then
-							logLine(_obi44m9h({93,79,97,100,86,50,99,85,89,104,218,155,104,58}) .. it.kind .. _obi44m9h({71,46,131,121,131,119,124,52,118,54,138,141,122,58}) .. it.id .. _obi44m9h({45,126,129,113,49,120,124,119,118,136,55,129,128,143,124,136,61,127,142,64,130,142,153,147}))
+						say(_obczbshz({155,153,158,140,193,215,225,209,223,214,226,148,232,235,216,152}) .. it.kind .. _obczbshz({137,146,218,140,206,218,229,223,145,231,230,213,149,215,151,232,218,222,237,63,32,237,168,174,175,176}))
+						if toggle(it, _obczbshz({189,179,189,173,191,142,151,224,210,228,231,217,149,230,216,220,235,61,30,235,157,226,238,160,226,238,249,243,174})) then
+							logLine(_obczbshz({185,171,189,192,178,142,191,177,181,196,54,247,196,150}) .. it.kind .. _obczbshz({163,138,223,213,223,211,216,144,210,146,230,233,214,150}) .. it.id .. _obczbshz({137,218,221,205,141,212,216,211,210,228,147,221,220,235,216,228,153,219,234,156,222,234,245,239}))
 						end
 					end
 				end
 			end
 
-			say(_obi44m9h({64,61,66,48,84,129,129,122,122,136,128,134,125,137,73,74,75}))
+			say(_obczbshz({156,153,158,140,176,221,221,214,214,228,220,226,217,229,165,166,167}))
 			local missing, stuck = 0, 0
 			for pass = 1, 3 do
 				task.wait(2)
@@ -5384,15 +6032,15 @@ local function buildAvatar(page, say)
 				missing, stuck = #miss, #left
 				if missing == 0 and stuck == 0 then break end
 				if pass == 3 then
-					for _, it in ipairs(miss) do logLine(_obi44m9h({83,79,91,100,96,103,51}) .. it.kind .. _obi44m9h({45}) .. it.id .. (refused[it.id] and (_obi44m9h({45,54,126,48,123,129,122,131,53,136,124,139,137,137,137,128,130,147,89,64}) .. tostring(refusedWhy[it.id] or _obi44m9h({127,115,114,133,132,129,136})) .. _obi44m9h({54})) or _obi44m9h({}))) end
-					for _, it in ipairs(left) do logLine(_obi44m9h({91,209,146,95,49,101,84,93,106,54}) .. it.kind .. _obi44m9h({45}) .. it.id) end
+					for _, it in ipairs(miss) do logLine(_obczbshz({175,171,183,192,188,195,143}) .. it.kind .. _obczbshz({137}) .. it.id .. (refused[it.id] and (_obczbshz({137,146,218,140,215,221,214,223,145,228,216,231,229,229,229,220,222,239,181,156}) .. tostring(refusedWhy[it.id] or _obczbshz({219,207,206,225,224,221,228})) .. _obczbshz({146})) or _obczbshz({}))) end
+					for _, it in ipairs(left) do logLine(_obczbshz({183,45,238,187,141,193,176,185,198,146}) .. it.kind .. _obczbshz({137}) .. it.id) end
 					break
 				end
-				say(_obi44m9h({64,61,66,48,84,129,133,134,126,125,128,134,125,137,59,139,61,143,148,133,65,136,132,144,153,149,156,72,81,156,154,144,142,146,144,80}) .. pass .. _obi44m9h({54,60,61,62}))
-				for _, it in ipairs(left) do toggle(it, _obi44m9h({97,87,97,81,99,50,59,119,132,136,137,129,128,131,137,128,140,71})) end
+				say(_obczbshz({156,153,158,140,176,221,225,226,218,217,220,226,217,229,151,231,153,235,240,225,157,228,224,236,245,241,248,164,173,248,246,236,234,238,236,172}) .. pass .. _obczbshz({146,152,153,154}))
+				for _, it in ipairs(left) do toggle(it, _obczbshz({189,179,189,173,191,142,151,211,224,228,229,221,220,223,229,220,232,163})) end
 				for _, it in ipairs(miss) do
 					if not refused[it.id] then
-						if toggle(it, _obi44m9h({99,83,98,100,90,100,51,60,120,133,137,138,130,129,132,138,129,141,72})) then done = done + 1 end
+						if toggle(it, _obczbshz({191,175,190,192,182,192,143,152,212,225,229,230,222,221,224,230,221,233,164})) then done = done + 1 end
 					end
 				end
 			end
@@ -5402,7 +6050,7 @@ local function buildAvatar(page, say)
 				task.wait(1)
 				local _, _, mineEx = readAvatar(lp)
 				if mineEx then
-					logExtra(_obi44m9h({45,46,47,107,132,119,136,52,118,125,134,138,122,119,59}), mineEx)
+					logExtra(_obczbshz({137,138,139,199,224,211,228,144,210,217,226,230,214,211,151}), mineEx)
 					diffN = compareExtra(targetEx, mineEx)
 				end
 			end
@@ -5411,139 +6059,125 @@ local function buildAvatar(page, say)
 			for _, it in ipairs(items) do
 				if refused[it.id] and not BODY[it.kind] and hubAdd(it) then
 					viaN = viaN + 1
-					logLine(_obi44m9h({99,87,80,48,89,103,85,52}) .. it.kind .. _obi44m9h({45}) .. it.id)
+					logLine(_obczbshz({191,179,172,140,181,195,177,144}) .. it.kind .. _obczbshz({137}) .. it.id)
 				end
 			end
 			if viaN > 0 then
 				if MINE.onList then MINE.onList() end
 				if publishMods then publishMods() end
 			end
-			local msg = _obi44m9h({97,119,129,113,117,129,134,78,53}) .. removed .. _obi44m9h({45,208,198,48,84,129,127,131,120,119,123,135,140,84,59}) .. done .. _obi44m9h({45,208,198,48,123,213,180,52,122,137,139,121,143,123,136,86,61}) .. skipped
+			local msg = _obczbshz({189,211,221,205,209,221,226,170,145}) .. removed .. _obczbshz({137,44,34,140,176,221,219,223,212,211,215,227,232,176,151}) .. done .. _obczbshz({137,44,34,140,215,49,16,144,214,229,231,213,235,215,228,178,153}) .. skipped
 			if viaN > 0 then
 				local why
 				for _, w in pairs(refusedWhy) do why = w; break end
-				msg = msg .. _obi44m9h({45,208,198,48}) .. viaN .. _obi44m9h({45,129,210,195,49,130,120,128,132,54,127,141,123,58,67,139,61,136,142,135,144,66,149,137,152,150,150,150,141,143,160,102,77}) .. tostring(why or _obi44m9h({127,115,114,133,132,115,119,131})) .. _obi44m9h({72,46,130,211,196,50,132,137,122,131,55,141,140,123,59,139,61,134,148,130,65,152,230,206,78})
+				msg = msg .. _obczbshz({137,44,34,140}) .. viaN .. _obczbshz({137,221,46,31,141,222,212,220,224,146,219,233,215,150,159,231,153,228,234,227,236,158,241,229,244,242,242,242,233,235,252,194,169}) .. tostring(why or _obczbshz({219,207,206,225,224,207,211,223})) .. _obczbshz({164,138,222,47,32,142,224,229,214,223,147,233,232,215,151,231,153,226,240,222,157,244,66,42,170})
 			end
-			if missing - viaN > 0 then msg = msg .. _obi44m9h({45,208,198,48,119,115,127,136,118,136,120,133,83,58}) .. (missing - viaN) end
-			if stuck > 0 then msg = msg .. _obi44m9h({45,208,198,48}) .. stuck .. _obi44m9h({45,129,116,133,57,133,60,52,131,217,186,135,57,141,124,223,202,144,128,141}) end
-			if diffN > 0 then msg = msg .. _obi44m9h({45,208,198,48}) .. diffN .. _obi44m9h({45,113,126,130,64,130,133,131,133,133,137,219,192,221,190,139,61,130,136,134,134,148,136,146,153,139,71,80,159,143,149,141,77,157,79,156,160,153,110,84,164,86,142,157,154,172,91,170,0,225,174,96,174,183,167,165,101,175,186,187,184,115}) end
+			if missing - viaN > 0 then msg = msg .. _obczbshz({137,44,34,140,211,207,219,228,210,228,212,225,175,150}) .. (missing - viaN) end
+			if stuck > 0 then msg = msg .. _obczbshz({137,44,34,140}) .. stuck .. _obczbshz({137,221,208,225,149,225,152,144,223,53,22,227,149,233,216,59,38,236,220,233}) end
+			if diffN > 0 then msg = msg .. _obczbshz({137,44,34,140}) .. diffN .. _obczbshz({137,205,218,222,156,222,225,223,225,225,229,55,28,57,26,231,153,222,228,226,226,240,228,238,245,231,163,172,251,235,241,233,169,249,171,248,252,245,202,176,0,178,234,249,246,8,183,6,92,61,10,188,10,19,3,1,193,11,22,23,20,207}) end
 
 			if withAnim then
 				local okA, resA = copyAnim(target)
-				msg = msg .. _obi44m9h({45,208,198,48}) .. (okA and resA or (_obi44m9h({110,124,120,125,114,213,186,215,184,133,55,134,220,189,138,60,128,141,143,137,130,134,132,94,69}) .. tostring(resA)))
-				if not okA then logLine(_obi44m9h({83,79,91,88,96,103,51,117,131,127,132,121,220,193,222,191,140,88,63}) .. tostring(resA)) end
+				msg = msg .. _obczbshz({137,44,34,140}) .. (okA and resA or (_obczbshz({202,216,212,217,206,49,22,51,20,225,147,226,56,25,230,152,220,233,235,229,222,226,224,186,161}) .. tostring(resA)))
+				if not okA then logLine(_obczbshz({175,171,183,180,188,195,143,209,223,219,224,213,56,29,58,27,232,180,155}) .. tostring(resA)) end
 			end
-			logLine(_obi44m9h({95,83,98,101,94,97,77,52}) .. msg)
+			logLine(_obczbshz({187,175,190,193,186,189,169,144}) .. msg)
 			say(msg)
 		end)
 	end)
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,135,216,201,55,121,57,123,137,133,138,127,226,199,228,197,146,68,137,149,71,146,152,145,140,144,156,160}), function()
-		if not target or not target.Parent then say(_obi44m9h({82,129,114,127,125,122,116,52,138,131,55,130,136,129,124,128,140,144,63,144,147,139,144,137,142,152,150,86})); return end
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,227,52,37,147,213,149,215,229,225,230,219,62,35,64,33,238,160,229,241,163,238,244,237,232,236,248,252}), function()
+		if not target or not target.Parent then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
 		task.spawn(function()
 			local ok, res = copyAnim(target)
-			if not ok then logLine(_obi44m9h({83,79,91,88,96,103,51,117,131,127,132,121,220,193,222,191,140,88,63}) .. tostring(res)) end
-			say(ok and res or (_obi44m9h({83,111,123,120,128,135,77,52}) .. tostring(res)))
+			if not ok then logLine(_obczbshz({175,171,183,180,188,195,143,209,223,219,224,213,56,29,58,27,232,180,155}) .. tostring(res)) end
+			say(ok and res or (_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(res)))
 		end)
 	end, true)
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,93,89,137,55,124,122,141,59,125,139,135,140,129,228,201,230,217,138,153,71,140,142,150,144,76,85,162,148,168,165,161,92}), function()
-		if not target or not target.Parent then say(_obi44m9h({82,129,114,127,125,122,116,52,138,131,55,130,136,129,124,128,140,144,63,144,147,139,144,137,142,152,150,86})); return end
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,185,181,229,147,216,214,233,151,217,231,227,232,221,64,37,66,53,230,245,163,232,234,242,236,168,177,254,240,4,1,253,184}), function()
+		if not target or not target.Parent then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
 		local ids, n = readAnims(target)
-		if not ids then say(_obi44m9h({83,111,123,120,128,135,77,52}) .. tostring(n)); return end
+		if not ids then say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(n)); return end
 		local keys, lines = {}, {}
 		for k in pairs(ids) do keys[#keys + 1] = k end
 		table.sort(keys)
 		for _, k in ipairs(keys) do
-			lines[#lines + 1] = k .. _obi44m9h({71,46}) .. assetNum(ids[k])
-			logLine(_obi44m9h({78,92,88,93,49,91,87,52}) .. k .. _obi44m9h({71,46}) .. assetNum(ids[k]))
+			lines[#lines + 1] = k .. _obczbshz({163,138}) .. assetNum(ids[k])
+			logLine(_obczbshz({170,184,180,185,141,183,179,144}) .. k .. _obczbshz({163,138}) .. assetNum(ids[k]))
 		end
 		local f = setclipboard or toclipboard
-		if not f then say(#keys .. _obi44m9h({45,87,83,131,49,128,130,52,129,133,126,56,65,141,128,145,61,131,151,133,132,151,151,147,151,70,149,235,204,153,75,160,146,155,79,163,150,166,150,160,158,166,153,167,154,172,159,101,107})); return end
-		say(pcall(f, table.concat(lines, _obi44m9h({23}))) and (#keys .. _obi44m9h({45,87,83,131,49,117,130,132,126,119,123,135,140,72})) or _obi44m9h({83,111,123,120,128,135,51,117,132,54,122,135,137,131,124,142,75}))
+		if not f then say(#keys .. _obczbshz({137,179,175,223,141,220,222,144,221,225,218,148,157,233,220,237,153,223,243,225,224,243,243,239,243,162,241,71,40,245,167,252,238,247,171,255,242,2,242,252,250,2,245,3,246,8,251,193,199})); return end
+		say(pcall(f, table.concat(lines, _obczbshz({115}))) and (#keys .. _obczbshz({137,179,175,223,141,209,222,224,218,211,215,227,232,164})) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
 	end, true)
-	rowBtn(page, _obi44m9h({99,125,123,132,114,132,51,117,131,127,132,121,220,193,222,191,140,62,143,129,133,148,230,199,148}), function()
+	rowBtn(page, _obczbshz({191,217,215,224,206,224,143,209,223,219,224,213,56,29,58,27,232,154,235,221,225,240,66,35,240}), function()
 		restoreAnims()
-		logLine(_obi44m9h({78,124,120,125,114,213,186,215,184,133,55,142,136,134,143,139,146,62,128,143,65,146,132,136,151,233,202,151}))
-		say(_obi44m9h({78,124,120,125,114,213,186,215,184,133,55,136,122,126,141,223,192,141,63,132,134,66,153,147,145,154,136,86}))
+		logLine(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,234,228,226,235,231,238,154,220,235,157,238,224,228,243,69,38,243}))
+		say(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,228,214,218,233,59,28,233,155,224,226,158,245,239,237,246,228,178}))
 	end, true)
-	rowBtn(page, _obi44m9h({97,119,129,113,131,50,135,137,121,133,55,137,142,127,59,129,144,146,142,149,65,151,150,133,147,138,150}), function()
+	rowBtn(page, _obczbshz({189,211,221,205,223,142,227,229,213,225,147,229,234,219,151,221,236,238,234,241,157,243,242,225,239,230,242}), function()
 		run(function()
-			logLine(_obi44m9h({74,75,76,48,101,91,101,85,103,54,107,109,93,105,59,89,90,91}))
-			say(_obi44m9h({97,119,129,113,127,118,130,52,137,139,123,135,57,66,126,139,139,132,132,146,134,66,136,68,153,139,149,156,138,74,143,145,77,156,158,166,160,82,166,153,85,151,163,159,168,90,169,255,224,173,95,179,162,171,181,109,115,116,117}))
+			logLine(_obczbshz({166,167,168,140,193,183,193,177,195,146,199,201,185,197,151,181,182,183}))
+			say(_obczbshz({189,211,221,205,219,210,222,144,229,231,215,227,149,158,218,231,231,224,224,238,226,158,228,160,245,231,241,248,230,166,235,237,169,248,250,2,252,174,2,245,177,243,255,251,4,182,5,91,60,9,187,15,254,7,17,201,207,208,209}))
 			hubRemoveAll()
 			local n = strip(nil, nil)
-			logLine(_obi44m9h({95,83,98,101,94,97,77,52,137,127,137,121,125,137,142,60}) .. n)
-			say(_obi44m9h({97,119,129,113,117,129,134,78,53}) .. n .. _obi44m9h({45,119,131,117,127,133,65}))
+			logLine(_obczbshz({187,175,190,193,186,189,169,144,229,219,229,213,217,229,234,152}) .. n)
+			say(_obczbshz({189,211,221,205,209,221,226,170,145}) .. n .. _obczbshz({137,211,223,209,219,225,157}))
 		end)
 	end, true)
-	rowBtn(page, _obi44m9h({97,119,129,113,131,50,134,215,200,54,134,139,57,131,143,129,139,145,63,131,144,146,140,133,137,149,154}), function()
-		if #items == 0 then say(_obi44m9h({89,115,120,113,49,129,51,117,139,119,139,121,139,58,127,129,61,147,140,64,139,145,138,133,137,149,153,72,153,156,148,153,146,151,161,159,95})); return end
+	rowBtn(page, _obczbshz({189,211,221,205,223,142,226,51,36,146,226,231,149,223,235,221,231,237,155,223,236,238,232,225,229,241,246}), function()
+		if #items == 0 then say(_obczbshz({181,207,212,205,141,221,143,209,231,211,231,213,231,150,219,221,153,239,232,156,231,237,230,225,229,241,245,164,245,248,240,245,238,243,253,251,187})); return end
 		run(function()
-			logLine(_obi44m9h({74,75,76,48,101,91,101,85,103,54,106,219,172,58,106,111,61,97,110,112,106,99,103,115,120,70,100,101,102}))
+			logLine(_obczbshz({166,167,168,140,193,183,193,177,195,146,198,55,8,150,198,203,153,189,202,204,198,191,195,207,212,162,192,193,194}))
 			local worn = wornSet()
 			local n = 0
 			for _, it in ipairs(items) do
 				if worn[it.id] and not BODY[it.kind] then
-					if toggle(it, _obi44m9h({97,87,97,81,99})) then n = n + 1 end
+					if toggle(it, _obczbshz({189,179,189,173,191})) then n = n + 1 end
 					task.wait(0.3)
 				end
 			end
-			logLine(_obi44m9h({95,83,98,101,94,97,77,52,137,127,137,121,125,137,142,60}) .. n)
-			say(_obi44m9h({97,119,129,113,117,129,134,78,53}) .. n .. _obi44m9h({45,119,131,117,127,133,65}))
+			logLine(_obczbshz({187,175,190,193,186,189,169,144,229,219,229,213,217,229,234,152}) .. n)
+			say(_obczbshz({189,211,221,205,209,221,226,170,145}) .. n .. _obczbshz({137,211,223,209,219,225,157}))
 		end)
 	end, true)
-	rowBtn(page, _obi44m9h({80,125,127,121,114,132,51,128,126,137,139,121,57,126,128,60,134,146,132,142,148,66,75,152,138,158,155,151,82}), function()
-		if #items == 0 then say(_obi44m9h({89,115,120,113,49,129,51,117,139,119,139,121,139,58,127,129,61,147,140,64,139,145,138,133,137,149,153,72,153,156,148,153,146,151,161,159,95})); return end
+	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,220,218,229,231,213,149,218,220,152,226,238,224,234,240,158,167,244,230,250,247,243,174}), function()
+		if #items == 0 then say(_obczbshz({181,207,212,205,141,221,143,209,231,211,231,213,231,150,219,221,153,239,232,156,231,237,230,225,229,241,245,164,245,248,240,245,238,243,253,251,187})); return end
 		local lines = {}
-		for _, it in ipairs(items) do lines[#lines + 1] = it.kind .. _obi44m9h({71,46}) .. it.id end
+		for _, it in ipairs(items) do lines[#lines + 1] = it.kind .. _obczbshz({163,138}) .. it.id end
 		local f = setclipboard or toclipboard
-		if not f then say(_obi44m9h({96,115,132,48,118,138,120,119,138,138,134,138,57,136,222,191,140,62,147,133,142,66,150,137,153,137,147,145,153,140,154,141,159,146,93})); return end
-		say(pcall(f, table.concat(lines, _obi44m9h({23}))) and _obi44m9h({89,119,130,132,114,50,118,131,133,127,120,124,122,72}) or _obi44m9h({83,111,123,120,128,135,51,117,132,54,122,135,137,131,124,142,75}))
+		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185})); return end
+		say(pcall(f, table.concat(lines, _obczbshz({115}))) and _obczbshz({181,211,222,224,206,142,210,223,225,219,212,216,214,164}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
 	end, true)
 
 	return function() if ANIM.applied then pcall(restoreAnims) end end
 end
 
-local win, pages, say = buildWindow(560, 330, _obi44m9h({96,118,120,126,49,90,136,118}), _obi44m9h({90,115,124,114,131,129}), buildTabs({ _obi44m9h({80,125,125,117,137,213,182,131}) }))
-
-do
-	local real = pages
-	pages = {}
-	for k, v in pairs(real) do pages[k] = v end
-	if real[_obi44m9h({79,128,126,127,124,122,116,138,122,132})] then
-		local subs = addSubTabs(real[_obi44m9h({79,128,126,127,124,122,116,138,122,132})], { _obi44m9h({91,125,124,117}), _obi44m9h({90,209,201,131,122,117,116}), _obi44m9h({97,111,118}), _obi44m9h({93,128,126,132,118,213,186,215,202,123,138}), _obi44m9h({90,125,133,121,126,119,129,136,132}), _obi44m9h({78,129,112}), _obi44m9h({80,111,129}), _obi44m9h({78,132,112,132,114,132}) })
-		for n, f in pairs(subs) do pages[n] = f end
-	end
-end
+local win, pages, say = buildWindow(560, 330, _obczbshz({188,210,212,218,141,182,228,210}), _obczbshz({182,207,216,206,223,221}), buildTabs({}))
 selfCleanup = buildSelf(pages, say)
-if pages[_obi44m9h({91,125,124,117})] then buildBrookhaven(pages, say) end
-local stopCar = pages[_obi44m9h({80,111,129})] and buildCar(pages[_obi44m9h({80,111,129})], say)
-AVATAR.stop = pages[_obi44m9h({78,132,112,132,114,132})] and buildAvatar(pages[_obi44m9h({78,132,112,132,114,132})], say)
-local stopLog = pages[_obi44m9h({89,125,118})] and buildLog(pages[_obi44m9h({89,125,118})], say)
-local stopWings = pages[_obi44m9h({78,129,112})] and buildWings(pages[_obi44m9h({78,129,112})], say)
-buildCredits(pages[_obi44m9h({80,128,210,185,117,123,135,131,136})])
-if pages[_obi44m9h({86,82})] then buildId(pages[_obi44m9h({86,82})], say) end
-local stopMods = buildMods(pages[_obi44m9h({90,125,115})], say)
-local stopDebug = pages[_obi44m9h({81,115,113,133,120})] and buildDebug(pages[_obi44m9h({81,115,113,133,120})], say)
-if pages[_obi44m9h({91,125,124,117})] then buildAvatarCopy(pages[_obi44m9h({90,125,115})], say) end
-local stopFx = buildEffects(pages[_obi44m9h({82,116,116,121,133,129,134})], say)
-local stopExtras = buildExtras(pages[_obi44m9h({82,134,131,130,114,133})], say)
+if pages[_obczbshz({183,217,216,209})] then buildBrookhaven(pages, say) end
+local stopCar = pages[_obczbshz({172,203,221})] and buildCar(pages[_obczbshz({172,203,221})], say)
+AVATAR.stop = pages[_obczbshz({170,224,204,224,206,224})] and buildAvatar(pages[_obczbshz({170,224,204,224,206,224})], say)
+local stopLog = pages[_obczbshz({181,217,210})] and buildLog(pages[_obczbshz({181,217,210})], say)
+local stopWings = pages[_obczbshz({170,221,204})] and buildWings(pages[_obczbshz({170,221,204})], say)
+buildCredits(pages[_obczbshz({172,220,46,21,209,215,227,223,228})])
+if pages[_obczbshz({178,174})] then buildId(pages[_obczbshz({178,174})], say) end
+local stopMods = buildMods(pages[_obczbshz({182,217,207})], say)
+local stopDebug = pages[_obczbshz({173,207,205,225,212})] and buildDebug(pages[_obczbshz({173,207,205,225,212})], say)
+if pages[_obczbshz({183,217,216,209})] then buildAvatarCopy(pages[_obczbshz({182,217,207})], say) end
+local stopFx = buildEffects(pages[_obczbshz({174,208,208,213,225,221,226})], say)
+local stopExtras = buildExtras(pages[_obczbshz({174,226,223,222,206,225})], say)
 do
 	local base = selfCleanup
 	selfCleanup = function() if base then base() end; stopMods(); if AVATAR.stop then AVATAR.stop() end; if stopDebug then stopDebug() end; stopFx(); stopExtras(); if stopCar then stopCar() end; if stopLog then stopLog() end; if stopWings then stopWings() end; if TAG.stop then TAG.stop() end end
 end
 
 local shutdown
-local cp = pages[_obi44m9h({80,125,125,117,137,213,182,131})]
-section(cp, _obi44m9h({80,125,125,117,137,213,182,131,53,121,134,133,57,137,59,140,126,135,141,133,141}))
-local info = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
-	Text = _obi44m9h({80,125,125,117,116,134,116,130,121,133,69,70,71}), Size = UDim2.new(1, 0, 0, 40), BackgroundTransparency = 1, TextColor3 = WHITE,
-	Font = Enum.Font.Gotham, TextSize = 12, TextWrapped = true,
-	TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
-}, cp)
-rowBtn(cp, _obi44m9h({81,115,130,113,133,123,137,117,135,54,63,139,122,131,141,60,129,141,63,144,130,139,145,137,145,79}), function() if shutdown then shutdown() end end)
+local info = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), { Text = _obczbshz({172,217,217,209,208,226,208,222,213,225,161,162,163}), Size = UDim2.new(1, 0, 0, 40), BackgroundTransparency = 1 }, nil)
+if pages[_obczbshz({174,226,223,222,206,225})] then
+	rowBtn(pages[_obczbshz({174,226,223,222,206,225})], _obczbshz({173,207,222,205,225,215,229,209,227,146,155,231,214,223,233,152,221,233,155,236,222,231,237,229,237,171}), function() if shutdown then shutdown() end end)
+end
 
 function toast(t)
-	local l = mk(_obi44m9h({97,115,135,132,93,115,117,121,129}), {
+	local l = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
 		Text = t, Size = UDim2.fromOffset(240, 30), Position = UDim2.new(0.5, -120, 0, 60),
 		BackgroundColor3 = Color3.fromRGB(110, 15, 20), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12,
 	}, gui)
@@ -5551,11 +6185,32 @@ function toast(t)
 	task.delay(4, function() l:Destroy() end)
 end
 
-floatButton(function() win.Visible = not win.Visible end)
-table.insert(conns, UIS.InputBegan:Connect(function(i, gp)
+floatButton(function() win.Visible = not win.Visible end, win)
 
-	if not gp and i.KeyCode == Enum.KeyCode.RightShift then win.Visible = not win.Visible end
+table.insert(conns, UIS.InputBegan:Connect(function(i, gp)
+	if gp or i.UserInputType ~= Enum.UserInputType.Keyboard then return end
+	if UIS:GetFocusedTextBox() then return end
+	local isPc = UI.pc or (UIS.KeyboardEnabled and UIS.MouseEnabled)
+	if i.KeyCode == Enum.KeyCode.RightShift or (isPc and i.KeyCode == Enum.KeyCode.B) then
+		win.Visible = not win.Visible
+	end
 end))
+
+task.spawn(function()
+	if not UI.pc then return end
+	local hint = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		Text = _obczbshz({185,173,139,208,210,226,212,211,229,211,215,227,149,150,89,248,27,154,155,240,226,225,235,229,161,196,163,244,247,231,167,245,242,248,244,249,246,8,240,2,177,193,179,245,247,8,0,10,185,9,187,9,2,12,20}), Size = UDim2.fromOffset(320, 26),
+		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 14), BackgroundColor3 = Color3.fromRGB(20, 5, 8),
+		BackgroundTransparency = 0.1, TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 12,
+	}, gui)
+	round(hint, 13)
+	local hs = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, hint)
+	task.wait(4.5)
+	UI.tween(hint, 0.4, { BackgroundTransparency = 1, TextTransparency = 1 })
+	UI.tween(hs, 0.4, { Transparency = 1 })
+	task.wait(0.5)
+	hint:Destroy()
+end)
 
 local alive = true
 local uid = tostring(lp.UserId)
@@ -5567,7 +6222,7 @@ function shutdown()
 	if selfCleanup then selfCleanup() end
 	for _, c in ipairs(conns) do c:Disconnect() end
 	local r = hrp(); if r then r.Anchored = false end
-	http(_obi44m9h({81,83,91,85,101,87}), _obi44m9h({60,123,116,125,115,119,133,135,68}) .. uid .. _obi44m9h({59,120,130,127,127}))
+	http(_obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,208,217,207,211,225,227,160}) .. uid .. _obczbshz({151,212,222,219,219}))
 	gui:Destroy()
 end
 
@@ -5576,7 +6231,7 @@ local function presenceBody()
 	local root = hrp()
 	return {
 		name = lp.Name, uid = lp.UserId, place = game.PlaceId, job = game.JobId, beat = beat, t = os.time(),
-		fire = (root and root:FindFirstChild(_obi44m9h({96,118,120,126,87,123,133,121})) ~= nil) or nil,
+		fire = (root and root:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213})) ~= nil) or nil,
 		rocket = FXS.rocket or nil,
 		jail = FXS.jail,
 		boom = FXS.boom,
@@ -5584,7 +6239,7 @@ local function presenceBody()
 	}
 end
 function pushPresence()
-	if alive then http(_obi44m9h({93,99,99}), _obi44m9h({60,123,116,125,115,119,133,135,68}) .. uid .. _obi44m9h({59,120,130,127,127}), presenceBody()) end
+	if alive then http(_obczbshz({185,191,191}), _obczbshz({152,215,208,217,207,211,225,227,160}) .. uid .. _obczbshz({151,212,222,219,219}), presenceBody()) end
 end
 TAG.push = function()
 
@@ -5598,11 +6253,11 @@ table.insert(conns, lp.CharacterAdded:Connect(function() task.wait(1); pushPrese
 task.spawn(function()
 	while alive do
 		beat = beat + 1
-		local r = http(_obi44m9h({93,99,99}), _obi44m9h({60,123,116,125,115,119,133,135,68}) .. uid .. _obi44m9h({59,120,130,127,127}), presenceBody())
+		local r = http(_obczbshz({185,191,191}), _obczbshz({152,215,208,217,207,211,225,227,160}) .. uid .. _obczbshz({151,212,222,219,219}), presenceBody())
 		if r ~= nil then
-			if not info.Text:find(_obi44m9h({78,114,124,121,127,50,136,135,132,139})) then info.Text = _obi44m9h({239,165,158,48,84,129,129,121,120,138,120,124,136,58,124,139,61,142,128,137,143,135,143}) end
+			if not info.Text:find(_obczbshz({170,206,216,213,219,142,228,227,224,231})) then info.Text = _obczbshz({75,1,250,140,176,221,221,213,212,230,212,216,228,150,216,231,153,234,220,229,235,227,235}) end
 		else
-			info.Text = _obi44m9h({239,170,165,48,100,119,128,52,120,133,133,125,145,221,190,139,87,62}) .. lastErr
+			info.Text = _obczbshz({75,6,1,140,192,211,220,144,212,225,225,217,237,57,26,231,179,154}) .. lastErr
 		end
 		task.wait(5)
 	end
@@ -5611,12 +6266,12 @@ end)
 task.spawn(function()
 	local lastId, ready = nil, false
 	while alive do
-		local body = http(_obi44m9h({84,83,99}), _obi44m9h({60,113,124,116,64}) .. uid .. _obi44m9h({59,120,130,127,127}))
+		local body = http(_obczbshz({176,175,191}), _obczbshz({152,205,216,208,156}) .. uid .. _obczbshz({151,212,222,219,219}))
 		if body ~= nil then
 			local c
-			if body ~= _obi44m9h({123,131,123,124}) and body ~= _obi44m9h({}) then
+			if body ~= _obczbshz({215,223,215,216}) and body ~= _obczbshz({}) then
 				local ok, d = pcall(HttpService.JSONDecode, HttpService, body)
-				if ok and type(d) == _obi44m9h({129,111,113,124,118}) then c = d end
+				if ok and type(d) == _obczbshz({221,203,205,216,210}) then c = d end
 			end
 			if not ready then
 				ready = true
@@ -5625,8 +6280,8 @@ task.spawn(function()
 				lastId = c.id
 				local fn = ACTIONS[c.action]
 				if fn and c.job == game.JobId then
-					info.Text = _obi44m9h({78,114,124,121,127,50,136,135,132,139,81,56}) .. tostring(c.action)
-					toast(_obi44m9h({78,114,124,121,127,50,136,135,132,139,81,56}) .. tostring(c.action))
+					info.Text = _obczbshz({170,206,216,213,219,142,228,227,224,231,173,148}) .. tostring(c.action)
+					toast(_obczbshz({170,206,216,213,219,142,228,227,224,231,173,148}) .. tostring(c.action))
 					pcall(fn, c)
 				end
 			end
@@ -5639,15 +6294,15 @@ task.spawn(function()
 	local ownerBeat, ownerAt = nil, 0
 	while alive do
 		local changed = false
-		local gb = http(_obi44m9h({84,83,99}), _obi44m9h({60,113,124,116,64,134,116,123,116}) .. uid .. _obi44m9h({59,120,130,127,127}))
+		local gb = http(_obczbshz({176,175,191}), _obczbshz({152,205,216,208,156,226,208,215,208}) .. uid .. _obczbshz({151,212,222,219,219}))
 		if gb ~= nil then
 			local g
-			if gb ~= _obi44m9h({123,131,123,124}) and gb ~= _obi44m9h({}) then
+			if gb ~= _obczbshz({215,223,215,216}) and gb ~= _obczbshz({}) then
 				local ok, d = pcall(HttpService.JSONDecode, HttpService, gb)
-				if ok and type(d) == _obi44m9h({129,111,113,124,118}) and type(d.role) == _obi44m9h({128,130,129,121,127,121}) and d.role ~= _obi44m9h({}) then g = d end
+				if ok and type(d) == _obczbshz({221,203,205,216,210}) and type(d.role) == _obczbshz({220,222,221,213,219,213}) and d.role ~= _obczbshz({}) then g = d end
 			end
-			local sig = g and (g.role .. _obi44m9h({137}) .. tostring(g.rgb == true)) or _obi44m9h({})
-			if sig ~= (TAG.grantSig or _obi44m9h({})) then
+			local sig = g and (g.role .. _obczbshz({229}) .. tostring(g.rgb == true)) or _obczbshz({})
+			if sig ~= (TAG.grantSig or _obczbshz({})) then
 				TAG.grantSig = sig
 				if g then
 					for _, r in ipairs(TAG_ROLES) do
@@ -5656,17 +6311,17 @@ task.spawn(function()
 					TAG.rgb = (g.rgb == true)
 					TAG.granted = true
 				else
-					TAG.role = _obi44m9h({90,115,124,114,131,129}); TAG.rgb = false; TAG.granted = false
+					TAG.role = _obczbshz({182,207,216,206,223,221}); TAG.rgb = false; TAG.granted = false
 				end
 				changed = true
 			end
 		end
-		local ob = http(_obi44m9h({84,83,99}), _obi44m9h({60,113,124,116,64,129,138,130,122,136,118}) .. game.JobId .. _obi44m9h({59,120,130,127,127}))
+		local ob = http(_obczbshz({176,175,191}), _obczbshz({152,205,216,208,156,221,230,222,214,228,210}) .. game.JobId .. _obczbshz({151,212,222,219,219}))
 		if ob ~= nil then
 			local force = false
-			if ob ~= _obi44m9h({123,131,123,124}) and ob ~= _obi44m9h({}) then
+			if ob ~= _obczbshz({215,223,215,216}) and ob ~= _obczbshz({}) then
 				local ok, o = pcall(HttpService.JSONDecode, HttpService, ob)
-				if ok and type(o) == _obi44m9h({129,111,113,124,118}) and o.gone ~= true then
+				if ok and type(o) == _obczbshz({221,203,205,216,210}) and o.gone ~= true then
 					if o.beat ~= ownerBeat then
 						ownerBeat = o.beat
 						if math.abs(os.time() - (tonumber(o.t) or 0)) < 300 then ownerAt = os.clock() end
