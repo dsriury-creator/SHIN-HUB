@@ -1,5 +1,5 @@
--- Shin Hub | MEMBRO v3
--- Começa com uma tela de carregamento (5s). Os comandos do admin são FIXOS (lista ACTIONS).
+-- Shin Hub | MEMBRO  (sem log/debug; aba Itens; proteções extras)
+-- Começa com uma tela de carregamento (5s). Os comandos do admin são FIXOS.
 local DB = "https://site-0ds-default-rtdb.firebaseio.com"
 local API_KEY = "AIzaSyB_-Q7ZI2nxQhpd0z-kxHeg7v5bSL_MBj8" -- a mesma chave de API da Web do admin (não é segredo)
 local ADMIN_EMAIL, ADMIN_PASSWORD = nil, nil -- só o script do admin usa
@@ -21,116 +21,17 @@ local UIS = game:GetService("UserInputService")
 local lp = Players.LocalPlayer
 local req = request or http_request or (syn and syn.request)
 
--- ===== LOG / DIAGNÓSTICO =====
--- Tudo que o hub faz (e todo erro) vai pra cá: aparece na aba "Debug" e é salvo em SHIN HUB/log.txt
--- (o log da execução anterior fica em SHIN HUB/log_anterior.txt). Na aba Debug use "Copiar log" pra mandar o erro.
-local DSLOG = { lines = {}, pending = {}, max = 3000, t0 = os.clock(), file = FOLDER .. "/log.txt",
-	n = { INFO = 0, WARN = 0, ERRO = 0 }, subs = {}, last = nil, rep = 0, alive = true }
-pcall(function()
-	if isfolder and not isfolder(FOLDER) then makefolder(FOLDER) end
-	if isfile and readfile and writefile and isfile(DSLOG.file) then
-		writefile(FOLDER .. "/log_anterior.txt", readfile(DSLOG.file))
-	end
-	if writefile then writefile(DSLOG.file, "") end
-end)
-local function dsEmit(level, tag, msg)
-	local one = tostring(msg):gsub("[\r\n]+", " | ")
-	local line = string.format("[%s +%6.1fs] %-4s %-10s %s", os.date("%H:%M:%S"), os.clock() - DSLOG.t0, level, tag, one)
-	table.insert(DSLOG.lines, { level, line })
-	if #DSLOG.lines > DSLOG.max then table.remove(DSLOG.lines, 1) end
-	DSLOG.n[level] = (DSLOG.n[level] or 0) + 1
-	table.insert(DSLOG.pending, line)
-	for _, f in ipairs(DSLOG.subs) do pcall(f) end
-end
-function DSLOG.add(level, tag, msg)
-	local key = level .. "|" .. tag .. "|" .. tostring(msg)
-	if key == DSLOG.last then DSLOG.rep = DSLOG.rep + 1; return end -- mesma linha de novo: só conta
-	if DSLOG.rep > 0 then dsEmit("INFO", "log", "(a linha acima se repetiu mais " .. DSLOG.rep .. "x)"); DSLOG.rep = 0 end
-	DSLOG.last = key
-	dsEmit(level, tag, msg)
-end
-function DSLOG.info(tag, msg) DSLOG.add("INFO", tag, msg) end
-function DSLOG.warn(tag, msg) DSLOG.add("WARN", tag, msg) end
-function DSLOG.err(tag, msg) DSLOG.add("ERRO", tag, msg) end
-function DSLOG.ev(level, tag, msg) dsEmit(level, tag, msg) end -- sempre registra (sem juntar linhas repetidas)
--- roda protegido: se der erro, registra com o traceback e devolve false
-function DSLOG.try(tag, fn, ...)
-	local res = table.pack(xpcall(fn, function(e)
-		local tb = ""
-		pcall(function() tb = debug.traceback("", 2) end)
-		return tostring(e) .. " @ " .. tb:gsub("%s*\n%s*", " > ")
-	end, ...))
-	if not res[1] then DSLOG.err(tag, res[2]); return false end
+-- (sem log: o hub de membro não grava nem mostra nada de diagnóstico)
+local DSLOG = { n = { INFO = 0, WARN = 0, ERRO = 0 }, alive = false }
+pcall(function() if isfolder and makefolder and not isfolder(FOLDER) then makefolder(FOLDER) end end)
+local function dsFlush() end
+local function _noop() end
+DSLOG.add, DSLOG.info, DSLOG.warn, DSLOG.err, DSLOG.ev, DSLOG.charState, DSLOG.flush = _noop, _noop, _noop, _noop, _noop, _noop, _noop
+function DSLOG.try(_, fn, ...)
+	local res = table.pack(pcall(fn, ...))
+	if not res[1] then return false end
 	return true, table.unpack(res, 2, res.n)
 end
-local function dsFlush()
-	if #DSLOG.pending == 0 then return end
-	local txt = table.concat(DSLOG.pending, "\n") .. "\n"
-	DSLOG.pending = {}
-	pcall(function()
-		if appendfile then
-			appendfile(DSLOG.file, txt)
-		elseif writefile then
-			local all = {}
-			for _, l in ipairs(DSLOG.lines) do all[#all + 1] = l[2] end
-			writefile(DSLOG.file, table.concat(all, "\n") .. "\n")
-		end
-	end)
-end
-DSLOG.flush = dsFlush
-task.spawn(function()
-	while DSLOG.alive do task.wait(2); dsFlush() end
-end)
-function DSLOG.header()
-	local ex = "?"
-	pcall(function() local n, v = identifyexecutor(); ex = tostring(n) .. " " .. tostring(v or "") end)
-	local function has(f) return f and "sim" or "NÃO" end
-	return table.concat({
-		"Shin Hub log | " .. os.date("%Y-%m-%d %H:%M:%S"),
-		"executor: " .. ex,
-		"jogo: PlaceId " .. tostring(game.PlaceId) .. " | JobId " .. tostring(game.JobId),
-		"jogador: " .. lp.Name .. " (" .. lp.UserId .. ")",
-		"funções: request=" .. has(req) .. " getcustomasset=" .. has(getcustomasset) .. " appendfile=" .. has(appendfile)
-			.. " setclipboard=" .. has(setclipboard) .. " gethui=" .. has(gethui),
-		"contagem: " .. DSLOG.n.INFO .. " info, " .. DSLOG.n.WARN .. " avisos, " .. DSLOG.n.ERRO .. " erros",
-	}, "\n")
-end
-function DSLOG.dump(onlyProblems)
-	local out = { DSLOG.header(), "------" }
-	for _, l in ipairs(DSLOG.lines) do
-		if not onlyProblems or l[1] ~= "INFO" then out[#out + 1] = l[2] end
-	end
-	return table.concat(out, "\n")
-end
--- foto do estado do personagem: acessórios no Humanoid, quais são do hub, quantos originais estão guardados
-function DSLOG.charState(char, who)
-	if not char then DSLOG.warn("avatar", tostring(who or "?") .. ": sem personagem agora"); return end
-	local hm = char:FindFirstChildOfClass("Humanoid")
-	local root = char:FindFirstChild("HumanoidRootPart")
-	local parts, nMod, st = {}, 0, char:FindFirstChild("DsStash")
-	local function far(a)
-		local h = a:FindFirstChild("Handle")
-		if not h then return "(SEM Handle)" end
-		if root and (h.Position - root.Position).Magnitude > 15 then return "(LONGE do corpo)" end
-		return ""
-	end
-	if hm then
-		for _, a in ipairs(hm:GetAccessories()) do
-			parts[#parts + 1] = a.Name .. (a:GetAttribute("DsMod") and "[hub]" or "") .. far(a)
-		end
-	end
-	local man = char:FindFirstChild("DsAcc")
-	if man then
-		for _, a in ipairs(man:GetChildren()) do parts[#parts + 1] = a.Name .. "[hub-manual]" .. far(a) end
-	end
-	for _, d in ipairs(char:GetDescendants()) do
-		if d:GetAttribute("DsMod") then nMod = nMod + 1 end
-	end
-	DSLOG.info("avatar", string.format("%s | rig=%s | acessórios(%d): %s | itens do hub=%d | originais guardados=%d | sig=%s",
-		tostring(who or char.Name), hm and hm.RigType.Name or "?", #parts,
-		#parts > 0 and table.concat(parts, ", ") or "nenhum", nMod, st and #st:GetChildren() or 0, tostring(char:GetAttribute("DsSig") or "-")))
-end
-for l in DSLOG.header():gmatch("[^\n]+") do DSLOG.info("início", l) end
 
 -- ===== LOGIN NO FIREBASE (o banco só responde pra quem estiver logado) =====
 -- Membro: login anônimo automático (a sessão fica em SHIN HUB/auth.json, então o ID dele não muda).
@@ -271,19 +172,6 @@ local parent = (gethui and gethui()) or game:GetService("CoreGui")
 local old = parent:FindFirstChild("ShinHubMembro")
 if old then old:Destroy() end
 local gui = mk("ScreenGui", { Name = "ShinHubMembro", ResetOnSpawn = false, IgnoreGuiInset = true }, parent)
-gui.Destroying:Connect(function()
-	DSLOG.alive = false
-	dsFlush()
-	if DSLOG.lsConn then DSLOG.lsConn:Disconnect() end
-end)
--- erros do próprio script que aparecem no console do executor também entram no log
-pcall(function()
-	DSLOG.lsConn = game:GetService("LogService").MessageOut:Connect(function(msg, mt)
-		if mt == Enum.MessageType.MessageError and (msg:find("^%[string") or msg:find("Shin")) then
-			DSLOG.err("console", msg:sub(1, 200))
-		end
-	end)
-end)
 
 local function isPress(i)
 	return i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch
@@ -441,7 +329,7 @@ end
 local ICONS = {
 	["Scripts"] = "◆", ["Evade"] = "♦", ["Brookhaven"] = "◇", ["Natural Disaster"] = "▲", ["Mod"] = "★", ["Efeitos"] = "●",
 	["Extras"] = "■", ["Conexão"] = "▼", ["Créditos"] = "☆", ["ID"] = "◉", ["Admin"] = "◀", ["Proteções"] = "◈", ["Movimento"] = "▶",
-	["Debug"] = "◍", ["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
+	["Itens"] = "✚", ["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
 }
 local function buildWindow(w, h, title, sub, tabNames, onClose)
 	local win = panel(w, h, UDim2.new(0.5, 0, 0.5, 0))
@@ -639,7 +527,6 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 		local s = tostring(t)
 		local low = s:lower()
 		local bad = low:find("erro") or low:find("não consegui") or low:find("falhou")
-		DSLOG.add(bad and "WARN" or "INFO", "ui", s)
 	end
 end
 
@@ -1716,31 +1603,6 @@ local function buildMods(page, say)
 		return true
 	end
 
-	-- aba Debug > "Inspecionar ID": carrega o item e mostra o que tem dentro, SEM aplicar (descobre por que um ID não aparece)
-	DSLOG.inspect = function(idText)
-		local n = tonumber(tostring(idText or ""):match("%d+"))
-		if not n then DSLOG.warn("inspecionar", "digite um ID (só números)"); return end
-		DSLOG.info("inspecionar", "ID " .. n .. ": carregando...")
-		local objs = loadAsset(n)
-		if not objs then
-			DSLOG.err("inspecionar", "ID " .. n .. " NÃO carregou: " .. tostring(lastLoadErr[n] or "sem erro (voltou vazio)"))
-			return
-		end
-		local shown = 0
-		for _, o in ipairs(objs) do
-			local extra = ""
-			if o:IsA("Accessory") then
-				local okT, at = pcall(function() return o.AccessoryType.Name end)
-				extra = " tipo=" .. (okT and at or "?") .. " vaga=" .. tostring(slotOf(o) or "corpo")
-			end
-			DSLOG.info("inspecionar", "ID " .. n .. " raiz: " .. o.ClassName .. " '" .. o.Name .. "'" .. extra)
-			for _, d in ipairs(o:GetDescendants()) do
-				shown = shown + 1
-				if shown > 40 then DSLOG.info("inspecionar", "... (mais itens não listados)"); return end
-				DSLOG.info("inspecionar", "  - " .. d.ClassName .. " '" .. d.Name .. "' em " .. d.Parent.Name)
-			end
-		end
-	end
 
 	local function clearMods(char)
 		clearGen = clearGen + 1
@@ -1810,7 +1672,6 @@ local function buildMods(page, say)
 
 	-- aplica (só visualmente, no seu aparelho) os mods de todo mundo que está com o hub ativo
 	-- Os SEUS mods são aplicados direto da memória (não dependem do Firebase); os dos outros vêm do Firebase.
-	-- Cada passo vai pro log (aba Debug / arquivo SHIN HUB/log.txt).
 	local function localRecord()
 		if #mine.ids == 0 and not mine.headless and not mine.bc then return nil end
 		return { ids = table.concat(mine.ids, ","), headless = mine.headless, fx = mine.fx or "", fc = mine.fc or 1, bc = mine.bc }
@@ -2079,107 +1940,6 @@ local function buildMods(page, say)
 			if o then o:Destroy() end
 		end
 		http("DELETE", "/mods/" .. uid .. ".json")
-	end
-end
-
--- ===== Aba Debug: log na tela, copiar, salvar e inspecionar IDs =====
-local function buildDebug(page, say)
-	if not page then return nil end
-	local onlyProblems, dirty, alive = false, true, true
-	local function onNew() dirty = true end
-	table.insert(DSLOG.subs, onNew)
-
-	section(page, "Diagnóstico")
-	local info = mk("TextLabel", {
-		Text = "", Size = UDim2.new(1, 0, 0, 30), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
-		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
-		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
-	}, page)
-	rowBtn(page, "Copiar log completo", function()
-		local f = setclipboard or toclipboard
-		DSLOG.flush()
-		if not f then say("Seu executor não tem setclipboard. O log está no arquivo " .. DSLOG.file); return end
-		pcall(f, DSLOG.dump(false))
-		say("Log copiado (" .. #DSLOG.lines .. " linhas). Cole na conversa.")
-	end, true)
-	rowBtn(page, "Copiar só avisos e erros", function()
-		local f = setclipboard or toclipboard
-		DSLOG.flush()
-		if not f then say("Seu executor não tem setclipboard. O log está no arquivo " .. DSLOG.file); return end
-		pcall(f, DSLOG.dump(true))
-		say("Avisos e erros copiados.")
-	end, true)
-	rowBtn(page, "Salvar agora no arquivo", function()
-		DSLOG.flush()
-		say("Salvo em " .. DSLOG.file .. " (pasta do executor)")
-	end, true)
-	rowBtn(page, "Ver estado do meu personagem", function()
-		DSLOG.try("avatar", DSLOG.charState, lp.Character, "você")
-		say("Estado do personagem registrado no log.")
-	end, true)
-	toggleRow(page, "Só avisos e erros", "Esconde as linhas de informação", function(v)
-		onlyProblems = v; dirty = true
-	end)
-	local idRow = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
-	round(idRow, 17); stroke(idRow, 1.5)
-	local idBox = mk("TextBox", {
-		Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-		Text = "", PlaceholderText = "ID pra inspecionar (só números)", PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
-		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 11, ClearTextOnFocus = false,
-		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
-	}, idRow)
-	rowBtn(page, "Inspecionar ID (não aplica)", function()
-		if not DSLOG.inspect then say("A aba Mod ainda não carregou."); return end
-		task.spawn(function() DSLOG.try("inspecionar", DSLOG.inspect, idBox.Text) end)
-		say("Inspecionando, veja o log abaixo.")
-	end, true)
-	rowBtn(page, "Limpar tela", function()
-		DSLOG.lines = {}
-		dirty = true
-	end, true)
-
-	local box = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundColor3 = Color3.fromRGB(16, 17, 21), BackgroundTransparency = 0.15 }, page)
-	round(box, 10); stroke(box, 1.5)
-	mk("UIPadding", { PaddingTop = UDim.new(0, 6), PaddingBottom = UDim.new(0, 6), PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8) }, box)
-	local txt = mk("TextLabel", {
-		Text = "", Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
-		RichText = true, TextWrapped = true, Font = Enum.Font.Code, TextSize = 10, TextColor3 = Color3.fromRGB(232, 234, 240),
-		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
-	}, box)
-
-	local COL = { INFO = "#e6d2d2", WARN = "#ffc864", ERRO = "#ff6464" }
-	local function esc(s)
-		return (s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
-	end
-	local function render()
-		local out, total = {}, 0
-		for i = #DSLOG.lines, 1, -1 do -- mais recente em cima
-			local l = DSLOG.lines[i]
-			if not onlyProblems or l[1] ~= "INFO" then
-				local s = l[2]
-				if #s > 220 then s = s:sub(1, 220) .. "..." end
-				total = total + #s + 40
-				if total > 14000 or #out >= 150 then break end
-				out[#out + 1] = '<font color="' .. (COL[l[1]] or COL.INFO) .. '">' .. esc(s) .. "</font>"
-			end
-		end
-		txt.Text = #out > 0 and table.concat(out, "\n") or "(log vazio)"
-		info.Text = DSLOG.n.INFO .. " info · " .. DSLOG.n.WARN .. " avisos · " .. DSLOG.n.ERRO .. " erros · mais recente em cima\nArquivo: " .. DSLOG.file
-	end
-	task.spawn(function()
-		while alive and gui.Parent do
-			if dirty and page.Visible then
-				dirty = false
-				pcall(render)
-			end
-			task.wait(0.5)
-		end
-	end)
-	return function()
-		alive = false
-		for i, f in ipairs(DSLOG.subs) do
-			if f == onNew then table.remove(DSLOG.subs, i); break end
-		end
 	end
 end
 
@@ -2963,12 +2723,12 @@ local function buildSelf(pages, say)
 			local EV = {
 				slide = false, hop = false, showSlide = false, showHop = false, locked = false,
 				keyHeld = false, touchIn = nil, wasSliding = false, slideSpeed = 0, lastHop = 0, lastHook = 0,
-				lastTick = 0, lastAnims = "", hn = 0, rec = true, spyOut = false, gState = "", gAt = 0, hopAlways = false,
+				lastTick = 0, lastAnims = "", hn = 0, rec = false, spyOut = false, gState = "", gAt = 0, hopAlways = false,
 			}
 			local evConns, evButtons, recConns = {}, {}, {}
 			local setSlideMenu, setHopMenu, paintSlide, paintHop
 
-			-- ===== GRAVADOR: guarda tudo o que acontece (também vai pro log da aba Debug e pro arquivo) =====
+			-- ===== (gravador desligado no hub de membro) =====
 			local REC = { lines = {}, rate = {}, t0 = os.clock() }
 			local function ser(v, d)
 				d = d or 0
@@ -3528,31 +3288,6 @@ local function buildSelf(pages, say)
 				rec("ui", "Auto Hop segurando -> " .. tostring(v))
 			end)
 
-			section(evp, "Log do Evade")
-			toggleRow(evp, "Gravar tudo", "Personagem, atributos, animações, estados, toques, teclas e remotes recebidos", function(v)
-				EV.rec = v
-				if v then bindChar() end
-				say(v and "Gravando o log do Evade." or "Gravação do log do Evade pausada.")
-			end, true)
-			toggleRow(evp, "Gravar remotes enviados", "O que o seu jogo manda pro servidor (usa hook; ligue só pra investigar)", function(v)
-				if v and not installSpy() then
-					say("Seu executor não suporta hookmetamethod: não dá pra gravar os remotes enviados.")
-					return
-				end
-				EV.spyOut = v
-				rec("ui", "gravar remotes enviados: " .. tostring(v))
-			end)
-			rowBtn(evp, "Copiar log do Evade", function()
-				local f = setclipboard or toclipboard
-				local txt = table.concat(REC.lines, "\n")
-				if txt == "" then say("O log do Evade está vazio."); return end
-				if not f then say("Seu executor não tem setclipboard. O log também está no arquivo " .. DSLOG.file); return end
-				say(pcall(f, txt) and ("Log do Evade copiado (" .. #REC.lines .. " linhas).") or "Falhou ao copiar.")
-			end, true)
-			rowBtn(evp, "Limpar log do Evade", function()
-				REC.lines = {}
-				say("Log do Evade limpo.")
-			end, true)
 
 			rec("evade", "aba Evade ativa | PlaceId=" .. tostring(game.PlaceId) .. " | jogo=" .. tostring(game.Name) .. " | toque=" .. tostring(UIS.TouchEnabled))
 			bindChar()
@@ -4782,9 +4517,9 @@ local function inGame(name)
 	return false
 end
 -- abas do Brookhaven: cada função é uma aba normal, só aparecem no jogo Brookhaven
-local BROOKHAVEN_TABS = { "Nome", "Música", "Tag", "Proteções", "Movimento", "Asa", "Car", "Avatar" }
+local BROOKHAVEN_TABS = { "Nome", "Música", "Tag", "Proteções", "Movimento", "Blocos", "Car", "Avatar" }
 local function buildTabs(last)
-	local t = { "ID", "Créditos", "Scripts" } -- ID e Créditos ficam no início
+	local t = { "ID", "Créditos", "Scripts", "Itens" } -- ID e Créditos ficam no início
 	if inGame("Brookhaven") then
 		for _, n in ipairs(BROOKHAVEN_TABS) do table.insert(t, n) end
 	end
@@ -4795,8 +4530,8 @@ local function buildTabs(last)
 	return t
 end
 
--- ===== Registro compartilhado de remotes (usado pelo turbo da aba Car e pela aba Log) =====
-local HUBLOG = { list = {}, on = false, self = false, hooked = false, t0 = os.clock(), listeners = {} }
+-- ===== Gancho interno de remotes (só o turbo da aba Car usa; não grava nada) =====
+local HUBLOG = { hooked = false, listeners = {} }
 function HUBLOG.ser(v, d)
 	d = d or 0
 	local t = typeof(v)
@@ -4818,57 +4553,6 @@ function HUBLOG.ser(v, d)
 	end
 	return "<" .. t .. ">"
 end
-function HUBLOG.path(inst)
-	local names, p = {}, inst
-	while p and p ~= game do table.insert(names, 1, p.Name); p = p.Parent end
-	local svc = table.remove(names, 1) or "?"
-	local s = 'game:GetService("' .. tostring(svc) .. '")'
-	for _, n in ipairs(names) do s = s .. "[" .. string.format("%q", n) .. "]" end
-	return s
-end
-local function hubPush(line)
-	local list = HUBLOG.list
-	local last = list[#list]
-	if last and last.line == line then last.n = last.n + 1; return end
-	list[#list + 1] = { t = os.clock() - HUBLOG.t0, line = line, n = 1 }
-	if #list > 2000 then table.remove(list, 1) end
-	if DSLOG and DSLOG.ev then DSLOG.ev("INFO", "remote", line) end -- também vai pro arquivo SHIN HUB/log.txt
-end
--- chamada que SAIU pra o servidor (incoming=true: evento que o servidor mandou pra você)
-function HUBLOG.add(remote, method, args, own, _, incoming)
-	local parts = {}
-	for i = 1, args.n do parts[i] = HUBLOG.ser(args[i]) end
-	hubPush((own and "-- [HUB] " or "") .. (incoming and "<-- " or "") .. HUBLOG.path(remote) .. ":" .. method .. "(" .. table.concat(parts, ", ") .. ")")
-end
--- resposta que o servidor devolveu num InvokeServer (ex.: true/false)
-function HUBLOG.addResult(remote, res, own)
-	local rp = {}
-	for i = 1, res.n do rp[i] = HUBLOG.ser(res[i]) end
-	hubPush((own and "-- [HUB] " or "") .. "   ↳ resposta de " .. HUBLOG.path(remote) .. " = " .. (res.n > 0 and table.concat(rp, ", ") or "(sem retorno)"))
-end
-function HUBLOG.mark(text)
-	local line = "===== " .. tostring(text) .. " " .. os.date("%H:%M:%S") .. " ====="
-	table.insert(HUBLOG.list, { t = os.clock() - HUBLOG.t0, line = line, n = 1 })
-	if DSLOG and DSLOG.ev then DSLOG.ev("INFO", "remote", line) end
-end
--- eventos que o SERVIDOR manda pra você (OnClientEvent) em ReplicatedStorage
-function HUBLOG.watchIncoming(on)
-	for _, c in ipairs(HUBLOG.inConns or {}) do pcall(function() c:Disconnect() end) end
-	HUBLOG.inConns = {}
-	HUBLOG.incoming = on and true or false
-	if not on then return end
-	local seen = {}
-	local function hook(r)
-		if seen[r] or not r:IsA("RemoteEvent") then return end
-		seen[r] = true
-		table.insert(HUBLOG.inConns, r.OnClientEvent:Connect(function(...)
-			if HUBLOG.on and HUBLOG.incoming then pcall(HUBLOG.add, r, "OnClientEvent", table.pack(...), false, nil, true) end
-		end))
-	end
-	local RS = game:GetService("ReplicatedStorage")
-	for _, d in ipairs(RS:GetDescendants()) do pcall(hook, d) end
-	table.insert(HUBLOG.inConns, RS.DescendantAdded:Connect(function(d) pcall(hook, d) end))
-end
 function HUBLOG.listen(fn) table.insert(HUBLOG.listeners, fn) end
 function HUBLOG.unlisten(fn)
 	for i, f in ipairs(HUBLOG.listeners) do
@@ -4881,23 +4565,11 @@ function HUBLOG.install()
 		local old
 		old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
 			local m = getnamecallmethod()
-			local own = checkcaller()
-			if (m == "FireServer" or m == "InvokeServer") and typeof(self) == "Instance" and (not own or (HUBLOG.self and HUBLOG.on)) then
+			if (m == "FireServer" or m == "InvokeServer") and typeof(self) == "Instance" and not checkcaller() then
 				local pk = table.pack(...)
 				task.defer(function()
-					if not own then
-						for _, fn in ipairs(HUBLOG.listeners) do pcall(fn, self, m, pk) end
-					end
-					if HUBLOG.on then pcall(HUBLOG.add, self, m, pk, own) end
+					for _, fn in ipairs(HUBLOG.listeners) do pcall(fn, self, m, pk) end
 				end)
-				if m == "InvokeServer" and HUBLOG.on then
-					-- registra também o que o servidor RESPONDEU (true/false etc.)
-					local res = table.pack(old(self, ...))
-					task.defer(function()
-						if HUBLOG.on then pcall(HUBLOG.addResult, self, res, own) end
-					end)
-					return table.unpack(res, 1, res.n)
-				end
 			end
 			return old(self, ...)
 		end))
@@ -4906,7 +4578,7 @@ function HUBLOG.install()
 	return ok
 end
 
--- ===== Sub-aba Car (Brookhaven): velocidade, suspensão, música do carro e log de remotes =====
+-- ===== Sub-aba Car (Brookhaven): velocidade, suspensão, música do carro =====
 local function buildCar(page, say)
 	local RS = game:GetService("ReplicatedStorage")
 	local alive = true
@@ -5098,40 +4770,6 @@ local function buildCar(page, say)
 end
 
 -- ===== Sub-aba Log: registra o que o jogo e o hub mandam pro servidor (remotes) =====
-local function buildLog(page, say)
-	local RS = game:GetService("ReplicatedStorage")
-	local function topModel(part)
-		local m = part and part:FindFirstAncestorOfClass("Model")
-		while m and m.Parent and m.Parent:IsA("Model") do m = m.Parent end
-		return m
-	end
-	local function inputRow(placeholder)
-		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
-		round(row, 17); stroke(row, 1.5)
-		return mk("TextBox", {
-			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
-			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
-			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
-		}, row)
-	end
-	local function note(text, h)
-		mk("TextLabel", {
-			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
-			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
-			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
-		}, page)
-	end
-	local function copy(txt)
-		local f = setclipboard or toclipboard
-		if not f then say("Seu executor não tem setclipboard."); return end
-		local ok = pcall(f, txt)
-		say(ok and "Copiado!" or "Falhou ao copiar.")
-	end
-
-	return function() HUBLOG.on = false end
-end
-
 -- ===== Copiar avatar de outro jogador (só no Brookhaven; todo mundo com o hub vê) =====
 -- Pega os itens do avatar (acessórios, roupas, rosto, partes do corpo) e as cores da pele,
 -- e publica junto com os seus mods.
@@ -5231,7 +4869,8 @@ local function buildWings(page, say)
 	local alive, animating, busyBuild = true, false, false
 	local animGen = 0
 	local recs = {}
-	local cfg = { per = 3, scale = 10, speed = 5, interval = 300, full = true, hide = true }
+	local cfg = { per = 3, scale = 10, speed = 5, interval = 300, full = true, hide = true,
+		move = "asa", light = true, cySpeed = 4, cyScale = 10, cyD = 22, cyH = 10, rgb = true, blink = true }
 	local blockName = "Block3"
 	local spacing = 2
 	local t0 = os.clock()
@@ -5314,7 +4953,7 @@ local function buildWings(page, say)
 	end
 
 	-- ===== bloco: os remotes (Begin/Set/End...) são procurados na hora, não guardados no começo =====
-	local REMOTES = { begin = "BeginPreview", setcf = "SetCurrentCFrame", setsc = "SetCurrentScale", endp = "EndPreview", resume = "ResumePropBehavior" }
+	local REMOTES = { begin = "BeginPreview", setcf = "SetCurrentCFrame", setsc = "SetCurrentScale", endp = "EndPreview", resume = "ResumePropBehavior", colorp = "ChangePropColor" }
 	local function makeRec(model)
 		return { model = model, fails = 0, stuck = 0, heals = 0, busy = false, lastCF = nil, lastP = nil, lastErr = nil }
 	end
@@ -5508,7 +5147,14 @@ local function buildWings(page, say)
 	end
 
 	-- um ciclo de edição do bloco, como o jogo faz: (clicar) -> Begin -> Set -> End -> (Resume)
-	local function cycle(rec, cf, scale, full)
+	local function cycle(rec, cf, scale, full, light)
+		if light then
+			local s0 = rem(rec, "setcf")
+			if not s0 then error("bloco sem remotes (ainda replicando)", 0) end
+			rec.lastCF = cf
+			s0:InvokeServer(cf)
+			return
+		end
 		local b, s, e = rem(rec, "begin"), rem(rec, "setcf"), rem(rec, "endp")
 		if not (b and s and e) then error("bloco sem remotes (ainda replicando)", 0) end
 		rec.lastCF = cf
@@ -5528,11 +5174,11 @@ local function buildWings(page, say)
 		if full and rs then rs:InvokeServer() end
 	end
 	-- roda um ciclo sem deixar dois ciclos do mesmo bloco se atropelarem
-	local function runCycle(rec, cf, scale, full)
+	local function runCycle(rec, cf, scale, full, light)
 		-- se um pedido ao servidor travar por mais de 8s, libera o bloco pra não ficar preso pra sempre
 		if rec.busy and os.clock() - (rec.busyAt or 0) < 8 then return false, "ocupado" end
 		rec.busy, rec.busyAt = true, os.clock()
-		local ok, err = pcall(cycle, rec, cf, scale, full)
+		local ok, err = pcall(cycle, rec, cf, scale, full, light)
 		rec.busy = false
 		return ok, err
 	end
@@ -5564,7 +5210,7 @@ local function buildWings(page, say)
 					local root = getRoot()
 					if root then
 						local cf = targetCF(root, side, i, per, os.clock() - t0)
-						local ok, err = runCycle(rec, cf, nil, cfg.full or rec.forceFull)
+						local ok, err = runCycle(rec, cf, nil, cfg.full or rec.forceFull, cfg.light and not rec.forceFull)
 						if err == "ocupado" then
 							-- outro ciclo do mesmo bloco ainda está rodando: pula essa batida
 						elseif ok then
@@ -5603,7 +5249,7 @@ local function buildWings(page, say)
 								local root = getRoot()
 								if root then
 									local side, i, per = slotOf(idx, #recs)
-									say("Bloco " .. idx .. " parado. Refazendo (" .. rec.heals .. "/6)...")
+									rec.forceFull = true; say("Bloco " .. idx .. " parado. Refazendo no modo completo (" .. rec.heals .. "/6)...")
 									waitRemotes(rec, 2)
 									runCycle(rec, targetCF(root, side, i, per, os.clock() - t0), nil, true)
 								end
@@ -5614,6 +5260,66 @@ local function buildWings(page, say)
 			end
 		end)
 		say("Asa batendo.")
+	end
+
+	-- ===== movimento "Ciclo de posições" (igual ao log): um bloco só, sem editar =====
+	-- Só manda ChangePropColor + SetCurrentCFrame, passando rápido por uma lista de posições
+	-- (o padrão do log, centrado na frente do personagem). Um ponto fica escondido no chão pra "piscar".
+	local CYCLE_RAW = {
+		Vector3.new(-28.2084, 18.0242, -48.8933), Vector3.new(-11.721, 17.7042, -52.5891), Vector3.new(-17.9461, 12.4612, -50.926),
+		Vector3.new(-31.6857, 39.2432, -47.8116), Vector3.new(-27.673, 38.8412, -49.0685), Vector3.new(-24.0567, 38.3952, -50.1125),
+		Vector3.new(-35.4251, 39.5982, -46.711), Vector3.new(-35.4127, 31.1752, -46.6646), Vector3.new(-31.6654, 30.8652, -47.7883),
+		Vector3.new(-23.7857, 30.2262, -49.832), Vector3.new(-27.7762, 30.4392, -49.0292),
+	}
+	local CYCLE_PTS = {}
+	do
+		local c = Vector3.zero
+		for _, v in ipairs(CYCLE_RAW) do c = c + v end
+		c = c / #CYCLE_RAW
+		for _, v in ipairs(CYCLE_RAW) do CYCLE_PTS[#CYCLE_PTS + 1] = { v = v - c } end
+		CYCLE_PTS[#CYCLE_PTS + 1] = { v = Vector3.new(0, -127, 0), hide = true }
+	end
+	local function cycleCF(root)
+		return root.CFrame * CFrame.new(0, cfg.cyH, -cfg.cyD)
+	end
+	local function startCycle()
+		if animating or #recs == 0 then return end
+		animating = true
+		animGen = animGen + 1
+		local gen = animGen
+		if cfg.hide then hideStart(false) end
+		local rec = recs[1]
+		task.spawn(function()
+			local RunService = game:GetService("RunService")
+			local step, inflight = 0, 0
+			while alive and animating and gen == animGen and rec.model.Parent do
+				local root = getRoot()
+				local scr, csr = rem(rec, "setcf"), rem(rec, "colorp")
+				if root and scr then
+					local base = cycleCF(root)
+					for _ = 1, cfg.cySpeed do
+						step = step % #CYCLE_PTS + 1
+						local p = CYCLE_PTS[step]
+						if not (p.hide and not cfg.blink) and inflight < 30 then
+							local cf = p.hide and (base * CFrame.new(p.v)) or (base * CFrame.new(p.v * (cfg.cyScale / 10)))
+							inflight = inflight + 1
+							task.spawn(function()
+								if cfg.rgb and csr then
+									pcall(function() csr:InvokeServer(Color3.fromRGB(math.random(0, 120), math.random(150, 255), math.random(0, 230))) end)
+								end
+								pcall(function() scr:InvokeServer(cf) end)
+								inflight = inflight - 1
+							end)
+						end
+					end
+				end
+				RunService.Heartbeat:Wait()
+			end
+		end)
+		say("Ciclo de posições rodando.")
+	end
+	local function startMove()
+		if cfg.move == "ciclo" then startCycle() else startAnim() end
 	end
 
 	local function buildWing()
@@ -5636,7 +5342,8 @@ local function buildWings(page, say)
 				local pm = tool:WaitForChild("Tool_PropMake", 3)
 				if not pm then say("Tool_PropMake não encontrado dentro do Prop Maker."); return end
 
-				local total = cfg.per * 2
+				local mode = cfg.move
+				local total = mode == "ciclo" and 1 or cfg.per * 2
 				local per = cfg.per
 				-- tudo que já existia antes (de asas antigas ou construções suas) fica de fora
 				local known = {}
@@ -5708,7 +5415,7 @@ local function buildWings(page, say)
 						local side = i <= per and 1 or -1
 						local fi = i <= per and i or (i - per)
 						local r1 = getRoot() or root0
-						local cf = targetCF(r1, side, fi, per, 0)
+						local cf = mode == "ciclo" and cycleCF(r1) or targetCF(r1, side, fi, per, 0)
 						local okc, e2
 						for _ = 1, 3 do
 							okc, e2 = runCycle(rec, cf, scaleF, true)
@@ -5742,8 +5449,8 @@ local function buildWings(page, say)
 				if #recs == 0 then return end
 
 				-- confere cada bloco e refaz os que não chegaram no lugar
-				local good = 0
-				for pass = 1, 2 do
+				local good = (mode == "ciclo") and #recs or 0
+				for pass = 1, (mode == "ciclo") and 0 or 2 do
 					good = 0
 					local r1 = getRoot()
 					for idx, rec in ipairs(recs) do
@@ -5771,14 +5478,14 @@ local function buildWings(page, say)
 				hideStop()
 				return
 			end
-			if #recs > 0 and alive then startAnim() else hideStop() end
+			if #recs > 0 and alive then startMove() else hideStop() end
 		end)
 	end
 
 	-- ===== interface =====
-	section(page, "Asa de blocos (Prop Maker)")
+	section(page, "Blocos (Prop Maker)")
 	mk("TextLabel", {
-		Text = "Cria blocos do jogo atrás de você e faz eles bater como uma asa. Precisa ter o Prop Maker e ficar perto do chão. Todos veem os blocos.",
+		Text = "Cria blocos do jogo e faz eles se mexerem: asa que bate ou ciclo rápido de posições. Precisa ter o Prop Maker e ficar perto do chão. Todos veem os blocos.",
 		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
@@ -5801,12 +5508,28 @@ local function buildWings(page, say)
 			hideStop()
 		end
 	end, true)
-	rowBtn(page, "Criar asa e bater", buildWing, true)
-	toggleRow(page, "Bater asas", "Liga/desliga a animação", function(v)
-		if v then startAnim() else stopAnim(); say("Animação parada.") end
+	local moveNames = { asa = "Asa (bater)", ciclo = "Ciclo de posições" }
+	local moveBtn
+	moveBtn = rowBtn(page, "Movimento: " .. moveNames[cfg.move], function()
+		if animating or busyBuild then say("Pare o movimento antes de trocar."); return end
+		cfg.move = (cfg.move == "asa") and "ciclo" or "asa"
+		local lbl = moveBtn:FindFirstChildOfClass("TextLabel")
+		if lbl then lbl.Text = "Movimento: " .. moveNames[cfg.move] end
+		say("Movimento: " .. moveNames[cfg.move] .. ". Aperte 'Criar blocos e iniciar'.")
+	end, true)
+	toggleRow(page, "Modo leve (sem editar)", "Só move o bloco, como no log. Desligue se ele ficar parado", function(v) cfg.light = v end, true)
+	sliderRow(page, "Ciclo: velocidade", "passos por quadro (1 a 10)", 1, 10, 4, function(v) cfg.cySpeed = v end)
+	sliderRow(page, "Ciclo: tamanho do padrão", "10 = igual ao log (5 a 30)", 5, 30, 10, function(v) cfg.cyScale = v end)
+	sliderRow(page, "Ciclo: distância", "studs na frente de você (5 a 50)", 5, 50, 22, function(v) cfg.cyD = v end)
+	sliderRow(page, "Ciclo: altura", "studs acima de você (0 a 30)", 0, 30, 10, function(v) cfg.cyH = v end)
+	toggleRow(page, "Ciclo: cores verdes aleatórias", "Troca a cor do bloco a cada passo", function(v) cfg.rgb = v end, true)
+	toggleRow(page, "Ciclo: piscar", "Inclui o ponto escondido embaixo do mapa", function(v) cfg.blink = v end, true)
+	rowBtn(page, "Criar blocos e iniciar", buildWing, true)
+	toggleRow(page, "Movimento ligado", "Liga/desliga o movimento escolhido", function(v)
+		if v then startMove() else stopAnim(); say("Movimento parado.") end
 	end, true)
 	rowBtn(page, "Reparar blocos (refaz os que ficaram no chão)", function()
-		if #recs == 0 then say("Crie a asa primeiro."); return end
+		if #recs == 0 then say("Crie os blocos primeiro."); return end
 		if busyBuild then say("Espere a criação terminar."); return end
 		local was = animating
 		stopAnim()
@@ -5821,7 +5544,7 @@ local function buildWings(page, say)
 						local side, i, per = slotOf(idx, #recs)
 						waitRemotes(rec, 2)
 						rec.heals, rec.fails, rec.stuck, rec.lastP = 0, 0, 0, nil
-						local okc, e = runCycle(rec, targetCF(root, side, i, per, 0), scaleF, true)
+						local okc, e = runCycle(rec, cfg.move == "ciclo" and cycleCF(root) or targetCF(root, side, i, per, 0), scaleF, true)
 						if not okc then say("Bloco " .. idx .. ": " .. tostring(e):sub(1, 60)) end
 						task.wait(0.2)
 					end
@@ -5829,11 +5552,11 @@ local function buildWings(page, say)
 				say("Reparo feito.")
 			end
 			busyBuild = false
-			if was and alive then startAnim() else hideStop() end
+			if was and alive then startMove() else hideStop() end
 		end)
 	end, true)
 	rowBtn(page, "Copiar diagnóstico dos blocos", function()
-		local L = { "-- log da asa:" }
+		local L = { "-- log dos blocos:" }
 		for _, s in ipairs(trace) do L[#L + 1] = s end
 		local function names(inst, limit)
 			local out = {}
@@ -6649,23 +6372,174 @@ local function buildAvatar(page, say)
 	return function() if ANIM.applied then pcall(restoreAnims) end end
 end
 
+-- ===== Aba Itens: lista fixa de itens do Brookhaven; clicou, tenta entregar na sua mochila =====
+-- 1º pede ao jogo (AcceptedToolToServer, igual ao que o seu log mostrou); 2º tenta o remote do menu; 3º copia a Tool do jogo se achar.
+local ITEM_LIST = { "Glider", "Cannon", "Water Balloon", "GoldenBasketball", "EggLauncher", "UraniumRod", "Chainsaw", "MoneyGun" }
+local function buildItens(page, say)
+	local RS = game:GetService("ReplicatedStorage")
+	local function has(name)
+		local bp, c = lp:FindFirstChildOfClass("Backpack"), lp.Character
+		return (bp and bp:FindFirstChild(name)) or (c and c:FindFirstChild(name))
+	end
+	local function cloneFromGame(name)
+		local bp = lp:FindFirstChildOfClass("Backpack")
+		if not bp then return false end
+		for _, r in ipairs({ game:GetService("StarterPack"), RS, game:GetService("Lighting") }) do
+			local t = r:FindFirstChild(name, true)
+			if t and t:IsA("Tool") then
+				local ok, c = pcall(function() return t:Clone() end)
+				if ok and c then c.Parent = bp; return true end
+			end
+		end
+		return false
+	end
+	local function give(name)
+		if has(name) then say(name .. " já está com você."); return end
+		local RE = RS:FindFirstChild("RE")
+		local function waitTool()
+			-- o servidor demora um pouco pra entregar (no seu log: de 0,1s até uns 4s): espera a Tool chegar
+			local t0 = os.clock()
+			while not has(name) and os.clock() - t0 < 6 do task.wait(0.2) end
+		end
+		-- 1) o pedido que aparece no seu log e entrega o item: RE["1Playe1rTrigge1rEven1t"]("AcceptedToolToServer", item, você)
+		local trig = RE and RE:FindFirstChild("1Playe1rTrigge1rEven1t")
+		if trig then
+			pcall(function() trig:FireServer("AcceptedToolToServer", name, lp) end)
+			waitTool()
+		end
+		-- 2) plano B: o remote do menu (no log ele respondeu false, então fica só como reserva)
+		local rem = not has(name) and RE and RE:FindFirstChild("1Too1l")
+		if rem then
+			pcall(function()
+				if rem:IsA("RemoteFunction") then rem:InvokeServer("PickingTools", name)
+				elseif rem:IsA("RemoteEvent") then rem:FireServer("PickingTools", name) end
+			end)
+			waitTool()
+		end
+		if has(name) or cloneFromGame(name) then
+			say(name .. " na sua mochila.")
+		else
+			say("Não consegui pegar " .. name .. " (o servidor não entregou).")
+		end
+	end
+
+	section(page, "Itens")
+	for _, name in ipairs(ITEM_LIST) do
+		rowBtn(page, "+  " .. name, function() task.spawn(give, name) end, true)
+	end
+	rowBtn(page, "Pegar todos", function()
+		task.spawn(function()
+			for _, name in ipairs(ITEM_LIST) do give(name); task.wait(0.3) end
+		end)
+	end, true)
+end
+
+-- ===== Proteções extras (só afetam VOCÊ; o que é do próprio hub — nomes Shin*/Ds* — nunca é mexido) =====
+local function buildProtExtra(page, say)
+	local P = { antikick = false, antiragdoll = false, antifire = false, antiattach = false }
+	local kickHooked, acc = false, 0
+	section(page, "Proteções extras")
+
+	toggleRow(page, "Anti-kick", "Bloqueia o Kick vindo dos scripts do jogo (no seu cliente)", function(v)
+		if v and not kickHooked then
+			kickHooked = pcall(function()
+				local old
+				old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+					if P.antikick and self == lp and not checkcaller() then
+						local m = getnamecallmethod()
+						if m == "Kick" or m == "kick" then return end
+					end
+					return old(self, ...)
+				end))
+			end)
+			if not kickHooked then
+				say("Seu executor não suporta hookmetamethod: Anti-kick indisponível.")
+				return
+			end
+		end
+		P.antikick = v
+		say(v and "Anti-kick ligado." or "Anti-kick desligado.")
+	end)
+	toggleRow(page, "Anti-ragdoll", "Não deixa te derrubar nem te deixar caído (ragdoll/tombo)", function(v)
+		P.antiragdoll = v
+		if not v then
+			local h = hum()
+			if h then
+				pcall(function()
+					h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+					h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+				end)
+			end
+		end
+		say(v and "Anti-ragdoll ligado." or "Anti-ragdoll desligado.")
+	end)
+	toggleRow(page, "Anti-fogo/fumaça", "Remove fogo e fumaça colocados no seu personagem", function(v)
+		P.antifire = v
+		say(v and "Anti-fogo ligado." or "Anti-fogo desligado.")
+	end)
+	toggleRow(page, "Anti-grudar", "Solta welds e forças de outros jogadores presas em você", function(v)
+		P.antiattach = v
+		say(v and "Anti-grudar ligado." or "Anti-grudar desligado.")
+	end)
+
+	local function mine(name) return name:sub(1, 4) == "Shin" or name:sub(1, 2) == "Ds" end
+	local function ownedByOther(part)
+		if not part then return false end
+		for _, pl in ipairs(Players:GetPlayers()) do
+			if pl ~= lp and pl.Character and part:IsDescendantOf(pl.Character) then return true end
+		end
+		return false
+	end
+	local conn = RunService.Heartbeat:Connect(function(dt)
+		local c, h = lp.Character, hum()
+		if not (c and h) then return end
+		if P.antiragdoll then
+			local RG, FD = Enum.HumanoidStateType.Ragdoll, Enum.HumanoidStateType.FallingDown
+			if h:GetStateEnabled(RG) then h:SetStateEnabled(RG, false) end
+			if h:GetStateEnabled(FD) then h:SetStateEnabled(FD, false) end
+			local st = h:GetState()
+			if st == RG or st == FD then h:ChangeState(Enum.HumanoidStateType.GettingUp) end
+		end
+		acc = acc + dt
+		if acc < 0.3 then return end
+		acc = 0
+		if P.antifire or P.antiattach then
+			for _, d in ipairs(c:GetDescendants()) do
+				if not mine(d.Name) and not d:GetAttribute("DsMod") then
+					if P.antifire and (d:IsA("Fire") or d:IsA("Smoke")) then
+						d:Destroy()
+					elseif P.antiattach then
+						if d:IsA("WeldConstraint") or d:IsA("Weld") then
+							if ownedByOther(d.Part0) or ownedByOther(d.Part1) then d:Destroy() end
+						elseif d:IsA("AlignPosition") or d:IsA("AlignOrientation") or d:IsA("BodyPosition")
+							or d:IsA("BodyVelocity") or d:IsA("BodyGyro") or d:IsA("BodyForce") or d:IsA("BodyThrust") then
+							d:Destroy()
+						end
+					end
+				end
+			end
+		end
+	end)
+	return function() P.antikick, P.antiragdoll, P.antifire, P.antiattach = false, false, false, false; conn:Disconnect() end
+end
+
 local win, pages, say = buildWindow(600, 360, "Shin Hub", "Membro", buildTabs({}))
 selfCleanup = buildSelf(pages, say)
+if pages["Itens"] then buildItens(pages["Itens"], say) end
+local stopProt = pages["Proteções"] and buildProtExtra(pages["Proteções"], say)
 if pages["Nome"] then buildBrookhaven(pages, say) end
 local stopCar = pages["Car"] and buildCar(pages["Car"], say)
 AVATAR.stop = pages["Avatar"] and buildAvatar(pages["Avatar"], say)
-local stopLog = pages["Log"] and buildLog(pages["Log"], say)
-local stopWings = pages["Asa"] and buildWings(pages["Asa"], say)
+local stopWings = pages["Blocos"] and buildWings(pages["Blocos"], say)
 buildCredits(pages["Créditos"])
 if pages["ID"] then buildId(pages["ID"], say) end
 local stopMods = buildMods(pages["Mod"], say)
-local stopDebug = pages["Debug"] and buildDebug(pages["Debug"], say)
 if pages["Nome"] then buildAvatarCopy(pages["Mod"], say) end
 local stopFx = buildEffects(pages["Efeitos"], say)
 local stopExtras = buildExtras(pages["Extras"], say)
 do
 	local base = selfCleanup
-	selfCleanup = function() if base then base() end; stopMods(); if AVATAR.stop then AVATAR.stop() end; if stopDebug then stopDebug() end; stopFx(); stopExtras(); if stopCar then stopCar() end; if stopLog then stopLog() end; if stopWings then stopWings() end; if TAG.stop then TAG.stop() end end
+	selfCleanup = function() if base then base() end; if stopProt then stopProt() end; stopMods(); if AVATAR.stop then AVATAR.stop() end; stopFx(); stopExtras(); if stopCar then stopCar() end; if stopWings then stopWings() end; if TAG.stop then TAG.stop() end end
 end
 
 -- (a aba Conexão saiu do menu; o status continua sendo atualizado num texto interno e o "Desativar" foi pra aba Extras)
