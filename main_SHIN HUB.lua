@@ -1,38 +1,41 @@
-local function _obczbshz(t)
-	local b={}
-	for i=1,#t do b[i]=string.char((t[i]-((105+i-1)%256))%256) end
-	return table.concat(b)
-end
-local DB = _obczbshz({209,222,223,220,224,168,158,159,228,219,231,217,162,166,219,235,166,222,224,226,222,243,235,244,174,244,247,232,231,180,237,241,251,239,237,237,0,243,248,255,191,245,2,1})
-local BG_URL = _obczbshz({209,222,223,220,224,168,158,159,218,160,227,227,232,234,224,229,224,168,222,223,172,179,175,215,231,183,185,244,221,181,236,186,193,194,238,193,238,190,196,243,198,196,249,197,203,198,253,200,210,251,206,210,212,213,207,211,6,218,220,214,216,215,213,18,25,17})
-local ICON_URL = _obczbshz({209,222,223,220,224,168,158,159,218,160,227,227,232,234,224,229,224,168,222,223,172,208,175,200,206,240,230,187,188,181,191,189,235,194,236,239,197,240,242,246,202,248,198,198,199,250,208,206,208,251,209,1,1,210,1,213,6,218,5,10,219,8,213,18,25,17})
-local FOLDER = _obczbshz({188,178,180,186,141,182,196,178})
+-- Shin Hub | MEMBRO v3
+-- Começa com uma tela de carregamento (5s). Os comandos do admin são FIXOS (lista ACTIONS).
+local DB = "https://site-0ds-default-rtdb.firebaseio.com"
+local API_KEY = "AIzaSyB_-Q7ZI2nxQhpd0z-kxHeg7v5bSL_MBj8" -- a mesma chave de API da Web do admin (não é segredo)
+local ADMIN_EMAIL, ADMIN_PASSWORD = nil, nil -- só o script do admin usa
+local BG_URL = "https://i.postimg.cc/50Wf56pX/e288c5a05c52f160f09a367703e89231.jpg"
+local ICON_URL = "https://i.postimg.cc/R0HMnc77/85b8ac8bcf9f322d967a6ed4b5e8bf6b.jpg" -- foto do botão flutuante
+local FOLDER = "SHIN HUB"
 
+-- Scripts que aparecem no menu: { "Nome", "link do script", "Grupo (opcional)" }
 local SCRIPTS = {
-	{ _obczbshz({174,215,218,224,210,225}), _obczbshz({209,222,223,220,224,168,158,159,210,226,220,162,231,235,217,225,236,168,220,236,237,173,245,178,176,245,230,246,230,246,182,249,238,242,253,248,239,197,222,248,201,1,223,227,252,11,202,199,11,251,18}), _obczbshz({174,215,218,224,210,225,143,195,212,228,220,228,233,233}) },
-	{ _obczbshz({191,188}), _obczbshz({209,222,223,220,224,168,158,159,227,211,234,231,216,232,224,232,237,237,169,234,226,242,174,242,226,249,178,210,230,250,252,250,234,246,184,208,246,1,240,3,5,247,5,193,232,11,9,14,2,16,252,8,202,228,228,205,231,3,14,9,210,252,249,213,247,11,31,33,31,15,27,221,245,27,38,21,40,42,28,42,230,5,32,53,41,35,50,51,238,244,247,245,245,255,255}), _obczbshz({187,203,217,208,220,219,143,195,212,228,220,228,233,233}) },
-	{ _obczbshz({171,220,218,219,216,214,208,230,214,224}), _obczbshz({209,222,223,220,224,168,158,159,227,211,234,231,216,232,224,232,237,237,169,234,226,242,174,242,226,249,178,198,247,245,246,243,241,235,1,241,251,187,225,224,190,229,255,245,14,251,9,197,225,15,253,201,207,210,213,211,210,219}), _obczbshz({188,205,221,213,221,226,226}) },
+	{ "Emotes", "https://api.rubis.app/v2/scrap/qehrlb7Oh8oLOgu3/raw", "Emotes Scripts" },
+	{ "VR", "https://rawscripts.net/raw/Natural-Disaster-Survival-FE-Fake-VR-Natural-Disaster-Keyless-241098", "Random Scripts" },
+	{ "Brookhaven", "https://rawscripts.net/raw/Brookhaven-RP-Slayer-Hub-246319", "Scripts" },
 }
 
-local Players = game:GetService(_obczbshz({185,214,204,229,210,224,226}))
-local HttpService = game:GetService(_obczbshz({177,222,223,220,192,211,225,230,218,213,216}))
-local RunService = game:GetService(_obczbshz({187,223,217,191,210,224,229,217,212,215}))
-local UIS = game:GetService(_obczbshz({190,221,208,222,182,220,223,229,229,197,216,230,235,223,218,221}))
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
 local lp = Players.LocalPlayer
 local req = request or http_request or (syn and syn.request)
 
-local DSLOG = { lines = {}, pending = {}, max = 3000, t0 = os.clock(), file = FOLDER .. _obczbshz({152,214,218,211,155,226,231,228}),
+-- ===== LOG / DIAGNÓSTICO =====
+-- Tudo que o hub faz (e todo erro) vai pra cá: aparece na aba "Debug" e é salvo em SHIN HUB/log.txt
+-- (o log da execução anterior fica em SHIN HUB/log_anterior.txt). Na aba Debug use "Copiar log" pra mandar o erro.
+local DSLOG = { lines = {}, pending = {}, max = 3000, t0 = os.clock(), file = FOLDER .. "/log.txt",
 	n = { INFO = 0, WARN = 0, ERRO = 0 }, subs = {}, last = nil, rep = 0, alive = true }
 pcall(function()
 	if isfolder and not isfolder(FOLDER) then makefolder(FOLDER) end
 	if isfile and readfile and writefile and isfile(DSLOG.file) then
-		writefile(FOLDER .. _obczbshz({152,214,218,211,204,207,221,228,214,228,220,227,231,164,235,240,237}), readfile(DSLOG.file))
+		writefile(FOLDER .. "/log_anterior.txt", readfile(DSLOG.file))
 	end
-	if writefile then writefile(DSLOG.file, _obczbshz({})) end
+	if writefile then writefile(DSLOG.file, "") end
 end)
 local function dsEmit(level, tag, msg)
-	local one = tostring(msg):gsub(_obczbshz({196,119,117,201,152}), _obczbshz({137,230,139}))
-	local line = string.format(_obczbshz({196,143,222,140,152,147,165,158,162,216,230,209,149,155,164,172,236,154,160,169,174,174,242,160,166,245}), os.date(_obczbshz({142,178,165,145,186,168,148,195})), os.clock() - DSLOG.t0, level, tag, one)
+	local one = tostring(msg):gsub("[\r\n]+", " | ")
+	local line = string.format("[%s +%6.1fs] %-4s %-10s %s", os.date("%H:%M:%S"), os.clock() - DSLOG.t0, level, tag, one)
 	table.insert(DSLOG.lines, { level, line })
 	if #DSLOG.lines > DSLOG.max then table.remove(DSLOG.lines, 1) end
 	DSLOG.n[level] = (DSLOG.n[level] or 0) + 1
@@ -40,29 +43,29 @@ local function dsEmit(level, tag, msg)
 	for _, f in ipairs(DSLOG.subs) do pcall(f) end
 end
 function DSLOG.add(level, tag, msg)
-	local key = level .. _obczbshz({229}) .. tag .. _obczbshz({229}) .. tostring(msg)
-	if key == DSLOG.last then DSLOG.rep = DSLOG.rep + 1; return end
-	if DSLOG.rep > 0 then dsEmit(_obczbshz({178,184,177,187}), _obczbshz({213,217,210}), _obczbshz({145,203,139,216,214,220,215,209,145,211,214,221,226,215,151,235,222,154,237,225,237,227,243,233,246,162,240,229,238,249,167}) .. DSLOG.rep .. _obczbshz({225,147})); DSLOG.rep = 0 end
+	local key = level .. "|" .. tag .. "|" .. tostring(msg)
+	if key == DSLOG.last then DSLOG.rep = DSLOG.rep + 1; return end -- mesma linha de novo: só conta
+	if DSLOG.rep > 0 then dsEmit("INFO", "log", "(a linha acima se repetiu mais " .. DSLOG.rep .. "x)"); DSLOG.rep = 0 end
 	DSLOG.last = key
 	dsEmit(level, tag, msg)
 end
-function DSLOG.info(tag, msg) DSLOG.add(_obczbshz({178,184,177,187}), tag, msg) end
-function DSLOG.warn(tag, msg) DSLOG.add(_obczbshz({192,171,189,186}), tag, msg) end
-function DSLOG.err(tag, msg) DSLOG.add(_obczbshz({174,188,189,187}), tag, msg) end
-function DSLOG.ev(level, tag, msg) dsEmit(level, tag, msg) end
-
+function DSLOG.info(tag, msg) DSLOG.add("INFO", tag, msg) end
+function DSLOG.warn(tag, msg) DSLOG.add("WARN", tag, msg) end
+function DSLOG.err(tag, msg) DSLOG.add("ERRO", tag, msg) end
+function DSLOG.ev(level, tag, msg) dsEmit(level, tag, msg) end -- sempre registra (sem juntar linhas repetidas)
+-- roda protegido: se der erro, registra com o traceback e devolve false
 function DSLOG.try(tag, fn, ...)
 	local res = table.pack(xpcall(fn, function(e)
-		local tb = _obczbshz({})
-		pcall(function() tb = debug.traceback(_obczbshz({}), 2) end)
-		return tostring(e) .. _obczbshz({137,170,139}) .. tb:gsub(_obczbshz({142,221,149,118,146,225,153}), _obczbshz({137,168,139}))
+		local tb = ""
+		pcall(function() tb = debug.traceback("", 2) end)
+		return tostring(e) .. " @ " .. tb:gsub("%s*\n%s*", " > ")
 	end, ...))
 	if not res[1] then DSLOG.err(tag, res[2]); return false end
 	return true, table.unpack(res, 2, res.n)
 end
 local function dsFlush()
 	if #DSLOG.pending == 0 then return end
-	local txt = table.concat(DSLOG.pending, _obczbshz({115})) .. _obczbshz({115})
+	local txt = table.concat(DSLOG.pending, "\n") .. "\n"
 	DSLOG.pending = {}
 	pcall(function()
 		if appendfile then
@@ -70,7 +73,7 @@ local function dsFlush()
 		elseif writefile then
 			local all = {}
 			for _, l in ipairs(DSLOG.lines) do all[#all + 1] = l[2] end
-			writefile(DSLOG.file, table.concat(all, _obczbshz({115})) .. _obczbshz({115}))
+			writefile(DSLOG.file, table.concat(all, "\n") .. "\n")
 		end
 	end)
 end
@@ -79,78 +82,170 @@ task.spawn(function()
 	while DSLOG.alive do task.wait(2); dsFlush() end
 end)
 function DSLOG.header()
-	local ex = _obczbshz({168})
-	pcall(function() local n, v = identifyexecutor(); ex = tostring(n) .. _obczbshz({137}) .. tostring(v or _obczbshz({})) end)
-	local function has(f) return f and _obczbshz({220,211,216}) or _obczbshz({183,45,238,187}) end
+	local ex = "?"
+	pcall(function() local n, v = identifyexecutor(); ex = tostring(n) .. " " .. tostring(v or "") end)
+	local function has(f) return f and "sim" or "NÃO" end
 	return table.concat({
-		_obczbshz({188,210,212,218,141,182,228,210,145,222,226,219,149,242,151}) .. os.date(_obczbshz({142,195,152,145,218,155,148,212,145,151,187,174,154,195,177,157,204})),
-		_obczbshz({206,226,208,207,226,226,222,226,171,146}) .. ex,
-		_obczbshz({211,217,210,219,167,142,191,220,210,213,216,189,217,150}) .. tostring(game.PlaceId) .. _obczbshz({137,230,139,182,220,208,184,212,145}) .. tostring(game.JobId),
-		_obczbshz({211,217,210,205,209,221,225,170,145}) .. lp.Name .. _obczbshz({137,146}) .. lp.UserId .. _obczbshz({146}),
-		_obczbshz({207,223,217,47,20,49,36,213,228,172,147,230,218,231,236,221,236,238,184}) .. has(req) .. _obczbshz({137,209,208,224,208,227,226,228,224,223,212,231,232,219,235,181}) .. has(getcustomasset) .. _obczbshz({137,203,219,220,210,220,211,214,218,222,216,177}) .. has(appendfile)
-			.. _obczbshz({137,221,208,224,208,218,216,224,211,225,212,230,217,179}) .. has(setclipboard) .. _obczbshz({137,209,208,224,213,227,216,173}) .. has(gethui),
-		_obczbshz({204,217,217,224,206,213,212,221,171,146}) .. DSLOG.n.INFO .. _obczbshz({137,211,217,210,220,154,143}) .. DSLOG.n.WARN .. _obczbshz({137,203,225,213,224,221,226,156,145}) .. DSLOG.n.ERRO .. _obczbshz({137,207,221,222,220,225}),
-	}, _obczbshz({115}))
+		"Shin Hub log | " .. os.date("%Y-%m-%d %H:%M:%S"),
+		"executor: " .. ex,
+		"jogo: PlaceId " .. tostring(game.PlaceId) .. " | JobId " .. tostring(game.JobId),
+		"jogador: " .. lp.Name .. " (" .. lp.UserId .. ")",
+		"funções: request=" .. has(req) .. " getcustomasset=" .. has(getcustomasset) .. " appendfile=" .. has(appendfile)
+			.. " setclipboard=" .. has(setclipboard) .. " gethui=" .. has(gethui),
+		"contagem: " .. DSLOG.n.INFO .. " info, " .. DSLOG.n.WARN .. " avisos, " .. DSLOG.n.ERRO .. " erros",
+	}, "\n")
 end
 function DSLOG.dump(onlyProblems)
-	local out = { DSLOG.header(), _obczbshz({150,151,152,153,154,155}) }
+	local out = { DSLOG.header(), "------" }
 	for _, l in ipairs(DSLOG.lines) do
-		if not onlyProblems or l[1] ~= _obczbshz({178,184,177,187}) then out[#out + 1] = l[2] end
+		if not onlyProblems or l[1] ~= "INFO" then out[#out + 1] = l[2] end
 	end
-	return table.concat(out, _obczbshz({115}))
+	return table.concat(out, "\n")
 end
-
+-- foto do estado do personagem: acessórios no Humanoid, quais são do hub, quantos originais estão guardados
 function DSLOG.charState(char, who)
-	if not char then DSLOG.warn(_obczbshz({202,224,204,224,206,224}), tostring(who or _obczbshz({168})) .. _obczbshz({163,138,222,209,218,142,223,213,227,229,226,226,214,221,220,229,153,219,226,235,239,223})); return end
-	local hm = char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
-	local root = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
-	local parts, nMod, st = {}, 0, char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
+	if not char then DSLOG.warn("avatar", tostring(who or "?") .. ": sem personagem agora"); return end
+	local hm = char:FindFirstChildOfClass("Humanoid")
+	local root = char:FindFirstChild("HumanoidRootPart")
+	local parts, nMod, st = {}, 0, char:FindFirstChild("DsStash")
 	local function far(a)
-		local h = a:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
-		if not h then return _obczbshz({145,189,176,185,141,182,208,222,213,222,216,157}) end
-		if root and (h.Position - root.Position).Magnitude > 15 then return _obczbshz({145,182,186,186,180,179,143,212,224,146,214,227,231,230,230,161}) end
-		return _obczbshz({})
+		local h = a:FindFirstChild("Handle")
+		if not h then return "(SEM Handle)" end
+		if root and (h.Position - root.Position).Magnitude > 15 then return "(LONGE do corpo)" end
+		return ""
 	end
 	if hm then
 		for _, a in ipairs(hm:GetAccessories()) do
-			parts[#parts + 1] = a.Name .. (a:GetAttribute(_obczbshz({173,221,184,219,209})) and _obczbshz({196,210,224,206,202}) or _obczbshz({})) .. far(a)
+			parts[#parts + 1] = a.Name .. (a:GetAttribute("DsMod") and "[hub]" or "") .. far(a)
 		end
 	end
-	local man = char:FindFirstChild(_obczbshz({173,221,172,207,208}))
+	local man = char:FindFirstChild("DsAcc")
 	if man then
-		for _, a in ipairs(man:GetChildren()) do parts[#parts + 1] = a.Name .. _obczbshz({196,210,224,206,154,219,208,222,230,211,223,209}) .. far(a) end
+		for _, a in ipairs(man:GetChildren()) do parts[#parts + 1] = a.Name .. "[hub-manual]" .. far(a) end
 	end
 	for _, d in ipairs(char:GetDescendants()) do
-		if d:GetAttribute(_obczbshz({173,221,184,219,209})) then nMod = nMod + 1 end
+		if d:GetAttribute("DsMod") then nMod = nMod + 1 end
 	end
-	DSLOG.info(_obczbshz({202,224,204,224,206,224}), string.format(_obczbshz({142,221,139,232,141,224,216,215,174,151,230,148,241,150,216,219,222,237,238,63,48,240,232,239,244,170,168,232,174,192,167,173,252,170,7,172,246,2,244,254,4,178,247,3,181,254,12,250,214,191,255,188,25,190,14,18,10,9,12,18,6,15,26,200,16,31,12,30,17,15,19,31,36,239,216,24,213,50,215,43,34,33,248,225,48}),
-		tostring(who or char.Name), hm and hm.RigType.Name or _obczbshz({168}), #parts,
-		#parts > 0 and table.concat(parts, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219}), nMod, st and #st:GetChildren() or 0, tostring(char:GetAttribute(_obczbshz({173,221,190,213,212})) or _obczbshz({150}))))
+	DSLOG.info("avatar", string.format("%s | rig=%s | acessórios(%d): %s | itens do hub=%d | originais guardados=%d | sig=%s",
+		tostring(who or char.Name), hm and hm.RigType.Name or "?", #parts,
+		#parts > 0 and table.concat(parts, ", ") or "nenhum", nMod, st and #st:GetChildren() or 0, tostring(char:GetAttribute("DsSig") or "-")))
 end
-for l in DSLOG.header():gmatch(_obczbshz({196,200,117,201,152})) do DSLOG.info(_obczbshz({210,216,46,25,208,215,222}), l) end
+for l in DSLOG.header():gmatch("[^\n]+") do DSLOG.info("início", l) end
 
-local lastErr = _obczbshz({})
-local function http(method, path, body)
-	if not req then lastErr = _obczbshz({206,226,208,207,226,226,222,226,145,229,216,225,149,232,220,233,238,223,238,240,165,167}); DSLOG.err(_obczbshz({209,222,223,220}), lastErr); return nil end
+-- ===== LOGIN NO FIREBASE (o banco só responde pra quem estiver logado) =====
+-- Membro: login anônimo automático (a sessão fica em SHIN HUB/auth.json, então o ID dele não muda).
+-- Admin: e-mail e senha da conta criada no Firebase. A senha vai só pro Google (HTTPS), NUNCA pro banco.
+local AUTH = { idToken = nil, refresh = nil, uid = nil, exp = 0, busy = false, err = nil, failAt = nil }
+local AUTH_FILE = FOLDER .. "/auth.json"
+local function scrub(s)
+	return (tostring(s):gsub("auth=[%w%-%._~]+", "auth=***"):gsub("key=[%w%-%._]+", "key=***"))
+end
+local function authCall(url, body, form)
+	if not req then return nil, "executor sem request()" end
 	local ok, res = pcall(req, {
-		Url = DB .. path, Method = method,
-		Headers = { [_obczbshz({172,217,217,224,210,220,227,157,197,235,227,217})] = _obczbshz({202,218,219,216,214,209,208,228,218,225,225,163,223,233,230,230}) },
+		Url = url, Method = "POST",
+		Headers = { ["Content-Type"] = form and "application/x-www-form-urlencoded" or "application/json" },
+		Body = form and body or HttpService:JSONEncode(body),
+	})
+	if not ok then return nil, scrub(res):sub(1, 80) end
+	local okj, d = pcall(HttpService.JSONDecode, HttpService, res.Body or "")
+	if not okj or type(d) ~= "table" then d = {} end
+	if (res.Success or res.StatusCode == 200) and not d.error then return d end
+	local why = type(d.error) == "table" and d.error.message or ("HTTP " .. tostring(res.StatusCode))
+	return nil, tostring(why):sub(1, 80)
+end
+pcall(function()
+	if not ADMIN_EMAIL and isfile and readfile and isfile(AUTH_FILE) then
+		local d = HttpService:JSONDecode(readfile(AUTH_FILE))
+		if type(d) == "table" and type(d.refresh) == "string" then AUTH.refresh = d.refresh end
+	end
+end)
+local function authSave()
+	if ADMIN_EMAIL then return end
+	pcall(function()
+		if writefile then
+			if isfolder and not isfolder(FOLDER) and makefolder then makefolder(FOLDER) end
+			writefile(AUTH_FILE, HttpService:JSONEncode({ refresh = AUTH.refresh }))
+		end
+	end)
+end
+local function authLogin()
+	if API_KEY == "" or API_KEY:find("COLE_AQUI") then
+		AUTH.err = "falta colocar a API_KEY no topo do script"
+		return nil
+	end
+	local base = "https://identitytoolkit.googleapis.com/v1/accounts:"
+	local d, e
+	if AUTH.refresh then
+		local r = authCall("https://securetoken.googleapis.com/v1/token?key=" .. API_KEY,
+			"grant_type=refresh_token&refresh_token=" .. HttpService:UrlEncode(AUTH.refresh), true)
+		if r and r.id_token then
+			d = { idToken = r.id_token, refreshToken = r.refresh_token or AUTH.refresh, localId = r.user_id, expiresIn = r.expires_in }
+		end
+	end
+	if not d then
+		if ADMIN_EMAIL then
+			d, e = authCall(base .. "signInWithPassword?key=" .. API_KEY,
+				{ email = ADMIN_EMAIL, password = ADMIN_PASSWORD, returnSecureToken = true })
+		else
+			d, e = authCall(base .. "signUp?key=" .. API_KEY, { returnSecureToken = true })
+		end
+	end
+	if not d or not d.idToken then AUTH.err = e or "login falhou"; return nil end
+	AUTH.idToken, AUTH.refresh, AUTH.uid = d.idToken, d.refreshToken, d.localId
+	AUTH.exp = os.clock() + math.max(60, (tonumber(d.expiresIn) or 3600) - 120)
+	AUTH.err = nil
+	authSave()
+	return AUTH.idToken
+end
+-- devolve um token válido (renova sozinho). Várias tarefas pedindo ao mesmo tempo esperam o mesmo login.
+function AUTH.token()
+	if AUTH.idToken and os.clock() < AUTH.exp then return AUTH.idToken end
+	if AUTH.busy then
+		local t0 = os.clock()
+		while AUTH.busy and os.clock() - t0 < 20 do task.wait(0.1) end
+		if AUTH.idToken and os.clock() < AUTH.exp then return AUTH.idToken end
+		return nil
+	end
+	if AUTH.failAt and os.clock() - AUTH.failAt < 10 then return nil end -- falhou há pouco: não fica martelando
+	AUTH.busy = true
+	local ok, tok = pcall(authLogin)
+	AUTH.busy = false
+	if ok and tok then AUTH.failAt = nil; return tok end
+	AUTH.failAt = os.clock()
+	if not ok then AUTH.err = scrub(tok):sub(1, 80) end
+	DSLOG.err("auth", "login no Firebase falhou: " .. tostring(AUTH.err))
+	return nil
+end
+function AUTH.id() AUTH.token(); return AUTH.uid end
+
+-- ===== HTTP (mostra o erro real) =====
+local lastErr = ""
+local function http(method, path, body)
+	if not req then lastErr = "executor sem request()"; DSLOG.err("http", lastErr); return nil end
+	local tok = AUTH.token()
+	if not tok then lastErr = "sem login: " .. tostring(AUTH.err or "?"); return nil end
+	local ok, res = pcall(req, {
+		Url = DB .. path .. "?auth=" .. tok, Method = method,
+		Headers = { ["Content-Type"] = "application/json" },
 		Body = body and HttpService:JSONEncode(body) or nil,
 	})
 	if not ok then
-		lastErr = tostring(res):sub(1, 60)
-		DSLOG.err(_obczbshz({209,222,223,220}), method .. _obczbshz({137}) .. path .. _obczbshz({137,208,204,216,213,221,228,170,145}) .. tostring(res):sub(1, 120))
+		lastErr = scrub(res):sub(1, 60)
+		DSLOG.err("http", method .. " " .. path .. " falhou: " .. scrub(res):sub(1, 120))
 		return nil
 	end
 	local code = res.StatusCode or 0
-	if res.Success or code == 200 then lastErr = _obczbshz({}); return res.Body or _obczbshz({}) end
-	lastErr = _obczbshz({177,190,191,188,141}) .. tostring(code) .. _obczbshz({137}) .. tostring(res.Body or _obczbshz({})):sub(1, 50)
-	DSLOG.err(_obczbshz({209,222,223,220}), method .. _obczbshz({137}) .. path .. _obczbshz({137,151,169,140}) .. lastErr)
+	if res.Success or code == 200 then lastErr = ""; return res.Body or "" end
+	if code == 401 then AUTH.exp = 0 end -- token recusado: renova no próximo pedido
+	lastErr = "HTTP " .. tostring(code) .. " " .. scrub(res.Body or ""):sub(1, 50)
+	DSLOG.err("http", method .. " " .. path .. " -> " .. lastErr) -- (o corpo enviado nunca vai pro log)
 	return nil
 end
 
-local RED = Color3.fromRGB(220, 30, 40)
-local PANEL = Color3.fromRGB(24, 8, 11)
+-- ===== UI helpers =====
+local RED = Color3.fromRGB(222, 52, 68)
+local PANEL = Color3.fromRGB(26, 27, 33)
 local WHITE = Color3.new(1, 1, 1)
 local function mk(class, props, par)
 	local o = Instance.new(class)
@@ -158,34 +253,34 @@ local function mk(class, props, par)
 	o.Parent = par
 	return o
 end
-local function round(o, r) mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(0, r or 8) }, o) end
+local function round(o, r) mk("UICorner", { CornerRadius = UDim.new(0, r or 8) }, o) end
 local function stroke(o, th, col)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = th or 1.5, Color = col or RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, o)
+	mk("UIStroke", { Thickness = th or 1.5, Color = col or Color3.fromRGB(70, 72, 86), ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, o)
 end
 local function fetchAsset(url, name)
 	local ok, res = pcall(function()
 		if not isfolder(FOLDER) then makefolder(FOLDER) end
-		local path = FOLDER .. _obczbshz({152}) .. name
+		local path = FOLDER .. "/" .. name
 		if not isfile(path) then writefile(path, game:HttpGet(url)) end
 		return getcustomasset(path)
 	end)
 	return ok and res or nil
 end
 
-local parent = (gethui and gethui()) or game:GetService(_obczbshz({172,217,221,209,180,227,216}))
-local old = parent:FindFirstChild(_obczbshz({188,210,212,218,181,227,209,189,214,223,213,230,228}))
+local parent = (gethui and gethui()) or game:GetService("CoreGui")
+local old = parent:FindFirstChild("ShinHubMembro")
 if old then old:Destroy() end
-local gui = mk(_obczbshz({188,205,221,209,210,220,182,229,218}), { Name = _obczbshz({188,210,212,218,181,227,209,189,214,223,213,230,228}), ResetOnSpawn = false }, parent)
+local gui = mk("ScreenGui", { Name = "ShinHubMembro", ResetOnSpawn = false, IgnoreGuiInset = true }, parent)
 gui.Destroying:Connect(function()
 	DSLOG.alive = false
 	dsFlush()
 	if DSLOG.lsConn then DSLOG.lsConn:Disconnect() end
 end)
-
+-- erros do próprio script que aparecem no console do executor também entram no log
 pcall(function()
-	DSLOG.lsConn = game:GetService(_obczbshz({181,217,210,191,210,224,229,217,212,215})).MessageOut:Connect(function(msg, mt)
-		if mt == Enum.MessageType.MessageError and (msg:find(_obczbshz({199,143,198,223,225,224,216,222,216})) or msg:find(_obczbshz({188,210,212,218}))) then
-			DSLOG.err(_obczbshz({204,217,217,223,220,218,212}), msg:sub(1, 200))
+	DSLOG.lsConn = game:GetService("LogService").MessageOut:Connect(function(msg, mt)
+		if mt == Enum.MessageType.MessageError and (msg:find("^%[string") or msg:find("Shin")) then
+			DSLOG.err("console", msg:sub(1, 200))
 		end
 	end)
 end)
@@ -197,6 +292,8 @@ local function isMove(i)
 	return i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch
 end
 
+-- arrasta "target" segurando "handle"; se só tocar (sem arrastar) chama onTap
+-- onDrop(target) roda ao soltar depois de arrastar; clamp(target) segura o alvo dentro da tela enquanto arrasta
 local conns = {}
 local function makeDraggable(handle, target, onTap, onDrop, clamp)
 	local dragging, moved, startPos, startInput = false, false, nil, nil
@@ -227,7 +324,7 @@ local function makeDraggable(handle, target, onTap, onDrop, clamp)
 		end
 	end))
 end
-
+-- impede a janela de sumir da tela: a barra do topo sempre fica alcançável
 local function keepBarOnScreen(handle)
 	return function(target)
 		local vp = gui.AbsoluteSize
@@ -243,17 +340,21 @@ local function keepBarOnScreen(handle)
 	end
 end
 
+-- ===== TEMA + DETECÇÃO DE DISPOSITIVO (PC / Mobile) =====
 local UI = {
-	ACTIVE = Color3.fromRGB(104, 18, 28), HOVER = Color3.fromRGB(56, 13, 18), EDGE = Color3.fromRGB(165, 30, 44),
-	DIM = Color3.fromRGB(205, 168, 171), SOFT = Color3.fromRGB(228, 150, 156), GLOW = Color3.fromRGB(255, 80, 96),
-	pc = false, listeners = {},
+	ACTIVE = Color3.fromRGB(82, 26, 36), HOVER = Color3.fromRGB(36, 37, 45), EDGE = Color3.fromRGB(70, 72, 86),
+	DIM = Color3.fromRGB(150, 155, 168), SOFT = Color3.fromRGB(128, 134, 148), GLOW = Color3.fromRGB(255, 80, 96),
+	pc = false, listeners = {}, scaleFns = {}, bgFns = {}, keyFns = {},
+	cfg = { scale = 1, accent = "Vermelho", bgOpacity = 100, bgImage = true, anim = true, key = "B", floatBtn = true, fps = false },
 }
 function UI.tween(o, t, props)
 	pcall(function()
-		game:GetService(_obczbshz({189,225,208,209,219,193,212,226,231,219,214,217})):Create(o, TweenInfo.new(t or 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props):Play()
+		game:GetService("TweenService"):Create(o, TweenInfo.new(UI.cfg.anim == false and 0 or (t or 0.15), Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props):Play()
 	end)
 end
-
+-- PC = tem teclado e mouse; celular/tablet = toque. Se a pessoa trocar de entrada (tocar na tela / apertar tecla), atualiza sozinho.
+UI.key = Enum.KeyCode.B
+function UI.keyName() return UI.cfg.key or "B" end
 UI.pc = (UIS.KeyboardEnabled and UIS.MouseEnabled) and true or false
 function UI.setPc(v)
 	v = v and true or false
@@ -274,50 +375,60 @@ table.insert(conns, UIS.LastInputTypeChanged:Connect(function(t)
 end))
 
 local function panel(w, h, pos)
-	local f = mk(_obczbshz({175,220,204,217,210}), {
+	local f = mk("Frame", {
 		Size = UDim2.fromOffset(w, h), Position = pos,
-		BackgroundColor3 = Color3.fromRGB(9, 4, 6), ClipsDescendants = true,
+		BackgroundColor3 = Color3.fromRGB(15, 16, 20), ClipsDescendants = true,
 	}, gui)
-	round(f, 16)
-	local es = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, f)
-	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
-		Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 80, 96)), ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 12, 22)) }),
-		Rotation = 45,
+	round(f, 14)
+	local es = mk("UIStroke", { Thickness = 1.5, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, f)
+	mk("UIGradient", {
+		Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(222, 52, 68)),
+			ColorSequenceKeypoint.new(0.4, Color3.fromRGB(72, 74, 88)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(44, 46, 56)),
+		}),
+		Rotation = 90,
 	}, es)
-	local img = mk(_obczbshz({178,215,204,211,210,186,208,210,214,222}), {
+	local img = mk("ImageLabel", {
 		Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1,
-		ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.5,
+		ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.86,
 	}, f)
-	round(img, 16)
-	local shade = mk(_obczbshz({175,220,204,217,210}), {
-		Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(22, 2, 5),
+	round(img, 14)
+	local shade = mk("Frame", {
+		Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(15, 16, 20),
 		BackgroundTransparency = 0, BorderSizePixel = 0,
 	}, f)
-	round(shade, 16)
-	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
-		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.55), NumberSequenceKeypoint.new(1, 0.2) }),
+	round(shade, 14)
+	mk("UIGradient", {
+		Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.3), NumberSequenceKeypoint.new(1, 0.12) }),
 		Rotation = 90,
 	}, shade)
-
+	-- escala: encaixa na tela do celular e dá uma animação suave ao abrir
 	local function fitScale()
 		local cam = workspace.CurrentCamera
 		if not cam then return 1 end
 		local vp = cam.ViewportSize
-		return math.clamp(math.min((vp.X - 24) / w, (vp.Y - 24) / h), 0.6, 1)
+		local base = math.min((vp.X - 24) / w, (vp.Y - 24) / h)
+		return math.min(math.clamp(base, 0.6, 1) * UI.cfg.scale, math.max(base, 0.6))
 	end
-	local sc = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = fitScale() }, f)
-	f:GetPropertyChangedSignal(_obczbshz({191,211,222,213,207,218,212})):Connect(function()
+	local sc = mk("UIScale", { Scale = fitScale() }, f)
+	table.insert(UI.scaleFns, function() sc.Scale = fitScale() end)
+	table.insert(UI.bgFns, function()
+		img.Visible = UI.cfg.bgImage ~= false
+		shade.BackgroundTransparency = math.clamp(1 - (UI.cfg.bgOpacity or 100) / 100, 0, 0.7)
+	end)
+	f:GetPropertyChangedSignal("Visible"):Connect(function()
 		if f.Visible then
 			local s = fitScale()
 			sc.Scale = s * 0.94
 			UI.tween(sc, 0.18, { Scale = s })
 		end
 	end)
-	task.spawn(function() local a = fetchAsset(BG_URL, _obczbshz({203,209,153,214,221,213})); if a then img.Image = a end end)
+	task.spawn(function() local a = fetchAsset(BG_URL, "bg.jpg"); if a then img.Image = a end end)
 	return f
 end
 local function bigBtn(par, text, pos, size, filled)
-	local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+	local b = mk("TextButton", {
 		Text = text, Position = pos, Size = size, AutoButtonColor = false,
 		BackgroundColor3 = filled and RED or PANEL, BackgroundTransparency = filled and 0 or 0.1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14,
@@ -326,88 +437,96 @@ local function bigBtn(par, text, pos, size, filled)
 	return b
 end
 
+-- janela com menu lateral (estilo hub): abas à esquerda, conteúdo à direita
 local ICONS = {
-	[_obczbshz({188,205,221,213,221,226,226})] = _obczbshz({75,1,241}), [_obczbshz({174,224,204,208,210})] = _obczbshz({75,3,17}), [_obczbshz({171,220,218,219,216,214,208,230,214,224})] = _obczbshz({75,1,242}), [_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})] = _obczbshz({75,0,29}), [_obczbshz({182,217,207})] = _obczbshz({75,2,240}), [_obczbshz({174,208,208,213,225,221,226})] = _obczbshz({75,1,250}),
-	[_obczbshz({174,226,223,222,206,225})] = _obczbshz({75,0,11}), [_obczbshz({172,217,217,209,229,49,18,223})] = _obczbshz({75,0,39}), [_obczbshz({172,220,46,21,209,215,227,223,228})] = _obczbshz({75,2,241}), [_obczbshz({178,174})] = _obczbshz({75,1,244}), [_obczbshz({170,206,216,213,219})] = _obczbshz({75,1,235}), [_obczbshz({185,220,218,224,210,49,22,51,38,215,230})] = _obczbshz({75,1,243}), [_obczbshz({182,217,225,213,218,211,221,228,224})] = _obczbshz({75,0,33}),
-	[_obczbshz({173,207,205,225,212})] = _obczbshz({75,1,248}), [_obczbshz({183,217,216,209})] = _obczbshz({75,0,14}), [_obczbshz({182,45,37,223,214,209,208})] = _obczbshz({75,3,21}), [_obczbshz({189,203,210})] = _obczbshz({75,6,17}),
+	["Scripts"] = "◆", ["Evade"] = "♦", ["Brookhaven"] = "◇", ["Natural Disaster"] = "▲", ["Mod"] = "★", ["Efeitos"] = "●",
+	["Extras"] = "■", ["Conexão"] = "▼", ["Créditos"] = "☆", ["ID"] = "◉", ["Admin"] = "◀", ["Proteções"] = "◈", ["Movimento"] = "▶",
+	["Debug"] = "◍", ["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
 }
 local function buildWindow(w, h, title, sub, tabNames, onClose)
 	local win = panel(w, h, UDim2.new(0.5, 0, 0.5, 0))
 	win.AnchorPoint = Vector2.new(0.5, 0.5)
 
-	local top = mk(_obczbshz({175,220,204,217,210}), {
+	-- barra do topo (flutuante, com degradê)
+	local top = mk("Frame", {
 		Size = UDim2.new(1, -12, 0, 36), Position = UDim2.fromOffset(6, 6),
-		BackgroundColor3 = Color3.fromRGB(14, 4, 6), BackgroundTransparency = 0.15, BorderSizePixel = 0,
+		BackgroundColor3 = Color3.fromRGB(20, 21, 26), BackgroundTransparency = 0.15, BorderSizePixel = 0,
 	}, win)
 	round(top, 12)
-	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
+	mk("UIGradient", {
 		Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 22, 34)),
-			ColorSequenceKeypoint.new(0.6, Color3.fromRGB(44, 9, 13)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(16, 5, 7)),
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(96, 28, 38)),
+			ColorSequenceKeypoint.new(0.6, Color3.fromRGB(30, 31, 38)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 19, 24)),
 		}),
 	}, top)
-	local left = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -110, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1 }, top)
-	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), {
+	local left = mk("Frame", { Size = UDim2.new(1, -110, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1 }, top)
+	mk("UIListLayout", {
 		FillDirection = Enum.FillDirection.Horizontal, VerticalAlignment = Enum.VerticalAlignment.Center,
 		Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder,
 	}, left)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	local brand = mk("Frame", { LayoutOrder = -1, Size = UDim2.fromOffset(8, 8), BackgroundColor3 = RED, BorderSizePixel = 0 }, left)
+	round(brand, 4)
+	mk("TextLabel", {
 		Text = title, LayoutOrder = 0, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 36),
-		BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 17,
+		BackgroundTransparency = 1, TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 16,
 	}, left)
 	local function pill(text, order, col)
-		local pl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		local pl = mk("TextLabel", {
 			Text = text, LayoutOrder = order, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 18),
 			BackgroundColor3 = col, BackgroundTransparency = 0.2, TextColor3 = WHITE,
 			Font = Enum.Font.GothamBold, TextSize = 10,
 		}, left)
 		round(pl, 9)
-		mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 9), PaddingRight = UDim.new(0, 9) }, pl)
+		mk("UIPadding", { PaddingLeft = UDim.new(0, 9), PaddingRight = UDim.new(0, 9) }, pl)
 		return pl
 	end
-	pill(sub, 1, Color3.fromRGB(190, 24, 38))
-	local devPill = pill(_obczbshz({}), 2, Color3.fromRGB(60, 14, 20))
-	UI.onDevice(function(pc) devPill.Text = pc and _obczbshz({185,173,139,140,79,238,17,144,145,230,216,215,225,215,151,186}) or _obczbshz({182,217,205,213,217,211}) end)
+	pill(sub, 1, Color3.fromRGB(150, 34, 48))
+	local devPill = pill("", 2, Color3.fromRGB(44, 46, 54))
+	local function devTxt() devPill.Text = UI.pc and ("PC  •  tecla " .. UI.keyName()) or "Mobile" end
+	UI.onDevice(devTxt)
+	table.insert(UI.keyFns, devTxt)
 	makeDraggable(top, win, nil, nil, keepBarOnScreen(top))
 
-	local statusLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	local statusLbl = mk("TextLabel", {
 		Position = UDim2.new(0, 172, 1, -26), Size = UDim2.new(1, -186, 0, 20), BackgroundTransparency = 1,
-		Text = _obczbshz({}), TextColor3 = UI.SOFT, Font = Enum.Font.Gotham,
+		Text = "", TextColor3 = UI.SOFT, Font = Enum.Font.Gotham,
 		TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, win)
 
-	local sideBg = mk(_obczbshz({175,220,204,217,210}), {
+	-- fundo da lateral e do conteúdo
+	local sideBg = mk("Frame", {
 		Position = UDim2.fromOffset(8, 48), Size = UDim2.new(0, 154, 1, -56),
-		BackgroundColor3 = Color3.fromRGB(8, 3, 5), BackgroundTransparency = 0.35, BorderSizePixel = 0,
+		BackgroundColor3 = Color3.fromRGB(12, 13, 17), BackgroundTransparency = 0.35, BorderSizePixel = 0,
 	}, win)
 	round(sideBg, 12)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1, Color = UI.EDGE, Transparency = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, sideBg)
-	local contentBg = mk(_obczbshz({175,220,204,217,210}), {
+	mk("UIStroke", { Thickness = 1, Color = UI.EDGE, Transparency = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, sideBg)
+	local contentBg = mk("Frame", {
 		Position = UDim2.fromOffset(168, 48), Size = UDim2.new(1, -176, 1, -78),
-		BackgroundColor3 = Color3.fromRGB(8, 3, 5), BackgroundTransparency = 0.45, BorderSizePixel = 0,
+		BackgroundColor3 = Color3.fromRGB(12, 13, 17), BackgroundTransparency = 0.45, BorderSizePixel = 0,
 	}, win)
 	round(contentBg, 12)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1, Color = UI.EDGE, Transparency = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, contentBg)
+	mk("UIStroke", { Thickness = 1, Color = UI.EDGE, Transparency = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, contentBg)
 
-	local searchBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
-		Position = UDim2.fromOffset(14, 54), Size = UDim2.fromOffset(142, 26), BackgroundColor3 = Color3.fromRGB(14, 4, 6),
-		BackgroundTransparency = 0.25, Text = _obczbshz({}), PlaceholderText = _obczbshz({89,9,255,249,141,176,228,227,212,211,229,148,214,216,216,166,167,168}), PlaceholderColor3 = UI.DIM,
+	-- busca de abas
+	local searchBox = mk("TextBox", {
+		Position = UDim2.fromOffset(14, 54), Size = UDim2.fromOffset(142, 26), BackgroundColor3 = Color3.fromRGB(20, 21, 26),
+		BackgroundTransparency = 0.25, Text = "", PlaceholderText = "🔍 Buscar aba...", PlaceholderColor3 = UI.DIM,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left,
 	}, win)
 	round(searchBox, 9)
-	local sbSt = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.55, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, searchBox)
-	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 8) }, searchBox)
+	local sbSt = mk("UIStroke", { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.55, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, searchBox)
+	mk("UIPadding", { PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 8) }, searchBox)
 	searchBox.Focused:Connect(function() UI.tween(sbSt, 0.12, { Transparency = 0 }) end)
 	searchBox.FocusLost:Connect(function() UI.tween(sbSt, 0.12, { Transparency = 0.55 }) end)
 
-	local side = mk(_obczbshz({188,205,221,219,217,218,216,222,216,184,229,213,226,219}), {
+	local side = mk("ScrollingFrame", {
 		Position = UDim2.fromOffset(10, 86), Size = UDim2.new(0, 150, 1, -96), BackgroundTransparency = 1,
 		BorderSizePixel = 0, ScrollBarThickness = 2, ScrollBarImageColor3 = UI.EDGE,
 		AutomaticCanvasSize = Enum.AutomaticSize.Y, CanvasSize = UDim2.new(),
 	}, win)
-	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, side)
-	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 4), PaddingRight = UDim.new(0, 4), PaddingBottom = UDim.new(0, 4) }, side)
+	mk("UIListLayout", { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, side)
+	mk("UIPadding", { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 4), PaddingRight = UDim.new(0, 4), PaddingBottom = UDim.new(0, 4) }, side)
 
 	local pages, tabBtns, bars, parts = {}, {}, {}, {}
 	local current
@@ -421,6 +540,7 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 		})
 		UI.tween(tp.stroke, 0.12, { Transparency = on and 0.1 or 0.65 })
 		tp.ic.TextColor3 = on and WHITE or UI.DIM
+			tp.badge.BackgroundColor3 = on and RED or UI.HOVER
 		tp.lb.TextColor3 = on and WHITE or UI.DIM
 		bars[n].Visible = on
 	end
@@ -435,36 +555,38 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 		for n in pairs(tabBtns) do paintTab(n) end
 	end
 	for _, name in ipairs(tabNames) do
-		local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
-			Text = _obczbshz({}), AutoButtonColor = false, Size = UDim2.new(1, 0, 0, 28),
+		local b = mk("TextButton", {
+			Text = "", AutoButtonColor = false, Size = UDim2.new(1, 0, 0, 28),
 			BackgroundColor3 = PANEL, BackgroundTransparency = 0.5,
 		}, side)
 		round(b, 10)
 		UI.onDevice(function(pc) b.Size = UDim2.new(1, 0, 0, pc and 28 or 34) end)
-		local bst = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.65, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
-		local ic = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = ICONS[name] or _obczbshz({75,1,241}), Size = UDim2.fromOffset(22, 28), Position = UDim2.fromOffset(12, 0),
-			BackgroundTransparency = 1, TextColor3 = UI.DIM, Font = Enum.Font.GothamBold, TextSize = 13,
-		}, b)
-		local lb = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		local bst = mk("UIStroke", { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.65, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+		local badge = mk("Frame", { Size = UDim2.fromOffset(22, 22), Position = UDim2.new(0, 9, 0.5, -11), BackgroundColor3 = UI.HOVER, BorderSizePixel = 0 }, b)
+			round(badge, 7)
+			local ic = mk("TextLabel", {
+				Text = ICONS[name] or "◆", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1,
+				TextColor3 = UI.DIM, Font = Enum.Font.GothamBold, TextSize = 11,
+			}, badge)
+		local lb = mk("TextLabel", {
 			Text = name, Size = UDim2.new(1, -46, 1, 0), Position = UDim2.fromOffset(38, 0),
-			BackgroundTransparency = 1, TextColor3 = UI.DIM, Font = Enum.Font.GothamMedium, TextSize = 11,
+			BackgroundTransparency = 1, TextColor3 = UI.DIM, Font = Enum.Font.GothamMedium, TextSize = 12,
 			TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 		}, b)
-		local bar = mk(_obczbshz({175,220,204,217,210}), {
+		local bar = mk("Frame", {
 			Size = UDim2.fromOffset(3, 14), Position = UDim2.new(0, 3, 0.5, -7),
 			BackgroundColor3 = UI.GLOW, BorderSizePixel = 0, Visible = false,
 		}, b)
 		round(bar, 2)
-		local p = mk(_obczbshz({188,205,221,219,217,218,216,222,216,184,229,213,226,219}), {
+		local p = mk("ScrollingFrame", {
 			Position = UDim2.fromOffset(176, 54), Size = UDim2.new(1, -192, 1, -88), BackgroundTransparency = 1,
 			BorderSizePixel = 0, ScrollBarThickness = 3, ScrollBarImageColor3 = UI.EDGE, AutomaticCanvasSize = Enum.AutomaticSize.Y,
 			CanvasSize = UDim2.new(), Visible = false,
 		}, win)
-		mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, p)
-		mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 8), PaddingBottom = UDim.new(0, 8) }, p)
+		mk("UIListLayout", { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, p)
+		mk("UIPadding", { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 8), PaddingBottom = UDim.new(0, 8) }, p)
 		pages[name], tabBtns[name], bars[name] = p, b, bar
-		local tp = { hover = false, stroke = bst, ic = ic, lb = lb }
+		local tp = { hover = false, stroke = bst, ic = ic, lb = lb, badge = badge }
 		parts[name] = tp
 		b.MouseEnter:Connect(function() tp.hover = true; paintTab(name) end)
 		b.MouseLeave:Connect(function() tp.hover = false; paintTab(name) end)
@@ -472,28 +594,30 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 	end
 	selectTab(tabNames[1])
 
+	-- filtro da busca: esconde as abas que não combinam; Enter abre a primeira que sobrou
 	local function applyFilter()
-		local q = searchBox.Text:lower():gsub(_obczbshz({199,143,222,151}), _obczbshz({})):gsub(_obczbshz({142,221,150,144}), _obczbshz({}))
+		local q = searchBox.Text:lower():gsub("^%s+", ""):gsub("%s+$", "")
 		local first
 		for _, name in ipairs(tabNames) do
-			local show = (q == _obczbshz({})) or (name:lower():find(q, 1, true) ~= nil)
+			local show = (q == "") or (name:lower():find(q, 1, true) ~= nil)
 			tabBtns[name].Visible = show
 			if show and not first then first = name end
 		end
 		return first
 	end
-	searchBox:GetPropertyChangedSignal(_obczbshz({189,207,227,224})):Connect(applyFilter)
+	searchBox:GetPropertyChangedSignal("Text"):Connect(applyFilter)
 	searchBox.FocusLost:Connect(function(enter)
 		if enter then
 			local f = applyFilter()
-			if f and searchBox.Text ~= _obczbshz({}) then selectTab(f) end
+			if f and searchBox.Text ~= "" then selectTab(f) end
 		end
 	end)
 
+	-- botões do topo: engrenagem (abre "Extras"), minimizar e fechar
 	local function topBtn(txt, x, size, cb, danger)
-		local t = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+		local t = mk("TextButton", {
 			Text = txt, Size = UDim2.fromOffset(26, 26), Position = UDim2.new(1, x, 0.5, -13), AutoButtonColor = false,
-			BackgroundColor3 = Color3.fromRGB(10, 3, 5), BackgroundTransparency = 0.4,
+			BackgroundColor3 = Color3.fromRGB(18, 19, 24), BackgroundTransparency = 0.4,
 			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = size,
 		}, top)
 		round(t, 13)
@@ -501,26 +625,30 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 			UI.tween(t, 0.12, { BackgroundColor3 = danger and Color3.fromRGB(205, 30, 46) or UI.ACTIVE, BackgroundTransparency = 0.05 })
 		end)
 		t.MouseLeave:Connect(function()
-			UI.tween(t, 0.12, { BackgroundColor3 = Color3.fromRGB(10, 3, 5), BackgroundTransparency = 0.4 })
+			UI.tween(t, 0.12, { BackgroundColor3 = Color3.fromRGB(18, 19, 24), BackgroundTransparency = 0.4 })
 		end)
 		t.MouseButton1Click:Connect(cb)
 		return t
 	end
-	topBtn(_obczbshz({75,4,4}), -96, 15, function() if pages[_obczbshz({174,226,223,222,206,225})] then selectTab(_obczbshz({174,226,223,222,206,225})) end end)
-	topBtn(_obczbshz({75,234,255}), -64, 13, function() win.Visible = false end)
-	topBtn(_obczbshz({193}), -32, 13, function() if onClose then onClose() else win.Visible = false end end, true)
+	topBtn("⚙", -96, 15, function() if UI.toggleSettings then UI.toggleSettings(win) elseif pages["Extras"] then selectTab("Extras") end end)
+	topBtn("—", -64, 13, function() win.Visible = false end)
+	topBtn("X", -32, 13, function() if onClose then onClose() else win.Visible = false end end, true)
 
 	return win, pages, function(t)
 		statusLbl.Text = t
 		local s = tostring(t)
 		local low = s:lower()
-		local bad = low:find(_obczbshz({206,220,221,219})) or low:find(_obczbshz({215,45,14,219,141,209,222,222,228,215,218,233,222})) or low:find(_obczbshz({207,203,215,212,220,227}))
-		DSLOG.add(bad and _obczbshz({192,171,189,186}) or _obczbshz({178,184,177,187}), _obczbshz({222,211}), s)
+		local bad = low:find("erro") or low:find("não consegui") or low:find("falhou")
+		DSLOG.add(bad and "WARN" or "INFO", "ui", s)
 	end
 end
 
+-- botão flutuante (clica = abre/minimiza o menu)
+-- • arrasta livremente e "gruda" na borda mais próxima da tela ao soltar (lembra a posição da próxima vez)
+-- • anel girando, pulso quando o menu está fechado, ponto verde quando está aberto
+-- • efeito de aperto, balãozinho no PC e entrada animada. 2º parâmetro (win) sincroniza com o menu.
 local function floatButton(onTap, winRef)
-	local POS_FILE = FOLDER .. _obczbshz({152,208,215,219,206,226,206,224,224,229,161,222,232,229,229})
+	local POS_FILE = FOLDER .. "/float_pos.json"
 	local SIZE, MARGIN = 46, 8
 	local function areaSize()
 		local a = gui.AbsoluteSize
@@ -534,87 +662,90 @@ local function floatButton(onTap, winRef)
 		local a = areaSize()
 		return math.clamp(x, MARGIN, math.max(MARGIN, a.X - SIZE - MARGIN)), math.clamp(y, MARGIN, math.max(MARGIN, a.Y - SIZE - MARGIN))
 	end
-
-	local sx, sy = MARGIN + 2, MARGIN + 2
+	-- posição salva (em fração da tela) ou canto superior esquerdo
+	local sx, sy = MARGIN + 2, MARGIN + 64
 	pcall(function()
 		if isfile and readfile and isfile(POS_FILE) then
 			local d = HttpService:JSONDecode(readfile(POS_FILE))
 			local a = areaSize()
-			if type(d.x) == _obczbshz({215,223,216,206,210,224}) and type(d.y) == _obczbshz({215,223,216,206,210,224}) then sx, sy = d.x * a.X, d.y * a.Y end
+			if type(d.x) == "number" and type(d.y) == "number" then sx, sy = d.x * a.X, d.y * a.Y end
 		end
 	end)
 	sx, sy = clampPos(sx, sy)
 
-	local root = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(SIZE, SIZE), Position = UDim2.fromOffset(sx, sy), BackgroundTransparency = 1 }, gui)
-	local rootScale = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = 0.01 }, root)
+	local root = mk("Frame", { Size = UDim2.fromOffset(SIZE, SIZE), Position = UDim2.fromOffset(sx, sy), BackgroundTransparency = 1 }, gui)
+	local rootScale = mk("UIScale", { Scale = 0.01 }, root)
 
-	local pulse = mk(_obczbshz({175,220,204,217,210}), {
+	-- pulso (só com o menu fechado)
+	local pulse = mk("Frame", {
 		Size = UDim2.fromScale(1, 1), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
 		BackgroundTransparency = 1, ZIndex = 1,
 	}, root)
-	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, pulse)
-	local ps = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = UI.GLOW, Transparency = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, pulse)
-	local pulseScale = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = 1 }, pulse)
+	mk("UICorner", { CornerRadius = UDim.new(1, 0) }, pulse)
+	local ps = mk("UIStroke", { Thickness = 2, Color = UI.GLOW, Transparency = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, pulse)
+	local pulseScale = mk("UIScale", { Scale = 1 }, pulse)
 
-	local b = mk(_obczbshz({178,215,204,211,210,176,228,228,229,225,225}), {
+	local b = mk("ImageButton", {
 		Size = UDim2.fromScale(1, 1), BackgroundColor3 = PANEL, AutoButtonColor = false,
-		ScaleType = Enum.ScaleType.Crop, Image = _obczbshz({}), ZIndex = 2,
+		ScaleType = Enum.ScaleType.Crop, Image = "", ZIndex = 2,
 	}, root)
-	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, b)
-	local press = mk(_obczbshz({190,179,190,207,206,218,212}), { Scale = 1 }, b)
-	local fs = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2.5, Color = WHITE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
-	local ring = mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
+	mk("UICorner", { CornerRadius = UDim.new(1, 0) }, b)
+	local press = mk("UIScale", { Scale = 1 }, b)
+	local fs = mk("UIStroke", { Thickness = 2.5, Color = WHITE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+	local ring = mk("UIGradient", {
 		Color = ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 90, 104)),
 			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(110, 10, 20)),
 			ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 90, 104)),
 		}),
 	}, fs)
-
+	-- anel girando sem parar
 	pcall(function()
-		game:GetService(_obczbshz({189,225,208,209,219,193,212,226,231,219,214,217})):Create(ring, TweenInfo.new(4, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1), { Rotation = 360 }):Play()
+		game:GetService("TweenService"):Create(ring, TweenInfo.new(4, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1), { Rotation = 360 }):Play()
 	end)
-
-	local tint = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(20, 2, 5), BackgroundTransparency = 0.78, BorderSizePixel = 0, ZIndex = 2 }, b)
-	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, tint)
-	local fallback = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({188}), Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 3,
+	-- escurece a foto um pouco pro anel e a letra aparecerem bem
+	local tint = mk("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(14, 15, 19), BackgroundTransparency = 0.78, BorderSizePixel = 0, ZIndex = 2 }, b)
+	mk("UICorner", { CornerRadius = UDim.new(1, 0) }, tint)
+	local fallback = mk("TextLabel", {
+		Text = "S", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 3,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 20,
 	}, b)
-	if ICON_URL:find(_obczbshz({199,210,223,224,221})) then
+	if ICON_URL:find("^http") then
 		task.spawn(function()
-			local a = fetchAsset(ICON_URL, _obczbshz({210,205,218,218,155,222,221,215}))
+			local a = fetchAsset(ICON_URL, "icon.png")
 			if a then b.Image = a; fallback.Visible = false; tint.BackgroundTransparency = 0.9 end
 		end)
 	end
-
-	local badge = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({171}), Size = UDim2.fromOffset(17, 17), Position = UDim2.new(1, -14, 1, -14), ZIndex = 5,
-		BackgroundColor3 = Color3.fromRGB(190, 24, 38), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 10, Visible = false,
+	-- selinho "B" aparece só no PC (lembra o atalho)
+	local badge = mk("TextLabel", {
+		Text = UI.keyName(), Size = UDim2.fromOffset(17, 17), Position = UDim2.new(1, -14, 1, -14), ZIndex = 5,
+		BackgroundColor3 = Color3.fromRGB(150, 34, 48), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 10, Visible = false,
 	}, root)
 	round(badge, 9)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = Color3.fromRGB(9, 4, 6), ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, badge)
+	mk("UIStroke", { Thickness = 1.5, Color = Color3.fromRGB(13, 14, 18), ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, badge)
 	UI.onDevice(function(pc) badge.Visible = pc end)
-
-	local dot = mk(_obczbshz({175,220,204,217,210}), {
+	table.insert(UI.keyFns, function() badge.Text = UI.keyName() end)
+	-- ponto de status: verde = menu aberto
+	local dot = mk("Frame", {
 		Size = UDim2.fromOffset(11, 11), Position = UDim2.new(1, -11, 0, 0), ZIndex = 5,
 		BackgroundColor3 = Color3.fromRGB(70, 220, 110), BorderSizePixel = 0, Visible = false,
 	}, root)
 	round(dot, 6)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = Color3.fromRGB(9, 4, 6), ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, dot)
+	mk("UIStroke", { Thickness = 1.5, Color = Color3.fromRGB(13, 14, 18), ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, dot)
 
-	local tip = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({188,210,212,218,141,182,228,210}), Size = UDim2.fromOffset(0, 24), AutomaticSize = Enum.AutomaticSize.X, Visible = false, ZIndex = 6,
-		BackgroundColor3 = Color3.fromRGB(14, 4, 6), BackgroundTransparency = 0.05, TextColor3 = WHITE,
+	-- balãozinho (PC): aparece do lado de dentro da tela
+	local tip = mk("TextLabel", {
+		Text = "Shin Hub", Size = UDim2.fromOffset(0, 24), AutomaticSize = Enum.AutomaticSize.X, Visible = false, ZIndex = 6,
+		BackgroundColor3 = Color3.fromRGB(20, 21, 26), BackgroundTransparency = 0.05, TextColor3 = WHITE,
 		Font = Enum.Font.GothamMedium, TextSize = 11,
 	}, root)
 	round(tip, 12)
-	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 11), PaddingRight = UDim.new(0, 11) }, tip)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, tip)
+	mk("UIPadding", { PaddingLeft = UDim.new(0, 11), PaddingRight = UDim.new(0, 11) }, tip)
+	mk("UIStroke", { Thickness = 1.2, Color = UI.EDGE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, tip)
 	local function showTip(on)
 		if not UI.pc then tip.Visible = false; return end
 		local open = winRef and winRef.Visible
-		tip.Text = (open and _obczbshz({182,211,217,213,218,215,233,209,227}) or _obczbshz({170,204,221,213,223,142,220,213,223,231})) .. _obczbshz({137,138,77,236,15,142,143,178})
+		tip.Text = (open and "Minimizar" or "Abrir menu") .. "  •  " .. UI.keyName()
 		local a = areaSize()
 		local leftSide = (root.Position.X.Offset + SIZE / 2) < a.X / 2
 		tip.AnchorPoint = Vector2.new(leftSide and 0 or 1, 0.5)
@@ -622,6 +753,7 @@ local function floatButton(onTap, winRef)
 		tip.Visible = on
 	end
 
+	-- estado (aberto/fechado) + pulso
 	local pulseTween
 	local pulseId = 0
 	local function stopPulse()
@@ -649,10 +781,11 @@ local function floatButton(onTap, winRef)
 		if not open then startPulse() else stopPulse() end
 	end
 	if winRef then
-		winRef:GetPropertyChangedSignal(_obczbshz({191,211,222,213,207,218,212})):Connect(syncState)
+		winRef:GetPropertyChangedSignal("Visible"):Connect(syncState)
 		syncState()
 	end
 
+	-- hover / aperto
 	b.MouseEnter:Connect(function()
 		UI.tween(press, 0.14, { Scale = 1.1 }); showTip(true)
 	end)
@@ -662,6 +795,7 @@ local function floatButton(onTap, winRef)
 	b.InputBegan:Connect(function(i) if isPress(i) then UI.tween(press, 0.08, { Scale = 0.88 }); tip.Visible = false end end)
 	b.InputEnded:Connect(function(i) if isPress(i) then UI.tween(press, 0.14, { Scale = 1 }) end end)
 
+	-- clamp dentro da tela (enquanto arrasta) e "ímã" na borda ao soltar
 	local function clampBtn(t)
 		local p = t.Position
 		local x, y = clampPos(p.X.Offset, p.Y.Offset)
@@ -686,28 +820,31 @@ local function floatButton(onTap, winRef)
 		onTap()
 	end, snap, clampBtn)
 
-	table.insert(conns, gui:GetPropertyChangedSignal(_obczbshz({170,204,222,219,217,227,227,213,196,219,237,217})):Connect(function()
+	-- tela mudou de tamanho (girou o celular, etc.): mantém o botão visível
+	table.insert(conns, gui:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		pcall(function() clampBtn(root); snap(root) end)
 	end))
 
+	-- entrada animada
 	pcall(function()
-		game:GetService(_obczbshz({189,225,208,209,219,193,212,226,231,219,214,217})):Create(rootScale, TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+		game:GetService("TweenService"):Create(rootScale, TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
 	end)
 	return root
 end
 
+-- linhas / seções das páginas
 local function section(par, text)
-	local f = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1 }, par)
-	local acc = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(3, 15), Position = UDim2.new(0, 2, 0.5, -7), BackgroundColor3 = UI.GLOW, BorderSizePixel = 0 }, f)
+	local f = mk("Frame", { Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1 }, par)
+	local acc = mk("Frame", { Size = UDim2.fromOffset(3, 15), Position = UDim2.new(0, 2, 0.5, -7), BackgroundColor3 = UI.GLOW, BorderSizePixel = 0 }, f)
 	round(acc, 2)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	mk("TextLabel", {
 		Text = text, Size = UDim2.new(1, -14, 1, 0), Position = UDim2.fromOffset(12, 0), BackgroundTransparency = 1, TextColor3 = WHITE,
-		Font = Enum.Font.GothamBold, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
+		Font = Enum.Font.GothamBold, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, f)
-	local ln = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -4, 0, 1), Position = UDim2.new(0, 2, 1, -2), BackgroundColor3 = UI.EDGE, BorderSizePixel = 0 }, f)
-	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), { Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.1), NumberSequenceKeypoint.new(1, 1) }) }, ln)
+	local ln = mk("Frame", { Size = UDim2.new(1, -4, 0, 1), Position = UDim2.new(0, 2, 1, -2), BackgroundColor3 = UI.EDGE, BorderSizePixel = 0 }, f)
+	mk("UIGradient", { Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.1), NumberSequenceKeypoint.new(1, 1) }) }, ln)
 end
-
+-- (hover compartilhado pelas linhas)
 local function rowHover(b, st)
 	b.MouseEnter:Connect(function()
 		UI.tween(b, 0.12, { BackgroundColor3 = UI.HOVER, BackgroundTransparency = 0.05 })
@@ -717,7 +854,7 @@ local function rowHover(b, st)
 		UI.tween(b, 0.12, { BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 })
 		UI.tween(st, 0.12, { Transparency = 0.35 })
 	end)
-
+	-- efeito de aperto
 	b.MouseButton1Down:Connect(function()
 		UI.tween(b, 0.06, { BackgroundColor3 = UI.ACTIVE, BackgroundTransparency = 0 })
 		UI.tween(st, 0.06, { Color = UI.GLOW, Transparency = 0 })
@@ -731,19 +868,19 @@ local function rowHover(b, st)
 end
 local function rowBtn(par, text, cb, compact)
 	local hgt = compact and 32 or 38
-	local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
-		Text = _obczbshz({}), AutoButtonColor = false, Size = UDim2.new(1, 0, 0, hgt), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
+	local b = mk("TextButton", {
+		Text = "", AutoButtonColor = false, Size = UDim2.new(1, 0, 0, hgt), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
 	}, par)
 	round(b, 10)
-	local st = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
-
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	local st = mk("UIStroke", { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+	-- (o texto precisa ser o PRIMEIRO TextLabel: outras abas trocam esse texto)
+	mk("TextLabel", {
 		Text = text, Size = UDim2.new(1, -44, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = compact and 12 or 13, TextXAlignment = Enum.TextXAlignment.Left,
 		TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
-	local arrow = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({75,234,37}), Size = UDim2.fromOffset(28, hgt), Position = UDim2.new(1, -34, 0, 0), BackgroundTransparency = 1,
+	local arrow = mk("TextLabel", {
+		Text = "›", Size = UDim2.fromOffset(28, hgt), Position = UDim2.new(1, -34, 0, 0), BackgroundTransparency = 1,
 		TextColor3 = UI.GLOW, Font = Enum.Font.GothamBold, TextSize = compact and 20 or 24,
 	}, b)
 	b.MouseEnter:Connect(function() UI.tween(arrow, 0.14, { Position = UDim2.new(1, -28, 0, 0) }) end)
@@ -752,34 +889,34 @@ local function rowBtn(par, text, cb, compact)
 	b.MouseButton1Click:Connect(cb)
 	return b
 end
-local DARK = Color3.fromRGB(40, 8, 10)
+local DARK = Color3.fromRGB(40, 41, 49)
 local function toggleRow(par, text, desc, onChange, initial)
-	if type(desc) == _obczbshz({207,223,217,207,225,215,222,222}) then initial = onChange; onChange, desc = desc, nil end
+	if type(desc) == "function" then initial = onChange; onChange, desc = desc, nil end
 	local state = initial and true or false
-	local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
-		Text = _obczbshz({}), AutoButtonColor = false, Size = UDim2.new(1, 0, 0, desc and 48 or 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
+	local b = mk("TextButton", {
+		Text = "", AutoButtonColor = false, Size = UDim2.new(1, 0, 0, desc and 48 or 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
 	}, par)
 	round(b, 10)
-	local st = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	local st = mk("UIStroke", { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+	mk("TextLabel", {
 		Text = text, Size = UDim2.new(1, -78, 0, desc and 26 or 38), Position = UDim2.fromOffset(14, desc and 3 or 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
 	if desc then
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		mk("TextLabel", {
 			Text = desc, Size = UDim2.new(1, -78, 0, 16), Position = UDim2.fromOffset(14, 27), BackgroundTransparency = 1,
 			TextColor3 = UI.SOFT, Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 		}, b)
 	end
-	local sw = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(40, 22), Position = UDim2.new(1, -52, 0.5, -11), BackgroundColor3 = DARK, BorderSizePixel = 0 }, b)
+	local sw = mk("Frame", { Size = UDim2.fromOffset(40, 22), Position = UDim2.new(1, -52, 0.5, -11), BackgroundColor3 = DARK, BorderSizePixel = 0 }, b)
 	round(sw, 11)
-	local sws = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = UI.EDGE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, sw)
-	local knob = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(16, 16), Position = UDim2.fromOffset(3, 3), BackgroundColor3 = WHITE, BorderSizePixel = 0 }, sw)
+	local sws = mk("UIStroke", { Thickness = 1.5, Color = UI.EDGE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, sw)
+	local knob = mk("Frame", { Size = UDim2.fromOffset(16, 16), Position = UDim2.fromOffset(3, 3), BackgroundColor3 = WHITE, BorderSizePixel = 0 }, sw)
 	round(knob, 8)
 	local function paint(anim)
 		local kp = state and UDim2.fromOffset(21, 3) or UDim2.fromOffset(3, 3)
 		local sc = state and RED or DARK
-		local kc = state and WHITE or Color3.fromRGB(190, 150, 152)
+		local kc = state and WHITE or Color3.fromRGB(150, 155, 168)
 		local swc = state and UI.GLOW or UI.EDGE
 		if anim then
 			UI.tween(knob, 0.14, { Position = kp, BackgroundColor3 = kc })
@@ -799,34 +936,34 @@ local function toggleRow(par, text, desc, onChange, initial)
 	return b, function(v) state = v and true or false; paint(true) end
 end
 local function sliderRow(par, text, desc, minV, maxV, defV, onChange)
-	local b = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 48), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 }, par)
+	local b = mk("Frame", { Size = UDim2.new(1, 0, 0, 48), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 }, par)
 	round(b, 10)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	mk("UIStroke", { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+	mk("TextLabel", {
 		Text = text, Size = UDim2.new(0.5, -16, 0, 26), Position = UDim2.fromOffset(14, 3), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	mk("TextLabel", {
 		Text = desc, Size = UDim2.new(0.5, -16, 0, 16), Position = UDim2.fromOffset(14, 27), BackgroundTransparency = 1,
 		TextColor3 = UI.SOFT, Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
-	local val = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	local val = mk("TextLabel", {
 		Text = tostring(defV), Size = UDim2.fromOffset(34, 48), Position = UDim2.new(0.5, 0, 0, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 13,
 	}, b)
-	local hit = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(0.5, -58, 0, 28), Position = UDim2.new(0.5, 38, 0.5, -14), BackgroundTransparency = 1 }, b)
-	local bar = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 6), Position = UDim2.new(0, 0, 0.5, -3), BackgroundColor3 = DARK, BorderSizePixel = 0 }, hit)
+	local hit = mk("Frame", { Size = UDim2.new(0.5, -58, 0, 28), Position = UDim2.new(0.5, 38, 0.5, -14), BackgroundTransparency = 1 }, b)
+	local bar = mk("Frame", { Size = UDim2.new(1, 0, 0, 6), Position = UDim2.new(0, 0, 0.5, -3), BackgroundColor3 = DARK, BorderSizePixel = 0 }, hit)
 	round(bar, 3)
 	local rel0 = (defV - minV) / (maxV - minV)
-	local fill = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(rel0, 0, 1, 0), BackgroundColor3 = RED, BorderSizePixel = 0 }, bar)
+	local fill = mk("Frame", { Size = UDim2.new(rel0, 0, 1, 0), BackgroundColor3 = RED, BorderSizePixel = 0 }, bar)
 	round(fill, 3)
-	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), { Color = ColorSequence.new(Color3.fromRGB(255, 90, 105), Color3.fromRGB(190, 25, 38)) }, fill)
-	local knob = mk(_obczbshz({175,220,204,217,210}), {
+	mk("UIGradient", { Color = ColorSequence.new(Color3.fromRGB(255, 90, 105), Color3.fromRGB(190, 25, 38)) }, fill)
+	local knob = mk("Frame", {
 		Size = UDim2.fromOffset(14, 14), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(rel0, 0, 0.5, 0),
 		BackgroundColor3 = WHITE, BorderSizePixel = 0, ZIndex = 2,
 	}, bar)
 	round(knob, 7)
-	mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, knob)
+	mk("UIStroke", { Thickness = 1.5, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, knob)
 	local dragging = false
 	local function setFromX(x)
 		local rel = math.clamp((x - bar.AbsolutePosition.X) / math.max(bar.AbsoluteSize.X, 1), 0, 1)
@@ -850,32 +987,274 @@ end
 
 local function buildCredits(page)
 	local function lbl(text, size, bold, col, h)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		mk("TextLabel", {
 			Text = text, Size = UDim2.new(1, 0, 0, h or 24), BackgroundTransparency = 1,
 			TextColor3 = col or WHITE, Font = bold and Enum.Font.GothamBold or Enum.Font.Gotham, TextSize = size,
 			TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 		}, page)
 	end
-	section(page, _obczbshz({172,220,46,21,209,215,227,223,228}))
-	lbl(_obczbshz({175,207,212,224,220,142,223,223,227,146,163,184,232}), 15, true)
-	lbl(_obczbshz({183,211,206,215,167,142,212,220,218,230,216,218,231,229,234,236,222,236}), 13, false)
-	lbl(_obczbshz({}), 8, false, WHITE, 10)
-	lbl(_obczbshz({75,4,11,140,174,228,216,227,224,172,147,227,149,222,236,218,153,232,62,31,236,158,228,243,245,69,36,164,182,182,183,173,169,250,253,251,251,2,254,176,246,178,2,180,246,4,251,249,11,186,14,11,255,16,4,192,2,194,102,69,12,27,8,200,23,109,78,27,205,20,36,30,20,27,34,34,22,228}), 12, true, Color3.fromRGB(255, 190, 120), 44)
+	section(page, "Créditos")
+	lbl("Feito por 0Ds", 15, true)
+	lbl("Nick: elitefroster", 13, false)
+	lbl("", 8, false, WHITE, 10)
+	lbl("⚠ Aviso: o hub não está 100% pronto e o andar sobre a água não funciona.", 12, true, Color3.fromRGB(255, 190, 120), 44)
 end
 
+-- ===== CONFIGURAÇÕES (engrenagem ⚙): tamanho, cor, fundo, tecla, FPS... Salva em SHIN HUB/config.json =====
+do
+	local CFG_FILE = FOLDER .. "/config.json"
+	local DEFAULT = { scale = 1, accent = "Vermelho", bgOpacity = 100, bgImage = true, anim = true, key = "B", floatBtn = true, fps = false }
+	local ACCENTS = {
+		{ "Vermelho", Color3.fromRGB(222, 52, 68) }, { "Laranja", Color3.fromRGB(240, 128, 48) },
+		{ "Amarelo", Color3.fromRGB(235, 190, 50) }, { "Verde", Color3.fromRGB(46, 196, 120) },
+		{ "Ciano", Color3.fromRGB(40, 190, 215) }, { "Azul", Color3.fromRGB(66, 130, 255) },
+		{ "Roxo", Color3.fromRGB(150, 98, 255) }, { "Rosa", Color3.fromRGB(240, 82, 170) },
+	}
+	local KEYS = { "B", "M", "K", "V", "Z" }
+	local BLACK = Color3.new(0, 0, 0)
+	-- família do vermelho usada no tema: { cor original, como derivar da cor escolhida }
+	local BASE = {
+		{ Color3.fromRGB(222, 52, 68), function(c) return c end },
+		{ Color3.fromRGB(255, 80, 96), function(c) return c:Lerp(WHITE, 0.22) end },
+		{ Color3.fromRGB(255, 90, 104), function(c) return c:Lerp(WHITE, 0.26) end },
+		{ Color3.fromRGB(255, 90, 105), function(c) return c:Lerp(WHITE, 0.27) end },
+		{ Color3.fromRGB(255, 120, 125), function(c) return c:Lerp(WHITE, 0.4) end },
+		{ Color3.fromRGB(82, 26, 36), function(c) return Color3.fromRGB(26, 27, 33):Lerp(c, 0.32) end },
+		{ Color3.fromRGB(150, 34, 48), function(c) return c:Lerp(BLACK, 0.3) end },
+		{ Color3.fromRGB(96, 28, 38), function(c) return c:Lerp(BLACK, 0.55) end },
+		{ Color3.fromRGB(190, 25, 38), function(c) return c:Lerp(BLACK, 0.15) end },
+		{ Color3.fromRGB(110, 10, 20), function(c) return c:Lerp(BLACK, 0.5) end },
+	}
+	local function ck(c) -- chave inteira da cor (evita erro de arredondamento ao comparar)
+		return math.floor(c.R * 255 + 0.5) * 65536 + math.floor(c.G * 255 + 0.5) * 256 + math.floor(c.B * 255 + 0.5)
+	end
+	UI.accentName = "Vermelho"
+	UI.curAccent = {}
+	for i, b in ipairs(BASE) do UI.curAccent[i] = b[1] end
+
+	-- carrega o que foi salvo
+	pcall(function()
+		if isfile and readfile and isfile(CFG_FILE) then
+			UI.hadCfg = true
+			local d = HttpService:JSONDecode(readfile(CFG_FILE))
+			if type(d) == "table" then
+				for k, v in pairs(DEFAULT) do
+					if type(d[k]) == type(v) then UI.cfg[k] = d[k] end
+				end
+			end
+		end
+	end)
+	if not UI.hadCfg and not UI.pc then UI.cfg.scale = 0.8 end -- celular: começa menor, sobra espaço pra mover
+	UI.cfg.scale = math.clamp(UI.cfg.scale, 0.5, 1.3)
+	UI.cfg.bgOpacity = math.clamp(UI.cfg.bgOpacity, 30, 100)
+	pcall(function() UI.key = Enum.KeyCode[UI.cfg.key] end)
+
+	local function save()
+		pcall(function()
+			if not writefile then return end
+			if isfolder and not isfolder(FOLDER) and makefolder then makefolder(FOLDER) end
+			writefile(CFG_FILE, HttpService:JSONEncode(UI.cfg))
+		end)
+	end
+	local pending = false
+	local function saveSoon()
+		if pending then return end
+		pending = true
+		task.delay(0.6, function() pending = false; save() end)
+	end
+
+	-- troca a cor de destaque em tudo que já existe (e nas próximas coisas que forem criadas)
+	function UI.setAccent(c)
+		local new, map = {}, {}
+		for i, b in ipairs(BASE) do new[i] = b[2](c) end
+		for i = 1, #BASE do map[ck(UI.curAccent[i])] = new[i] end
+		local function mc(col) return map[ck(col)] end
+		for _, d in ipairs(gui:GetDescendants()) do
+			if not d:GetAttribute("keep") then
+				if d:IsA("GuiObject") then
+					local n = mc(d.BackgroundColor3)
+					if n then d.BackgroundColor3 = n end
+					if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then
+						n = mc(d.TextColor3)
+						if n then d.TextColor3 = n end
+					elseif d:IsA("ImageLabel") or d:IsA("ImageButton") then
+						n = mc(d.ImageColor3)
+						if n then d.ImageColor3 = n end
+					end
+				elseif d:IsA("UIStroke") then
+					local n = mc(d.Color)
+					if n then d.Color = n end
+				elseif d:IsA("UIGradient") then
+					local out, changed = {}, false
+					for _, k in ipairs(d.Color.Keypoints) do
+						local n = mc(k.Value)
+						if n then changed = true end
+						out[#out + 1] = ColorSequenceKeypoint.new(k.Time, n or k.Value)
+					end
+					if changed then d.Color = ColorSequence.new(out) end
+				end
+			end
+		end
+		RED = new[1]
+		UI.GLOW = new[2]
+		UI.ACTIVE = new[6]
+		UI.curAccent = new
+	end
+
+	-- contador de FPS / ping no canto
+	local fpsLbl
+	function UI.setFps(on)
+		if on and not fpsLbl then
+			fpsLbl = mk("TextLabel", {
+				Size = UDim2.fromOffset(128, 20), Position = UDim2.new(1, -136, 0, 8), BackgroundColor3 = Color3.fromRGB(20, 21, 26),
+				BackgroundTransparency = 0.2, TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 11, Text = "FPS", ZIndex = 5,
+			}, gui)
+			round(fpsLbl, 8)
+			local lbl, acc, n = fpsLbl, 0, 0
+			table.insert(conns, RunService.Heartbeat:Connect(function(dt)
+				if not lbl.Parent then return end
+				acc = acc + dt; n = n + 1
+				if acc >= 0.5 then
+					local ping = 0
+					pcall(function() ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue() + 0.5) end)
+					lbl.Text = string.format("FPS %d  •  %d ms", math.floor(n / acc + 0.5), ping)
+					acc, n = 0, 0
+				end
+			end))
+		elseif not on and fpsLbl then
+			fpsLbl:Destroy(); fpsLbl = nil
+		end
+	end
+
+	function UI.applyCfg()
+		local c = UI.cfg
+		pcall(function() UI.key = Enum.KeyCode[c.key] end)
+		for _, f in ipairs(UI.scaleFns) do pcall(f) end
+		for _, f in ipairs(UI.bgFns) do pcall(f) end
+		for _, f in ipairs(UI.keyFns) do pcall(f) end
+		if UI.float then UI.float.Visible = c.floatBtn ~= false end
+		pcall(UI.setFps, c.fps == true)
+		if c.accent ~= UI.accentName then
+			for _, a in ipairs(ACCENTS) do
+				if a[1] == c.accent then
+					UI.accentName = a[1]
+					pcall(UI.setAccent, a[2])
+				end
+			end
+		end
+	end
+
+	-- janelinha de configurações
+	local pop
+	local function build(win)
+		if pop then pop:Destroy() end
+		pop = mk("Frame", {
+			Name = "Config", Size = UDim2.fromOffset(300, 300), Position = UDim2.new(1, -312, 0, 46),
+			BackgroundColor3 = Color3.fromRGB(17, 18, 23), ZIndex = 50, ClipsDescendants = true, Visible = false,
+		}, win)
+		round(pop, 12); stroke(pop, 1.2, UI.EDGE)
+		mk("TextLabel", {
+			Text = "Configurações", Size = UDim2.new(1, -50, 0, 34), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left,
+		}, pop)
+		local x = mk("TextButton", {
+			Text = "✕", Size = UDim2.fromOffset(26, 26), Position = UDim2.new(1, -32, 0, 4), BackgroundTransparency = 1,
+			TextColor3 = UI.DIM, Font = Enum.Font.GothamBold, TextSize = 13, AutoButtonColor = false,
+		}, pop)
+		x.MouseButton1Click:Connect(function() pop.Visible = false end)
+		local list = mk("ScrollingFrame", {
+			Position = UDim2.fromOffset(8, 36), Size = UDim2.new(1, -16, 1, -44), BackgroundTransparency = 1, BorderSizePixel = 0,
+			ScrollBarThickness = 3, ScrollBarImageColor3 = UI.EDGE, AutomaticCanvasSize = Enum.AutomaticSize.Y, CanvasSize = UDim2.new(),
+		}, pop)
+		mk("UIListLayout", { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, list)
+		mk("UIPadding", { PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 8), PaddingBottom = UDim.new(0, 8) }, list)
+		local c = UI.cfg
+
+		section(list, "Aparência")
+		sliderRow(list, "Tamanho", "Escala do menu", 50, 130, math.floor(c.scale * 100 + 0.5), function(v)
+			c.scale = v / 100; UI.applyCfg(); saveSoon()
+		end)
+		sliderRow(list, "Fundo", "Opacidade do painel", 30, 100, math.floor(c.bgOpacity + 0.5), function(v)
+			c.bgOpacity = v; UI.applyCfg(); saveSoon()
+		end)
+		-- cores de destaque
+		local sw = mk("Frame", { Size = UDim2.new(1, 0, 0, 52), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 }, list)
+		round(sw, 10); stroke(sw, 1.2, UI.EDGE)
+		mk("TextLabel", {
+			Text = "Cor de destaque", Size = UDim2.new(1, -16, 0, 20), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left,
+		}, sw)
+		local holder = mk("Frame", { Size = UDim2.new(1, -24, 0, 22), Position = UDim2.fromOffset(14, 26), BackgroundTransparency = 1 }, sw)
+		mk("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder }, holder)
+		local rings = {}
+		for i, a in ipairs(ACCENTS) do
+			local b = mk("TextButton", {
+				Text = "", AutoButtonColor = false, Size = UDim2.fromOffset(22, 22), BackgroundColor3 = a[2], LayoutOrder = i,
+			}, holder)
+			b:SetAttribute("keep", true)
+			round(b, 11)
+			rings[a[1]] = mk("UIStroke", { Thickness = 2, Color = WHITE, Transparency = (c.accent == a[1]) and 0 or 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+			b.MouseButton1Click:Connect(function()
+				c.accent = a[1]
+				for n, r in pairs(rings) do r.Transparency = (n == a[1]) and 0 or 1 end
+				UI.applyCfg(); save()
+			end)
+		end
+		toggleRow(list, "Foto de fundo", "Imagem atrás do menu", function(v) c.bgImage = v; UI.applyCfg(); saveSoon() end, c.bgImage)
+		toggleRow(list, "Animações", "Efeitos suaves nos botões", function(v) c.anim = v; saveSoon() end, c.anim)
+
+		section(list, "Controles")
+		local keyRow
+		keyRow = rowBtn(list, "Tecla do menu: " .. tostring(c.key), function()
+			local idx = 1
+			for i, k in ipairs(KEYS) do if k == c.key then idx = i end end
+			c.key = KEYS[idx % #KEYS + 1]
+			keyRow:FindFirstChildOfClass("TextLabel").Text = "Tecla do menu: " .. c.key
+			UI.applyCfg(); save()
+		end, true)
+		local floatRow, setFloat
+		floatRow, setFloat = toggleRow(list, "Botão flutuante", "No celular precisa ficar ligado", function(v)
+			if not v and not UI.pc then setFloat(true); return end
+			c.floatBtn = v; UI.applyCfg(); saveSoon()
+		end, c.floatBtn)
+		toggleRow(list, "Mostrar FPS", "FPS e ping no canto da tela", function(v) c.fps = v; UI.applyCfg(); saveSoon() end, c.fps)
+
+		section(list, "Janela")
+		rowBtn(list, "Centralizar menu", function() win.Position = UDim2.new(0.5, 0, 0.5, 0) end, true)
+		rowBtn(list, "Restaurar padrão", function()
+			for k, v in pairs(DEFAULT) do c[k] = v end
+			UI.applyCfg(); save()
+			build(win); pop.Visible = true
+		end, true)
+		-- tudo da janelinha fica acima do fundo dela (o ZIndex padrão ficaria escondido atrás)
+		for _, d in ipairs(pop:GetDescendants()) do
+			if d:IsA("GuiObject") then d.ZIndex = 51 end
+		end
+	end
+	function UI.toggleSettings(win)
+		if pop and pop.Parent == win then
+			pop.Visible = not pop.Visible
+		else
+			build(win); pop.Visible = true
+		end
+	end
+end
+
+-- ===== Efeitos compartilhados (todos que usam o hub veem, admin e membro) =====
 local COLORS = {
-	{ _obczbshz({191,207,221,217,210,218,215,223}), Color3.fromRGB(255, 40, 50) }, { _obczbshz({170,228,224,216}), Color3.fromRGB(60, 140, 255) },
-	{ _obczbshz({191,207,221,208,210}), Color3.fromRGB(60, 255, 120) }, { _obczbshz({187,217,227,219}), Color3.fromRGB(170, 70, 255) },
-	{ _obczbshz({187,217,222,205}), Color3.fromRGB(255, 90, 200) }, { _obczbshz({170,215,204,222,210,218,222}), Color3.fromRGB(255, 220, 60) },
-	{ _obczbshz({171,220,204,218,208,221}), Color3.fromRGB(255, 255, 255) },
+	{ "Vermelho", Color3.fromRGB(255, 40, 50) }, { "Azul", Color3.fromRGB(60, 140, 255) },
+	{ "Verde", Color3.fromRGB(60, 255, 120) }, { "Roxo", Color3.fromRGB(170, 70, 255) },
+	{ "Rosa", Color3.fromRGB(255, 90, 200) }, { "Amarelo", Color3.fromRGB(255, 220, 60) },
+	{ "Branco", Color3.fromRGB(255, 255, 255) },
 }
-local STAR_TEX = _obczbshz({219,204,227,205,224,225,212,228,171,161,162,232,218,238,235,237,235,223,238,171,237,223,241,244,234,229,239,233,248,181,250,248,234,252,246,248,242,1,238,253,242,251,1,194,249,250,10})
-local FX_KEYS = { _obczbshz({207,211,221,209}), _obczbshz({220,215,218,215,210}), _obczbshz({220,218,204,222,216,218,212,227}), _obczbshz({220,222,204,222,224}), _obczbshz({221,220,204,213,217}), _obczbshz({202,223,221,205}), _obczbshz({213,211,210,212,225}), _obczbshz({219,203,212,218,207,221,230}), _obczbshz({215,207,218,218}), _obczbshz({219,203,212,218,207,221,230,178,224,214,236}), _obczbshz({208,210,218,223,225}) }
-local FX_REG = setmetatable({}, { __mode = _obczbshz({212}) })
+local STAR_TEX = "rbxasset://textures/particles/sparkles_main.dds"
+local FX_KEYS = { "fire", "smoke", "sparkles", "stars", "trail", "aura", "light", "rainbow", "neon", "rainbowBody", "ghost" }
+local FX_REG = setmetatable({}, { __mode = "k" }) -- personagem -> { list, body, set }
 local MINE = { ids = {}, headless = false, fx = nil, fc = 1 }
 local publishMods
-local tagDraw
+local tagDraw -- declarada aqui pra buildMods enxergar (antes era nil e a tag dos outros nunca aparecia)
 
+-- (re)aplica no personagem só os efeitos da lista "set" (tabela chave -> true). Lista vazia = limpa tudo.
 local function fxApply(char, set, ci)
 	if not (char and char.Parent) then return end
 	local rec = FX_REG[char]
@@ -884,57 +1263,57 @@ local function fxApply(char, set, ci)
 	rec.list, rec.body = {}, {}
 	rec.set = set
 	local k = (COLORS[ci] or COLORS[1])[2]
-	local r = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
+	local r = char:FindFirstChild("HumanoidRootPart")
 	local function add(inst, par)
-		inst:SetAttribute(_obczbshz({173,221,177,228}), true)
+		inst:SetAttribute("DsFx", true)
 		inst.Parent = par
 		table.insert(rec.list, inst)
 		return inst
 	end
 	if r then
-		if set.fire then add(mk(_obczbshz({175,211,221,209}), { Color = k, SecondaryColor = k, Size = 7, Heat = 9 }), r) end
-		if set.smoke then add(mk(_obczbshz({188,215,218,215,210}), { Color = k, Size = 4, Opacity = 0.4, RiseVelocity = 3 }), r) end
-		if set.sparkles then add(mk(_obczbshz({188,218,204,222,216,218,212,227}), { SparkleColor = k }), r) end
+		if set.fire then add(mk("Fire", { Color = k, SecondaryColor = k, Size = 7, Heat = 9 }), r) end
+		if set.smoke then add(mk("Smoke", { Color = k, Size = 4, Opacity = 0.4, RiseVelocity = 3 }), r) end
+		if set.sparkles then add(mk("Sparkles", { SparkleColor = k }), r) end
 		if set.stars then
-			add(mk(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233}), {
+			add(mk("ParticleEmitter", {
 				Texture = STAR_TEX, Rate = 30, Lifetime = NumberRange.new(1, 2), Speed = NumberRange.new(2, 5),
 				SpreadAngle = Vector2.new(180, 180), Color = ColorSequence.new(k), LightEmission = 1,
 				Size = NumberSequence.new(0.5, 0),
 			}), r)
 		end
 		if set.trail then
-			local a0 = add(mk(_obczbshz({170,222,223,205,208,214,220,213,223,230}), { Position = Vector3.new(0, 1.2, 0) }), r)
-			local a1 = add(mk(_obczbshz({170,222,223,205,208,214,220,213,223,230}), { Position = Vector3.new(0, -1.2, 0) }), r)
-			add(mk(_obczbshz({189,220,204,213,217}), {
+			local a0 = add(mk("Attachment", { Position = Vector3.new(0, 1.2, 0) }), r)
+			local a1 = add(mk("Attachment", { Position = Vector3.new(0, -1.2, 0) }), r)
+			add(mk("Trail", {
 				Attachment0 = a0, Attachment1 = a1, Lifetime = 0.8, LightEmission = 1, Color = ColorSequence.new(k),
 				Transparency = NumberSequence.new(0.1, 1),
 			}), r)
 		end
-		if set.light then add(mk(_obczbshz({185,217,212,218,225,186,216,215,217,230}), { Color = k, Range = 18, Brightness = 3 }), r) end
+		if set.light then add(mk("PointLight", { Color = k, Range = 18, Brightness = 3 }), r) end
 	end
 	if set.aura then
-		add(mk(_obczbshz({177,211,210,212,217,215,214,216,229}), { Adornee = char, FillColor = k, OutlineColor = k, FillTransparency = 0.65, OutlineTransparency = 0 }), char)
+		add(mk("Highlight", { Adornee = char, FillColor = k, OutlineColor = k, FillTransparency = 0.65, OutlineTransparency = 0 }), char)
 	end
-
+	-- corpo: neon / fantasma / arco-íris (guarda o original e restaura ao desligar)
 	for _, p in ipairs(char:GetDescendants()) do
-		if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p.Name ~= _obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}) and not p:GetAttribute(_obczbshz({173,221,177,228})) then
+		if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" and not p:GetAttribute("DsFx") then
 			if set.neon then
-				if p:GetAttribute(_obczbshz({173,221,186,185})) == nil then p:SetAttribute(_obczbshz({173,221,186,185}), p.Material.Name) end
+				if p:GetAttribute("DsOM") == nil then p:SetAttribute("DsOM", p.Material.Name) end
 				p.Material = Enum.Material.Neon
-			elseif p:GetAttribute(_obczbshz({173,221,186,185})) then
-				p.Material = Enum.Material[p:GetAttribute(_obczbshz({173,221,186,185}))]; p:SetAttribute(_obczbshz({173,221,186,185}), nil)
+			elseif p:GetAttribute("DsOM") then
+				p.Material = Enum.Material[p:GetAttribute("DsOM")]; p:SetAttribute("DsOM", nil)
 			end
 			if set.ghost then
-				if p:GetAttribute(_obczbshz({173,221,186,192})) == nil then p:SetAttribute(_obczbshz({173,221,186,192}), p.Transparency) end
-				p.Transparency = math.max(p:GetAttribute(_obczbshz({173,221,186,192})), 0.65)
-			elseif p:GetAttribute(_obczbshz({173,221,186,192})) then
-				p.Transparency = p:GetAttribute(_obczbshz({173,221,186,192})); p:SetAttribute(_obczbshz({173,221,186,192}), nil)
+				if p:GetAttribute("DsOT") == nil then p:SetAttribute("DsOT", p.Transparency) end
+				p.Transparency = math.max(p:GetAttribute("DsOT"), 0.65)
+			elseif p:GetAttribute("DsOT") then
+				p.Transparency = p:GetAttribute("DsOT"); p:SetAttribute("DsOT", nil)
 			end
 			if set.rainbowBody then
-				if p:GetAttribute(_obczbshz({173,221,186,175})) == nil then p:SetAttribute(_obczbshz({173,221,186,175}), p.Color) end
+				if p:GetAttribute("DsOC") == nil then p:SetAttribute("DsOC", p.Color) end
 				table.insert(rec.body, p)
-			elseif p:GetAttribute(_obczbshz({173,221,186,175})) then
-				p.Color = p:GetAttribute(_obczbshz({173,221,186,175})); p:SetAttribute(_obczbshz({173,221,186,175}), nil)
+			elseif p:GetAttribute("DsOC") then
+				p.Color = p:GetAttribute("DsOC"); p:SetAttribute("DsOC", nil)
 			end
 		end
 	end
@@ -949,12 +1328,12 @@ local function fxTick(dt)
 			if rec.set.rainbow then
 				for _, o in ipairs(rec.list) do
 					if o.Parent then
-						if o:IsA(_obczbshz({177,211,210,212,217,215,214,216,229})) then o.FillColor = c; o.OutlineColor = c
-						elseif o:IsA(_obczbshz({175,211,221,209})) then o.Color = c; o.SecondaryColor = c
-						elseif o:IsA(_obczbshz({188,215,218,215,210})) then o.Color = c
-						elseif o:IsA(_obczbshz({188,218,204,222,216,218,212,227})) then o.SparkleColor = c
-						elseif o:IsA(_obczbshz({185,217,212,218,225,186,216,215,217,230})) then o.Color = c
-						elseif o:IsA(_obczbshz({189,220,204,213,217})) or o:IsA(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233})) then o.Color = ColorSequence.new(c) end
+						if o:IsA("Highlight") then o.FillColor = c; o.OutlineColor = c
+						elseif o:IsA("Fire") then o.Color = c; o.SecondaryColor = c
+						elseif o:IsA("Smoke") then o.Color = c
+						elseif o:IsA("Sparkles") then o.SparkleColor = c
+						elseif o:IsA("PointLight") then o.Color = c
+						elseif o:IsA("Trail") or o:IsA("ParticleEmitter") then o.Color = ColorSequence.new(c) end
 					end
 				end
 			end
@@ -980,324 +1359,340 @@ local function buildMods(page, say)
 
 	local function publish()
 		if #mine.ids == 0 and not mine.headless and not mine.fx and not mine.tag and not mine.bc then
-			http(_obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219}))
+			http("DELETE", "/mods/" .. uid .. ".json")
 		else
 			mine.beat = (mine.beat or 0) + 1
-			http(_obczbshz({185,191,191}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219}), {
-				name = lp.Name, ids = table.concat(mine.ids, _obczbshz({149})), headless = mine.headless,
-				fx = mine.fx or _obczbshz({}), fc = mine.fc or 1, tag = mine.tag, bc = mine.bc,
-				beat = mine.beat, t = os.time(),
+			http("PUT", "/mods/" .. uid .. ".json", {
+				name = lp.Name, ids = table.concat(mine.ids, ","), headless = mine.headless,
+				fx = mine.fx or "", fc = mine.fc or 1, tag = mine.tag, bc = mine.bc,
+				beat = mine.beat, t = os.time(), o = AUTH.id(), ts = { [".sv"] = "timestamp" },
 			})
 		end
 	end
 	publishMods = publish
 
+	-- carrega o item pelo ID e remove qualquer script de dentro (só visual)
+	-- só guarda em cache quando CONSEGUE carregar; falha não fica presa pra sempre, tenta de novo depois
+	-- cada passo vai pro log: GetObjects, InsertService, e quantos scripts/sons foram removidos
 	local lastLoadErr = {}
 	local function loadAsset(id)
 		if cache[id] then return cache[id] end
 		local objs
-		local ok, res = pcall(function() return game:GetObjects(_obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164}) .. id) end)
-		if ok and type(res) == _obczbshz({221,203,205,216,210}) and #res > 0 then
+		local ok, res = pcall(function() return game:GetObjects("rbxassetid://" .. id) end)
+		if ok and type(res) == "table" and #res > 0 then
 			objs = res
-			DSLOG.info(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,178,209,225,189,209,218,214,213,231,231,149,229,226,152,161}) .. #res .. _obczbshz({137,217,205,214,210,226,222,152,228,155,156}))
+			DSLOG.info("asset", "ID " .. id .. ": GetObjects ok (" .. #res .. " objeto(s))")
 		else
-			local why = ok and _obczbshz({223,217,215,224,220,227,143,230,210,236,220,227}) or tostring(res):sub(1, 90)
-			DSLOG.warn(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,178,209,225,189,209,218,214,213,231,231,149,220,216,228,225,233,240,156,165}) .. why .. _obczbshz({146,150,139,224,210,220,227,209,223,214,226,148,190,228,234,221,235,238,206,225,239,244,232,227,230}))
-			local ok2, m = pcall(function() return game:GetService(_obczbshz({178,216,222,209,223,226,194,213,227,232,220,215,218})):LoadAsset(id) end)
+			local why = ok and "voltou vazio" or tostring(res):sub(1, 90)
+			DSLOG.warn("asset", "ID " .. id .. ": GetObjects falhou (" .. why .. "), tentando InsertService")
+			local ok2, m = pcall(function() return game:GetService("InsertService"):LoadAsset(id) end)
 			if ok2 and m then
 				local kids = m:GetChildren()
 				if #kids > 0 then
 					objs = kids
-					DSLOG.info(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,180,218,224,211,225,228,196,215,229,234,222,217,220,152,232,229,155,164}) .. #kids .. _obczbshz({137,217,205,214,210,226,222,152,228,155,156}))
+					DSLOG.info("asset", "ID " .. id .. ": InsertService ok (" .. #kids .. " objeto(s))")
 				else
-					lastLoadErr[id] = _obczbshz({214,217,207,209,217,221,143,230,210,236,220,227})
-					DSLOG.err(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,180,218,224,211,225,228,196,215,229,234,222,217,220,152,239,233,231,240,236,243,159,245,238,162,240,243,233,235,243,247,169,0,236,6,246,253}))
+					lastLoadErr[id] = "modelo vazio"
+					DSLOG.err("asset", "ID " .. id .. ": InsertService voltou um modelo vazio")
 				end
 			else
-				lastLoadErr[id] = ok2 and _obczbshz({223,217,215,224,220,227,143,222,210,214,212}) or tostring(m):sub(1, 70)
-				DSLOG.err(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138,180,218,224,211,225,228,196,215,229,234,222,217,220,152,223,219,231,228,236,243,185,160}) .. lastLoadErr[id])
+				lastLoadErr[id] = ok2 and "voltou nada" or tostring(m):sub(1, 70)
+				DSLOG.err("asset", "ID " .. id .. ": InsertService falhou: " .. lastLoadErr[id])
 			end
 		end
 		if objs then
 			local removed = 0
 			for _, o in ipairs(objs) do
 				for _, d in ipairs(o:GetDescendants()) do
-					if d:IsA(_obczbshz({181,223,204,191,220,227,225,211,214,181,226,226,233,215,224,230,222,236})) or d:IsA(_obczbshz({188,217,224,218,209})) then d:Destroy(); removed = removed + 1 end
+					if d:IsA("LuaSourceContainer") or d:IsA("Sound") then d:Destroy(); removed = removed + 1 end
 				end
 			end
-			if removed > 0 then DSLOG.info(_obczbshz({202,221,222,209,225}), _obczbshz({178,174,139}) .. id .. _obczbshz({163,138}) .. removed .. _obczbshz({137,221,206,222,214,222,227,152,228,155,162,231,228,227,159,230,236,163,155,238,226,235,238,246,234,230,242,172,248,175})) end
+			if removed > 0 then DSLOG.info("asset", "ID " .. id .. ": " .. removed .. " script(s)/som(ns) removido(s)") end
 			cache[id] = objs
 		end
 		return objs
 	end
 
 	local function limb(char, mp)
-		if mp:FindFirstAncestorOfClass(_obczbshz({170,205,206,209,224,225,222,226,234})) then return end
+		if mp:FindFirstAncestorOfClass("Accessory") then return end
 		local t = char:FindFirstChild(mp.Name)
-		if not (t and t:IsA(_obczbshz({171,203,222,209,189,207,225,228}))) or t:GetAttribute(_obczbshz({173,221,184,219,209})) then return end
+		if not (t and t:IsA("BasePart")) or t:GetAttribute("DsMod") then return end
 		local c = mp:Clone()
 		c:ClearAllChildren()
 		c.Anchored = false; c.CanCollide = false; c.Massless = true
 		c.CFrame = t.CFrame
-		c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
+		c:SetAttribute("DsMod", true)
 		c.Parent = char
-		local w = Instance.new(_obczbshz({192,207,215,208,176,221,221,227,229,228,212,221,227,234}))
+		local w = Instance.new("WeldConstraint")
 		w.Part0 = c; w.Part1 = t; w.Parent = c
 		t.Transparency = 1
-		t:SetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211}), true)
+		t:SetAttribute("DsHidLimb", true)
 	end
 
 	local EFX = { ParticleEmitter = true, Fire = true, Smoke = true, Sparkles = true, PointLight = true, SpotLight = true, SurfaceLight = true }
 
-	local clearGen = 0
+	-- qual "vaga" da cabeça o Accessory ocupa (Hat / Hair / Face / Eyebrow / Eyelash). nil = não é de cabeça (costas, ombro, cintura...)
+	-- Cada vaga troca só ela mesma: um chapéu novo não derruba o cabelo nem o rosto (antes qualquer item de cabeça apagava todos)
+	local clearGen = 0 -- sobe toda vez que o PRÓPRIO hub apaga itens (pra não confundir com o jogo removendo)
 	local HEAD_SLOTS = { Hat = true, Hair = true, Face = true, Eyebrow = true, Eyelash = true }
 	local function slotOf(o)
-		if o:IsA(_obczbshz({177,203,223})) then return _obczbshz({177,203,223}) end
+		if o:IsA("Hat") then return "Hat" end
 		local ok, at = pcall(function() return o.AccessoryType end)
 		if ok and at and at ~= Enum.AccessoryType.Unknown then
 			return HEAD_SLOTS[at.Name] and at.Name or nil
 		end
-		local h = o:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
-		local att = h and h:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
+		local h = o:FindFirstChild("Handle")
+		local att = h and h:FindFirstChildOfClass("Attachment")
 		if att then
 			local n = att.Name
-			if n == _obczbshz({177,203,223,173,225,226,208,211,217,223,216,226,233}) then return _obczbshz({177,203,223}) end
-			if n == _obczbshz({177,203,212,222,174,226,227,209,212,218,224,217,227,234}) then return _obczbshz({177,203,212,222}) end
-			if n:match(_obczbshz({199,176,204,207,210})) then return _obczbshz({175,203,206,209}) end
+			if n == "HatAttachment" then return "Hat" end
+			if n == "HairAttachment" then return "Hair" end
+			if n:match("^Face") then return "Face" end
 		end
 		return nil
 	end
 	local function isHeadAcc(o) return slotOf(o) ~= nil end
 
+	-- item original guardado continua soldado na cabeça e VISÍVEL; por isso a gente deixa invisível enquanto está guardado
+	-- (e devolve a transparência original quando o hub limpa)
 	local function hideStashed(o)
 		for _, p in ipairs(o:GetDescendants()) do
-			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p:GetAttribute(_obczbshz({173,221,179,213,209,175,210,211})) == nil then
-				p:SetAttribute(_obczbshz({173,221,179,213,209,175,210,211}), p.Transparency)
+			if p:IsA("BasePart") and p:GetAttribute("DsHidAcc") == nil then
+				p:SetAttribute("DsHidAcc", p.Transparency)
 				p.Transparency = 1
 			end
 		end
 	end
 	local function showStashed(o)
 		for _, p in ipairs(o:GetDescendants()) do
-			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p:GetAttribute(_obczbshz({173,221,179,213,209,175,210,211})) ~= nil then
-				p.Transparency = p:GetAttribute(_obczbshz({173,221,179,213,209,175,210,211}))
-				p:SetAttribute(_obczbshz({173,221,179,213,209,175,210,211}), nil)
+			if p:IsA("BasePart") and p:GetAttribute("DsHidAcc") ~= nil then
+				p.Transparency = p:GetAttribute("DsHidAcc")
+				p:SetAttribute("DsHidAcc", nil)
 			end
 		end
 	end
 
+	-- tira o item de cabeça que a pessoa já usa NA MESMA VAGA antes de colocar o novo (slot = nil: todas as vagas)
+	-- se era de um mod anterior, apaga; se era original do avatar, guarda em DsStash (invisível) pra voltar depois
 	local function clearHeadAccessories(char, slot)
-		local st = char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
+		local st = char:FindFirstChild("DsStash")
 		for _, o in ipairs(char:GetChildren()) do
-			if o:IsA(_obczbshz({170,205,206,209,224,225,222,226,234})) or o:IsA(_obczbshz({177,203,223})) then
+			if o:IsA("Accessory") or o:IsA("Hat") then
 				local s = slotOf(o)
 				if s and (slot == nil or s == slot) then
-					if o:GetAttribute(_obczbshz({173,221,184,219,209})) then
+					if o:GetAttribute("DsMod") then
 						clearGen = clearGen + 1
 						o:Destroy()
 					else
 						if not st then
-							st = Instance.new(_obczbshz({175,217,215,208,210,224})); st.Name = _obczbshz({173,221,190,224,206,225,215}); st.Parent = char
+							st = Instance.new("Folder"); st.Name = "DsStash"; st.Parent = char
 						end
 						o.Parent = st
 						hideStashed(o)
-						DSLOG.info(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({216,220,212,211,214,220,208,220,145,153}) .. o.Name .. _obczbshz({144,138,147}) .. s .. _obczbshz({146,138,210,225,206,224,211,209,213,225,147,217,149,219,234,219,232,232,223,229,225,237}))
+						DSLOG.info("acessório", "original '" .. o.Name .. "' (" .. s .. ") guardado e escondido")
 					end
 				end
 			end
 		end
 	end
 
+	-- guarda (em vez de apagar) as roupas originais; clearMods devolve tudo
 	local function stash(char, class)
-		local st = char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
+		local st = char:FindFirstChild("DsStash")
 		if not st then
-			st = Instance.new(_obczbshz({175,217,215,208,210,224})); st.Name = _obczbshz({173,221,190,224,206,225,215}); st.Parent = char
+			st = Instance.new("Folder"); st.Name = "DsStash"; st.Parent = char
 		end
 		for _, o in ipairs(char:GetChildren()) do
-			if o:IsA(class) and not o:GetAttribute(_obczbshz({173,221,184,219,209})) then o.Parent = st end
+			if o:IsA(class) and not o:GetAttribute("DsMod") then o.Parent = st end
 		end
 	end
 
+	-- item solto (modelo/peça): gruda no seu personagem sem colisão
 	local function attachProp(char, src)
-		local r = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
+		local r = char:FindFirstChild("HumanoidRootPart")
 		if not r then return end
 		local c = src:Clone()
 		for _, d in ipairs(c:GetDescendants()) do
-			if d:IsA(_obczbshz({177,223,216,205,219,221,216,212})) or d:IsA(_obczbshz({170,216,212,217,206,226,222,226})) then d:Destroy() end
+			if d:IsA("Humanoid") or d:IsA("Animator") then d:Destroy() end
 		end
 		local parts = {}
-		if c:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then table.insert(parts, c) end
+		if c:IsA("BasePart") then table.insert(parts, c) end
 		for _, d in ipairs(c:GetDescendants()) do
-			if d:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then table.insert(parts, d) end
+			if d:IsA("BasePart") then table.insert(parts, d) end
 		end
 		if #parts == 0 or #parts > 200 then c:Destroy(); return end
 		for _, p in ipairs(parts) do
 			p.Anchored = false; p.CanCollide = false; p.Massless = true
 		end
-		c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
+		c:SetAttribute("DsMod", true)
 		c.Parent = char
-		if c:IsA(_obczbshz({182,217,207,209,217})) then c:PivotTo(r.CFrame) else c.CFrame = r.CFrame end
+		if c:IsA("Model") then c:PivotTo(r.CFrame) else c.CFrame = r.CFrame end
 		for _, p in ipairs(parts) do
-			local w = Instance.new(_obczbshz({192,207,215,208,176,221,221,227,229,228,212,221,227,234}))
+			local w = Instance.new("WeldConstraint")
 			w.Part0 = p; w.Part1 = r; w.Parent = p
 		end
 	end
 
+	-- aplica qualquer item visual: acessórios, roupas, cores, rosto, partes do corpo,
+	-- props soltos e efeitos (partículas, fogo, fumaça, brilho, luzes, rastro, feixes)
+	-- Modo manual: o acessório vai numa pasta (DsAcc) dentro do personagem e é soldado por nós no encaixe certo.
+	-- Usado quando o jogo apaga os acessórios colocados do jeito normal (Humanoid:AddAccessory).
 	local manualAcc = false
 	local function placeManual(char, o)
-		local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
-		local h = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
-		local ha = h and h:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
+		local c = o:Clone(); c:SetAttribute("DsMod", true)
+		local h = c:FindFirstChild("Handle")
+		local ha = h and h:FindFirstChildOfClass("Attachment")
 		if not (h and ha) then
-			DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,222,209,218,142,183,209,223,214,223,217,149,229,236,152,236,223,232,156,226,236,226,225,234,250,232,164,173,199,251,252,234,237,243,249,242,252,3,185,189,178,1,87,56,5,183,252,92,59,187,12,15,255,191,19,16,14,7,5,23}))
+			DSLOG.err("acessório", o.Name .. ": sem Handle ou sem encaixe (Attachment), não dá pra soldar")
 			c:Destroy(); return false
 		end
 		local target, tAtt
 		for _, p in ipairs(char:GetChildren()) do
-			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
+			if p:IsA("BasePart") then
 				local a = p:FindFirstChild(ha.Name)
-				if a and a:IsA(_obczbshz({170,222,223,205,208,214,220,213,223,230})) then target, tAtt = p, a; break end
+				if a and a:IsA("Attachment") then target, tAtt = p, a; break end
 			end
 		end
 		if not target then
-			DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,218,140,224,211,228,144,212,225,229,228,228,150,229,59,28,233,155,240,226,235,159,239,161,231,241,231,230,239,255,237,169,177}) .. ha.Name .. _obczbshz({144,138,147,190,163,157,193,161,166,146,215,221,219,219,233,221,231,238,224,187,166}))
+			DSLOG.err("acessório", o.Name .. ": o seu corpo não tem o encaixe '" .. ha.Name .. "' (R6/R15 diferente?)")
 			c:Destroy(); return false
 		end
-		local folder = char:FindFirstChild(_obczbshz({173,221,172,207,208}))
+		local folder = char:FindFirstChild("DsAcc")
 		if not folder then
-			folder = Instance.new(_obczbshz({175,217,215,208,210,224})); folder.Name = _obczbshz({173,221,172,207,208}); folder:SetAttribute(_obczbshz({173,221,184,219,209}), true); folder.Parent = char
+			folder = Instance.new("Folder"); folder.Name = "DsAcc"; folder:SetAttribute("DsMod", true); folder.Parent = char
 		end
 		h.Anchored = false; h.CanCollide = false; h.Massless = true
 		c.Parent = folder
-		local w = Instance.new(_obczbshz({192,207,215,208}))
-		w.Name = _obczbshz({173,221,172,207,208,197,212,220,213}); w.Part0 = target; w.Part1 = h; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
+		local w = Instance.new("Weld")
+		w.Name = "DsAccWeld"; w.Part0 = target; w.Part1 = h; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
 		w.Parent = h
-		DSLOG.info(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. o.Name .. _obczbshz({144,138,206,219,217,221,210,209,213,225,147,217,226,150,196,199,189,201,155,201,190,204,212,193,205,162,232,241,165}) .. target.Name .. _obczbshz({137,146,208,218,208,207,216,232,214,146}) .. ha.Name .. _obczbshz({146}))
+		DSLOG.info("acessório", "'" .. o.Name .. "' colocado em MODO MANUAL em " .. target.Name .. " (encaixe " .. ha.Name .. ")")
 		return true
 	end
 
 	local function handle(char, hm, r, o)
-		DSLOG.info(_obczbshz({210,222,208,217}), o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144}))
-		if o:IsA(_obczbshz({170,205,206,209,224,225,222,226,234})) then
+		DSLOG.info("item", o.ClassName .. " '" .. o.Name .. "'")
+		if o:IsA("Accessory") then
 			if not hm then
-				DSLOG.warn(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,222,209,226,142,223,213,227,229,226,226,214,221,220,229,153,223,238,240,64,31,159,243,230,239,163,204,250,243,232,246,248,243,239,172,238,245,254,2,242,190,179,4,10,2,252,1}))
+				DSLOG.warn("acessório", o.Name .. ": seu personagem está sem Humanoid agora, pulei")
 				return true
 			end
 			local slot = slotOf(o)
 			if slot then clearHeadAccessories(char, slot) end
 			if manualAcc then placeManual(char, o); return true end
-			local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
-			local h = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
-			local hAtt = h and h:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
+			local c = o:Clone(); c:SetAttribute("DsMod", true)
+			local h = c:FindFirstChild("Handle")
+			local hAtt = h and h:FindFirstChildOfClass("Attachment")
 			local okT, accType = pcall(function() return o.AccessoryType.Name end)
-			local layered = h and (h:FindFirstChildOfClass(_obczbshz({192,220,204,220,185,207,232,213,227})) ~= nil) or false
+			local layered = h and (h:FindFirstChildOfClass("WrapLayer") ~= nil) or false
 			local gone, newParent, myGen = false, nil, clearGen
 			pcall(function() c.Destroying:Connect(function() gone = true end) end)
 			pcall(function() c.AncestryChanged:Connect(function(_, p) newParent = p end) end)
 			local okAdd, errAdd = pcall(function() hm:AddAccessory(c) end)
 			if not okAdd then
-				DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,172,208,209,175,210,211,214,229,230,227,231,239,151,222,218,230,227,235,242,184,159}) .. tostring(errAdd):sub(1, 100))
+				DSLOG.err("acessório", o.Name .. ": AddAccessory falhou: " .. tostring(errAdd):sub(1, 100))
 				c:Destroy()
 				return true
 			end
-			DSLOG.info(_obczbshz({202,205,208,223,224,49,34,226,218,225}), string.format(_obczbshz({144,143,222,147,141,209,222,220,224,213,212,216,228,150,243,152,237,227,235,235,186,163,242,160,253,162,232,242,232,231,240,0,238,199,176,255,173,10,175,6,242,249,244,209,186,9,188,11}), o.Name,
-				okT and accType or _obczbshz({168}), hAtt and hAtt.Name or _obczbshz({183,175,185,180,194,187}), slot or _obczbshz({204,217,221,220,220}),
-				layered and _obczbshz({137,230,139,222,220,227,223,209,145,215,224,148,216,215,228,217,221,219,238,156,165,213,241,225,241,206,228,253,234,248,179,168,249,249,239,241,173,252,82,51,0,178,247,249,251,5,9,5,250,12,196}) or _obczbshz({})))
-			if not h then DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), o.Name .. _obczbshz({163,138,217,47,16,221,143,228,214,223,147,188,214,228,219,228,222,166,155,234,64,33,238,160,247,227,236,164,230,246,232,250,238,237,240,254})) end
-
+			DSLOG.info("acessório", string.format("'%s' colocado | tipo=%s | encaixe=%s | vaga=%s%s", o.Name,
+				okT and accType or "?", hAtt and hAtt.Name or "NENHUM", slot or "corpo",
+				layered and " | roupa em camadas (WrapLayer, pode não deformar)" or ""))
+			if not h then DSLOG.err("acessório", o.Name .. ": não tem Handle, não vai aparecer") end
+			-- confere meio segundo depois: (1) o jogo apagou? -> troca pro modo manual; (2) soltou do corpo? -> solda na mão
 			task.delay(0.6, function()
 				if not c.Parent then
-					if clearGen ~= myGen then return end
-					DSLOG.warn(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. c.Name .. _obczbshz({144,138,209,219,214,142,193,181,190,193,201,189,185,197,151,220,232,154,235,225,239,241,238,238,226,233,232,241,165,235,244,168,246,239,249,251,0,174,243,245,177,194,193,202,8,182,191})
-						.. (gone and _obczbshz({173,207,222,224,223,221,232,152,154}) or (_obczbshz({214,217,225,213,209,221,143,224,227,211,147}) .. tostring(newParent and newParent.Name or _obczbshz({215,211,215}))))
-						.. _obczbshz({146,152,139,185,226,210,208,222,213,225,147,228,231,229,151,229,232,222,234,156,234,223,237,245,226,238}))
+					if clearGen ~= myGen then return end -- foi o próprio hub que limpou, normal
+					DSLOG.warn("acessório", "'" .. c.Name .. "' foi REMOVIDO do personagem em menos de 0.6s ("
+						.. (gone and "Destroy()" or ("movido pra " .. tostring(newParent and newParent.Name or "nil")))
+						.. "). Mudando pro modo manual")
 					manualAcc = true
-					if char.Parent and char:GetAttribute(_obczbshz({173,221,190,213,212})) ~= nil then
-						if placeManual(char, o) then char:SetAttribute(_obczbshz({173,221,185}), 1) end
+					if char.Parent and char:GetAttribute("DsSig") ~= nil then
+						if placeManual(char, o) then char:SetAttribute("DsN", 1) end
 					end
 					return
 				end
-				local hh = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
-				local root2 = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
+				local hh = c:FindFirstChild("Handle")
+				local root2 = char:FindFirstChild("HumanoidRootPart")
 				if not (hh and root2) then return end
-				if (hh.Position - root2.Position).Magnitude < 15 then return end
-				local ha = hh:FindFirstChildOfClass(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
+				if (hh.Position - root2.Position).Magnitude < 15 then return end -- encaixou
+				local ha = hh:FindFirstChildOfClass("Attachment")
 				local target, tAtt
 				if ha then
 					for _, p in ipairs(char:GetChildren()) do
-						if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
+						if p:IsA("BasePart") then
 							local a = p:FindFirstChild(ha.Name)
-							if a and a:IsA(_obczbshz({170,222,223,205,208,214,220,213,223,230})) then target, tAtt = p, a; break end
+							if a and a:IsA("Attachment") then target, tAtt = p, a; break end
 						end
 					end
 				end
 				if target then
 					hh.Anchored = false; hh.CanCollide = false; hh.Massless = true
-					local w = Instance.new(_obczbshz({192,207,215,208}))
-					w.Name = _obczbshz({173,221,172,207,208,197,212,220,213}); w.Part0 = target; w.Part1 = hh; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
+					local w = Instance.new("Weld")
+					w.Name = "DsAccWeld"; w.Part0 = target; w.Part1 = hh; w.C0 = tAtt.CFrame; w.C1 = ha.CFrame
 					w.Parent = hh
-					DSLOG.warn(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. c.Name .. _obczbshz({144,138,217,47,16,221,143,213,223,213,212,221,237,229,236,152,236,233,245,229,235,230,238,187,161,245,242,240,233,235,240,168,247,235,171,249,80,49,254,176,246,255,179}) .. target.Name .. _obczbshz({137,146,208,218,208,207,216,232,214,146}) .. ha.Name .. _obczbshz({146}))
+					DSLOG.warn("acessório", "'" .. c.Name .. "' não encaixou sozinho; soldei na mão em " .. target.Name .. " (encaixe " .. ha.Name .. ")")
 				else
-					DSLOG.err(_obczbshz({202,205,208,223,224,49,34,226,218,225}), _obczbshz({144}) .. c.Name .. _obczbshz({144,138,215,219,219,213,212,144,213,225,147,215,228,232,231,231,153,223,155,239,226,235,159,229,239,229,228,237,253,235,167,175}) .. (ha and ha.Name or _obczbshz({168})) .. _obczbshz({144,138,217,219,141,225,212,229,145,213,226,230,229,229,151,160,203,176,170,206,174,179,159,228,234,232,232,246,234,244,251,237,200,179}))
+					DSLOG.err("acessório", "'" .. c.Name .. "' longe do corpo e sem encaixe '" .. (ha and ha.Name or "?") .. "' no seu corpo (R6/R15 diferente?)")
 				end
 			end)
 			return true
-		elseif o:IsA(_obczbshz({177,203,223})) then
-			DSLOG.info(_obczbshz({204,210,204,220,48,23,228}), _obczbshz({204,210,204,220,48,23,228,144,210,224,231,221,220,229,151,160,220,230,220,239,240,227,159,200,226,246,172,164,172}) .. o.Name .. _obczbshz({144,150,139,223,220,218,211,209,223,214,226,148,227,215,151,219,218,220,224,63,36,223}))
-
-			local head = char:FindFirstChild(_obczbshz({177,207,204,208}))
-			local srcHandle = o:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
-				if not (head and srcHandle) then DSLOG.warn(_obczbshz({204,210,204,220,48,23,228}), o.Name .. _obczbshz({163,138,222,209,218,142,183,213,210,214,147,227,234,150,234,221,230,154,195,221,235,226,235,229,173,162,236,235,243,245,249,233,237,249})) end
+		elseif o:IsA("Hat") then
+			DSLOG.info("chapéu", "chapéu antigo (classe Hat) '" .. o.Name .. "', soldando na cabeça")
+			-- chapéu do sistema ANTIGO do Roblox (classe "Hat"): não entende Humanoid:AddAccessory,
+			-- precisa ser soldado manualmente na cabeça usando o AttachmentPos do próprio item
+			local head = char:FindFirstChild("Head")
+			local srcHandle = o:FindFirstChild("Handle")
+				if not (head and srcHandle) then DSLOG.warn("chapéu", o.Name .. ": sem Head ou sem Handle, ignorado") end
 			if head and srcHandle then
-				clearHeadAccessories(char, _obczbshz({177,203,223}))
-				local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true)
-				local h = c:FindFirstChild(_obczbshz({177,203,217,208,217,211}))
+				clearHeadAccessories(char, "Hat")
+				local c = o:Clone(); c:SetAttribute("DsMod", true)
+				local h = c:FindFirstChild("Handle")
 				h.Anchored = false; h.CanCollide = false; h.Massless = true
 				local okPos, pos = pcall(function() return c.AttachmentPos end)
-				local offset = (okPos and typeof(pos) == _obczbshz({191,207,206,224,220,224,162})) and CFrame.new(pos) or CFrame.new(0, 0.6, 0)
+				local offset = (okPos and typeof(pos) == "Vector3") and CFrame.new(pos) or CFrame.new(0, 0.6, 0)
 				h.CFrame = head.CFrame * offset
 				c.Parent = char
-				local w = Instance.new(_obczbshz({192,207,215,208,176,221,221,227,229,228,212,221,227,234}))
+				local w = Instance.new("WeldConstraint")
 				w.Part0 = head; w.Part1 = h; w.Parent = h
 			end
 			return true
-		elseif o:IsA(_obczbshz({188,210,212,222,225})) or o:IsA(_obczbshz({185,203,217,224,224})) or o:IsA(_obczbshz({188,210,212,222,225,181,225,209,225,218,220,215})) or o:IsA(_obczbshz({171,217,207,229,176,221,219,223,227,229})) then
+		elseif o:IsA("Shirt") or o:IsA("Pants") or o:IsA("ShirtGraphic") or o:IsA("BodyColors") then
 			stash(char, o.ClassName)
-			local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = char
+			local c = o:Clone(); c:SetAttribute("DsMod", true); c.Parent = char
 			return true
-		elseif o:IsA(_obczbshz({172,210,204,222,206,209,227,213,227,191,216,231,221})) then
-			local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = char
+		elseif o:IsA("CharacterMesh") then
+			local c = o:Clone(); c:SetAttribute("DsMod", true); c.Parent = char
 			return true
-		elseif o:IsA(_obczbshz({173,207,206,205,217})) then
-			local head = char:FindFirstChild(_obczbshz({177,207,204,208}))
+		elseif o:IsA("Decal") then
+			local head = char:FindFirstChild("Head")
 			if head then
 				for _, d in ipairs(head:GetChildren()) do
-					if d:IsA(_obczbshz({173,207,206,205,217})) and not d:GetAttribute(_obczbshz({173,221,184,219,209})) and not d:GetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222})) then
-						d.Transparency = 1; d:SetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222}), true)
+					if d:IsA("Decal") and not d:GetAttribute("DsMod") and not d:GetAttribute("DsHidDecal") then
+						d.Transparency = 1; d:SetAttribute("DsHidDecal", true)
 					end
 				end
-				local c = o:Clone(); c.Face = Enum.NormalId.Front; c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = head
+				local c = o:Clone(); c.Face = Enum.NormalId.Front; c:SetAttribute("DsMod", true); c.Parent = head
 			end
 			return true
 		elseif EFX[o.ClassName] then
 			if r then
-				local c = o:Clone(); c:SetAttribute(_obczbshz({173,221,184,219,209}), true); c.Parent = r
+				local c = o:Clone(); c:SetAttribute("DsMod", true); c.Parent = r
 			end
 			return true
-		elseif o:IsA(_obczbshz({182,207,222,212,189,207,225,228})) and char:FindFirstChild(o.Name) and char[o.Name]:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
+		elseif o:IsA("MeshPart") and char:FindFirstChild(o.Name) and char[o.Name]:IsA("BasePart") then
 			limb(char, o)
 			return true
-		elseif o:IsA(_obczbshz({182,217,207,209,217})) or o:IsA(_obczbshz({175,217,215,208,210,224})) then
+		elseif o:IsA("Model") or o:IsA("Folder") then
 			local any = false
 			for _, ch in ipairs(o:GetChildren()) do
 				if handle(char, hm, r, ch) then any = true end
 			end
-			if not any and o:IsA(_obczbshz({182,217,207,209,217})) then
+			if not any and o:IsA("Model") then
 				attachProp(char, o)
 				any = true
 			end
 			return any
-		elseif o:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
+		elseif o:IsA("BasePart") then
 			if char:FindFirstChild(o.Name) then return false end
 			attachProp(char, o)
 			return true
@@ -1308,40 +1703,41 @@ local function buildMods(page, say)
 	local function applyOne(char, id)
 		local objs = loadAsset(id)
 		if not objs then return false end
-		local hm = char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
-		local r = char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
+		local hm = char:FindFirstChildOfClass("Humanoid")
+		local r = char:FindFirstChild("HumanoidRootPart")
 		for _, o in ipairs(objs) do
 			local ok, ret = pcall(handle, char, hm, r, o)
 			if not ok then
-				DSLOG.err(_obczbshz({210,222,208,217}), _obczbshz({178,174,139}) .. id .. _obczbshz({137,146}) .. o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144,147,165,140}) .. tostring(ret):sub(1, 140))
+				DSLOG.err("item", "ID " .. id .. " (" .. o.ClassName .. " '" .. o.Name .. "'): " .. tostring(ret):sub(1, 140))
 			elseif ret == false then
-				DSLOG.warn(_obczbshz({210,222,208,217}), _obczbshz({178,174,139}) .. id .. _obczbshz({137,146}) .. o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144,147,165,140,219,49,18,223,145,229,216,221,149,215,231,228,226,221,220,238,157,227,242,243,230,162,247,237,245,245,167,236,238,170,244,0,242,251}))
+				DSLOG.warn("item", "ID " .. id .. " (" .. o.ClassName .. " '" .. o.Name .. "'): não sei aplicar esse tipo de item")
 			end
 		end
 		return true
 	end
 
+	-- aba Debug > "Inspecionar ID": carrega o item e mostra o que tem dentro, SEM aplicar (descobre por que um ID não aparece)
 	DSLOG.inspect = function(idText)
-		local n = tonumber(tostring(idText or _obczbshz({})):match(_obczbshz({142,206,150})))
-		if not n then DSLOG.warn(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({205,211,210,213,225,211,143,229,222,146,188,184,149,158,234,59,44,154,233,63,55,235,228,242,240,245,172})); return end
-		DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({178,174,139}) .. n .. _obczbshz({163,138,206,205,223,224,212,215,210,224,215,227,163,164,165}))
+		local n = tonumber(tostring(idText or ""):match("%d+"))
+		if not n then DSLOG.warn("inspecionar", "digite um ID (só números)"); return end
+		DSLOG.info("inspecionar", "ID " .. n .. ": carregando...")
 		local objs = loadAsset(n)
 		if not objs then
-			DSLOG.err(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({178,174,139}) .. n .. _obczbshz({137,184,46,239,188,142,210,209,227,228,216,219,228,235,177,152}) .. tostring(lastLoadErr[n] or _obczbshz({220,207,216,140,210,224,225,223,145,154,233,227,225,234,230,237,153,240,220,246,230,237,168})))
+			DSLOG.err("inspecionar", "ID " .. n .. " NÃO carregou: " .. tostring(lastLoadErr[n] or "sem erro (voltou vazio)"))
 			return
 		end
 		local shown = 0
 		for _, o in ipairs(objs) do
-			local extra = _obczbshz({})
-			if o:IsA(_obczbshz({170,205,206,209,224,225,222,226,234})) then
+			local extra = ""
+			if o:IsA("Accessory") then
 				local okT, at = pcall(function() return o.AccessoryType.Name end)
-				extra = _obczbshz({137,222,212,220,220,171}) .. (okT and at or _obczbshz({168})) .. _obczbshz({137,224,204,211,206,171}) .. tostring(slotOf(o) or _obczbshz({204,217,221,220,220}))
+				extra = " tipo=" .. (okT and at or "?") .. " vaga=" .. tostring(slotOf(o) or "corpo")
 			end
-			DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({178,174,139}) .. n .. _obczbshz({137,220,204,213,231,168,143}) .. o.ClassName .. _obczbshz({137,145}) .. o.Name .. _obczbshz({144}) .. extra)
+			DSLOG.info("inspecionar", "ID " .. n .. " raiz: " .. o.ClassName .. " '" .. o.Name .. "'" .. extra)
 			for _, d in ipairs(o:GetDescendants()) do
 				shown = shown + 1
-				if shown > 40 then DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({151,152,153,140,149,219,208,217,228,146,220,232,218,228,234,152,231,61,30,235,157,234,232,243,245,227,231,243,248,175})); return end
-				DSLOG.info(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), _obczbshz({137,138,152,140}) .. d.ClassName .. _obczbshz({137,145}) .. d.Name .. _obczbshz({144,138,208,217,141}) .. d.Parent.Name)
+				if shown > 40 then DSLOG.info("inspecionar", "... (mais itens não listados)"); return end
+				DSLOG.info("inspecionar", "  - " .. d.ClassName .. " '" .. d.Name .. "' em " .. d.Parent.Name)
 			end
 		end
 	end
@@ -1349,7 +1745,7 @@ local function buildMods(page, say)
 	local function clearMods(char)
 		clearGen = clearGen + 1
 		local restored, removed = 0, 0
-		local st = char:FindFirstChild(_obczbshz({173,221,190,224,206,225,215}))
+		local st = char:FindFirstChild("DsStash")
 		if st then
 			for _, o in ipairs(st:GetChildren()) do
 				showStashed(o)
@@ -1359,43 +1755,45 @@ local function buildMods(page, say)
 			st:Destroy()
 		end
 		for _, o in ipairs(char:GetDescendants()) do
-			if o:GetAttribute(_obczbshz({173,221,184,219,209})) then
+			if o:GetAttribute("DsMod") then
 				o:Destroy(); removed = removed + 1
-			elseif o:GetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211})) then
-				o.Transparency = 0; o:SetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211}), nil)
-			elseif o:GetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222})) then
-				o.Transparency = 0; o:SetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222}), nil)
+			elseif o:GetAttribute("DsHidLimb") then
+				o.Transparency = 0; o:SetAttribute("DsHidLimb", nil)
+			elseif o:GetAttribute("DsHidDecal") then
+				o.Transparency = 0; o:SetAttribute("DsHidDecal", nil)
 			end
 		end
 		if removed > 0 or restored > 0 then
-			DSLOG.info(_obczbshz({213,211,216,220,206,224}), removed .. _obczbshz({137,211,223,209,218,150,221,227,154,146,215,227,149,222,236,218,153,236,224,233,236,244,232,228,240,170,246,173,177,166}) .. restored .. _obczbshz({137,217,221,213,212,215,221,209,221,154,220,231,158,150,219,221,239,233,231,242,230,226,238,168,244,171}))
+			DSLOG.info("limpar", removed .. " item(ns) do hub removido(s), " .. restored .. " original(is) devolvido(s)")
 		end
 	end
 
 	local function headless(char)
-		local head = char:FindFirstChild(_obczbshz({177,207,204,208}))
+		local head = char:FindFirstChild("Head")
 		if not head then return end
-		head.Transparency = 1; head:SetAttribute(_obczbshz({173,221,179,213,209,186,216,221,211}), true)
+		head.Transparency = 1; head:SetAttribute("DsHidLimb", true)
 		for _, d in ipairs(head:GetChildren()) do
-			if d:IsA(_obczbshz({173,207,206,205,217})) then d.Transparency = 1; d:SetAttribute(_obczbshz({173,221,179,213,209,178,212,211,210,222}), true) end
+			if d:IsA("Decal") then d.Transparency = 1; d:SetAttribute("DsHidDecal", true) end
 		end
 	end
 
+	-- cores do corpo (pele) copiadas de outro avatar: "hhhhhh,hhhhhh,..." (cabeça, tronco, braços, pernas)
 	local function applyBC(char, bc)
 		local cols = {}
-		for h in tostring(bc):gmatch(_obczbshz({142,226,144,228,146,230,148,232,150,234,152,236})) do
+		for h in tostring(bc):gmatch("%x%x%x%x%x%x") do
 			cols[#cols + 1] = Color3.fromRGB(tonumber(h:sub(1, 2), 16), tonumber(h:sub(3, 4), 16), tonumber(h:sub(5, 6), 16))
 		end
 		if #cols < 6 then return end
-		stash(char, _obczbshz({171,217,207,229,176,221,219,223,227,229}))
-		local b = Instance.new(_obczbshz({171,217,207,229,176,221,219,223,227,229}))
+		stash(char, "BodyColors")
+		local b = Instance.new("BodyColors")
 		b.HeadColor3, b.TorsoColor3 = cols[1], cols[2]
 		b.LeftArmColor3, b.RightArmColor3 = cols[3], cols[4]
 		b.LeftLegColor3, b.RightLegColor3 = cols[5], cols[6]
-		b:SetAttribute(_obczbshz({173,221,184,219,209}), true)
+		b:SetAttribute("DsMod", true)
 		b.Parent = char
 	end
 
+	-- registro "velho" (quem saiu do jogo, fechou o hub ou teleportou) para de mandar sinal e some pra todo mundo
 	local seenB = {}
 	local function isFresh(id, rec)
 		local now = os.clock()
@@ -1404,17 +1802,20 @@ local function buildMods(page, say)
 			seenB[id] = { beat = rec.beat, at = now, moved = s ~= nil }
 			s = seenB[id]
 		end
-		if now - s.at > 25 then return false end
+		if now - s.at > 25 then return false end -- sem sinal há mais de 25s
 		local t = tonumber(rec.t)
 		if t and math.abs(os.time() - t) <= 90 then return true end
-		return s.moved
+		return s.moved -- relógio muito diferente: só confia depois de ver o sinal mudar
 	end
 
+	-- aplica (só visualmente, no seu aparelho) os mods de todo mundo que está com o hub ativo
+	-- Os SEUS mods são aplicados direto da memória (não dependem do Firebase); os dos outros vêm do Firebase.
+	-- Cada passo vai pro log (aba Debug / arquivo SHIN HUB/log.txt).
 	local function localRecord()
 		if #mine.ids == 0 and not mine.headless and not mine.bc then return nil end
-		return { ids = table.concat(mine.ids, _obczbshz({149})), headless = mine.headless, fx = mine.fx or _obczbshz({}), fc = mine.fc or 1, bc = mine.bc }
+		return { ids = table.concat(mine.ids, ","), headless = mine.headless, fx = mine.fx or "", fc = mine.fc or 1, bc = mine.bc }
 	end
-
+	-- o Roblox ainda pode estar colocando o avatar original quando o personagem nasce; se a gente aplica antes, o jogo atropela
 	local function appearanceReady(pl)
 		local ok, v = pcall(function() return pl:HasAppearanceLoaded() end)
 		if ok and v == false then return false end
@@ -1423,177 +1824,178 @@ local function buildMods(page, say)
 	local function countMods(char)
 		local n = 0
 		for _, d in ipairs(char:GetDescendants()) do
-			if d:GetAttribute(_obczbshz({173,221,184,219,209})) then n = n + 1 end
+			if d:GetAttribute("DsMod") then n = n + 1 end
 		end
 		return n
 	end
-	local reapplied = setmetatable({}, { __mode = _obczbshz({212}) })
-	local waitSince = setmetatable({}, { __mode = _obczbshz({212}) })
+	local reapplied = setmetatable({}, { __mode = "k" })
+	local waitSince = setmetatable({}, { __mode = "k" })
 	local netState = nil
 
+	-- IDs que não carregaram: tenta de novo SÓ eles (sem apagar o resto, então não pisca), até 3 vezes
 	local function retryFailed(pl, char, want, ids, attempt)
 		if attempt > 3 then
 			local t = {}
 			for _, i in ipairs(ids) do t[#t + 1] = tostring(i) end
-			DSLOG.err(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,207,209,224,215,226,228,218,146,215,227,232,150,192,188,236,154}) .. table.concat(t, _obczbshz({149,138})) .. _obczbshz({137,146,212,218,227,49,16,220,218,214,226,231,161,150,217,228,232,235,240,225,222,226,238,243,161,241,248,164,244,166,236,0,238,237,0,0,252,0,175,254,84,53,2,180,248,5,5,11,254,1,16,1,189,1,0,18,19,7,10,5,23,207}))
+			DSLOG.err("sync", pl.Name .. ": desisti dos IDs " .. table.concat(t, ", ") .. " (inválidos, bloqueados ou o executor não consegue carregar)")
 			return
 		end
 		task.delay(3 * attempt, function()
-			if not (char and char.Parent) or char:GetAttribute(_obczbshz({173,221,190,213,212})) ~= want then return end
+			if not (char and char.Parent) or char:GetAttribute("DsSig") ~= want then return end
 			local still = {}
 			for _, i in ipairs(ids) do
 				local ok, applied = pcall(applyOne, char, i)
 				if not (ok and applied) then still[#still + 1] = i end
 			end
-			char:SetAttribute(_obczbshz({173,221,185}), countMods(char))
+			char:SetAttribute("DsN", countMods(char))
 			if #still > 0 then
 				retryFailed(pl, char, want, still, attempt + 1)
 			else
-				DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,218,223,141,183,179,227,145,227,232,217,149,220,216,228,237,219,241,221,234,158,226,225,243,244,232,235,230,248,232,245,169,248,236,172,1,243,253,4,242,6,252,10,246,182}) .. attempt)
+				DSLOG.info("sync", pl.Name .. ": os IDs que faltavam carregaram na tentativa " .. attempt)
 			end
 		end)
 	end
 
 	local function sync()
-		local body = http(_obczbshz({176,175,191}), _obczbshz({152,215,218,208,224,156,217,227,224,224}))
+		local body = http("GET", "/mods.json")
 		local netOk = body ~= nil
 		if netOk ~= netState then
 			netState = netOk
 			if netOk then
-				DSLOG.info(_obczbshz({220,227,217,207}), _obczbshz({175,211,221,209,207,207,226,213,145,228,216,231,229,229,229,220,222,239,155,164,239,227,227,229,161,209,206,173}))
+				DSLOG.info("sync", "Firebase respondeu (rede OK)")
 			else
-				DSLOG.err(_obczbshz({220,227,217,207}), _obczbshz({175,211,221,209,207,207,226,213,145,192,54,247,196,150,233,221,236,234,234,234,225,227,244,160,169}) .. tostring(lastErr) .. _obczbshz({146,164,139,205,221,218,216,211,224,146,230,55,40,150,230,235,153,237,224,241,240,158,236,239,229,245,163,240,244,233,232,241,252}))
+				DSLOG.err("sync", "Firebase NÃO respondeu (" .. tostring(lastErr) .. "): aplico só os seus mods locais")
 			end
 		end
 		local data = {}
-		if netOk and body ~= _obczbshz({215,223,215,216}) and body ~= _obczbshz({}) then
+		if netOk and body ~= "null" and body ~= "" then
 			local ok, d = pcall(HttpService.JSONDecode, HttpService, body)
-			if ok and type(d) == _obczbshz({221,203,205,216,210}) then
+			if ok and type(d) == "table" then
 				data = d
 			else
-				DSLOG.err(_obczbshz({220,227,217,207}), _obczbshz({219,207,222,220,220,225,227,209,145,214,226,148,187,223,233,221,219,219,238,225,157,236,66,35,240,162,70,45,165,208,218,215,215,196,171}) .. tostring(body):sub(1, 60))
+				DSLOG.err("sync", "resposta do Firebase não é JSON: " .. tostring(body):sub(1, 60))
 			end
 		end
 		for id, rec in pairs(data) do
-			if type(rec) ~= _obczbshz({221,203,205,216,210}) or not isFresh(id, rec) then data[id] = nil end
+			if type(rec) ~= "table" or not isFresh(id, rec) then data[id] = nil end
 		end
 		local mineRec = localRecord()
 		if netOk and mineRec and not data[uid] then
-			DSLOG.warn(_obczbshz({220,227,217,207}), _obczbshz({220,207,224,140,223,211,214,217,228,230,229,227,149,228,58,27,232,154,241,235,233,242,238,245,161,230,242,164,203,239,249,237,235,235,254,241,173,182,254,176,225,231,231,180,251,247,3,0,8,15,187,11,18,190,0,19,193,20,8,11,23,7,26,200,11,22,26,29,34,19,16,34,18,31,220,226,213,12,38,27,124,100,219,47,34,222,53,131,107,238,227,49,38,57,231,55,60,234,58,65,65,64,62,67,241,64,150,119,68,246,75,61,249,80,64,65,74}))
+			DSLOG.warn("sync", "seu registro não voltou do Firebase (o PUT falhou ou as regras bloquearam). Você se vê, mas os outros não te veem")
 		end
 		for _, pl in ipairs(Players:GetPlayers()) do
 			local isMe = (pl == lp)
 			local char = pl.Character
-			if (isMe or netOk) and char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212})) and char:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236})) then
+			if (isMe or netOk) and char and char:FindFirstChildOfClass("Humanoid") and char:FindFirstChild("HumanoidRootPart") then
 				local d
 				if isMe then d = mineRec else d = data[tostring(pl.UserId)] end
 				local want
 				if d then
-					if isMe then
-						want = tostring(d.ids or _obczbshz({})) .. _obczbshz({229}) .. tostring(d.headless == true) .. _obczbshz({229,230,156,232}) .. tostring(d.bc or _obczbshz({}))
+					if isMe then -- efeitos (fx) seus não passam por aqui, então não entram na assinatura (evita reaplicar acessório à toa)
+						want = tostring(d.ids or "") .. "|" .. tostring(d.headless == true) .. "||1|" .. tostring(d.bc or "")
 					else
-						want = tostring(d.ids or _obczbshz({})) .. _obczbshz({229}) .. tostring(d.headless == true) .. _obczbshz({229}) .. tostring(d.fx or _obczbshz({})) .. _obczbshz({229}) .. tostring(d.fc or 1) .. _obczbshz({229}) .. tostring(d.bc or _obczbshz({}))
+						want = tostring(d.ids or "") .. "|" .. tostring(d.headless == true) .. "|" .. tostring(d.fx or "") .. "|" .. tostring(d.fc or 1) .. "|" .. tostring(d.bc or "")
 					end
 				end
-
-				if want and char:GetAttribute(_obczbshz({173,221,190,213,212})) == want and (char:GetAttribute(_obczbshz({173,221,185})) or 0) > 0 and countMods(char) == 0 then
+				-- o jogo pode ter removido os itens (ex.: trocou de avatar): assinatura igual mas itens sumiram -> reaplica
+				if want and char:GetAttribute("DsSig") == want and (char:GetAttribute("DsN") or 0) > 0 and countMods(char) == 0 then
 					local n = (reapplied[char] or 0) + 1
 					reapplied[char] = n
 					if n <= 5 then
-						DSLOG.warn(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,218,223,141,215,227,213,223,229,147,216,228,150,223,237,219,154,238,241,234,231,241,225,238,162,231,243,165,246,236,250,252,249,249,237,244,243,252,176,185,1,179,254,4,253,6,184,11,255,8,11,19,3,20,223,202,206,195,22,10,7,23,20,18,13,12,26,17,29,207,216}) .. n .. _obczbshz({152,159,148}))
-						char:SetAttribute(_obczbshz({173,221,190,213,212}), nil)
+						DSLOG.warn("sync", pl.Name .. ": os itens do hub sumiram do personagem (o jogo removeu?), reaplicando (" .. n .. "/5)")
+						char:SetAttribute("DsSig", nil)
 					end
 				end
-				if char:GetAttribute(_obczbshz({173,221,190,213,212})) ~= want then
+				if char:GetAttribute("DsSig") ~= want then
 					local ready = (want == nil) or appearanceReady(pl)
 					if not ready then
 						local t0 = waitSince[char]
 						if not t0 then
 							t0 = os.clock(); waitSince[char] = t0
-							DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,208,223,221,211,225,209,223,214,226,148,228,150,216,238,218,238,220,238,157,242,228,242,238,235,241,229,247,166,235,237,169,237,236,254,255,243,246,241,3,192,193,194}))
+							DSLOG.info("sync", pl.Name .. ": esperando o avatar terminar de carregar...")
 						end
 						if os.clock() - t0 >= 8 then
 							ready = true
-							DSLOG.warn(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,204,226,206,226,208,226,145,214,216,225,228,232,230,237,153,231,220,229,240,158,227,229,161,186,246,176,165,231,247,244,242,237,236,250,241,253,175,253,246,5,0,3,181,247,10,11,2,7}))
+							DSLOG.warn("sync", pl.Name .. ": avatar demorou mais de 8s, aplicando mesmo assim")
 						end
 					end
 					if ready then
 						waitSince[char] = nil
 						if d then
-							DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,204,220,217,215,210,209,223,214,226,148,226,229,219,235,153,246,155,229,225,241,188}) .. tostring(d.ids or _obczbshz({})) .. (d.headless == true and _obczbshz({137,230,139,212,210,207,211,220,214,229,230}) or _obczbshz({})) .. (d.bc and _obczbshz({137,230,139,207,220,224,212,227}) or _obczbshz({})))
+							DSLOG.info("sync", pl.Name .. ": aplicando mods | ids=" .. tostring(d.ids or "") .. (d.headless == true and " | headless" or "") .. (d.bc and " | cores" or ""))
 						else
-							DSLOG.info(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,222,209,218,142,220,223,213,229,159,148,225,223,228,232,218,232,223,235}))
+							DSLOG.info("sync", pl.Name .. ": sem mods, limpando")
 						end
 						clearMods(char)
 						if not isMe then
 							local set = {}
 							if d then
-								for k in tostring(d.fx or _obczbshz({})):gmatch(_obczbshz({142,203,150})) do set[k] = true end
+								for k in tostring(d.fx or ""):gmatch("%a+") do set[k] = true end
 							end
 							local okF, eF = pcall(fxApply, char, set, tonumber(d and d.fc) or 1)
-							if not okF then DSLOG.err(_obczbshz({206,208,208,213,225,221,226}), pl.Name .. _obczbshz({163,138}) .. tostring(eF):sub(1, 100)) end
+							if not okF then DSLOG.err("efeitos", pl.Name .. ": " .. tostring(eF):sub(1, 100)) end
 						end
 						local failed = {}
 						if d then
-							if d.headless == true then DSLOG.try(_obczbshz({209,207,204,208,217,211,226,227}), headless, char) end
-							if d.bc then DSLOG.try(_obczbshz({204,217,221,209,224}), applyBC, char, d.bc) end
+							if d.headless == true then DSLOG.try("headless", headless, char) end
+							if d.bc then DSLOG.try("cores", applyBC, char, d.bc) end
 							local n = 0
-							for idStr in tostring(d.ids or _obczbshz({})):gmatch(_obczbshz({142,206,150})) do
+							for idStr in tostring(d.ids or ""):gmatch("%d+") do
 								n = n + 1
-								if n > 24 then DSLOG.warn(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,216,205,214,225,143,212,214,146,165,168,149,191,187,235,165,154,228,227,235,237,241,229,234,162,242,164,247,235,250,252,248})); break end
+								if n > 24 then DSLOG.warn("sync", pl.Name .. ": mais de 24 IDs, ignorei o resto"); break end
 								local idn = tonumber(idStr)
 								local ok, applied = pcall(applyOne, char, idn)
 								if not (ok and applied) then
 									failed[#failed + 1] = idn
-									DSLOG.err(_obczbshz({220,227,217,207}), pl.Name .. _obczbshz({163,138,209,205,217,214,222,229,145,225,147,189,185,150}) .. idStr .. (ok and _obczbshz({137,146,217,47,16,221,143,211,210,228,229,217,220,229,236,161}) or (_obczbshz({163,138}) .. tostring(applied):sub(1, 120))))
+									DSLOG.err("sync", pl.Name .. ": falhou o ID " .. idStr .. (ok and " (não carregou)" or (": " .. tostring(applied):sub(1, 120))))
 								end
 							end
 						end
-						char:SetAttribute(_obczbshz({173,221,190,213,212}), want)
-						char:SetAttribute(_obczbshz({173,221,185}), countMods(char))
+						char:SetAttribute("DsSig", want)
+						char:SetAttribute("DsN", countMods(char))
 						if #failed > 0 then retryFailed(pl, char, want, failed, 1) end
-
+						-- diagnóstico: só pra você mesmo, mostra se o acessório realmente entrou no Humanoid
 						if isMe then
-							DSLOG.try(_obczbshz({202,224,204,224,206,224}), DSLOG.charState, char, _obczbshz({223,217,206,47,23}))
-							local hm2 = char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+							DSLOG.try("avatar", DSLOG.charState, char, "você")
+							local hm2 = char:FindFirstChildOfClass("Humanoid")
 							local accN = hm2 and #hm2:GetAccessories() or -1
-							local mf = char:FindFirstChild(_obczbshz({173,221,172,207,208}))
-							if mf and #mf:GetChildren() > 0 then accN = tostring(accN) .. _obczbshz({137,149,139}) .. #mf:GetChildren() .. _obczbshz({137,215,204,218,226,207,219}) end
-							say((#failed == 0 and _obczbshz({182,217,207,223,141,207,223,220,218,213,212,216,228,233,165,152}) or _obczbshz({170,214,210,225,219,225,143,185,181,229,147,218,214,226,223,217,235,219,232,168,157,242,228,238,245,227,241,232,244,166,235,237,169,248,250,2,252,188,175})) .. _obczbshz({170,205,208,223,224,49,34,226,218,225,230,148,227,229,151,235,222,239,155,196,242,235,224,238,240,235,231,164,230,237,246,250,234,196,171}) .. accN)
+							local mf = char:FindFirstChild("DsAcc")
+							if mf and #mf:GetChildren() > 0 then accN = tostring(accN) .. " + " .. #mf:GetChildren() .. " manual" end
+							say((#failed == 0 and "Mods aplicados. " or "Alguns IDs falharam, tentando de novo. ") .. "Acessórios no seu Humanoid agora: " .. accN)
 						end
 					end
 				end
 				if not isMe then
-					local okT, eT = pcall(tagDraw, char, d and type(d.tag) == _obczbshz({221,203,205,216,210}) and d.tag or nil, _obczbshz({173,221,191,205,212,176}))
-					if not okT then DSLOG.err(_obczbshz({221,203,210}), tostring(eT):sub(1, 100)) end
+					local okT, eT = pcall(tagDraw, char, d and type(d.tag) == "table" and d.tag or nil, "DsTagB")
+					if not okT then DSLOG.err("tag", tostring(eT):sub(1, 100)) end
 				end
 			end
 		end
 	end
-
+	-- nunca roda duas sincronizações ao mesmo tempo (duplicaria os acessórios)
 	local syncing = false
 	local function syncSafe()
 		if syncing then return end
 		syncing = true
-		DSLOG.try(_obczbshz({220,227,217,207}), sync)
+		DSLOG.try("sync", sync)
 		syncing = false
 	end
 	table.insert(conns, lp.CharacterAdded:Connect(function()
-		DSLOG.info(_obczbshz({202,224,204,224,206,224}), _obczbshz({220,207,224,140,221,211,225,227,224,224,212,219,218,227,151,234,222,232,220,239,224,227,244,172,161,244,232,229,245,242,240,235,234,248,239,251,173,253,2,176,254,1,247,7}))
+		DSLOG.info("avatar", "seu personagem renasceu, reaplicando os mods")
 		task.wait(1)
 		if alive then syncSafe() end
 	end))
 	task.spawn(function()
 		while alive do syncSafe(); task.wait(3) end
 	end)
-
+	-- sinal de vida: reenvia o registro a cada 8s; ao sair/teleportar apaga na hora
 	task.spawn(function()
 		while alive do
 			task.wait(8)
 			if alive and (#mine.ids > 0 or mine.headless or mine.fx or mine.tag or mine.bc) then pcall(publish) end
 		end
 	end)
-	local function goodbye() pcall(http, _obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219})) end
+	local function goodbye() pcall(http, "DELETE", "/mods/" .. uid .. ".json") end
 	table.insert(conns, Players.PlayerRemoving:Connect(function(p) if p == lp then goodbye() end end))
 	pcall(function()
 		table.insert(conns, lp.OnTeleport:Connect(function(st)
@@ -1601,166 +2003,168 @@ local function buildMods(page, say)
 		end))
 	end)
 
-	section(page, _obczbshz({182,217,207,140,221,211,225,227,224,224,212,224,222,240,216,220,232}))
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({172,217,215,209,141,221,143,185,181,146,215,217,149,231,236,217,229,235,240,225,239,158,232,244,230,239,163,250,238,249,252,233,245,170,239,251,173,241,240,4,84,51,255,3,252,5,183,192,250,253,0,15,16,97,82,18,10,17,207,196,23,21,28,24,10,214,203,28,14,17,30,36,22,222,211,36,22,40,43,29,44,218,31,43,221,33,46,50,49,49,239,228,55,53,58,60,56,234,58,65,237,51,53,53,58,70,66,253,3,246,42,59,75,67,75,80,80,254,68,0,84,81,81,87,5,89,170,139,88,10,93,81,90,93,101,89,85,97,102,34,21,57,95,89,105,189,164,113,44,97,96,98,102,110,114,51,119,117,122,124,120,42,121,123,131,125,47,132,131,129,118,117,53,133,55,137,142,127,59,146,140,129,226,202,65,140,230,197,69,139,154,156,236,203,75,161,160,143,157,148,160,82,148,169,169,165,164,153,173,163,158,157,170,163,173,180,166,112,99,152,180,170,182,187,105,187,192,177,109,195,194,177,190,114,194,116,189,203,185,120,207,191,192,201,139}),
-		Size = UDim2.new(1, 0, 0, 58), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+	-- UI da aba Mod
+	section(page, "Mod personalizado")
+	mk("TextLabel", {
+		Text = "Cole o ID de qualquer item visual do catálogo (acessório, roupa, pacote, partes do corpo, rosto ou efeito). Scripts e sons são removidos. Chapéu/cabelo/rosto novo troca o que você já está usando automaticamente. Todos que usam o hub veem.",
+		Size = UDim2.new(1, 0, 0, 58), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	toggleRow(page, _obczbshz({188,207,216,140,208,207,209,213,52,25,212,148,157,222,220,217,221,230,224,239,240,167}), _obczbshz({174,221,206,219,219,210,212,144,210,146,230,233,214,150,218,217,219,223,62,35,222}), function(v)
+	toggleRow(page, "Sem cabeça (headless)", "Esconde a sua cabeça", function(v)
 		mine.headless = v
 		publish()
-		say(v and _obczbshz({177,207,204,208,217,211,226,227,145,222,220,219,214,218,230,166}) or _obczbshz({177,207,204,208,217,211,226,227,145,214,216,231,225,223,222,217,221,233,169}))
+		say(v and "Headless ligado." or "Headless desligado.")
 	end)
-	local idRow = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.15 }, page)
+	local idRow = mk("Frame", { Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.15 }, page)
 	round(idRow, 10); stroke(idRow, 1.5)
-	local idBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
+	local idBox = mk("TextBox", {
 		Size = UDim2.new(1, -20, 1, -8), Position = UDim2.fromOffset(10, 4), BackgroundTransparency = 1,
-		Text = _obczbshz({}), PlaceholderText = _obczbshz({178,174,139,208,220,142,216,228,214,223,147,156,232,57,42,152,231,61,53,233,226,240,238,243,170}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+		Text = "", PlaceholderText = "ID do item (só números)", PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
 		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 12, ClearTextOnFocus = false,
 		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 	}, idRow)
-	local listLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({178,174,222,140,206,226,216,230,224,229,173,148,227,219,229,224,238,231}), Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1,
+	local listLbl = mk("TextLabel", {
+		Text = "IDs ativos: nenhum", Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
 	local function refreshList()
-		listLbl.Text = _obczbshz({178,174,222,140,206,226,216,230,224,229,173,148}) .. (#mine.ids > 0 and table.concat(mine.ids, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219}))
+		listLbl.Text = "IDs ativos: " .. (#mine.ids > 0 and table.concat(mine.ids, ", ") or "nenhum")
 	end
 	mine.onList = refreshList
-	rowBtn(page, _obczbshz({170,206,212,207,214,221,221,209,227,146,188,184}), function()
-		local n = idBox.Text:match(_obczbshz({142,206,150}))
-		if not n then say(_obczbshz({173,211,210,213,225,211,143,223,145,187,183,148,157,233,58,43,153,232,62,54,234,227,241,239,244,171,177})); return end
-		if #mine.ids >= 8 then say(_obczbshz({182,45,12,228,214,219,222,144,213,215,147,172,149,191,187,235,167})); return end
+	rowBtn(page, "Adicionar ID", function()
+		local n = idBox.Text:match("%d+")
+		if not n then say("Digite o ID (só números)."); return end
+		if #mine.ids >= 8 then say("Máximo de 8 IDs."); return end
 		table.insert(mine.ids, n)
-		idBox.Text = _obczbshz({})
+		idBox.Text = ""
 		refreshList()
 		publish()
-		say(_obczbshz({178,174,139}) .. n .. _obczbshz({137,203,207,213,208,215,222,222,210,214,226,160,149,217,216,234,235,223,226,221,235,226,238,174,175,176}))
+		say("ID " .. n .. " adicionado, carregando...")
 		task.spawn(function()
 			local id = tonumber(n)
 			local objs = loadAsset(id)
 			if objs then
 				local cls = {}
 				for _, o in ipairs(objs) do cls[#cls + 1] = o.ClassName end
-				say(_obczbshz({178,174,139}) .. n .. _obczbshz({137,205,204,222,223,211,214,209,213,225,173,148}) .. table.concat(cls, _obczbshz({149,138})) .. _obczbshz({151,138,172,220,217,215,210,209,223,214,226,148,218,227,151,217,237,61,36,156,176,241,173}))
+				say("ID " .. n .. " carregado: " .. table.concat(cls, ", ") .. ". Aplicando em até 3s.")
 			else
-				say(_obczbshz({183,45,14,219,141,209,222,222,228,215,218,233,222,150,218,217,235,236,224,227,222,240,159,239,161,203,199,164}) .. n .. (lastLoadErr[id] and (_obczbshz({137,146}) .. lastLoadErr[id] .. _obczbshz({146})) or _obczbshz({})) .. _obczbshz({151,138,193,219,226,142,227,213,223,230,212,230,149,218,220,152,231,233,241,235,157,241,238,250,234,240,235,243,192,166,234,247,247,240,244,254,238,174,2,245,177,85,60,180,10,3,183,225,221,186,255,1,189,7,19,5,14,194,7,9,197,7,29,9,29,11,29,204,35,113,80,28,26,22,34,226}))
+				say("Não consegui carregar o ID " .. n .. (lastLoadErr[id] and (" (" .. lastLoadErr[id] .. ")") or "") .. ". Vou tentar de novo sozinho; confira se é um ID de item de avatar válido.")
 			end
 		end)
 	end)
-	rowBtn(page, _obczbshz({181,211,216,220,206,224,143,185,181,229}), function()
+	rowBtn(page, "Limpar IDs", function()
 		mine.ids = {}
 		refreshList()
 		publish()
-		say(_obczbshz({178,174,222,140,223,211,220,223,231,219,215,227,232,164}))
+		say("IDs removidos.")
 	end)
 
 	return function()
 		alive = false
 		fxConn:Disconnect()
-
+		-- ao fechar o hub, devolve o avatar de todo mundo ao normal (itens do hub saem, originais voltam)
 		for _, pl in ipairs(Players:GetPlayers()) do
 			if pl.Character then
 				pcall(clearMods, pl.Character)
-				pl.Character:SetAttribute(_obczbshz({173,221,190,213,212}), nil)
-				pl.Character:SetAttribute(_obczbshz({173,221,185}), nil)
+				pl.Character:SetAttribute("DsSig", nil)
+				pl.Character:SetAttribute("DsN", nil)
 			end
 		end
 		fxClearAll()
 		for _, pl in ipairs(Players:GetPlayers()) do
-			local hd = pl.Character and pl.Character:FindFirstChild(_obczbshz({177,207,204,208}))
-			local o = hd and hd:FindFirstChild(_obczbshz({173,221,191,205,212,176}))
+			local hd = pl.Character and pl.Character:FindFirstChild("Head")
+			local o = hd and hd:FindFirstChild("DsTagB")
 			if o then o:Destroy() end
 		end
-		http(_obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,218,208,224,157}) .. uid .. _obczbshz({151,212,222,219,219}))
+		http("DELETE", "/mods/" .. uid .. ".json")
 	end
 end
 
+-- ===== Aba Debug: log na tela, copiar, salvar e inspecionar IDs =====
 local function buildDebug(page, say)
 	if not page then return nil end
 	local onlyProblems, dirty, alive = false, true, true
 	local function onNew() dirty = true end
 	table.insert(DSLOG.subs, onNew)
 
-	section(page, _obczbshz({173,211,204,211,219,49,34,227,229,219,214,227}))
-	local info = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 30), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+	section(page, "Diagnóstico")
+	local info = mk("TextLabel", {
+		Text = "", Size = UDim2.new(1, 0, 0, 30), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,220,224,217,147,215,228,227,231,228,222,238,234}), function()
+	rowBtn(page, "Copiar log completo", function()
 		local f = setclipboard or toclipboard
 		DSLOG.flush()
-		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,220,174,251,255,248,178,248,7,9,89,56,184,7,9,187,253,15,15,20,9,23,17,195}) .. DSLOG.file); return end
+		if not f then say("Seu executor não tem setclipboard. O log está no arquivo " .. DSLOG.file); return end
 		pcall(f, DSLOG.dump(false))
-		say(_obczbshz({181,217,210,140,208,221,223,217,210,214,226,148,157}) .. #DSLOG.lines .. _obczbshz({137,214,212,218,213,207,226,153,159,146,182,227,225,219,151,230,218,154,222,235,235,244,228,242,244,227,177}))
+		say("Log copiado (" .. #DSLOG.lines .. " linhas). Cole na conversa.")
 	end, true)
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,227,52,37,147,213,235,223,234,231,236,154,224,156,226,240,241,239,244}), function()
+	rowBtn(page, "Copiar só avisos e erros", function()
 		local f = setclipboard or toclipboard
 		DSLOG.flush()
-		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,220,174,251,255,248,178,248,7,9,89,56,184,7,9,187,253,15,15,20,9,23,17,195}) .. DSLOG.file); return end
+		if not f then say("Seu executor não tem setclipboard. O log está no arquivo " .. DSLOG.file); return end
 		pcall(f, DSLOG.dump(true))
-		say(_obczbshz({170,224,212,223,220,225,143,213,145,215,229,230,228,233,151,219,232,234,228,221,225,237,242,174}))
+		say("Avisos e erros copiados.")
 	end, true)
-	rowBtn(page, _obczbshz({188,203,215,226,206,224,143,209,216,225,229,213,149,228,230,152,218,236,236,241,230,244,238}), function()
+	rowBtn(page, "Salvar agora no arquivo", function()
 		DSLOG.flush()
-		say(_obczbshz({188,203,215,226,220,142,212,221,145}) .. DSLOG.file .. _obczbshz({137,146,219,205,224,226,208,144,213,225,147,217,237,219,218,237,237,233,237,165}))
+		say("Salvo em " .. DSLOG.file .. " (pasta do executor)")
 	end, true)
-	rowBtn(page, _obczbshz({191,207,221,140,210,225,227,209,213,225,147,216,228,150,228,221,238,154,235,225,239,241,238,238,226,233,232,241}), function()
-		DSLOG.try(_obczbshz({202,224,204,224,206,224}), DSLOG.charState, lp.Character, _obczbshz({223,217,206,47,23}))
-		say(_obczbshz({174,221,223,205,209,221,143,212,224,146,227,217,231,233,230,230,218,225,224,233,157,240,228,231,234,245,247,246,230,234,246,168,247,249,171,248,252,245,189}))
+	rowBtn(page, "Ver estado do meu personagem", function()
+		DSLOG.try("avatar", DSLOG.charState, lp.Character, "você")
+		say("Estado do personagem registrado no log.")
 	end, true)
-	toggleRow(page, _obczbshz({188,45,30,140,206,228,216,227,224,229,147,217,149,219,233,234,232,237}), _obczbshz({174,221,206,219,219,210,212,144,210,229,147,224,222,228,223,217,236,154,223,225,157,231,237,230,240,244,240,229,72,45,74,43,248}), function(v)
+	toggleRow(page, "Só avisos e erros", "Esconde as linhas de informação", function(v)
 		onlyProblems = v; dirty = true
 	end)
-	local idRow = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+	local idRow = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 	round(idRow, 17); stroke(idRow, 1.5)
-	local idBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
+	local idBox = mk("TextBox", {
 		Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-		Text = _obczbshz({}), PlaceholderText = _obczbshz({178,174,139,220,223,207,143,217,223,229,227,217,216,223,230,230,218,236,155,164,240,65,50,160,239,69,61,241,234,248,246,251,178}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+		Text = "", PlaceholderText = "ID pra inspecionar (só números)", PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
 		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 11, ClearTextOnFocus = false,
 		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 	}, idRow)
-	rowBtn(page, _obczbshz({178,216,222,220,210,209,216,223,223,211,229,148,190,186,151,160,231,61,30,235,157,223,239,236,234,229,228,173}), function()
-		if not DSLOG.inspect then say(_obczbshz({170,138,204,206,206,142,188,223,213,146,212,221,227,218,216,152,231,61,30,235,157,225,224,242,243,231,234,243,250,180})); return end
-		task.spawn(function() DSLOG.try(_obczbshz({210,216,222,220,210,209,216,223,223,211,229}), DSLOG.inspect, idBox.Text) end)
-		say(_obczbshz({178,216,222,220,210,209,216,223,223,211,225,216,228,162,151,238,222,228,220,156,236,158,235,239,232,162,228,230,230,239,255,247,183}))
+	rowBtn(page, "Inspecionar ID (não aplica)", function()
+		if not DSLOG.inspect then say("A aba Mod ainda não carregou."); return end
+		task.spawn(function() DSLOG.try("inspecionar", DSLOG.inspect, idBox.Text) end)
+		say("Inspecionando, veja o log abaixo.")
 	end, true)
-	rowBtn(page, _obczbshz({181,211,216,220,206,224,143,228,214,222,212}), function()
+	rowBtn(page, "Limpar tela", function()
 		DSLOG.lines = {}
 		dirty = true
 	end, true)
 
-	local box = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundColor3 = Color3.fromRGB(10, 2, 3), BackgroundTransparency = 0.15 }, page)
+	local box = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundColor3 = Color3.fromRGB(16, 17, 21), BackgroundTransparency = 0.15 }, page)
 	round(box, 10); stroke(box, 1.5)
-	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingTop = UDim.new(0, 6), PaddingBottom = UDim.new(0, 6), PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8) }, box)
-	local txt = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
-		RichText = true, TextWrapped = true, Font = Enum.Font.Code, TextSize = 10, TextColor3 = Color3.fromRGB(230, 210, 210),
+	mk("UIPadding", { PaddingTop = UDim.new(0, 6), PaddingBottom = UDim.new(0, 6), PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8) }, box)
+	local txt = mk("TextLabel", {
+		Text = "", Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+		RichText = true, TextWrapped = true, Font = Enum.Font.Code, TextSize = 10, TextColor3 = Color3.fromRGB(232, 234, 240),
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, box)
 
-	local COL = { INFO = _obczbshz({140,207,161,208,159,210,161}), WARN = _obczbshz({140,208,209,207,165,164,163}), ERRO = _obczbshz({140,208,209,162,161,164,163}) }
+	local COL = { INFO = "#e6d2d2", WARN = "#ffc864", ERRO = "#ff6464" }
 	local function esc(s)
-		return (s:gsub(_obczbshz({143}), _obczbshz({143,203,216,220,168})):gsub(_obczbshz({165}), _obczbshz({143,214,223,167})):gsub(_obczbshz({167}), _obczbshz({143,209,223,167})))
+		return (s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
 	end
 	local function render()
 		local out, total = {}, 0
-		for i = #DSLOG.lines, 1, -1 do
+		for i = #DSLOG.lines, 1, -1 do -- mais recente em cima
 			local l = DSLOG.lines[i]
-			if not onlyProblems or l[1] ~= _obczbshz({178,184,177,187}) then
+			if not onlyProblems or l[1] ~= "INFO" then
 				local s = l[2]
-				if #s > 220 then s = s:sub(1, 220) .. _obczbshz({151,152,153}) end
+				if #s > 220 then s = s:sub(1, 220) .. "..." end
 				total = total + #s + 40
 				if total > 14000 or #out >= 150 then break end
-				out[#out + 1] = _obczbshz({165,208,218,218,225,142,210,223,221,225,229,177,151}) .. (COL[l[1]] or COL.INFO) .. _obczbshz({139,168}) .. esc(s) .. _obczbshz({165,153,209,219,219,226,173})
+				out[#out + 1] = '<font color="' .. (COL[l[1]] or COL.INFO) .. '">' .. esc(s) .. "</font>"
 			end
 		end
-		txt.Text = #out > 0 and table.concat(out, _obczbshz({115})) or _obczbshz({145,214,218,211,141,228,208,234,218,225,156})
-		info.Text = DSLOG.n.INFO .. _obczbshz({137,211,217,210,220,142,49,39,145}) .. DSLOG.n.WARN .. _obczbshz({137,203,225,213,224,221,226,144,51,41,147}) .. DSLOG.n.ERRO .. _obczbshz({137,207,221,222,220,225,143,50,40,146,224,213,222,233,151,234,222,221,224,234,241,227,159,229,238,162,230,237,242,231,145,201,251,251,0,245,3,253,201,176}) .. DSLOG.file
+		txt.Text = #out > 0 and table.concat(out, "\n") or "(log vazio)"
+		info.Text = DSLOG.n.INFO .. " info · " .. DSLOG.n.WARN .. " avisos · " .. DSLOG.n.ERRO .. " erros · mais recente em cima\nArquivo: " .. DSLOG.file
 	end
 	task.spawn(function()
 		while alive and gui.Parent do
@@ -1779,72 +2183,73 @@ local function buildDebug(page, say)
 	end
 end
 
-local function hrp() return lp.Character and lp.Character:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236})) end
-local function hum() return lp.Character and lp.Character:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212})) end
+-- ===== recursos locais (só afetam VOCÊ) =====
+local function hrp() return lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") end
+local function hum() return lp.Character and lp.Character:FindFirstChildOfClass("Humanoid") end
 
 local selfCleanup
-
-local TAG_FONTS = { _obczbshz({176,217,223,212,206,219,177,220,210,213,222}), _obczbshz({175,220,208,208,220,217,208,191,223,215}), _obczbshz({171,203,217,211,210,224,226}), _obczbshz({172,220,208,209,221,225,227,213,227}), _obczbshz({170,220,206,205,209,211}), _obczbshz({175,203,217,224,206,225,232}), _obczbshz({188,205,212,178,214}), _obczbshz({181,223,206,215,214,211,226,228,184,231,236}), _obczbshz({185,207,221,217,206,220,212,222,229,191,212,230,224,219,233}), _obczbshz({172,203,221,224,220,221,221}), _obczbshz({172,217,207,209}) }
+-- ===== Tag grande em cima da cabeça (quem usa o hub vê a própria; o ADM vê a de todos os membros) =====
+local TAG_FONTS = { "GothamBlack", "FredokaOne", "Bangers", "Creepster", "Arcade", "Fantasy", "SciFi", "LuckiestGuy", "PermanentMarker", "Cartoon", "Code" }
 local TAG_ROLES = {
-	{ _obczbshz({182,207,216,206,223,221}), Color3.fromRGB(235, 235, 235) },
-	{ _obczbshz({178,216,209,216,226,211,221,211,218,211,215,227,231}), Color3.fromRGB(255, 105, 180) },
-	{ _obczbshz({188,223,205,140,177,221,221,223}), Color3.fromRGB(255, 140, 40) },
-	{ _obczbshz({173,217,217,219}), Color3.fromRGB(255, 205, 60) },
+	{ "Membro", Color3.fromRGB(235, 235, 235) },
+	{ "Influenciador", Color3.fromRGB(255, 105, 180) },
+	{ "Sub Dono", Color3.fromRGB(255, 140, 40) },
+	{ "Dono", Color3.fromRGB(255, 205, 60) },
 }
-local TAG = { avail = false, on = false, text = _obczbshz({}), font = _obczbshz({176,217,223,212,206,219,177,220,210,213,222}), role = _obczbshz({182,207,216,206,223,221}), rgb = false }
+local TAG = { avail = false, on = false, text = "", font = "GothamBlack", role = "Membro", rgb = false }
 local function tagRoleColor(name)
 	for _, r in ipairs(TAG_ROLES) do
 		if r[1] == name then return r[2] end
 	end
 	return TAG_ROLES[1][2]
 end
-
+-- desenha (ou atualiza / remove) o letreiro na cabeça de "char". d = { on, text, font, role }
 function tagDraw(char, d, nm)
-	nm = nm or _obczbshz({173,221,191,205,212})
-	local head = char and char:FindFirstChild(_obczbshz({177,207,204,208}))
+	nm = nm or "DsTag"
+	local head = char and char:FindFirstChild("Head")
 	if not head then return end
 	local old = head:FindFirstChild(nm)
-	if not (type(d) == _obczbshz({221,203,205,216,210}) and d.on) then
+	if not (type(d) == "table" and d.on) then
 		if old then old:Destroy() end
 		return
 	end
-	local text = tostring(d.text or _obczbshz({})):sub(1, 16)
-	if text == _obczbshz({}) then
+	local text = tostring(d.text or ""):sub(1, 16)
+	if text == "" then -- sem nome escolhido: usa o nome de exibição do Roblox da pessoa
 		local pl = Players:GetPlayerFromCharacter(char)
 		text = tostring(pl and pl.DisplayName or lp.DisplayName):sub(1, 16)
 	end
-	local role = tostring(d.role or _obczbshz({182,207,216,206,223,221})):sub(1, 14)
-	local fontName = table.find(TAG_FONTS, d.font) and d.font or _obczbshz({176,217,223,212,206,219,177,220,210,213,222})
+	local role = tostring(d.role or "Membro"):sub(1, 14)
+	local fontName = table.find(TAG_FONTS, d.font) and d.font or "GothamBlack"
 	local g = old
 	if not g then
-		g = mk(_obczbshz({171,211,215,216,207,221,208,226,213,185,232,221}), {
+		g = mk("BillboardGui", {
 			Name = nm, Size = UDim2.fromOffset(320, 110), StudsOffset = Vector3.new(0, 3.8, 0),
 			AlwaysOnTop = true, LightInfluence = 0, MaxDistance = 1500,
 		}, nil)
-		g:SetAttribute(_obczbshz({173,221,177,228}), true)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Name = _obczbshz({183}), Size = UDim2.new(1, 0, 0.62, 0), BackgroundTransparency = 1, TextScaled = true,
+		g:SetAttribute("DsFx", true)
+		mk("TextLabel", {
+			Name = "N", Size = UDim2.new(1, 0, 0.62, 0), BackgroundTransparency = 1, TextScaled = true,
 			TextColor3 = WHITE, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
 		}, g)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Name = _obczbshz({187}), Size = UDim2.new(1, 0, 0.3, 0), Position = UDim2.new(0, 0, 0.66, 0), BackgroundTransparency = 1,
+		mk("TextLabel", {
+			Name = "R", Size = UDim2.new(1, 0, 0.3, 0), Position = UDim2.new(0, 0, 0.66, 0), BackgroundTransparency = 1,
 			TextScaled = true, Font = Enum.Font.GothamBold, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
 		}, g)
 		g.Parent = head
 	end
-	local n, r = g:FindFirstChild(_obczbshz({183})), g:FindFirstChild(_obczbshz({187}))
+	local n, r = g:FindFirstChild("N"), g:FindFirstChild("R")
 	if n then n.Text = text; n.Font = Enum.Font[fontName] end
 	if r then r.Text = role end
 	if d.rgb == true then
-		g:SetAttribute(_obczbshz({187,209,205}), true)
+		g:SetAttribute("Rgb", true)
 		TAG.rgbStart()
 	else
-		g:SetAttribute(_obczbshz({187,209,205}), nil)
+		g:SetAttribute("Rgb", nil)
 		if n then n.TextColor3 = WHITE end
 		if r then r.TextColor3 = tagRoleColor(role) end
 	end
 end
-
+-- RGB: anima a cor de toda tag marcada com o atributo "Rgb" (a minha e as dos outros)
 function TAG.rgbStart()
 	if TAG.rgbRun then return end
 	TAG.rgbRun = true
@@ -1854,13 +2259,13 @@ function TAG.rgbStart()
 			local c1, c2 = Color3.fromHSV(h, 1, 1), Color3.fromHSV((h + 0.5) % 1, 1, 1)
 			local any = false
 			for _, pl in ipairs(Players:GetPlayers()) do
-				local hd = pl.Character and pl.Character:FindFirstChild(_obczbshz({177,207,204,208}))
+				local hd = pl.Character and pl.Character:FindFirstChild("Head")
 				if hd then
-					for _, nm in ipairs({ _obczbshz({173,221,191,205,212}), _obczbshz({173,221,191,205,212,176}) }) do
+					for _, nm in ipairs({ "DsTag", "DsTagB" }) do
 						local g = hd:FindFirstChild(nm)
-						if g and g:GetAttribute(_obczbshz({187,209,205})) then
+						if g and g:GetAttribute("Rgb") then
 							any = true
-							local n, r = g:FindFirstChild(_obczbshz({183})), g:FindFirstChild(_obczbshz({187}))
+							local n, r = g:FindFirstChild("N"), g:FindFirstChild("R")
 							if n then n.TextColor3 = c1 end
 							if r then r.TextColor3 = c2 end
 						end
@@ -1872,7 +2277,7 @@ function TAG.rgbStart()
 		TAG.rgbRun = false
 	end)
 end
-
+-- dados efetivos da tag: ligada pelo próprio, ou forçada quando o Dono está no servidor (só quem tem tag dada por ID)
 function TAG.data()
 	local on = TAG.on or (TAG.force and TAG.granted and not TAG.forceOff) or false
 	return { on = on, text = TAG.text, font = TAG.font, role = TAG.role, rgb = TAG.rgb == true }
@@ -1889,8 +2294,8 @@ function TAG.start()
 			task.wait(1)
 		end
 		pcall(function()
-			local hd = lp.Character and lp.Character:FindFirstChild(_obczbshz({177,207,204,208}))
-			local o = hd and hd:FindFirstChild(_obczbshz({173,221,191,205,212}))
+			local hd = lp.Character and lp.Character:FindFirstChild("Head")
+			local o = hd and hd:FindFirstChild("DsTag")
 			if o then o:Destroy() end
 		end)
 	end)
@@ -1898,71 +2303,72 @@ end
 function TAG.stop() TAG.running = false end
 
 local function buildSelf(pages, say)
-
-	local sp = pages[_obczbshz({188,205,221,213,221,226,226})]
+	-- aba Scripts
+	local sp = pages["Scripts"]
 	local function runUrl(name, url)
-		say(_obczbshz({174,226,208,207,226,226,208,222,213,225,147}) .. name .. _obczbshz({151,152,153}))
+		say("Executando " .. name .. "...")
 		local ok, err = pcall(function() loadstring(game:HttpGet(url))() end)
-		say(ok and (name .. _obczbshz({137,207,227,209,208,227,227,209,213,225,161})) or (_obczbshz({174,220,221,219,167,142}) .. tostring(err):sub(1, 60)))
+		say(ok and (name .. " executado.") or ("Erro: " .. tostring(err):sub(1, 60)))
 	end
 	if #SCRIPTS == 0 then
-		section(sp, _obczbshz({188,205,221,213,221,226,226}))
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = _obczbshz({183,207,217,212,226,219,143,227,212,228,220,228,233,150,229,217,153,230,228,239,241,223,173,160,198,230,236,248,234,166,232,168,253,235,237,241,249,239,175,227,212,228,220,228,233,233,183,6,8,186,15,11,13,13,191,4,16,194,4,22,22,27,16,30,24,202,26,33,205,17,30,28,22,210,40,33,213,34,32,38,36,218,28,30,30,39,55,47,239}),
-			Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		section(sp, "Scripts")
+		mk("TextLabel", {
+			Text = "Nenhum script na lista. Edite a tabela SCRIPTS no topo do arquivo ou cole um link abaixo.",
+			Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 			Font = Enum.Font.Gotham, TextSize = 12, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 		}, sp)
 	end
 	local lastGroup
 	for _, s in ipairs(SCRIPTS) do
-		local g = s[3] or _obczbshz({188,205,221,213,221,226,226})
+		local g = s[3] or "Scripts"
 		if g ~= lastGroup then section(sp, g); lastGroup = g end
 		rowBtn(sp, s[1], function() runUrl(s[1], s[2]) end, true)
 	end
-	section(sp, _obczbshz({174,226,208,207,226,226,208,226,145,226,226,230,149,226,224,230,228}))
-	local boxRow = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, sp)
+	section(sp, "Executar por link")
+	local boxRow = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, sp)
 	round(boxRow, 17); stroke(boxRow, 1.5)
-	local urlBox = mk(_obczbshz({189,207,227,224,175,221,231}), {
+	local urlBox = mk("TextBox", {
 		Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-		Text = _obczbshz({}), PlaceholderText = _obczbshz({172,217,215,209,141,221,143,220,218,224,222,148,217,229,151,235,220,236,228,236,241,158,224,241,246,235}), PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+		Text = "", PlaceholderText = "Cole o link do script aqui", PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
 		TextColor3 = WHITE, Font = Enum.Font.Code, TextSize = 11, ClearTextOnFocus = false,
 		TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 	}, boxRow)
-	rowBtn(sp, _obczbshz({174,226,208,207,226,226,208,226,145,222,220,226,224}), function()
+	rowBtn(sp, "Executar link", function()
 		local u = urlBox.Text
-		if not u:find(_obczbshz({199,210,223,224,221})) then say(_obczbshz({172,217,215,209,141,227,220,144,221,219,225,223,149,231,236,221,153,221,234,233,226,225,228,160,228,241,240,164,237,250,251,248,183})); return end
-		runUrl(_obczbshz({213,211,217,215}), u)
+		if not u:find("^http") then say("Cole um link que comece com http."); return end
+		runUrl("link", u)
 	end, true)
 
-	local dp = pages[_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})] or mk(_obczbshz({175,220,204,217,210}), {})
+	-- aba Natural Disaster
+	local dp = pages["Natural Disaster"] or mk("Frame", {}) -- fora do Natural Disaster fica solto (invisível)
 	local S = { fly = false, speed = false, jump = false, noclip = false, infjump = false, nofall = false, waterwalk = false, antifling = false, antivoid = false, antisit = false, tfling = false, flingVal = 150, speedVal = 50, flyVal = 50 }
 	local selfBV, wwPart, lastSafe, flyGui
-
+	-- ===== Voo: postura em pé + animação de andar no ar + painel flutuante (ON/OFF e velocidade 1, 2, 3...) =====
 	local flyFx = { active = false, gyro = nil, face = nil, tracks = {}, cur = nil, char = nil, hum = nil, states = nil }
 	local FLY_FALLBACK = {
-		R15 = { walk = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,171,167,175,176,177,178,180,175,180}), idle = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,171,167,175,176,176,177,175,181,182}) },
-		R6 = { walk = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,167,175,168,173,172,177,175,178,178}), idle = _obczbshz({219,204,227,205,224,225,212,228,218,214,173,163,164,167,175,168,173,173,176,177,180,175}) },
+		R15 = { walk = "rbxassetid://507777826", idle = "rbxassetid://507766388" },
+		R6 = { walk = "rbxassetid://180426354", idle = "rbxassetid://180435571" },
 	}
 	local function flyAnimId(h, which)
 		local id
 		pcall(function()
-			local a = lp.Character and lp.Character:FindFirstChild(_obczbshz({170,216,212,217,206,226,212}))
+			local a = lp.Character and lp.Character:FindFirstChild("Animate")
 			if a then
-				if which == _obczbshz({224,203,215,215}) then id = a.walk.WalkAnim.AnimationId else id = a.idle.Animation1.AnimationId end
+				if which == "walk" then id = a.walk.WalkAnim.AnimationId else id = a.idle.Animation1.AnimationId end
 			end
 		end)
-		if not id or id == _obczbshz({}) then id = (FLY_FALLBACK[h.RigType.Name] or FLY_FALLBACK.R15)[which] end
+		if not id or id == "" then id = (FLY_FALLBACK[h.RigType.Name] or FLY_FALLBACK.R15)[which] end
 		return id
 	end
-
+	-- toca a animação "walk" (andando) ou "idle" (parado) com prioridade alta: sobrepõe a de queda
 	local function flyAnim(h, which, spd)
-		local animator = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
+		local animator = h:FindFirstChildOfClass("Animator")
 		if not animator then return end
 		if flyFx.char ~= lp.Character then flyFx.char = lp.Character; flyFx.tracks = {}; flyFx.cur = nil end
 		local tr = flyFx.tracks[which]
 		if not tr then
-			local a = Instance.new(_obczbshz({170,216,212,217,206,226,216,223,223}))
+			local a = Instance.new("Animation")
 			a.AnimationId = flyAnimId(h, which)
 			local ok, t = pcall(function() return animator:LoadAnimation(a) end)
 			if not ok or not t then return end
@@ -2000,16 +2406,17 @@ local function buildSelf(pages, say)
 		if flyFx.active then flyFx.active = false; flyStopFx() end
 	end
 
+	-- painel flutuante do voo
 	local FLY_MAX = 15
 	local flyLevel = 4
 	S.flyVal = 10 + flyLevel * 10
 	local flyPanel, flyOnBtn, flyLvlLbl
-	local flyToggles = {}
+	local flyToggles = {} -- setters visuais dos botões "Voar" das abas
 	local function flyRefresh()
 		if not flyPanel then return end
-		flyLvlLbl.Text = _obczbshz({191,207,215,219,208,215,211,209,213,215,147}) .. flyLevel
-		flyOnBtn.Text = S.fly and _obczbshz({184,184}) or _obczbshz({184,176,177})
-		UI.tween(flyOnBtn, 0.12, { BackgroundColor3 = S.fly and Color3.fromRGB(36, 160, 86) or Color3.fromRGB(120, 22, 30) })
+		flyLvlLbl.Text = "Velocidade " .. flyLevel
+		flyOnBtn.Text = S.fly and "ON" or "OFF"
+		UI.tween(flyOnBtn, 0.12, { BackgroundColor3 = S.fly and Color3.fromRGB(36, 160, 86) or Color3.fromRGB(46, 48, 58) })
 	end
 	local function setFlyLevel(n)
 		flyLevel = math.clamp(n, 1, FLY_MAX)
@@ -2018,18 +2425,18 @@ local function buildSelf(pages, say)
 	end
 	local function setFly(v) S.fly = v and true or false; flyRefresh() end
 	local function buildFlyPanel()
-		flyPanel = mk(_obczbshz({175,220,204,217,210}), {
+		flyPanel = mk("Frame", {
 			Size = UDim2.fromOffset(176, 116), Position = UDim2.new(0, 24, 0.3, 0),
-			BackgroundColor3 = Color3.fromRGB(9, 4, 6), BackgroundTransparency = 0.08, ZIndex = 20, Visible = false,
+			BackgroundColor3 = Color3.fromRGB(13, 14, 18), BackgroundTransparency = 0.08, ZIndex = 20, Visible = false,
 		}, gui)
 		round(flyPanel, 14); stroke(flyPanel, 2)
-		local title = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = _obczbshz({75,6,243,140,141,196,222,209,227}), Size = UDim2.new(1, -34, 0, 28), Position = UDim2.fromOffset(12, 2), BackgroundTransparency = 1,
+		local title = mk("TextLabel", {
+			Text = "✈  Voar", Size = UDim2.new(1, -34, 0, 28), Position = UDim2.fromOffset(12, 2), BackgroundTransparency = 1,
 			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 21,
 		}, flyPanel)
-		local x = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
-			Text = _obczbshz({75,6,0}), Size = UDim2.fromOffset(22, 22), Position = UDim2.new(1, -28, 0, 5), AutoButtonColor = false,
-			BackgroundColor3 = Color3.fromRGB(40, 8, 12), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 11, ZIndex = 21,
+		local x = mk("TextButton", {
+			Text = "✕", Size = UDim2.fromOffset(22, 22), Position = UDim2.new(1, -28, 0, 5), AutoButtonColor = false,
+			BackgroundColor3 = Color3.fromRGB(40, 41, 49), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 11, ZIndex = 21,
 		}, flyPanel)
 		round(x, 11)
 		x.MouseButton1Click:Connect(function()
@@ -2037,30 +2444,30 @@ local function buildSelf(pages, say)
 			flyPanel.Visible = false
 			for _, set in ipairs(flyToggles) do pcall(set, false) end
 		end)
-		flyOnBtn = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
-			Text = _obczbshz({184,176,177}), Size = UDim2.new(1, -24, 0, 32), Position = UDim2.fromOffset(12, 34), AutoButtonColor = false,
-			BackgroundColor3 = Color3.fromRGB(120, 22, 30), TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 16, ZIndex = 21,
+		flyOnBtn = mk("TextButton", {
+			Text = "OFF", Size = UDim2.new(1, -24, 0, 32), Position = UDim2.fromOffset(12, 34), AutoButtonColor = false,
+			BackgroundColor3 = Color3.fromRGB(46, 48, 58), TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 16, ZIndex = 21,
 		}, flyPanel)
 		round(flyOnBtn, 10)
 		flyOnBtn.MouseButton1Click:Connect(function() setFly(not S.fly) end)
 		local function stepBtn(txt, xpos, delta)
-			local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			local b = mk("TextButton", {
 				Text = txt, Size = UDim2.fromOffset(38, 32), Position = xpos, AutoButtonColor = false,
 				BackgroundColor3 = PANEL, TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 20, ZIndex = 21,
 			}, flyPanel)
 			round(b, 10); stroke(b, 1.5, UI.EDGE)
 			b.MouseButton1Click:Connect(function() setFlyLevel(flyLevel + delta) end)
 		end
-		stepBtn(_obczbshz({75,242,253}), UDim2.fromOffset(12, 74), -1)
-		stepBtn(_obczbshz({148}), UDim2.new(1, -50, 0, 74), 1)
-		flyLvlLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = _obczbshz({}), Size = UDim2.new(1, -112, 0, 32), Position = UDim2.fromOffset(56, 74), BackgroundTransparency = 1,
+		stepBtn("−", UDim2.fromOffset(12, 74), -1)
+		stepBtn("+", UDim2.new(1, -50, 0, 74), 1)
+		flyLvlLbl = mk("TextLabel", {
+			Text = "", Size = UDim2.new(1, -112, 0, 32), Position = UDim2.fromOffset(56, 74), BackgroundTransparency = 1,
 			TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 11, ZIndex = 21,
 		}, flyPanel)
 		makeDraggable(title, flyPanel, nil, nil, keepBarOnScreen(title))
 		flyRefresh()
 	end
-
+	-- liga/desliga o painel (o voo começa ligado; o ON/OFF do painel liga e desliga sem fechar)
 	local function setFlyPanel(v)
 		if v then
 			if not flyPanel then buildFlyPanel() end
@@ -2079,14 +2486,14 @@ local function buildSelf(pages, say)
 			if h:GetStateEnabled(Enum.HumanoidStateType.Seated) then h:SetStateEnabled(Enum.HumanoidStateType.Seated, false) end
 			if h.Sit or h.SeatPart then
 				local sp = h.SeatPart
-				local w = sp and sp:FindFirstChild(_obczbshz({188,207,204,224,196,211,219,212}))
+				local w = sp and sp:FindFirstChild("SeatWeld")
 				if w then w:Destroy() end
 				h.Sit = false
 			end
 		end
 		if S.noclip then
 			for _, p in ipairs(c:GetDescendants()) do
-				if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p.CanCollide then p.CanCollide = false end
+				if p:IsA("BasePart") and p.CanCollide then p.CanCollide = false end
 			end
 		end
 		if S.speed then h.WalkSpeed = S.speedVal end
@@ -2106,7 +2513,7 @@ local function buildSelf(pages, say)
 			for _, pl in ipairs(Players:GetPlayers()) do
 				if pl ~= lp and pl.Character then
 					for _, p in ipairs(pl.Character:GetDescendants()) do
-						if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and p.CanCollide then p.CanCollide = false end
+						if p:IsA("BasePart") and p.CanCollide then p.CanCollide = false end
 					end
 				end
 			end
@@ -2126,7 +2533,7 @@ local function buildSelf(pages, say)
 			if res then
 				local ins = res.Instance
 				local nm = ins:GetFullName():lower()
-				local waterish = res.Material == Enum.Material.Water or nm:find(_obczbshz({224,203,223,209,223})) or nm:find(_obczbshz({207,214,218,219,209})) or nm:find(_obczbshz({221,221,224,218,206,219,216}))
+				local waterish = res.Material == Enum.Material.Water or nm:find("water") or nm:find("flood") or nm:find("tsunami")
 					or (not ins.CanCollide and ins.Transparency >= 0.2 and ins.Color.B > ins.Color.R + 0.1)
 				if waterish then surfaceY = res.Position.Y end
 			end
@@ -2135,8 +2542,8 @@ local function buildSelf(pages, say)
 			end
 			if surfaceY then
 				if not wwPart then
-					wwPart = mk(_obczbshz({185,203,221,224}), {
-						Name = _obczbshz({188,210,212,218,181,227,209,199,210,230,216,230}), Size = Vector3.new(14, 1, 14), Anchored = true, CanCollide = true,
+					wwPart = mk("Part", {
+						Name = "ShinHubWater", Size = Vector3.new(14, 1, 14), Anchored = true, CanCollide = true,
 						CanQuery = false, CanTouch = false, Transparency = 1,
 					}, workspace)
 				end
@@ -2149,7 +2556,7 @@ local function buildSelf(pages, say)
 		if S.fly then
 			if not selfBV or selfBV.Parent ~= r then
 				stopSelfFly()
-				selfBV = mk(_obczbshz({171,217,207,229,195,211,219,223,212,219,231,237}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
+				selfBV = mk("BodyVelocity", { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
 			end
 			local mv = h.MoveDirection
 			local look = workspace.CurrentCamera.CFrame.LookVector
@@ -2159,11 +2566,11 @@ local function buildSelf(pages, say)
 				up = look.Y * math.clamp(mv:Dot(flat.Unit), -1, 1)
 			end
 			if S.flyBtns then
-				up = ((S.flyUp and 1 or 0) - (S.flyDown and 1 or 0))
+				up = ((S.flyUp and 1 or 0) - (S.flyDown and 1 or 0)) -- botões: sobe/desce, solto = parado
 			end
 			local target = mv * S.flyVal + Vector3.new(0, up * S.flyVal, 0)
-			selfBV.Velocity = selfBV.Velocity:Lerp(target, 0.35)
-
+			selfBV.Velocity = selfBV.Velocity:Lerp(target, 0.35) -- arranca e para suave
+			-- postura: em pé, sem girar, virado pra onde anda
 			if not flyFx.active or flyFx.hum ~= h then
 				flyFx.active = true; flyFx.hum = h; flyFx.states = {}
 				for _, st in ipairs({ Enum.HumanoidStateType.FallingDown, Enum.HumanoidStateType.Ragdoll }) do
@@ -2174,7 +2581,7 @@ local function buildSelf(pages, say)
 			end
 			if not flyFx.gyro or flyFx.gyro.Parent ~= r then
 				if flyFx.gyro then flyFx.gyro:Destroy() end
-				flyFx.gyro = mk(_obczbshz({171,217,207,229,180,231,225,223}), { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 30000, D = 800, CFrame = r.CFrame }, r)
+				flyFx.gyro = mk("BodyGyro", { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 30000, D = 800, CFrame = r.CFrame }, r)
 			end
 			local face = Vector3.new(mv.X, 0, mv.Z)
 			if face.Magnitude > 0.05 then
@@ -2185,11 +2592,11 @@ local function buildSelf(pages, say)
 				flyFx.face = f2.Magnitude > 0.05 and f2.Unit or Vector3.new(0, 0, -1)
 			end
 			flyFx.gyro.CFrame = CFrame.lookAt(r.Position, r.Position + flyFx.face)
-
+			-- animação: andando no ar (parado = idle no ar)
 			if target.Magnitude > 1 then
-				flyAnim(h, _obczbshz({224,203,215,215}), math.clamp(S.flyVal / 14.5, 0.7, 2.2))
+				flyAnim(h, "walk", math.clamp(S.flyVal / 14.5, 0.7, 2.2))
 			else
-				flyAnim(h, _obczbshz({210,206,215,209}), 1)
+				flyAnim(h, "idle", 1)
 			end
 		else
 			stopSelfFly()
@@ -2202,10 +2609,12 @@ local function buildSelf(pages, say)
 		end
 	end)
 
+	-- ===== Anti-lag: segura flood de partículas, sons e explosões feitos por scripts de lag =====
+	-- (só protege o SEU aparelho; lag causado no servidor não dá pra bloquear daqui)
 	local LAG_LIMITS = { ParticleEmitter = 40, Sound = 25, Explosion = 15, Fire = 25, Smoke = 25, Sparkles = 25, Beam = 50, Trail = 50 }
 	local lag = { on = false, cnt = {}, t0 = 0, bad = 0, lastClean = 0, started = 0 }
 	local function lagOwn(o)
-		return o:GetAttribute(_obczbshz({173,221,177,228})) or o.Name == _obczbshz({188,210,212,218,179,215,225,213}) or o.Name == _obczbshz({170,206,216,178,229,180,216,226,214})
+		return o:GetAttribute("DsFx") or o.Name == "ShinFire" or o.Name == "AdmFxFire"
 	end
 	local function lagAdded(o)
 		if not lag.on then return end
@@ -2217,14 +2626,14 @@ local function buildSelf(pages, say)
 		lag.cnt[o.ClassName] = n
 		if n > lim then
 			task.defer(function() pcall(function() o:Destroy() end) end)
-		elseif o:IsA(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233})) and o.Rate > 50 then
+		elseif o:IsA("ParticleEmitter") and o.Rate > 50 then
 			o.Rate = 50
 		end
 	end
 	local function lagEmergency()
 		for _, o in ipairs(workspace:GetDescendants()) do
 			if LAG_LIMITS[o.ClassName] and not lagOwn(o) then
-				if o:IsA(_obczbshz({188,217,224,218,209})) then pcall(function() o:Stop() end)
+				if o:IsA("Sound") then pcall(function() o:Stop() end)
 				else pcall(function() o:Destroy() end) end
 			end
 		end
@@ -2240,7 +2649,7 @@ local function buildSelf(pages, say)
 		lag.on, lag.cnt, lag.t0, lag.bad, lag.started = true, {}, os.clock(), 0, os.clock()
 		lagConn = workspace.DescendantAdded:Connect(lagAdded)
 		lagHB = RunService.Heartbeat:Connect(function(dt)
-
+			-- travou feio (menos de ~3 fps por 3 frames seguidos): limpa o que costuma causar lag
 			if os.clock() - lag.started < 15 then return end
 			if dt > 0.35 then lag.bad = lag.bad + 1 else lag.bad = 0 end
 			if lag.bad >= 3 and os.clock() - lag.lastClean > 4 then
@@ -2250,6 +2659,7 @@ local function buildSelf(pages, say)
 		end)
 	end
 
+	-- ===== Fling nos outros: gira rápido; quem encostar em você sai voando e VOCÊ fica no lugar =====
 	local tfTok, tfRoot, tfOld = 0, nil, {}
 	local startTFling
 	local function stopTFling()
@@ -2268,7 +2678,7 @@ local function buildSelf(pages, say)
 		local c, r = lp.Character, hrp()
 		if not (c and r) then return end
 		for _, p in ipairs(c:GetDescendants()) do
-			if p:IsA(_obczbshz({171,203,222,209,189,207,225,228})) then
+			if p:IsA("BasePart") then
 				tfOld[p] = p.CustomPhysicalProperties or false
 				p.CustomPhysicalProperties = PhysicalProperties.new(100, 0.3, 0.5, 1, 1)
 			end
@@ -2281,7 +2691,7 @@ local function buildSelf(pages, say)
 				if not root then
 					task.wait(0.5)
 				elseif tfRoot ~= root then
-					startTFling()
+					startTFling() -- renasceu: refaz tudo
 					return
 				else
 					local v = root.AssemblyLinearVelocity
@@ -2296,14 +2706,15 @@ local function buildSelf(pages, say)
 		end)
 	end
 
+	-- ===== Blocos soltos (desancorados): telecinese e fling parts =====
 	local function claimSim()
-		pcall(function() sethiddenproperty(lp, _obczbshz({188,211,216,225,217,207,227,217,224,224,197,213,217,223,236,235}), 1e9) end)
+		pcall(function() sethiddenproperty(lp, "SimulationRadius", 1e9) end)
 		pcall(function() lp.MaximumSimulationRadius = 1e9 end)
 	end
 	local function isLoose(p)
-		if not (p and p:IsA(_obczbshz({171,203,222,209,189,207,225,228}))) or p.Anchored then return false end
-		if p.Name == _obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}) or p.Name == _obczbshz({188,210,212,218,181,227,209,199,210,230,216,230}) or p:GetAttribute(_obczbshz({173,221,177,228})) then return false end
-		if p:FindFirstAncestorOfClass(_obczbshz({170,205,206,209,224,225,222,226,234})) or p:FindFirstAncestorOfClass(_obczbshz({189,217,218,216})) then return false end
+		if not (p and p:IsA("BasePart")) or p.Anchored then return false end
+		if p.Name == "HumanoidRootPart" or p.Name == "ShinHubWater" or p:GetAttribute("DsFx") then return false end
+		if p:FindFirstAncestorOfClass("Accessory") or p:FindFirstAncestorOfClass("Tool") then return false end
 		local root = p.AssemblyRootPart
 		if root and root.Anchored then return false end
 		for _, pl in ipairs(Players:GetPlayers()) do
@@ -2323,8 +2734,8 @@ local function buildSelf(pages, say)
 		claimSim()
 		tk.part = part
 		part.CanCollide = true
-		tk.bp = mk(_obczbshz({171,217,207,229,189,221,226,217,229,219,226,226}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), P = 1e5, D = 2e3, Position = part.Position }, part)
-		tk.bg = mk(_obczbshz({171,217,207,229,180,231,225,223}), { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 1e4, D = 500, CFrame = CFrame.new() }, part)
+		tk.bp = mk("BodyPosition", { MaxForce = Vector3.new(1e9, 1e9, 1e9), P = 1e5, D = 2e3, Position = part.Position }, part)
+		tk.bg = mk("BodyGyro", { MaxTorque = Vector3.new(1e9, 1e9, 1e9), P = 1e4, D = 500, CFrame = CFrame.new() }, part)
 		local r, h = hrp(), hum()
 		if r and h then
 			tk.y = r.Position.Y - (h.HipHeight + r.Size.Y / 2) - part.Size.Y / 2
@@ -2339,7 +2750,7 @@ local function buildSelf(pages, say)
 		if not (r and h) then return end
 		tk.t = tk.t + dt
 		if tk.t > 1 then tk.t = 0; claimSim() end
-
+		-- olhando pra cima/baixo e andando = o bloco sobe/desce (voo em cima do bloco)
 		local mv = h.MoveDirection
 		local look = workspace.CurrentCamera.CFrame.LookVector
 		local flat = Vector3.new(look.X, 0, look.Z)
@@ -2361,9 +2772,9 @@ local function buildSelf(pages, say)
 		local part = res and res.Instance
 		if part and isLoose(part) and part.Size.Magnitude < 300 then
 			tkGrab(part)
-			say(_obczbshz({171,214,218,207,220,142,223,213,216,225,148,148,182,228,219,221,153,223,232,156,224,231,236,225,161,230,232,240,234,180,167,215,245,242,240,172,253,0,240,176,244,251,0,245,196,248,248,1,17,9,187,1,189,255,13,4,6,194,19,22,6,198,29,23,10,28,217}))
+			say("Bloco pego! Ande em cima dele. Olhe pra cima/baixo e ande pra voar.")
 		else
-			say(_obczbshz({178,221,222,219,141,220,50,19,224,146,54,29,149,235,228,152,219,230,234,223,236,158,242,239,237,246,242,164,173,234,236,251,234,248,238,251,255,239,243,255,186,192}))
+			say("Isso não é um bloco solto (desancorado).")
 		end
 	end)
 
@@ -2375,7 +2786,7 @@ local function buildSelf(pages, say)
 		for _, d in ipairs(workspace:GetDescendants()) do
 			n = n + 1
 			if n % 3000 == 0 then task.wait() end
-			if d:IsA(_obczbshz({171,203,222,209,189,207,225,228})) and not d.Anchored and d.Size.Magnitude < 60 and d ~= tk.part and isLoose(d) then
+			if d:IsA("BasePart") and not d.Anchored and d.Size.Magnitude < 60 and d ~= tk.part and isLoose(d) then
 				table.insert(list, d)
 			end
 		end
@@ -2425,104 +2836,104 @@ local function buildSelf(pages, say)
 		end
 	end
 
-	section(dp, _obczbshz({188,217,205,222,210,228,216,230,214,228}))
+	section(dp, "Sobreviver")
 	do
-		local _, st = toggleRow(dp, _obczbshz({191,217,204,222}), _obczbshz({170,204,221,209,141,221,143,224,210,219,225,217,225,150,219,221,153,240,234,235,157,166,206,206,176,209,201,202,165,235,167,254,238,246,250,239,246,242,240,244,246,187,179,118,21,56,183,7,5,2,0,188,13,16,0,192,4,11,16,5,197,209,199,18,24,35,30,32,22,17,26,208,238,210,38,35,23,27}), function(v) setFlyPanel(v) end)
+		local _, st = toggleRow(dp, "Voar", "Abre o painel de voo (ON/OFF e velocidade) • olhe pra cima + joystick = sobe", function(v) setFlyPanel(v) end)
 		table.insert(flyToggles, st)
 	end
-	toggleRow(dp, _obczbshz({170,216,223,213,154,223,228,213,213,211}), _obczbshz({181,211,216,213,225,207,143,209,145,232,216,224,228,217,224,220,218,222,224,156,225,223,159,241,246,231,231,229}), function(v) S.nofall = v end)
-	rowBtn(dp, _obczbshz({188,223,205,213,223,142,160,160,161,146,230,232,234,218,234,152,161,224,240,227,230,240,159,228,226,162,70,37,236,251,232,177}), function()
+	toggleRow(dp, "Anti-queda", "Limita a velocidade da queda", function(v) S.nofall = v end)
+	rowBtn(dp, "Subir 100 studs (fugir da água)", function()
 		local r = hrp()
-		if r then r.CFrame = r.CFrame + Vector3.new(0, 100, 0); say(_obczbshz({188,223,205,213,226,142,160,160,161,146,230,232,234,218,234,166})) end
+		if r then r.CFrame = r.CFrame + Vector3.new(0, 100, 0); say("Subiu 100 studs.") end
 	end)
-	toggleRow(dp, _obczbshz({175,214,212,218,212,142,151,220,210,224,54,27,214,232,151,231,236,154,234,241,241,240,238,243,170}), _obczbshz({186,223,208,217,141,211,221,211,224,229,231,213,231,150,220,229,153,240,234,223,64,40,159,243,226,235,163,250,244,231,245,236,248,184,171,226,252,241,82,58,177,0,86,55,4,182,254,1,11,251,187,10,2,11,191,99,74,194,15,5,19,105,78,9,13,25}), function(v)
+	toggleRow(dp, "Fling (lançar os outros)", "Quem encostar em você sai voando. Você não gira nem é lançado", function(v)
 		S.tfling = v
 		if v then startTFling() else stopTFling() end
 	end)
-	sliderRow(dp, _obczbshz({175,217,221,47,20,207,143,212,224,146,217,224,222,228,222}), _obczbshz({178,216,223,209,219,225,216,212,210,214,216,148,217,229,151,228,218,232,62,35,222,235,228,238,245,241}), 50, 300, 150, function(v) S.flingVal = v end)
-	toggleRow(dp, _obczbshz({170,216,223,213,154,228,222,217,213}), _obczbshz({191,217,215,224,206,142,223,226,224,146,54,46,225,234,224,229,232,154,231,241,228,223,241,160,244,231,234,249,247,245,167,251,238,170,238,237,246,0,175,254,0,178,9,245,15,255,6}), function(v) S.antivoid = v end)
-	toggleRow(dp, _obczbshz({185,223,215,219,141,215,221,214,218,224,220,232,228}), _obczbshz({185,223,215,205,141,220,222,144,210,228,147,229,234,215,229,236,218,237,155,242,226,248,228,243,161,243,248,237,248,235,249}), function(v) S.infjump = v end)
-	toggleRow(dp, _obczbshz({170,216,207,205,223,142,226,223,211,228,216,148,214,150,58,25,224,239,220}), _obczbshz({185,214,204,224,206,212,222,226,222,211,147,221,227,236,224,235,60,39,241,225,233,158,237,225,161,245,248,244,234,248,237,75,54,237,244,241}), function(v)
+	sliderRow(dp, "Força do fling", "Intensidade do lançamento", 50, 300, 150, function(v) S.flingVal = v end)
+	toggleRow(dp, "Anti-void", "Volta pro último lugar seguro se cair no vazio", function(v) S.antivoid = v end)
+	toggleRow(dp, "Pulo infinito", "Pula no ar quantas vezes quiser", function(v) S.infjump = v end)
+	toggleRow(dp, "Andar sobre a água", "Plataforma invisível na superfície", function(v)
 		S.waterwalk = v
 		if not v and wwPart then wwPart:Destroy(); wwPart = nil end
 	end)
 	local island, islandBack
-	rowBtn(dp, _obczbshz({178,214,211,205,141,225,212,215,230,228,212,148,157,230,227,217,237,219,225,235,239,235,224,160,239,241,163,231,72,47,252,177}), function()
+	rowBtn(dp, "Ilha segura (plataforma no céu)", function()
 		local r = hrp()
 		if not r then return end
 		if not island or not island.Parent then
-			island = mk(_obczbshz({185,203,221,224}), {
-				Name = _obczbshz({188,210,212,218,181,227,209,185,221,218,212}), Size = Vector3.new(40, 2, 40), Anchored = true, CanCollide = true,
-				Material = Enum.Material.SmoothPlastic, Color = Color3.fromRGB(60, 8, 12),
+			island = mk("Part", {
+				Name = "ShinHubIlha", Size = Vector3.new(40, 2, 40), Anchored = true, CanCollide = true,
+				Material = Enum.Material.SmoothPlastic, Color = Color3.fromRGB(44, 46, 54),
 				Position = Vector3.new(r.Position.X, 3500, r.Position.Z),
 			}, workspace)
 		end
 		islandBack = r.CFrame
 		r.AssemblyLinearVelocity = Vector3.zero
 		r.CFrame = CFrame.new(island.Position + Vector3.new(0, 4, 0))
-		say(_obczbshz({183,203,139,213,217,214,208,144,228,215,218,233,231,215,165,152,206,237,224,156,159,212,238,236,245,227,245,164,233,231,167,241,245,242,236,174,173,255,4,241,255,246,2,180,5,247,10,11,250,12,201}))
+		say("Na ilha segura. Use \"Voltar da ilha\" quando passar.")
 	end)
-	rowBtn(dp, _obczbshz({191,217,215,224,206,224,143,212,210,146,220,224,221,215}), function()
+	rowBtn(dp, "Voltar da ilha", function()
 		local r = hrp()
 		if r and islandBack then
 			r.AssemblyLinearVelocity = Vector3.zero
 			r.CFrame = islandBack
-			say(_obczbshz({173,207,139,226,220,218,227,209,159}))
+			say("De volta.")
 		else
-			say(_obczbshz({191,217,206,47,23,142,208,217,223,214,212,148,227,57,26,231,153,224,234,229,157,238,241,225,161,235,239,236,230,180}))
+			say("Você ainda não foi pra ilha.")
 		end
 	end, true)
-	section(dp, _obczbshz({171,214,218,207,220,225,143,227,224,222,231,227,232}))
-	rowBtn(dp, _obczbshz({189,207,215,209,208,215,221,213,228,215,173,148,218,233,218,231,229,226,224,238,157,224,235,239,228,241}), function()
+	section(dp, "Blocos soltos")
+	rowBtn(dp, "Telecinese: escolher bloco", function()
 		tk.armed = true
-		say(_obczbshz({189,217,220,225,210,142,221,229,222,146,213,224,228,217,230,152,236,233,231,240,236,158,167,228,230,245,228,242,232,245,249,233,237,249,180,172,241,253,175,253,242,2,244,192,181,252,6,10,250,186,255,11,189,11,4,14,22,208}))
+		say("Toque num bloco solto (desancorado) do mapa, fora do menu.")
 	end)
-	rowBtn(dp, _obczbshz({189,207,215,209,208,215,221,213,228,215,173,148,232,229,227,236,218,236,155,222,233,237,226,239}), function() tkRelease(); say(_obczbshz({171,214,218,207,220,142,226,223,221,230,226,162})) end, true)
-	rowBtn(dp, _obczbshz({171,214,218,207,220,168,143,227,230,212,220,230,149,167,167}), function() tk.y = tk.y + 10 end, true)
-	rowBtn(dp, _obczbshz({171,214,218,207,220,168,143,212,214,229,214,217,231,150,168,168}), function() tk.y = tk.y - 10 end, true)
-	toggleRow(dp, _obczbshz({175,214,212,218,212,142,191,209,227,230,230}), _obczbshz({185,207,46,19,206,225,143,227,224,222,231,213,232,150,222,225,235,219,232,156,226,235,159,246,240,238,247,229,165,234,236,168,255,249,238,79,55}), function(v)
+	rowBtn(dp, "Telecinese: soltar bloco", function() tkRelease(); say("Bloco solto.") end, true)
+	rowBtn(dp, "Bloco: subir 10", function() tk.y = tk.y + 10 end, true)
+	rowBtn(dp, "Bloco: descer 10", function() tk.y = tk.y - 10 end, true)
+	toggleRow(dp, "Fling Parts", "Peças soltas giram em volta de você", function(v)
 		fpSet(v)
-		say(v and _obczbshz({185,220,218,207,226,224,208,222,213,225,147,228,218,57,30,217,236,154,238,235,233,242,224,243,175,176,177}) or _obczbshz({175,214,212,218,212,142,191,209,227,230,230,148,217,219,234,228,226,225,220,224,236,172}))
+		say(v and "Procurando peças soltas..." or "Fling Parts desligado.")
 	end)
-	sliderRow(dp, _obczbshz({187,203,212,219,141,210,208,227,145,226,216,55,28,215,234}), _obczbshz({173,211,222,224,48,16,221,211,218,211,147,216,228,150,218,59,38,236,222,241,233,237}), 8, 40, 14, function(v) fp.radius = v end)
-	section(dp, _obczbshz({185,220,218,224,210,49,22,51,20,225}))
-	toggleRow(dp, _obczbshz({170,216,223,213,154,212,219,217,223,217}), _obczbshz({178,209,217,219,223,207,143,211,224,222,220,231,56,25,230,152,221,223,155,235,242,242,241,239,244,162,237,243,236,231,235,247,251,239,254,172,242,174,9,245,3,243,179,251,254,8,6,199,250,12,13,1,10,3,18,19,16}), function(v) S.antifling = v end)
-
-	local pp = pages[_obczbshz({185,220,218,224,210,49,22,51,38,215,230})]
+	sliderRow(dp, "Raio das peças", "Distância do círculo", 8, 40, 14, function(v) fp.radius = v end)
+	section(dp, "Proteção")
+	toggleRow(dp, "Anti-fling", "Ignora colisão de outros jogadores e zera giro/arremesso", function(v) S.antifling = v end)
+	-- aba Proteções (Brookhaven)
+	local pp = pages["Proteções"]
 	if pp then
-		section(pp, _obczbshz({185,220,218,224,210,49,22,51,38,215,230}))
-		toggleRow(pp, _obczbshz({170,216,223,213,154,212,219,217,223,217}), _obczbshz({178,209,217,219,223,207,143,211,224,222,220,231,56,25,230,152,221,223,155,235,242,242,241,239,244,162,237,243,236,231,235,247,251,239,254,172,242,174,9,245,3,243,179,251,254,8,6,199,250,12,13,1,10,3,18,19,16}), function(v) S.antifling = v end)
-		toggleRow(pp, _obczbshz({170,216,223,213,154,228,222,217,213}), _obczbshz({191,217,215,224,206,142,223,226,224,146,54,46,225,234,224,229,232,154,231,241,228,223,241,160,244,231,234,249,247,245,167,251,238,170,238,237,246,0,175,244,0,178,0,245,5,247}), function(v) S.antivoid = v end)
-		toggleRow(pp, _obczbshz({188,207,216,140,209,207,221,223,145,214,216,148,230,235,220,220,218}), _obczbshz({187,207,207,225,231,142,208,144,231,215,223,227,216,223,219,217,221,223,155,224,222,158,240,245,230,230,228}), function(v) S.nofall = v end)
-		toggleRow(pp, _obczbshz({170,216,223,213,154,225,212,222,229,211,229}), _obczbshz({183,45,14,219,141,210,212,217,233,211,147,231,218,228,235,217,235,154,224,233,157,225,224,242,243,241,175,164,232,231,235,237,242,252,236,172,251,243,252,176,243,243,1,247,4}), function(v)
+		section(pp, "Proteções")
+		toggleRow(pp, "Anti-fling", "Ignora colisão de outros jogadores e zera giro/arremesso", function(v) S.antifling = v end)
+		toggleRow(pp, "Anti-void", "Volta pro último lugar seguro se cair do mapa", function(v) S.antivoid = v end)
+		toggleRow(pp, "Sem dano de queda", "Reduz a velocidade da queda", function(v) S.nofall = v end)
+		toggleRow(pp, "Anti-sentar", "Não deixa sentar em carro, cadeira nem banco", function(v)
 			S.antisit = v
 			if not v then
 				local h = hum()
 				if h then h:SetStateEnabled(Enum.HumanoidStateType.Seated, true) end
 			end
 		end)
-		toggleRow(pp, _obczbshz({170,216,223,213,154,218,208,215}), _obczbshz({188,207,210,225,223,207,143,214,221,225,226,216,149,218,220,152,233,219,237,240,64,43,226,245,237,227,246,176,165,249,246,246,252,170,240,172,242,6,255,252,0,5,86,73,250,9,183,252,254,186,14,255,15,7,15,20,20,194,7,9,197,18,8,15}), function(v)
+		toggleRow(pp, "Anti-lag", "Segura flood de partículas, sons e explosões de scripts de lag", function(v)
 			if v then lagStart() else lagStop() end
-			say(v and _obczbshz({170,216,223,213,154,218,208,215,145,222,220,219,214,218,230,166}) or _obczbshz({170,216,223,213,154,218,208,215,145,214,216,231,225,223,222,217,221,233,169}))
+			say(v and "Anti-lag ligado." or "Anti-lag desligado.")
 		end)
 	end
-
-	local mp = pages[_obczbshz({182,217,225,213,218,211,221,228,224})]
+	-- aba Movimento (Brookhaven): mesmos controles do Natural Disaster
+	local mp = pages["Movimento"]
 	if mp then
-		section(mp, _obczbshz({182,217,225,213,218,211,221,228,224}))
+		section(mp, "Movimento")
 		do
-			local _, st = toggleRow(mp, _obczbshz({191,217,204,222}), _obczbshz({170,204,221,209,141,221,143,224,210,219,225,217,225,150,219,221,153,240,234,235,157,166,206,206,176,209,201,202,165,235,167,254,238,246,250,239,246,242,240,244,246,187,179,118,21,56,183,7,5,2,0,188,13,16,0,192,4,11,16,5,197,209,199,18,24,35,30,32,22,17,26,208,238,210,38,35,23,27}), function(v) setFlyPanel(v) end)
+			local _, st = toggleRow(mp, "Voar", "Abre o painel de voo (ON/OFF e velocidade) • olhe pra cima + joystick = sobe", function(v) setFlyPanel(v) end)
 			table.insert(flyToggles, st)
 		end
-		toggleRow(mp, _obczbshz({191,207,215,219,208,215,211,209,213,215}), _obczbshz({181,211,210,205,141,207,143,230,214,222,226,215,222,218,216,220,222,154,224,239,224,237,235,232,234,230,228,164,230,232,232,241,1,249}), function(v)
+		toggleRow(mp, "Velocidade", "Liga a velocidade escolhida abaixo", function(v)
 			S.speed = v
 			if not v then local h = hum(); if h then h.WalkSpeed = 16 end end
 		end)
-		sliderRow(mp, _obczbshz({191,203,215,219,223,142,211,209,145,232,216,224,228,217,224,220,218,222,224}), _obczbshz({172,217,221,222,214,210,208}), 16, 120, 50, function(v) S.speedVal = v end)
-
-		flyGui = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromOffset(60, 124), Position = UDim2.new(0, 24, 0.55, -62), BackgroundTransparency = 1, Visible = false, ZIndex = 20 }, gui)
+		sliderRow(mp, "Valor da velocidade", "Corrida", 16, 120, 50, function(v) S.speedVal = v end)
+		-- botões ▲ ▼ na tela (segurar): aparecem só com "Voar" + "Botões de voo" ligados
+		flyGui = mk("Frame", { Size = UDim2.fromOffset(60, 124), Position = UDim2.new(0, 24, 0.55, -62), BackgroundTransparency = 1, Visible = false, ZIndex = 20 }, gui)
 		local function holdBtn(txt, y, key)
-			local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			local b = mk("TextButton", {
 				Text = txt, Size = UDim2.fromOffset(60, 56), Position = UDim2.fromOffset(0, y),
 				BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
 				Font = Enum.Font.GothamBold, TextSize = 24, ZIndex = 21,
@@ -2532,69 +2943,70 @@ local function buildSelf(pages, say)
 			b.InputBegan:Connect(function(i) if isHold(i) then S[key] = true end end)
 			b.InputEnded:Connect(function(i) if isHold(i) then S[key] = false end end)
 		end
-		holdBtn(_obczbshz({75,0,29}), 0, _obczbshz({207,214,228,193,221}))
-		holdBtn(_obczbshz({75,0,39}), 68, _obczbshz({207,214,228,176,220,229,221}))
-		toggleRow(mp, _obczbshz({171,217,223,47,34,211,226,144,213,215,147,234,228,229,151,160,236,239,221,229,239,173,227,229,244,229,232,246,174}), _obczbshz({172,217,216,140,220,142,197,223,210,228,147,224,222,221,216,220,232,166,155,233,236,241,243,242,226,162,101,26,55,166,105,30,69,170,249,237,173,2,244,252,242,204,179,7,250,253,12,10,254,186,11,14,254,190,18,21,3,11,21,196,20,27,199,12,14,29,14,17,31,233,207,35,32,30,39,35,213,243,215,30,34,29,28,220,45,31,49,33,37,49,227,50,52,230,40,58}), function(v)
+		holdBtn("▲", 0, "flyUp")
+		holdBtn("▼", 68, "flyDown")
+		toggleRow(mp, "Botões de voo (subir/descer)", "Com o Voar ligado, mostra ▲ ▼ na tela: segure pra subir ou descer; solto = fica parado no ar", function(v)
 			S.flyBtns = v
 			if not v then S.flyUp = false; S.flyDown = false end
 		end)
-		toggleRow(mp, _obczbshz({185,223,215,219,141,207,219,228,224}), _obczbshz({179,223,216,220,189,221,230,213,227,146,172,164}), function(v)
+		toggleRow(mp, "Pulo alto", "JumpPower 90", function(v)
 			S.jump = v
 			if not v then local h = hum(); if h then h.JumpPower = 50 end end
 		end)
-		toggleRow(mp, _obczbshz({185,223,215,219,141,215,221,214,218,224,220,232,228}), _obczbshz({185,223,215,205,141,220,222,144,210,228,147,229,234,215,229,236,218,237,155,242,226,248,228,243,161,243,248,237,248,235,249}), function(v) S.infjump = v end)
-		toggleRow(mp, _obczbshz({170,222,221,205,227,211,226,227,210,228,147,228,214,232,220,220,222,237}), _obczbshz({183,217,206,216,214,222}), function(v) S.noclip = v end)
+		toggleRow(mp, "Pulo infinito", "Pula no ar quantas vezes quiser", function(v) S.infjump = v end)
+		toggleRow(mp, "Atravessar paredes", "Noclip", function(v) S.noclip = v end)
 	end
-
+	-- ===== aba Evade (só aparece no Evade): botões flutuantes de Infinite Slide / Auto Hop + gravador de log =====
 	do
-		local evp = pages[_obczbshz({174,224,204,208,210})]
+		local evp = pages["Evade"]
 		if evp then
 			local EV = {
 				slide = false, hop = false, showSlide = false, showHop = false, locked = false,
 				keyHeld = false, touchIn = nil, wasSliding = false, slideSpeed = 0, lastHop = 0, lastHook = 0,
-				lastTick = 0, lastAnims = _obczbshz({}), hn = 0, rec = true, spyOut = false, gState = _obczbshz({}), gAt = 0, hopAlways = false,
+				lastTick = 0, lastAnims = "", hn = 0, rec = true, spyOut = false, gState = "", gAt = 0, hopAlways = false,
 			}
 			local evConns, evButtons, recConns = {}, {}, {}
 			local setSlideMenu, setHopMenu, paintSlide, paintHop
 
+			-- ===== GRAVADOR: guarda tudo o que acontece (também vai pro log da aba Debug e pro arquivo) =====
 			local REC = { lines = {}, rate = {}, t0 = os.clock() }
 			local function ser(v, d)
 				d = d or 0
 				local t = typeof(v)
-				if t == _obczbshz({220,222,221,213,219,213}) then return string.format(_obczbshz({142,219}), v:sub(1, 60))
-				elseif t == _obczbshz({215,223,216,206,210,224}) then return string.format(_obczbshz({142,152,159,211}), v)
-				elseif t == _obczbshz({203,217,218,216,210,207,221}) or t == _obczbshz({215,211,215}) then return tostring(v)
-				elseif t == _obczbshz({191,207,206,224,220,224,162}) then return string.format(_obczbshz({191,157,147,145,155,159,213,156,150,160,164,218,161,155,165,169,223,163}), v.X, v.Y, v.Z)
-				elseif t == _obczbshz({172,176,221,205,218,211}) then local p = v.Position; return string.format(_obczbshz({172,176,147,145,155,159,213,156,150,160,164,218,161,155,165,169,223,163}), p.X, p.Y, p.Z)
-				elseif t == _obczbshz({178,216,222,224,206,220,210,213}) then return v:GetFullName()
-				elseif t == _obczbshz({221,203,205,216,210}) then
-					if d >= 2 then return _obczbshz({228,152,153,154,234}) end
+				if t == "string" then return string.format("%q", v:sub(1, 60))
+				elseif t == "number" then return string.format("%.4g", v)
+				elseif t == "boolean" or t == "nil" then return tostring(v)
+				elseif t == "Vector3" then return string.format("V3(%.1f,%.1f,%.1f)", v.X, v.Y, v.Z)
+				elseif t == "CFrame" then local p = v.Position; return string.format("CF(%.1f,%.1f,%.1f)", p.X, p.Y, p.Z)
+				elseif t == "Instance" then return v:GetFullName()
+				elseif t == "table" then
+					if d >= 2 then return "{...}" end
 					local out, n = {}, 0
 					for k, x in pairs(v) do
 						n = n + 1
-						if n > 8 then out[#out + 1] = _obczbshz({151,152,153}); break end
-						out[#out + 1] = tostring(k) .. _obczbshz({166}) .. ser(x, d + 1)
+						if n > 8 then out[#out + 1] = "..."; break end
+						out[#out + 1] = tostring(k) .. "=" .. ser(x, d + 1)
 					end
-					return _obczbshz({228}) .. table.concat(out, _obczbshz({149,138})) .. _obczbshz({230})
+					return "{" .. table.concat(out, ", ") .. "}"
 				end
-				return _obczbshz({165}) .. t .. _obczbshz({167})
+				return "<" .. t .. ">"
 			end
 			local function push(cat, msg)
 				local now = os.clock()
 				local r = hrp()
 				local sp = r and Vector3.new(r.AssemblyLinearVelocity.X, 0, r.AssemblyLinearVelocity.Z).Magnitude or 0
-				local line = string.format(_obczbshz({196,143,222,140,152,147,165,158,162,216,230,209,149,155,164,176,236,154,160,239,157,250,159,246,230,238,192,169,179,182,237}), os.date(_obczbshz({142,178,165,145,186,168,148,195})), now - REC.t0, cat, msg, sp)
+				local line = string.format("[%s +%6.1fs] %-8s %s | vel=%.0f", os.date("%H:%M:%S"), now - REC.t0, cat, msg, sp)
 				REC.lines[#REC.lines + 1] = line
 				if #REC.lines > 4000 then table.remove(REC.lines, 1) end
-				DSLOG.ev(_obczbshz({178,184,177,187}), _obczbshz({206,224,204,208,210}), cat .. _obczbshz({137}) .. msg)
+				DSLOG.ev("INFO", "evade", cat .. " " .. msg)
 			end
-
+			-- limite de linhas por segundo em cada categoria (o resto é contado e avisado)
 			local function rec(cat, msg, limit)
 				if not EV.rec then return end
 				local now = os.clock()
 				local r = REC.rate[cat]
 				if not r or now - r.t >= 1 then
-					if r and r.drop > 0 then push(cat, _obczbshz({145,149}) .. r.drop .. _obczbshz({137,214,212,218,213,207,226,144,224,223,220,232,222,218,216,235,179,154,232,241,230,242,238,160,243,69,36,244,238,234,246,177})) end
+					if r and r.drop > 0 then push(cat, "(+" .. r.drop .. " linhas omitidas: muito rápido)") end
 					r = { t = now, n = 0, drop = 0 }
 					REC.rate[cat] = r
 				end
@@ -2603,6 +3015,7 @@ local function buildSelf(pages, say)
 				push(cat, msg)
 			end
 
+			-- liga o gravador no personagem atual (refaz quando o personagem muda, ex.: começo da rodada)
 			local function unbindChar()
 				for _, cn in ipairs(recConns) do pcall(function() cn:Disconnect() end) end
 				recConns = {}
@@ -2610,65 +3023,67 @@ local function buildSelf(pages, say)
 			local function bindChar()
 				unbindChar()
 				local c, h = lp.Character, hum()
-				if not (c and h) then rec(_obczbshz({204,210,204,222}), _obczbshz({202,211,217,208,206,142,226,213,222,146,227,217,231,233,230,230,218,225,224,233,172,230,244,237,226,240,242,237,233})); return end
-				rec(_obczbshz({204,210,204,222}), _obczbshz({217,207,221,223,220,220,208,215,214,223,147}) .. c:GetFullName() .. _obczbshz({137,220,212,211,170}) .. tostring(h.RigType) .. _obczbshz({137,193,204,216,216,193,223,213,214,214,176}) .. tostring(h.WalkSpeed)
-					.. _obczbshz({137,180,224,217,221,190,222,231,214,228,176}) .. tostring(h.JumpPower) .. _obczbshz({137,180,224,217,221,182,212,217,216,218,231,177}) .. tostring(h.JumpHeight))
+				if not (c and h) then rec("char", "ainda sem personagem/humanoid"); return end
+				rec("char", "personagem " .. c:GetFullName() .. " rig=" .. tostring(h.RigType) .. " WalkSpeed=" .. tostring(h.WalkSpeed)
+					.. " JumpPower=" .. tostring(h.JumpPower) .. " JumpHeight=" .. tostring(h.JumpHeight))
 				local names = {}
-				for n, x in pairs(c:GetAttributes()) do names[#names + 1] = _obczbshz({204,210,204,222,155}) .. n .. _obczbshz({166}) .. tostring(x) end
-				for n, x in pairs(h:GetAttributes()) do names[#names + 1] = _obczbshz({209,223,216,154}) .. n .. _obczbshz({166}) .. tostring(x) end
-				for n, x in pairs(lp:GetAttributes()) do names[#names + 1] = _obczbshz({217,214,204,229,210,224,157}) .. n .. _obczbshz({166}) .. tostring(x) end
-				rec(_obczbshz({202,222,223,222}), _obczbshz({202,222,221,213,207,227,227,223,228,146,212,219,228,232,216,178,153}) .. (#names > 0 and table.concat(names, _obczbshz({149,138})) or _obczbshz({145,216,208,218,213,227,220,153})))
+				for n, x in pairs(c:GetAttributes()) do names[#names + 1] = "char." .. n .. "=" .. tostring(x) end
+				for n, x in pairs(h:GetAttributes()) do names[#names + 1] = "hum." .. n .. "=" .. tostring(x) end
+				for n, x in pairs(lp:GetAttributes()) do names[#names + 1] = "player." .. n .. "=" .. tostring(x) end
+				rec("attr", "atributos agora: " .. (#names > 0 and table.concat(names, ", ") or "(nenhum)"))
 				local kids = {}
-				for _, k in ipairs(c:GetChildren()) do kids[#kids + 1] = k.Name .. _obczbshz({163}) .. k.ClassName end
-				rec(_obczbshz({204,210,204,222}), _obczbshz({207,211,215,212,220,225,143,212,224,146,227,217,231,233,230,230,218,225,224,233,183,158}) .. table.concat(kids, _obczbshz({149,138})))
+				for _, k in ipairs(c:GetChildren()) do kids[#kids + 1] = k.Name .. ":" .. k.ClassName end
+				rec("char", "filhos do personagem: " .. table.concat(kids, ", "))
 				local function add(cn) recConns[#recConns + 1] = cn end
 				local function watch(o, tag)
-					add(o.AttributeChanged:Connect(function(n) rec(_obczbshz({202,222,223,222}), tag .. _obczbshz({151}) .. n .. _obczbshz({137,167,139}) .. ser(o:GetAttribute(n)), 20) end))
+					add(o.AttributeChanged:Connect(function(n) rec("attr", tag .. "." .. n .. " = " .. ser(o:GetAttribute(n)), 20) end))
 				end
-				watch(c, _obczbshz({204,210,204,222})); watch(h, _obczbshz({209,223,216})); watch(lp, _obczbshz({217,214,204,229,210,224}))
+				watch(c, "char"); watch(h, "hum"); watch(lp, "player")
 				local root = hrp()
-				if root then watch(root, _obczbshz({219,217,218,224})) end
-				add(c.ChildAdded:Connect(function(k) rec(_obczbshz({204,210,204,222}), _obczbshz({148,208,212,216,213,221,143}) .. k.Name .. _obczbshz({163}) .. k.ClassName, 10) end))
-				add(c.ChildRemoved:Connect(function(k) rec(_obczbshz({204,210,204,222}), _obczbshz({150,208,212,216,213,221,143}) .. k.Name, 10) end))
-				for _, prop in ipairs({ _obczbshz({192,203,215,215,192,222,212,213,213}), _obczbshz({179,223,216,220,189,221,230,213,227}), _obczbshz({179,223,216,220,181,211,216,215,217,230}), _obczbshz({177,211,219,180,210,215,214,216,229}), _obczbshz({177,207,204,216,225,214}), _obczbshz({185,214,204,224,211,221,225,221,196,230,212,226,217}), _obczbshz({188,211,223}) }) do
-					add(h:GetPropertyChangedSignal(prop):Connect(function() rec(_obczbshz({209,223,216}), prop .. _obczbshz({137,167,139}) .. ser(h[prop]), 6) end))
+				if root then watch(root, "root") end
+				add(c.ChildAdded:Connect(function(k) rec("char", "+filho " .. k.Name .. ":" .. k.ClassName, 10) end))
+				add(c.ChildRemoved:Connect(function(k) rec("char", "-filho " .. k.Name, 10) end))
+				for _, prop in ipairs({ "WalkSpeed", "JumpPower", "JumpHeight", "HipHeight", "Health", "PlatformStand", "Sit" }) do
+					add(h:GetPropertyChangedSignal(prop):Connect(function() rec("hum", prop .. " = " .. ser(h[prop]), 6) end))
 				end
-				add(h.StateChanged:Connect(function(old, new) rec(_obczbshz({206,221,223,205,209,221}), tostring(old) .. _obczbshz({137,151,169,140}) .. tostring(new), 20) end))
-				local an = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
+				add(h.StateChanged:Connect(function(old, new) rec("estado", tostring(old) .. " -> " .. tostring(new), 20) end))
+				local an = h:FindFirstChildOfClass("Animator")
 				if an then
 					add(an.AnimationPlayed:Connect(function(t)
-						rec(_obczbshz({202,216,212,217}), _obczbshz({221,217,206,219,226,142}) .. tostring(t.Name) .. _obczbshz({137,211,207,169}) .. tostring(t.Animation and t.Animation.AnimationId)
-							.. _obczbshz({137,206,224,222,170}) .. string.format(_obczbshz({142,152,157,210}), t.Length) .. _obczbshz({137,218,221,213,220,171}) .. tostring(t.Priority), 20)
-						t.Stopped:Connect(function() rec(_obczbshz({202,216,212,217}), _obczbshz({217,203,221,219,226,142}) .. tostring(t.Name), 20) end)
+						rec("anim", "tocou " .. tostring(t.Name) .. " id=" .. tostring(t.Animation and t.Animation.AnimationId)
+							.. " dur=" .. string.format("%.2f", t.Length) .. " prio=" .. tostring(t.Priority), 20)
+						t.Stopped:Connect(function() rec("anim", "parou " .. tostring(t.Name), 20) end)
 					end))
 				else
-					rec(_obczbshz({204,210,204,222}), _obczbshz({220,207,216,140,174,220,216,221,210,230,226,230,149,228,230,152,225,239,232,221,235,237,232,228}))
+					rec("char", "sem Animator no humanoid")
 				end
 			end
 			table.insert(evConns, lp.CharacterAdded:Connect(function()
-				EV.gState = _obczbshz({}); EV.gSpeed = nil
-				rec(_obczbshz({204,210,204,222}), _obczbshz({215,217,225,219,141,222,212,226,228,225,225,213,220,219,228,152,161,236,224,239,237,223,246,238,176,244,242,232,230,234,232,177}))
+				EV.gState = ""; EV.gSpeed = nil
+				rec("char", "novo personagem (respawn/rodada)")
 				task.wait(0.6)
 				bindChar()
 			end))
 
-			local watched = setmetatable({}, { __mode = _obczbshz({212}) })
+			-- remotes que o SERVIDOR manda pra você (só escuta, não altera nada)
+			local watched = setmetatable({}, { __mode = "k" })
 			local function watchRemote(r)
-				if watched[r] or not r:IsA(_obczbshz({187,207,216,219,225,211,180,230,214,224,231})) then return end
+				if watched[r] or not r:IsA("RemoteEvent") then return end
 				watched[r] = true
 				table.insert(evConns, r.OnClientEvent:Connect(function(...)
 					local a = table.pack(...)
 					local p = {}
 					for k = 1, math.min(a.n, 6) do p[k] = ser(a[k]) end
-					rec(_obczbshz({219,207,216,219,225,211,171,157}) .. r.Name, _obczbshz({145}) .. table.concat(p, _obczbshz({149,138})) .. _obczbshz({146}), 5)
+					rec("remote<-" .. r.Name, "(" .. table.concat(p, ", ") .. ")", 5)
 				end))
 			end
 			pcall(function()
-				local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
+				local RS = game:GetService("ReplicatedStorage")
 				for _, d in ipairs(RS:GetDescendants()) do watchRemote(d) end
 				table.insert(evConns, RS.DescendantAdded:Connect(function(d) task.defer(watchRemote, d) end))
 			end)
 
+			-- remotes que VOCÊ manda pro servidor (usa hook; só liga se você ativar no menu)
 			local spyHooked = false
 			local function installSpy()
 				if spyHooked then return true end
@@ -2676,15 +3091,15 @@ local function buildSelf(pages, say)
 				local nc = newcclosure or function(f) return f end
 				local ok = pcall(function()
 					local old
-					old = hookmetamethod(game, _obczbshz({200,201,217,205,218,211,210,209,221,222}), nc(function(self, ...)
+					old = hookmetamethod(game, "__namecall", nc(function(self, ...)
 						local m = getnamecallmethod()
-						if EV.spyOut and (m == _obczbshz({175,211,221,209,192,211,225,230,214,228}) or m == _obczbshz({178,216,225,219,216,211,194,213,227,232,216,230})) then
+						if EV.spyOut and (m == "FireServer" or m == "InvokeServer") then
 							local a = table.pack(...)
 							local okn, nm = pcall(function() return self.Name end)
 							task.defer(function()
 								local p = {}
 								for k = 1, math.min(a.n, 6) do p[k] = ser(a[k]) end
-								rec(_obczbshz({219,207,216,219,225,211,156,174}), (okn and nm or _obczbshz({168})) .. _obczbshz({163}) .. m .. _obczbshz({145}) .. table.concat(p, _obczbshz({149,138})) .. _obczbshz({146}), 15)
+								rec("remote->", (okn and nm or "?") .. ":" .. m .. "(" .. table.concat(p, ", ") .. ")", 15)
 							end)
 						end
 						return old(self, ...)
@@ -2694,25 +3109,27 @@ local function buildSelf(pages, say)
 				return ok
 			end
 
+			-- lê (só leitura) o estado de movimento que o PRÓPRIO jogo manda pro servidor: "Move", "Air", "Slide", "SlideAir"...
+			-- o Evade não usa atributo nem animação pra isso, por isso o slide nunca era detectado
 			local stateHooked = false
 			local function installStateHook()
 				if stateHooked or not (hookmetamethod and getnamecallmethod) then return stateHooked end
 				local nc = newcclosure or function(f) return f end
 				local ok = pcall(function()
 					local old
-					old = hookmetamethod(game, _obczbshz({200,201,217,205,218,211,210,209,221,222}), nc(function(self, ...)
+					old = hookmetamethod(game, "__namecall", nc(function(self, ...)
 						local a1, a2, a3 = ...
-						if getnamecallmethod() == _obczbshz({175,211,221,209,192,211,225,230,214,228}) then
+						if getnamecallmethod() == "FireServer" then
 							local okn, nm = pcall(function() return self.Name end)
-							if okn and nm == _obczbshz({190,218,207,205,225,211,178,216,210,228,212,215,233,219,233,188,218,238,220,206,226,229,232,243,245,244,252}) then
+							if okn and nm == "UpdateCharacterDataRegistry" then
 								pcall(function()
-
-									local list = (type(a1) == _obczbshz({221,203,205,216,210})) and a1 or { a1, a2, a3 }
+									-- o jogo manda 1 tabela: {1=buffer, 2="Slide", 3=V3, 4=velocidade} (a ordem varia)
+									local list = (type(a1) == "table") and a1 or { a1, a2, a3 }
 									local st, spd
 									for k = 2, 6 do
 										local x = list[k]
-										if type(x) == _obczbshz({220,222,221,213,219,213}) and not st then st = x
-										elseif type(x) == _obczbshz({215,223,216,206,210,224}) and not spd then spd = x end
+										if type(x) == "string" and not st then st = x
+										elseif type(x) == "number" and not spd then spd = x end
 									end
 									if st then EV.gState = st; EV.gAt = os.clock(); EV.gSpeed = spd end
 								end)
@@ -2725,16 +3142,17 @@ local function buildSelf(pages, say)
 				return ok
 			end
 			local hookOk = installStateHook()
-			rec(_obczbshz({206,224,204,208,210}), _obczbshz({209,217,218,215,141,210,222,144,214,229,231,213,217,229,151,220,232,154,229,235,228,237,185,160}) .. tostring(hookOk))
+			rec("evade", "hook do estado do jogo: " .. tostring(hookOk))
 
+			-- ===== botão flutuante redondo: toque = liga/desliga; arrastar = muda de lugar (se não estiver travado) =====
 			local function makeFloat(label, pos, onTap)
-				local b = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+				local b = mk("TextButton", {
 					Text = label, Size = UDim2.fromOffset(64, 64), Position = pos, Visible = false,
 					BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
 					Font = Enum.Font.GothamBold, TextSize = 11, TextWrapped = true, AutoButtonColor = false, ZIndex = 25,
 				}, gui)
 				round(b, 32)
-				local st = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+				local st = mk("UIStroke", { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
 				local dragging, moved, startPos, startIn = false, false, nil, nil
 				b.InputBegan:Connect(function(i)
 					if isPress(i) then
@@ -2766,72 +3184,74 @@ local function buildSelf(pages, say)
 			end
 
 			local slideBtn
-			slideBtn, paintSlide = makeFloat(_obczbshz({188,214,212,208,210,120,81,248,15}), UDim2.new(1, -90, 0.42, 0), function()
+			slideBtn, paintSlide = makeFloat("Slide\n∞", UDim2.new(1, -90, 0.42, 0), function()
 				EV.slide = not EV.slide
 				paintSlide(EV.slide)
-				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,153,195,233,226,230,236,232,244,230,162,214,240,238,234,236,168,182,200,171}) .. (EV.slide and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
+				rec("ui", "botão flutuante Infinite Slide -> " .. (EV.slide and "LIGADO" or "desligado"))
 				if setSlideMenu then setSlideMenu(EV.slide) end
 			end)
 			local hopBtn
-			hopBtn, paintHop = makeFloat(_obczbshz({170,223,223,219,119,182,222,224}), UDim2.new(1, -90, 0.42, 76), function()
+			hopBtn, paintHop = makeFloat("Auto\nHop", UDim2.new(1, -90, 0.42, 76), function()
 				EV.hop = not EV.hop
 				paintHop(EV.hop)
-				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,153,187,240,240,236,158,199,239,241,162,176,194,165}) .. (EV.hop and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
+				rec("ui", "botão flutuante Auto Hop -> " .. (EV.hop and "LIGADO" or "desligado"))
 				if setHopMenu then setHopMenu(EV.hop) end
 			end)
 
+			-- detecta se o personagem está deslizando (atributo/animação com "slid" ou "crouch" no nome)
 			local function slideActive(c, h)
 				local gs = EV.gState
-				if type(gs) == _obczbshz({220,222,221,213,219,213}) and gs ~= _obczbshz({}) then
-					if gs:find(_obczbshz({199,189,215,213,209,211})) then return true, _obczbshz({206,221,223,205,209,221,143,212,224,146,221,227,220,229,151}) .. gs end
-
-					if EV.wasSliding and gs:find(_obczbshz({199,173,221,219,226,209,215})) then return true, _obczbshz({220,214,212,208,210,142,212,227,229,215,225,216,222,218,230,152,161}) .. gs .. _obczbshz({146}) end
+				if type(gs) == "string" and gs ~= "" then
+					if gs:find("^Slide") then return true, "estado do jogo " .. gs end
+					-- o jogo encerra o slide sozinho quando a velocidade interna dele cai (vira CrouchMove); segue deslizando até sair do agachado
+					if EV.wasSliding and gs:find("^Crouch") then return true, "slide estendido (" .. gs .. ")" end
 					return false
 				end
 				for _, o in ipairs({ c, h }) do
 					for n, v in pairs(o:GetAttributes()) do
 						local ln = n:lower()
-						if (ln:find(_obczbshz({220,214,212,208})) or ln:find(_obczbshz({204,220,218,225,208,214}))) and v == true then return true, _obczbshz({202,222,223,222,141}) .. n end
-						if type(v) == _obczbshz({220,222,221,213,219,213}) then
+						if (ln:find("slid") or ln:find("crouch")) and v == true then return true, "attr " .. n end
+						if type(v) == "string" then
 							local lv = v:lower()
-							if lv:find(_obczbshz({220,214,212,208})) or lv:find(_obczbshz({204,220,218,225,208,214})) then return true, _obczbshz({202,222,223,222,141}) .. n .. _obczbshz({166}) .. v end
+							if lv:find("slid") or lv:find("crouch") then return true, "attr " .. n .. "=" .. v end
 						end
 					end
 				end
-				local an = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
+				local an = h:FindFirstChildOfClass("Animator")
 				local tracks = (an and an:GetPlayingAnimationTracks()) or {}
 				for _, t in ipairs(tracks) do
-					local nm = (t.Name or _obczbshz({})):lower()
-					local anm = (t.Animation and t.Animation.Name or _obczbshz({})):lower()
-					if nm:find(_obczbshz({220,214,212,208})) or anm:find(_obczbshz({220,214,212,208})) or nm:find(_obczbshz({204,220,218,225,208,214})) or anm:find(_obczbshz({204,220,218,225,208,214})) then return true, _obczbshz({202,216,212,217,141}) .. t.Name end
+					local nm = (t.Name or ""):lower()
+					local anm = (t.Animation and t.Animation.Name or ""):lower()
+					if nm:find("slid") or anm:find("slid") or nm:find("crouch") or anm:find("crouch") then return true, "anim " .. t.Name end
 				end
 				return false
 			end
 
-			local hooked = setmetatable({}, { __mode = _obczbshz({212}) })
+			-- botão de pular do celular: guarda o toque real que está nele (solta sozinho quando o dedo sai)
+			local hooked = setmetatable({}, { __mode = "k" })
 			local function hookJumpButton()
-				local pg = lp:FindFirstChild(_obczbshz({185,214,204,229,210,224,182,229,218}))
-				local tg = pg and pg:FindFirstChild(_obczbshz({189,217,224,207,213,181,228,217}))
-				local fr = tg and tg:FindFirstChild(_obczbshz({189,217,224,207,213,177,222,222,229,228,226,224,187,232,216,229,222}))
-				local jb = fr and fr:FindFirstChild(_obczbshz({179,223,216,220,175,227,227,228,224,224}))
+				local pg = lp:FindFirstChild("PlayerGui")
+				local tg = pg and pg:FindFirstChild("TouchGui")
+				local fr = tg and tg:FindFirstChild("TouchControlFrame")
+				local jb = fr and fr:FindFirstChild("JumpButton")
 				if jb and not hooked[jb] then
 					hooked[jb] = true
 					table.insert(evConns, jb.InputBegan:Connect(function(i) if isPress(i) then EV.touchIn = i end end))
 					table.insert(evConns, jb.InputEnded:Connect(function(i) if isPress(i) then EV.touchIn = nil end end))
-					rec(_obczbshz({217,223,215,219}), _obczbshz({203,217,223,47,16,221,143,212,214,146,227,233,225,215,233,152,233,219,223,238,64,33,238,160,229,241,163,231,234,242,252,244,234,252,171,241,251,241,254,254,5,4,244,248,4,208,183}) .. jb:GetFullName())
+					rec("pulo", "botão de pular padrão do celular encontrado: " .. jb:GetFullName())
 				end
 			end
 
 			local function isJumpKey(i) return i.KeyCode == Enum.KeyCode.Space or i.KeyCode == Enum.KeyCode.ButtonA end
 			table.insert(evConns, UIS.InputBegan:Connect(function(i, gp)
 				if i.KeyCode ~= Enum.KeyCode.Unknown then
-					rec(_obczbshz({221,207,206,216,206}), _obczbshz({75,240,254,140}) .. tostring(i.KeyCode) .. (gp and _obczbshz({137,146,212,218,225,211,225,214,210,213,216,157}) or _obczbshz({})), 20)
+					rec("tecla", "↓ " .. tostring(i.KeyCode) .. (gp and " (interface)" or ""), 20)
 					if isJumpKey(i) and not UIS:GetFocusedTextBox() then EV.keyHeld = true end
 				end
 				if isPress(i) then
-					local pg = lp:FindFirstChild(_obczbshz({185,214,204,229,210,224,182,229,218}))
+					local pg = lp:FindFirstChild("PlayerGui")
 					if not pg then return end
-					local inset = game:GetService(_obczbshz({176,223,212,191,210,224,229,217,212,215})):GetGuiInset()
+					local inset = game:GetService("GuiService"):GetGuiInset()
 					local seen, names, isJump = {}, {}, false
 					for _, dy in ipairs({ 0, inset.Y }) do
 						local ok, objs = pcall(function() return pg:GetGuiObjectsAtPosition(i.Position.X, i.Position.Y - dy) end)
@@ -2839,29 +3259,31 @@ local function buildSelf(pages, say)
 							for _, o in ipairs(objs) do
 								if not seen[o] then
 									seen[o] = true
-									local path = o:GetFullName():gsub(_obczbshz({199,186,215,205,230,211,225,227,150,160,206,210,154,164,212,163,158,168,203,232,222,247,228,242,200,247,236,169,179}), _obczbshz({}))
-									names[#names + 1] = path .. _obczbshz({145}) .. o.ClassName .. _obczbshz({146})
-									if o.Name:lower():find(_obczbshz({211,223,216,220})) or (o.Parent and o.Parent.Name:lower():find(_obczbshz({211,223,216,220}))) then isJump = true end
+									local path = o:GetFullName():gsub("^Players%.[^%.]+%.PlayerGui%.", "")
+									names[#names + 1] = path .. "(" .. o.ClassName .. ")"
+									if o.Name:lower():find("jump") or (o.Parent and o.Parent.Name:lower():find("jump")) then isJump = true end
 								end
 							end
 						end
 					end
 					if isJump then EV.touchIn = i end
-					rec(_obczbshz({221,217,220,225,210}), _obczbshz({75,240,254,140,149}) .. math.floor(i.Position.X) .. _obczbshz({149}) .. math.floor(i.Position.Y) .. _obczbshz({146,138}) .. (isJump and _obczbshz({196,186,192,184,188,203,143}) or _obczbshz({}))
-						.. (#names > 0 and table.concat(names, _obczbshz({137,165,139}), 1, math.min(#names, 5)) or _obczbshz({145,216,208,218,213,227,220,144,211,225,231,55,24,229,151,220,232,154,229,235,228,237,168})), 20)
+					rec("toque", "↓ (" .. math.floor(i.Position.X) .. "," .. math.floor(i.Position.Y) .. ") " .. (isJump and "[PULO] " or "")
+						.. (#names > 0 and table.concat(names, " ; ", 1, math.min(#names, 5)) or "(nenhum botão do jogo)"), 20)
 				end
 			end))
 			table.insert(evConns, UIS.InputEnded:Connect(function(i)
 				if i.KeyCode ~= Enum.KeyCode.Unknown then
-					rec(_obczbshz({221,207,206,216,206}), _obczbshz({75,240,252,140}) .. tostring(i.KeyCode), 20)
+					rec("tecla", "↑ " .. tostring(i.KeyCode), 20)
 					if isJumpKey(i) then EV.keyHeld = false end
 				end
 				if isPress(i) then
 					if EV.touchIn and i == EV.touchIn then EV.touchIn = nil end
-					rec(_obczbshz({221,217,220,225,210}), _obczbshz({75,240,252}), 20)
+					rec("toque", "↑", 20)
 				end
 			end))
 
+			-- Infinite Slide: o jogo sobrescreve a velocidade todo frame com uma velocidade interna que decai,
+			-- então além de escrever a velocidade usamos um LinearVelocity (o solver da física vence a ordem dos scripts)
 			local function killMover()
 				if EV.mover then pcall(function() EV.mover:Destroy() end); EV.mover = nil end
 				if EV.moverAtt then pcall(function() EV.moverAtt:Destroy() end); EV.moverAtt = nil end
@@ -2871,10 +3293,10 @@ local function buildSelf(pages, say)
 				if not (m and m.Parent) then
 					killMover()
 					local ok = pcall(function()
-						local att = Instance.new(_obczbshz({170,222,223,205,208,214,220,213,223,230}))
-						att.Name = _obczbshz({174,224,190,216,214,210,212,177,229,230}); att.Parent = r
-						local lv = Instance.new(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239}))
-						lv.Name = _obczbshz({174,224,190,216,214,210,212,188,199})
+						local att = Instance.new("Attachment")
+						att.Name = "EvSlideAtt"; att.Parent = r
+						local lv = Instance.new("LinearVelocity")
+						lv.Name = "EvSlideLV"
 						lv.Attachment0 = att
 						lv.RelativeTo = Enum.ActuatorRelativeTo.World
 						lv.VelocityConstraintMode = Enum.VelocityConstraintMode.Plane
@@ -2886,24 +3308,24 @@ local function buildSelf(pages, say)
 						EV.mover = lv; EV.moverAtt = att
 					end)
 					if not ok then killMover(); return false end
-					rec(_obczbshz({220,214,212,208,210}), _obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239,151,219,235,227,220,224,236}))
+					rec("slide", "LinearVelocity criado")
 				end
 				pcall(function() EV.mover.PlaneVelocity = Vector2.new(vx, vz) end)
 				return true
 			end
-
+			-- LinearVelocity(s) que o PRÓPRIO jogo usa pra mover o personagem no slide (o jogo reescreve o valor todo frame, com a velocidade decaindo)
 			local function gameSlideMovers(r)
 				local all, pref = {}, {}
 				for _, o in ipairs(r:GetChildren()) do
-					if o:IsA(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239})) and o.Name ~= _obczbshz({174,224,190,216,214,210,212,188,199}) and o.Enabled then
+					if o:IsA("LinearVelocity") and o.Name ~= "EvSlideLV" and o.Enabled then
 						all[#all + 1] = o
-						local an = o.Attachment0 and o.Attachment0.Name or _obczbshz({})
-						if an:lower():find(_obczbshz({220,214,212,208})) then pref[#pref + 1] = o end
+						local an = o.Attachment0 and o.Attachment0.Name or ""
+						if an:lower():find("slid") then pref[#pref + 1] = o end
 					end
 				end
 				return #pref > 0 and pref or all
 			end
-
+			-- sobe o valor do LinearVelocity do jogo até a velocidade S (mantém a direção que o jogo escolheu)
 			local function liftMover(lv, S)
 				local mode = lv.VelocityConstraintMode
 				local world = lv.RelativeTo == Enum.ActuatorRelativeTo.World
@@ -2938,63 +3360,63 @@ local function buildSelf(pages, say)
 					local flat = Vector3.new(v.X, 0, v.Z)
 					if not EV.wasSliding then
 						EV.slideSpeed = flat.Magnitude; EV.slideT0 = os.clock()
-						killMover()
+						killMover() -- garante que nenhum "prendedor" de direção da versão antiga fique no personagem
 						local lk = Vector3.new(r.CFrame.LookVector.X, 0, r.CFrame.LookVector.Z)
 						EV.slideDir = flat.Magnitude > 1 and flat.Unit or (lk.Magnitude > 0.01 and lk.Unit or Vector3.new(0, 0, -1))
-						rec(_obczbshz({220,214,212,208,210}), _obczbshz({220,214,212,208,210,142,179,181,197,183,182,200,182,186,198,152,161}) .. tostring(why) .. _obczbshz({146,138,225,209,217,142,216,222,218,213,220,213,225,179}) .. string.format(_obczbshz({142,152,156,210}), EV.slideSpeed))
+						rec("slide", "slide DETECTADO (" .. tostring(why) .. ") vel inicial=" .. string.format("%.1f", EV.slideSpeed))
 						local ch = {}
-						for _, d in ipairs(r:GetChildren()) do ch[#ch + 1] = d.Name .. _obczbshz({163}) .. d.ClassName end
-						rec(_obczbshz({220,214,212,208,210}), _obczbshz({207,211,215,212,220,225,143,212,224,146,187,233,226,215,229,231,226,222,205,235,236,242,207,225,243,246,189,164}) .. table.concat(ch, _obczbshz({149,138})))
+						for _, d in ipairs(r:GetChildren()) do ch[#ch + 1] = d.Name .. ":" .. d.ClassName end
+						rec("slide", "filhos do HumanoidRootPart: " .. table.concat(ch, ", "))
 						local mv = {}
 						for _, d in ipairs(c:GetDescendants()) do
-							if d.Name:sub(1, 7) ~= _obczbshz({174,224,190,216,214,210,212}) and (d:IsA(_obczbshz({171,217,207,229,186,221,229,213,227})) or d:IsA(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239})) or d:IsA(_obczbshz({191,207,206,224,220,224,181,223,227,213,216})) or d:IsA(_obczbshz({170,214,212,211,219,190,222,227,218,230,220,227,227}))) then
-								mv[#mv + 1] = d:GetFullName() .. _obczbshz({163}) .. d.ClassName
+							if d.Name:sub(1, 7) ~= "EvSlide" and (d:IsA("BodyMover") or d:IsA("LinearVelocity") or d:IsA("VectorForce") or d:IsA("AlignPosition")) then
+								mv[#mv + 1] = d:GetFullName() .. ":" .. d.ClassName
 							end
 						end
-						rec(_obczbshz({220,214,212,208,210}), _obczbshz({214,217,225,209,223,225,143,212,224,146,221,227,220,229,151,230,232,154,235,225,239,241,238,238,226,233,232,241,191,166}) .. (#mv > 0 and table.concat(mv, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219})))
+						rec("slide", "movers do jogo no personagem: " .. (#mv > 0 and table.concat(mv, ", ") or "nenhum"))
 							for _, lv in ipairs(r:GetChildren()) do
-								if lv:IsA(_obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239})) and lv.Name ~= _obczbshz({174,224,190,216,214,210,212,188,199}) then
-									rec(_obczbshz({220,214,212,208,210}), _obczbshz({181,192,139,208,220,142,217,223,216,225,173,148,214,234,235,181}) .. tostring(lv.Attachment0 and lv.Attachment0.Name) .. _obczbshz({137,203,223,213,227,221,172}) .. tostring(lv.Enabled) .. _obczbshz({137,215,218,208,220,171}) .. tostring(lv.VelocityConstraintMode)
-										.. _obczbshz({137,220,208,216,170}) .. tostring(lv.RelativeTo) .. _obczbshz({137,224,208,207,170}) .. ser(lv.VectorVelocity) .. _obczbshz({137,214,212,218,213,207,172}) .. ser(lv.LineVelocity) .. _obczbshz({137,218,215,205,219,221,172}) .. tostring(lv.PlaneVelocity), 8)
+								if lv:IsA("LinearVelocity") and lv.Name ~= "EvSlideLV" then
+									rec("slide", "LV do jogo: att=" .. tostring(lv.Attachment0 and lv.Attachment0.Name) .. " ativo=" .. tostring(lv.Enabled) .. " modo=" .. tostring(lv.VelocityConstraintMode)
+										.. " rel=" .. tostring(lv.RelativeTo) .. " vec=" .. ser(lv.VectorVelocity) .. " linha=" .. ser(lv.LineVelocity) .. " plano=" .. tostring(lv.PlaneVelocity), 8)
 								end
 							end
 					end
 					EV.wasSliding = true
-
+					-- Infinite Slide: NÃO mexe na direção (quem controla pra onde vai é o jogo, normal). Só impede a velocidade de cair abaixo da do começo.
 					if os.clock() - (EV.slideT0 or 0) < 0.25 then
-						EV.slideSpeed = math.max(EV.slideSpeed or 0, flat.Magnitude)
+						EV.slideSpeed = math.max(EV.slideSpeed or 0, flat.Magnitude) -- pega o pico logo no início
 					end
 					local S = EV.slideSpeed or 0
-					local gs = EV.gState or _obczbshz({})
+					local gs = EV.gState or ""
 					if S > 8 then
-						if type(gs) == _obczbshz({220,222,221,213,219,213}) and gs:find(_obczbshz({199,173,221,219,226,209,215})) then
-
+						if type(gs) == "string" and gs:find("^Crouch") then
+							-- o jogo já largou o slide (virou agachado): continua deslizando com um LinearVelocity nosso, direção = o que você aponta no joystick
 							local md = h.MoveDirection
 							local dd = Vector3.new(md.X, 0, md.Z)
 							if dd.Magnitude > 0.1 then EV.slideDir = dd.Unit end
 							if EV.slideDir then pushMover(r, EV.slideDir.X * S, EV.slideDir.Z * S) end
 							else
-
+							-- 1) mexe no LinearVelocity do jogo (é ele que manda a velocidade; escrever só AssemblyLinearVelocity era sobrescrito)
 								local lifted, gdir = false, nil
 							for _, lv in ipairs(gameSlideMovers(r)) do
 								local okl, ch, dr = pcall(liftMover, lv, S)
 								if okl and ch then lifted = true end
 								if okl and dr then gdir = dr end
 							end
-
+							-- 3) LinearVelocity nosso na MESMA direção e velocidade do jogo (não briga com ele; garante mesmo se o mover do jogo for outro tipo)
 							local pd = gdir or (flat.Magnitude > 0.5 and flat.Unit) or EV.slideDir
 							if pd then EV.slideDir = pd; pushMover(r, pd.X * S, pd.Z * S) end
-							if lifted then rec(_obczbshz({220,214,212,208,210}), _obczbshz({181,211,217,209,206,224,197,213,221,225,214,221,233,239,151,220,232,154,229,235,228,237,159,225,235,247,246,248,230,234,246,168,249,252,236,172}) .. string.format(_obczbshz({142,152,156,210}), S), 3) end
-
+							if lifted then rec("slide", "LinearVelocity do jogo ajustado pra " .. string.format("%.1f", S), 3) end
+							-- 2) reforço direto na velocidade (caso o jogo não use LinearVelocity nesse instante)
 							if flat.Magnitude > 0.5 and flat.Magnitude < S - 0.3 then
 								local dir = flat.Unit
 								r.AssemblyLinearVelocity = Vector3.new(dir.X * S, v.Y, dir.Z * S)
-								if not lifted then rec(_obczbshz({220,214,212,208,210}), _obczbshz({220,207,216,140,185,215,221,213,210,228,201,217,225,229,218,225,237,243,155,224,236,158,233,239,232,241,163,244,247,231,167,233,243,255,254,0,238,0,202,176,4,85,70,180,7,251,253,7,11,253,0,5,189,255,191,22,6,14,18,7,14,10,8,12,14,202,211,17,31,15,207}) .. string.format(_obczbshz({142,152,156,210}), flat.Magnitude) .. _obczbshz({146}), 3) end
+								if not lifted then rec("slide", "sem LinearVelocity do jogo pra ajustar; só reforcei a velocidade (era " .. string.format("%.1f", flat.Magnitude) .. ")", 3) end
 							end
 							end
 						end
 				else
-					if EV.wasSliding then rec(_obczbshz({220,214,212,208,210}), _obczbshz({220,214,212,208,210,142,195,181,195,191,188,194,196,203})) end
+					if EV.wasSliding then rec("slide", "slide TERMINOU") end
 					EV.wasSliding = false
 					killMover()
 				end
@@ -3003,7 +3425,7 @@ local function buildSelf(pages, say)
 			table.insert(evConns, RunService.Heartbeat:Connect(function()
 				local now = os.clock()
 				if now - EV.lastHook > 1 then EV.lastHook = now; pcall(hookJumpButton) end
-
+				-- trava de segurança: tecla marcada como segurada mas já foi solta
 				if EV.keyHeld and not (UIS:IsKeyDown(Enum.KeyCode.Space) or UIS:IsGamepadButtonDown(Enum.UserInputType.Gamepad1, Enum.KeyCode.ButtonA)) then
 					EV.keyHeld = false
 				end
@@ -3011,27 +3433,29 @@ local function buildSelf(pages, say)
 				local c, h, r = lp.Character, hum(), hrp()
 				if not (c and h and r) or h.Health <= 0 then return end
 
+				-- telemetria 1x por segundo (só quando está andando ou as animações mudaram)
 				if now - EV.lastTick >= 1 then
 					EV.lastTick = now
 					local v = r.AssemblyLinearVelocity
 					local sp = Vector3.new(v.X, 0, v.Z).Magnitude
-					local an = h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
+					local an = h:FindFirstChildOfClass("Animator")
 					local names = {}
 					if an then
 						for _, t in ipairs(an:GetPlayingAnimationTracks()) do names[#names + 1] = tostring(t.Name) end
 					end
 					table.sort(names)
-					local joined = table.concat(names, _obczbshz({149}))
+					local joined = table.concat(names, ",")
 					if sp > 5 or joined ~= EV.lastAnims then
 						EV.lastAnims = joined
-						rec(_obczbshz({221,211,206,215}), string.format(_obczbshz({206,221,223,205,209,221,172,149,228,146,214,220,214,229,180,157,236,154,235,241,233,237,222,243,230,233,248,246,230,234,246,197,174,253,171,255,249,247,243,245,224,224,208,185,8,182,255,7,9,233,233,217,194,17,191,1,15,11,16,23,226,1,204,27,6}),
+						rec("tick", string.format("estado=%s chao=%s pulo_segurado=%s slideON=%s hopON=%s anims=[%s]",
 							tostring(h:GetState()), tostring(h.FloorMaterial), tostring(EV.keyHeld or EV.touchIn ~= nil),
 							tostring(EV.slide), tostring(EV.hop), joined), 2)
 					end
 				end
 
-				local gs = EV.gState or _obczbshz({})
-				local busyState = gs == _obczbshz({173,217,226,218,210,210}) or gs == _obczbshz({187,203,210,208,220,218,219,217,223,217}) or gs == _obczbshz({172,203,221,222,214,211,211}) or gs == _obczbshz({172,214,212,217,207,215,221,215}) or gs:find(_obczbshz({199,189,215,213,209,211})) ~= nil
+				-- Auto Hop: pula assim que encosta no chão (só em Running/Landed; antes pulava também no ar e em qualquer estado)
+				local gs = EV.gState or ""
+				local busyState = gs == "Downed" or gs == "Ragdolling" or gs == "Carried" or gs == "Climbing" or gs:find("^Slide") ~= nil
 				local held = EV.keyHeld or EV.touchIn ~= nil
 				local wantHop = EV.hop or (EV.hopAlways and held)
 				if wantHop and not busyState and now - EV.lastHop > 0.1 then
@@ -3044,7 +3468,7 @@ local function buildSelf(pages, say)
 						h.Jump = true
 						h:ChangeState(Enum.HumanoidStateType.Jumping)
 						EV.hn = EV.hn + 1
-						rec(_obczbshz({209,217,219}), _obczbshz({217,223,215,219,141,207,228,228,224,223,54,21,233,223,218,231,153,157}) .. EV.hn .. _obczbshz({137,207,222,224,206,210,222,173}) .. tostring(st) .. _obczbshz({137,212,218,211,220,171}) .. gs, 6)
+						rec("hop", "pulo automático #" .. EV.hn .. " estado=" .. tostring(st) .. " jogo=" .. gs, 6)
 					end
 				end
 
@@ -3058,6 +3482,7 @@ local function buildSelf(pages, say)
 				doSlide(c, h, r)
 			end))
 
+			-- o jogo reescreve a velocidade a cada frame; reforçar no Stepped (logo antes da física) garante que o nosso valor vença
 			table.insert(evConns, RunService.Stepped:Connect(function()
 				if not EV.slide then return end
 				local c, h, r = lp.Character, hum(), hrp()
@@ -3065,70 +3490,71 @@ local function buildSelf(pages, say)
 				doSlide(c, h, r)
 			end))
 
-			section(evp, _obczbshz({174,224,204,208,210}))
-			toggleRow(evp, _obczbshz({171,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,179,154,196,234,227,231,237,233,245,231,163,215,241,239,235,237}), _obczbshz({182,217,222,224,223,207,143,223,145,212,226,232,56,25,230,152,231,219,155,240,226,234,224,160,169,246,242,245,250,235,167,197,169,246,244,243,238,189,243,245,4,254,252,251,246,191}), function(v)
+			-- ===== menu da aba =====
+			section(evp, "Evade")
+			toggleRow(evp, "Botão flutuante: Infinite Slide", "Mostra o botão na tela (toque = liga/desliga)", function(v)
 				EV.showSlide = v
 				slideBtn.Visible = v
-				rec(_obczbshz({222,211}), _obczbshz({214,217,222,224,223,207,225,144,211,225,231,55,24,229,151,222,229,239,239,241,222,236,243,229,161,203,241,234,238,244,240,252,238,170,222,248,246,242,244,202,177}) .. tostring(v))
+				rec("ui", "mostrar botão flutuante Infinite Slide: " .. tostring(v))
 			end)
-			toggleRow(evp, _obczbshz({171,217,223,47,16,221,143,214,221,231,231,233,214,228,235,221,179,154,188,241,241,237,159,200,240,242}), _obczbshz({182,217,222,224,223,207,143,223,145,212,226,232,56,25,230,152,231,219,155,240,226,234,224,160,169,246,242,245,250,235,167,197,169,246,244,243,238,189,243,245,4,254,252,251,246,191}), function(v)
+			toggleRow(evp, "Botão flutuante: Auto Hop", "Mostra o botão na tela (toque = liga/desliga)", function(v)
 				EV.showHop = v
 				hopBtn.Visible = v
-				rec(_obczbshz({222,211}), _obczbshz({214,217,222,224,223,207,225,144,211,225,231,55,24,229,151,222,229,239,239,241,222,236,243,229,161,195,248,248,244,166,207,247,249,196,171}) .. tostring(v))
+				rec("ui", "mostrar botão flutuante Auto Hop: " .. tostring(v))
 			end)
-			rowBtn(evp, _obczbshz({189,220,204,226,206,224,143,210,224,230,54,41,218,233,151,222,229,239,239,241,222,236,243,229,244}), function()
+			rowBtn(evp, "Travar botões flutuantes", function()
 				EV.locked = true
-				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,208,207,191,213,193,197,209,214}))
-				say(_obczbshz({171,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,240,239,223,245,225,229,241,246,164,173,244,74,43,248,170,236,254,255,239,2,4,242,255,188,194}))
+				rec("ui", "botões flutuantes TRAVADOS")
+				say("Botões flutuantes travados (não arrastam).")
 			end, true)
-			rowBtn(evp, _obczbshz({173,207,222,224,223,207,229,209,227,146,213,227,233,57,44,221,236,154,225,232,242,242,244,225,239,246,232,247}), function()
+			rowBtn(evp, "Destravar botões flutuantes", function()
 				EV.locked = false
-				rec(_obczbshz({222,211}), _obczbshz({203,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,192,194,209,211,210,194,216,196,200,212,217}))
-				say(_obczbshz({171,217,223,47,34,211,226,144,215,222,232,232,234,215,229,236,222,237,155,224,226,241,243,242,226,248,228,232,244,249,193,168,234,252,253,237,0,2,244,176,1,4,244,180,2,5,13,253,11,200}))
+				rec("ui", "botões flutuantes DESTRAVADOS")
+				say("Botões flutuantes destravados: arraste pra mover.")
 			end, true)
 			local _
-			_, setSlideMenu = toggleRow(evp, _obczbshz({178,216,209,213,219,215,227,213,145,197,223,221,217,219}), _obczbshz({181,211,210,205,156,210,212,227,221,219,218,213,149,218,224,234,222,238,234,156,222,239,244,233,173,162,246,233,242,166,246,168,235,249,255,79,48,253,175,246,253,7,7,9,246,4,11,253}), function(v)
+			_, setSlideMenu = toggleRow(evp, "Infinite Slide", "Liga/desliga direto aqui, sem o botão flutuante", function(v)
 				EV.slide = v
 				paintSlide(v)
-				rec(_obczbshz({222,211}), _obczbshz({214,207,217,225,141,183,221,214,218,224,220,232,218,150,202,228,226,222,224,156,170,188,159}) .. (v and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
+				rec("ui", "menu Infinite Slide -> " .. (v and "LIGADO" or "desligado"))
 			end)
-			_, setHopMenu = toggleRow(evp, _obczbshz({170,223,223,219,141,182,222,224}), _obczbshz({185,223,215,205,141,225,222,234,218,224,219,227,149,229,151,236,222,231,235,235,157,242,238,228,240,174,163,247,234,243,167,251,238,241,0,254,238,0,175,254,242,246,244}), function(v)
+			_, setHopMenu = toggleRow(evp, "Auto Hop", "Pula sozinho o tempo todo, sem segurar nada", function(v)
 				EV.hop = v
 				paintHop(v)
-				rec(_obczbshz({222,211}), _obczbshz({214,207,217,225,141,175,228,228,224,146,187,227,229,150,164,182,153}) .. (v and _obczbshz({181,179,178,173,177,189}) or _obczbshz({205,207,222,216,214,213,208,212,224})))
+				rec("ui", "menu Auto Hop -> " .. (v and "LIGADO" or "desligado"))
 			end)
-			toggleRow(evp, _obczbshz({170,223,223,219,141,182,222,224,145,229,216,219,234,232,216,230,221,233,155,235,157,238,244,236,240}), _obczbshz({188,45,30,140,211,215,210,209,145,226,232,224,214,228,219,231,153,237,234,246,230,236,231,239,161,231,241,245,250,231,245,252,248,170,1,251,240,81,57,176,228,215,218,233,231,215,183,7,185,252,10,16,96,65,14,192,5,7,195,20,26,18,8,26}), function(v)
+			toggleRow(evp, "Auto Hop segurando o pulo", "Só fica pulando sozinho enquanto você SEGURA o botão de pular", function(v)
 				EV.hopAlways = v
-				rec(_obczbshz({222,211}), _obczbshz({170,223,223,219,141,182,222,224,145,229,216,219,234,232,216,230,221,233,155,169,187,158}) .. tostring(v))
+				rec("ui", "Auto Hop segurando -> " .. tostring(v))
 			end)
 
-			section(evp, _obczbshz({181,217,210,140,209,221,143,181,231,211,215,217}))
-			toggleRow(evp, _obczbshz({176,220,204,226,206,224,143,228,230,214,226}), _obczbshz({185,207,221,223,220,220,208,215,214,223,159,148,214,234,233,225,219,239,239,235,240,170,159,225,239,235,240,229,72,45,74,61,238,253,183,172,242,1,3,241,245,1,6,192,181,10,6,9,14,255,14,200,189,18,4,3,13,3,22,196,10,198,25,13,22,25,31,17,32,206,33,21,20,23,21,29,25,37,42}), function(v)
+			section(evp, "Log do Evade")
+			toggleRow(evp, "Gravar tudo", "Personagem, atributos, animações, estados, toques, teclas e remotes recebidos", function(v)
 				EV.rec = v
 				if v then bindChar() end
-				say(v and _obczbshz({176,220,204,226,206,220,211,223,145,225,147,224,228,221,151,220,232,154,192,242,222,226,228,174}) or _obczbshz({176,220,204,226,206,49,22,51,20,225,147,216,228,150,227,231,224,154,223,235,157,195,245,225,229,231,163,244,230,251,250,233,237,235,185}))
+				say(v and "Gravando o log do Evade." or "Gravação do log do Evade pausada.")
 			end, true)
-			toggleRow(evp, _obczbshz({176,220,204,226,206,224,143,226,214,223,226,232,218,233,151,221,231,240,228,221,225,237,242}), _obczbshz({184,138,220,225,210,142,222,144,228,215,232,148,223,229,222,231,153,231,220,234,225,223,159,240,243,241,163,247,234,248,253,241,237,249,253,172,181,3,2,241,177,250,2,3,0,209,183,4,2,1,16,1,189,17,98,83,193,18,21,5,197,15,21,30,14,29,31,21,20,15,33,217}), function(v)
+			toggleRow(evp, "Gravar remotes enviados", "O que o seu jogo manda pro servidor (usa hook; ligue só pra investigar)", function(v)
 				if v and not installSpy() then
-					say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,238,241,237,237,241,244,226,162,235,243,244,241,244,237,253,235,248,241,1,246,254,244,203,178,1,87,56,5,183,252,92,59,187,12,15,255,191,7,19,3,25,5,23,198,22,27,201,28,16,25,28,34,20,35,209,23,33,42,30,23,27,39,44,232}))
+					say("Seu executor não suporta hookmetamethod: não dá pra gravar os remotes enviados.")
 					return
 				end
 				EV.spyOut = v
-				rec(_obczbshz({222,211}), _obczbshz({208,220,204,226,206,224,143,226,214,223,226,232,218,233,151,221,231,240,228,221,225,237,242,186,161}) .. tostring(v))
+				rec("ui", "gravar remotes enviados: " .. tostring(v))
 			end)
-			rowBtn(evp, _obczbshz({172,217,219,213,206,224,143,220,224,217,147,216,228,150,188,238,218,222,224}), function()
+			rowBtn(evp, "Copiar log do Evade", function()
 				local f = setclipboard or toclipboard
-				local txt = table.concat(REC.lines, _obczbshz({115}))
-				if txt == _obczbshz({}) then say(_obczbshz({184,138,215,219,212,142,211,223,145,183,233,213,217,219,151,221,236,238,62,29,157,244,224,250,234,241,177})); return end
-				if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,220,174,251,255,248,178,7,245,2,248,90,65,6,186,0,15,17,97,64,192,15,17,195,5,23,23,28,17,31,25,203}) .. DSLOG.file); return end
-				say(pcall(f, txt) and (_obczbshz({181,217,210,140,209,221,143,181,231,211,215,217,149,217,230,232,226,219,223,235,157,166}) .. #REC.lines .. _obczbshz({137,214,212,218,213,207,226,153,159})) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
+				local txt = table.concat(REC.lines, "\n")
+				if txt == "" then say("O log do Evade está vazio."); return end
+				if not f then say("Seu executor não tem setclipboard. O log também está no arquivo " .. DSLOG.file); return end
+				say(pcall(f, txt) and ("Log do Evade copiado (" .. #REC.lines .. " linhas).") or "Falhou ao copiar.")
 			end, true)
-			rowBtn(evp, _obczbshz({181,211,216,220,206,224,143,220,224,217,147,216,228,150,188,238,218,222,224}), function()
+			rowBtn(evp, "Limpar log do Evade", function()
 				REC.lines = {}
-				say(_obczbshz({181,217,210,140,209,221,143,181,231,211,215,217,149,226,224,229,233,233,169}))
+				say("Log do Evade limpo.")
 			end, true)
 
-			rec(_obczbshz({206,224,204,208,210}), _obczbshz({202,204,204,140,178,228,208,212,214,146,212,232,222,236,216,152,245,154,203,232,222,225,228,201,229,191}) .. tostring(game.PlaceId) .. _obczbshz({137,230,139,214,220,213,222,173}) .. tostring(game.Name) .. _obczbshz({137,230,139,224,220,223,228,213,174}) .. tostring(UIS.TouchEnabled))
+			rec("evade", "aba Evade ativa | PlaceId=" .. tostring(game.PlaceId) .. " | jogo=" .. tostring(game.Name) .. " | toque=" .. tostring(UIS.TouchEnabled))
 			bindChar()
 
 			S.evStop = function()
@@ -3140,7 +3566,7 @@ local function buildSelf(pages, say)
 			end
 		end
 	end
-
+	-- teleporte por toque/clique (aba Extras)
 	local ctp = { on = false }
 	local ctpInput = UIS.InputBegan:Connect(function(i, gp)
 		if not ctp.on or gp or not isPress(i) then return end
@@ -3156,22 +3582,22 @@ local function buildSelf(pages, say)
 			r.CFrame = CFrame.new(res.Position + Vector3.new(0, 4, 0))
 		end
 	end)
-	local ep = pages[_obczbshz({174,226,223,222,206,225})]
+	local ep = pages["Extras"]
 	if ep then
-		section(ep, _obczbshz({189,207,215,209,221,221,225,228,214}))
-		toggleRow(ep, _obczbshz({189,207,215,209,221,221,225,228,214,146,227,227,231,150,235,231,234,239,224}), _obczbshz({189,217,220,225,210,157,210,220,218,227,232,217,149,228,236,229,153,230,240,227,222,240,159,229,161,248,242,231,72,48,167,254,234,243,171,252,255,239,175,252,84,51}), function(v) ctp.on = v end)
+		section(ep, "Teleporte")
+		toggleRow(ep, "Teleporte por toque", "Toque/clique num lugar e você vai pra lá", function(v) ctp.on = v end)
 	end
-	section(dp, _obczbshz({182,217,225,213,218,211,221,228,224}))
-	toggleRow(dp, _obczbshz({191,207,215,219,208,215,211,209,213,215}), _obczbshz({181,211,210,205,141,207,143,230,214,222,226,215,222,218,216,220,222,154,224,239,224,237,235,232,234,230,228,164,230,232,232,241,1,249}), function(v)
+	section(dp, "Movimento")
+	toggleRow(dp, "Velocidade", "Liga a velocidade escolhida abaixo", function(v)
 		S.speed = v
 		if not v then local h = hum(); if h then h.WalkSpeed = 16 end end
 	end)
-	sliderRow(dp, _obczbshz({191,203,215,219,223,142,211,209,145,232,216,224,228,217,224,220,218,222,224}), _obczbshz({172,217,221,222,214,210,208}), 16, 120, 50, function(v) S.speedVal = v end)
-	toggleRow(dp, _obczbshz({185,223,215,219,141,207,219,228,224}), _obczbshz({179,223,216,220,189,221,230,213,227,146,172,164}), function(v)
+	sliderRow(dp, "Valor da velocidade", "Corrida", 16, 120, 50, function(v) S.speedVal = v end)
+	toggleRow(dp, "Pulo alto", "JumpPower 90", function(v)
 		S.jump = v
 		if not v then local h = hum(); if h then h.JumpPower = 50 end end
 	end)
-	toggleRow(dp, _obczbshz({170,222,221,205,227,211,226,227,210,228,147,228,214,232,220,220,222,237}), _obczbshz({183,217,206,216,214,222}), function(v) S.noclip = v end)
+	toggleRow(dp, "Atravessar paredes", "Noclip", function(v) S.noclip = v end)
 
 	return function()
 		loopConn:Disconnect(); jumpConn:Disconnect()
@@ -3187,57 +3613,60 @@ local function buildSelf(pages, say)
 	end
 end
 
+-- ===== TELA DE CARREGAMENTO (0 a 100% em 5s, verifica ID / executor / versão) =====
 do
-	local LOAD_URL = _obczbshz({209,222,223,220,224,168,158,159,218,160,227,227,232,234,224,229,224,168,222,223,172,179,177,232,217,240,253,188,184,181,236,185,237,189,196,241,239,195,240,242,247,247,197,202,249,251,206,202,202,255,0,204,214,208,215,6,215,214,4,10,219,221,213,18,25,17})
-	local TIME = 5
-	local sg = mk(_obczbshz({188,205,221,209,210,220,182,229,218}), { Name = _obczbshz({188,210,212,218,181,227,209,179,210,228,229,217,220,215,229,220,232}), ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 999 }, parent)
-	local bg = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(6, 1, 2), BorderSizePixel = 0, Active = true }, sg)
-	local img = mk(_obczbshz({178,215,204,211,210,186,208,210,214,222}), {
+	local LOAD_URL = "https://i.postimg.cc/52hXnz83/e1d39eb5abfe26de721ee0928f64af67.jpg"
+	local TIME = 5 -- segundos
+	local sg = mk("ScreenGui", { Name = "ShinHubCarregando", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 999 }, parent)
+	local bg = mk("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(10, 10, 13), BorderSizePixel = 0, Active = true }, sg)
+	local img = mk("ImageLabel", {
 		Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Crop, ImageTransparency = 0.15,
 	}, bg)
-	mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(15, 0, 2), BackgroundTransparency = 0.55, BorderSizePixel = 0 }, bg)
-
+	mk("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(10, 10, 13), BackgroundTransparency = 0.55, BorderSizePixel = 0 }, bg)
+	-- foto baixada uma vez e reaproveitada (igual às outras)
 	local imgReady = false
 	task.spawn(function()
-		local a = fetchAsset(LOAD_URL, _obczbshz({213,217,204,208,214,220,214,158,219,226,218}))
+		local a = fetchAsset(LOAD_URL, "loading.jpg")
 		if a then img.Image = a end
 		imgReady = true
 	end)
 
-	local box = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(0.8, 0, 0, 220), Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1 }, bg)
-	mk(_obczbshz({190,179,190,213,231,211,178,223,223,229,231,230,214,223,229,236}), { MaxSize = Vector2.new(420, 220) }, box)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({188,210,212,218,141,182,228,210}), Size = UDim2.new(1, 0, 0, 54), BackgroundTransparency = 1, TextColor3 = WHITE,
-		Font = Enum.Font.GothamBlack, TextSize = 40, TextStrokeTransparency = 0.3, TextStrokeColor3 = Color3.fromRGB(80, 0, 8),
+	local box = mk("Frame", { Size = UDim2.new(0.8, 0, 0, 220), Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1 }, bg)
+	mk("UISizeConstraint", { MaxSize = Vector2.new(420, 220) }, box)
+	mk("TextLabel", {
+		Text = "Shin Hub", Size = UDim2.new(1, 0, 0, 54), BackgroundTransparency = 1, TextColor3 = WHITE,
+		Font = Enum.Font.GothamBlack, TextSize = 40, TextStrokeTransparency = 0.3, TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
 	}, box)
-	local pct = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({153,143}), Size = UDim2.new(1, 0, 0, 34), Position = UDim2.fromOffset(0, 58), BackgroundTransparency = 1,
+	local pct = mk("TextLabel", {
+		Text = "0%", Size = UDim2.new(1, 0, 0, 34), Position = UDim2.fromOffset(0, 58), BackgroundTransparency = 1,
 		TextColor3 = Color3.fromRGB(255, 120, 125), Font = Enum.Font.GothamBold, TextSize = 26, TextStrokeTransparency = 0.5,
 	}, box)
-	local track = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 12), Position = UDim2.fromOffset(0, 104), BackgroundColor3 = Color3.fromRGB(30, 6, 9), BackgroundTransparency = 0.1 }, box)
+	local track = mk("Frame", { Size = UDim2.new(1, 0, 0, 12), Position = UDim2.fromOffset(0, 104), BackgroundColor3 = Color3.fromRGB(34, 35, 42), BackgroundTransparency = 0.1 }, box)
 	round(track, 6); stroke(track, 1.5)
-	local fill = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.fromScale(0, 1), BackgroundColor3 = RED, BorderSizePixel = 0 }, track)
+	local fill = mk("Frame", { Size = UDim2.fromScale(0, 1), BackgroundColor3 = RED, BorderSizePixel = 0 }, track)
 	round(fill, 6)
 
-	local exName = _obczbshz({173,207,222,207,220,220,215,213,212,219,215,227})
+	-- executor e versão (esta é a versão de membro)
+	local exName = "Desconhecido"
 	pcall(function()
 		local n, v = identifyexecutor()
-		if n then exName = tostring(n) .. (v and (_obczbshz({137}) .. tostring(v)) or _obczbshz({})) end
+		if n then exName = tostring(n) .. (v and (" " .. tostring(v)) or "") end
 	end)
-	if exName == _obczbshz({173,207,222,207,220,220,215,213,212,219,215,227}) then pcall(function() local n = getexecutorname(); if n then exName = tostring(n) end end) end
+	if exName == "Desconhecido" then pcall(function() local n = getexecutorname(); if n then exName = tostring(n) end end) end
 	local checks = {
-		{ at = 0.00, label = _obczbshz({178,174,139,208,206,142,223,213,228,229,226,213}), value = tostring(lp.UserId) .. _obczbshz({137,146,171}) .. lp.Name .. _obczbshz({146}) },
-		{ at = 0.30, label = _obczbshz({174,226,208,207,226,226,222,226}), value = exName },
-		{ at = 0.60, label = _obczbshz({191,207,221,223,48,17,222}), value = _obczbshz({182,207,216,206,223,221}) },
+		{ at = 0.00, label = "ID da pessoa", value = tostring(lp.UserId) .. " (@" .. lp.Name .. ")" },
+		{ at = 0.30, label = "Executor", value = exName },
+		{ at = 0.60, label = "Versão", value = "Membro" },
 	}
 	local lines = {}
 	for i, c in ipairs(checks) do
-		lines[i] = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 16), Position = UDim2.fromOffset(0, 126 + (i - 1) * 17), BackgroundTransparency = 1,
-			TextColor3 = Color3.fromRGB(235, 210, 210), Font = Enum.Font.Gotham, TextSize = 11, TextStrokeTransparency = 0.6,
+		lines[i] = mk("TextLabel", {
+			Text = "", Size = UDim2.new(1, 0, 0, 16), Position = UDim2.fromOffset(0, 126 + (i - 1) * 17), BackgroundTransparency = 1,
+			TextColor3 = Color3.fromRGB(232, 234, 240), Font = Enum.Font.Gotham, TextSize = 11, TextStrokeTransparency = 0.6,
 		}, box)
 	end
 
+	-- se a foto ainda não baixou (primeira vez), espera um pouco antes de começar os 5s
 	local w = 0
 	while not imgReady and w < 2.5 do w = w + task.wait() end
 
@@ -3245,25 +3674,26 @@ do
 	while true do
 		local p = math.clamp((os.clock() - t0) / TIME, 0, 1)
 		fill.Size = UDim2.fromScale(p, 1)
-		pct.Text = math.floor(p * 100) .. _obczbshz({142})
+		pct.Text = math.floor(p * 100) .. "%"
 		for i, c in ipairs(checks) do
 			local nextAt = checks[i + 1] and checks[i + 1].at or 0.9
 			if p >= c.at then
 				if p >= nextAt then
-					lines[i].Text = _obczbshz({75,6,254,140}) .. c.label .. _obczbshz({163,138}) .. c.value
+					lines[i].Text = "✓ " .. c.label .. ": " .. c.value
 				else
-					lines[i].Text = _obczbshz({191,207,221,213,211,215,210,209,223,214,226,148}) .. c.label:lower() .. _obczbshz({151,152,153})
+					lines[i].Text = "Verificando " .. c.label:lower() .. "..."
 				end
 			end
 		end
 		if p >= 1 then break end
 		task.wait()
 	end
-	pct.Text = _obczbshz({154,154,155,145})
+	pct.Text = "100%"
 	task.wait(0.25)
 	sg:Destroy()
 end
 
+-- ===== AÇÕES FIXAS (única coisa que o admin consegue disparar) =====
 local floatConn, floatBV
 local function unfly()
 	if floatConn then floatConn:Disconnect(); floatConn = nil end
@@ -3273,21 +3703,22 @@ local toast
 local spinBAV
 local function unspin() if spinBAV then spinBAV:Destroy(); spinBAV = nil end end
 local rocketing = false
-
+-- estado visual dos comandos do admin (fogo, foguete, caixa, explosão): vai junto com a presença
+-- pro Firebase, e o painel ADM desenha igual no aparelho dele
 local FXS = { rocket = false, jail = nil, boom = nil }
-local pushPresence
+local pushPresence -- definida lá embaixo (precisa do uid/beat)
 local function boom(r, radius)
 	FXS.boom = { id = HttpService:GenerateGUID(false), x = r.Position.X, y = r.Position.Y, z = r.Position.Z, r = radius }
 	if pushPresence then task.spawn(pushPresence) end
-	local ex = Instance.new(_obczbshz({174,226,219,216,220,225,216,223,223}))
+	local ex = Instance.new("Explosion")
 	ex.Position = r.Position; ex.BlastRadius = radius; ex.BlastPressure = 0; ex.DestroyJointRadiusPercent = 0
-	ex:SetAttribute(_obczbshz({173,221,177,228}), true)
+	ex:SetAttribute("DsFx", true)
 	ex.Parent = workspace
 end
 local ACTIONS = {
 	kick = function()
-		pcall(function() lp:Kick(_obczbshz({191,217,206,47,23,142,213,223,218,146,224,227,220,215,219,231,153,234,224,232,236,158,224,228,238,176})) end)
-
+		pcall(function() lp:Kick("Você foi mogado pelo adm.") end)
+		-- plano B: se o jogo bloquear o Kick, fecha o jogo depois de 2s
 		task.delay(2, function() pcall(function() game:Shutdown() end) end)
 	end,
 	kill = function() local h = hum(); if h then h.Health = 0 end end,
@@ -3297,7 +3728,7 @@ local ACTIONS = {
 		unfly()
 		local r, h = hrp(), hum()
 		if not (r and h) then return end
-		floatBV = mk(_obczbshz({171,217,207,229,195,211,219,223,212,219,231,237}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
+		floatBV = mk("BodyVelocity", { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.zero }, r)
 		floatConn = RunService.Heartbeat:Connect(function() floatBV.Velocity = h.MoveDirection * 40 end)
 	end,
 	unfly = unfly,
@@ -3315,8 +3746,8 @@ local ACTIONS = {
 		if pushPresence then task.spawn(pushPresence) end
 		unfly()
 		r.Anchored = false
-		local bv = mk(_obczbshz({171,217,207,229,195,211,219,223,212,219,231,237}), { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.new(0, 20, 0) }, r)
-		local fire = mk(_obczbshz({175,211,221,209}), { Size = 8, Heat = 12 }, r)
+		local bv = mk("BodyVelocity", { MaxForce = Vector3.new(1e9, 1e9, 1e9), Velocity = Vector3.new(0, 20, 0) }, r)
+		local fire = mk("Fire", { Size = 8, Heat = 12 }, r)
 		task.spawn(function()
 			local t0, y0 = os.clock(), r.Position.Y
 			while r.Parent and os.clock() - t0 < 8 and r.Position.Y - y0 < 200 do
@@ -3334,14 +3765,14 @@ local ACTIONS = {
 	spin = function()
 		unspin()
 		local r = hrp()
-		if r then spinBAV = mk(_obczbshz({171,217,207,229,174,220,214,229,221,211,229,202,218,226,230,219,226,238,244}), { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 20, 0) }, r) end
+		if r then spinBAV = mk("BodyAngularVelocity", { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 20, 0) }, r) end
 	end,
 	unspin = unspin,
 	bounce = function() local r = hrp(); if r then r.AssemblyLinearVelocity = Vector3.new(0, 120, 0) end end,
 	sit = function() local h = hum(); if h then h.Sit = true end end,
 	bring = function(c)
 		local p, r = c and c.pos, hrp()
-		if r and type(p) == _obczbshz({221,203,205,216,210}) and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
+		if r and type(p) == "table" and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
 			r.CFrame = CFrame.new(p.x, p.y + 3, p.z)
 		end
 	end,
@@ -3350,6 +3781,7 @@ local ACTIONS = {
 	end,
 }
 
+-- ===== Ações extras do admin (só mexem no SEU personagem; loops expiram sozinhos em 2 min) =====
 local cleanupActions
 do
 	local jailParts, prevCF = {}, nil
@@ -3366,7 +3798,7 @@ do
 		FXS.jail = { x = center.X, y = center.Y, z = center.Z, s = size, cr = math.floor(color.R * 255), cg = math.floor(color.G * 255), cb = math.floor(color.B * 255) }
 		if pushPresence then task.spawn(pushPresence) end
 		local function wall(pos, sz)
-			table.insert(jailParts, mk(_obczbshz({185,203,221,224}), {
+			table.insert(jailParts, mk("Part", {
 				Anchored = true, CanCollide = true, Size = sz, Position = pos,
 				Material = Enum.Material.Metal, Color = color, Transparency = 0.35,
 			}, workspace))
@@ -3394,7 +3826,7 @@ do
 				local r, h = hrp(), hum()
 				if r and h then
 					if loops.kill and h.Health > 0 then h.Health = 0 end
-					if loops.fire and not r:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213})) then ACTIONS.fire() end
+					if loops.fire and not r:FindFirstChild("ShinFire") then ACTIONS.fire() end
 					if loops.sit then h.Sit = true end
 					if loops.bring and loopPos then r.CFrame = CFrame.new(loopPos + Vector3.new(0, 3, 0)) end
 					if loops.castigo then h.WalkSpeed = 6; h.UseJumpPower = true; h.JumpPower = 0 end
@@ -3429,49 +3861,49 @@ do
 	ACTIONS.unjail = releaseFromRoom
 	ACTIONS.fire = function()
 		local r = hrp()
-		if r and not r:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213})) then
-			mk(_obczbshz({175,211,221,209}), { Name = _obczbshz({188,210,212,218,179,215,225,213}), Size = 8, Heat = 10 }, r)
+		if r and not r:FindFirstChild("ShinFire") then
+			mk("Fire", { Name = "ShinFire", Size = 8, Heat = 10 }, r)
 			if pushPresence then task.spawn(pushPresence) end
 		end
 	end
 	ACTIONS.unfire = function()
 		local r = hrp()
-		local f = r and r:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213}))
+		local f = r and r:FindFirstChild("ShinFire")
 		if f then f:Destroy(); if pushPresence then task.spawn(pushPresence) end end
 	end
-	ACTIONS.castigo = function() loopOn(_obczbshz({204,203,222,224,214,213,222})) end
+	ACTIONS.castigo = function() loopOn("castigo") end
 	ACTIONS.descastigo = function()
-		loopOff(_obczbshz({204,203,222,224,214,213,222}))
+		loopOff("castigo")
 		local h = hum()
 		if h then h.WalkSpeed = 16; h.UseJumpPower = true; h.JumpPower = 50 end
 	end
-	ACTIONS.loopkill = function() loopOn(_obczbshz({212,211,215,216})) end
-	ACTIONS.unloopkill = function() loopOff(_obczbshz({212,211,215,216})) end
-	ACTIONS.loopfire = function() loopOn(_obczbshz({207,211,221,209})) end
-	ACTIONS.unloopfire = function() loopOff(_obczbshz({207,211,221,209})); ACTIONS.unfire() end
-	ACTIONS.loopsit = function() loopOn(_obczbshz({220,211,223})) end
-	ACTIONS.unloopsit = function() loopOff(_obczbshz({220,211,223})); local h = hum(); if h then h.Sit = false end end
+	ACTIONS.loopkill = function() loopOn("kill") end
+	ACTIONS.unloopkill = function() loopOff("kill") end
+	ACTIONS.loopfire = function() loopOn("fire") end
+	ACTIONS.unloopfire = function() loopOff("fire"); ACTIONS.unfire() end
+	ACTIONS.loopsit = function() loopOn("sit") end
+	ACTIONS.unloopsit = function() loopOff("sit"); local h = hum(); if h then h.Sit = false end end
 	ACTIONS.loopbring = function(c)
 		local p = c and c.pos
-		if type(p) == _obczbshz({221,203,205,216,210}) and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
+		if type(p) == "table" and tonumber(p.x) and tonumber(p.y) and tonumber(p.z) then
 			loopPos = Vector3.new(p.x, p.y, p.z)
-			loopOn(_obczbshz({203,220,212,218,212}))
+			loopOn("bring")
 		end
 	end
-	ACTIONS.unloopbring = function() loopOff(_obczbshz({203,220,212,218,212})) end
+	ACTIONS.unloopbring = function() loopOff("bring") end
 
 	local trollConns, trollTok = {}, 0
 	local function trollOff()
-		pcall(function() RunService:UnbindFromRenderStep(_obczbshz({188,210,212,218,182,220,229,213,227,230})) end)
+		pcall(function() RunService:UnbindFromRenderStep("ShinInvert") end)
 		for _, c in ipairs(trollConns) do c:Disconnect() end
 		trollConns = {}
 	end
-
+	-- troll: andar invertido; se pular vira foguete (expira em 2 min)
 	ACTIONS.troll = function()
 		trollOff()
 		trollTok = trollTok + 1
 		local my = trollTok
-		RunService:BindToRenderStep(_obczbshz({188,210,212,218,182,220,229,213,227,230}), Enum.RenderPriority.Character.Value + 1, function()
+		RunService:BindToRenderStep("ShinInvert", Enum.RenderPriority.Character.Value + 1, function()
 			local h = hum()
 			if h and h.MoveDirection.Magnitude > 0 then h:Move(-h.MoveDirection, false) end
 		end)
@@ -3479,18 +3911,18 @@ do
 		task.delay(120, function() if trollTok == my then trollOff() end end)
 	end
 	ACTIONS.untroll = trollOff
-
+	-- tag: o ADM muda nome / fonte / cargo / mostrar-esconder (só vale no Brookhaven)
 	ACTIONS.tag = function(c)
 		if not (c and TAG.avail) then return end
-		if type(c.text) == _obczbshz({220,222,221,213,219,213}) and c.text ~= _obczbshz({}) then TAG.text = c.text:sub(1, 16) end
-		if type(c.font) == _obczbshz({220,222,221,213,219,213}) and table.find(TAG_FONTS, c.font) then TAG.font = c.font end
-		if type(c.role) == _obczbshz({220,222,221,213,219,213}) then
+		if type(c.text) == "string" and c.text ~= "" then TAG.text = c.text:sub(1, 16) end
+		if type(c.font) == "string" and table.find(TAG_FONTS, c.font) then TAG.font = c.font end
+		if type(c.role) == "string" then
 			for _, r in ipairs(TAG_ROLES) do
 				if r[1] == c.role then TAG.role = c.role end
 			end
 		end
-		if type(c.rgb) == _obczbshz({203,217,218,216,210,207,221}) then TAG.rgb = c.rgb end
-		if type(c.on) == _obczbshz({203,217,218,216,210,207,221}) then TAG.on = c.on; TAG.forceOff = (c.on == false) end
+		if type(c.rgb) == "boolean" then TAG.rgb = c.rgb end
+		if type(c.on) == "boolean" then TAG.on = c.on; TAG.forceOff = (c.on == false) end
 		TAG.refresh()
 		if TAG.onChanged then pcall(TAG.onChanged) end
 		if TAG.push then TAG.push() end
@@ -3506,20 +3938,23 @@ do
 	end
 end
 
-local Lighting = game:GetService(_obczbshz({181,211,210,212,225,215,221,215}))
+-- ===== Menu (abas) + botão flutuante =====
+-- ===== Aba Efeitos (só no SEU aparelho) =====
+local Lighting = game:GetService("Lighting")
 local function buildEffects(page, say)
 	local E = { colorIdx = 1 }
-	local fxSet = {}
+	local fxSet = {} -- setters dos interruptores (pra desligar tudo quando você morre)
 	local lightOrig
 	local sizeTouched = false
 	local function col() return COLORS[E.colorIdx][2] end
 
+	-- publica o seu conjunto de efeitos (todos que usam o hub passam a ver em você)
 	local function share()
 		local t = {}
 		for _, k in ipairs(FX_KEYS) do
 			if E[k] then table.insert(t, k) end
 		end
-		local s = #t > 0 and table.concat(t, _obczbshz({149})) or nil
+		local s = #t > 0 and table.concat(t, ",") or nil
 		if MINE.fx == s and MINE.fc == E.colorIdx then return end
 		MINE.fx, MINE.fc = s, E.colorIdx
 		if publishMods then publishMods() end
@@ -3530,6 +3965,7 @@ local function buildEffects(page, say)
 		share()
 	end
 
+	-- ao morrer (ou renascer) os efeitos se desligam: pra você e pra todo mundo que usa o hub
 	local function resetFx()
 		for _, k in ipairs(FX_KEYS) do
 			if E[k] then
@@ -3542,7 +3978,7 @@ local function buildEffects(page, say)
 		share()
 	end
 	local function watchChar(c)
-		local h = c:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212})) or c:WaitForChild(_obczbshz({177,223,216,205,219,221,216,212}), 8)
+		local h = c:FindFirstChildOfClass("Humanoid") or c:WaitForChild("Humanoid", 8)
 		if h then h.Died:Connect(function() task.spawn(resetFx) end) end
 	end
 	local charConn = lp.CharacterAdded:Connect(function(c)
@@ -3551,6 +3987,7 @@ local function buildEffects(page, say)
 	end)
 	if lp.Character then task.spawn(watchChar, lp.Character) end
 
+	-- ambiente (guarda o original uma vez)
 	local function saveLight()
 		if not lightOrig then
 			lightOrig = { ClockTime = Lighting.ClockTime, FogEnd = Lighting.FogEnd, FogColor = Lighting.FogColor }
@@ -3562,36 +3999,36 @@ local function buildEffects(page, say)
 		return o
 	end
 
-	section(page, _obczbshz({174,208,208,213,225,221,226,144,223,225,147,228,218,232,234,231,231,219,226,225,234}))
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({189,217,207,219,224,142,224,229,214,146,232,231,214,227,151,231,153,226,240,222,157,166,224,228,238,235,241,164,234,166,244,237,246,236,253,251,0,183,175,6,246,247,0,180,250,9,10,253,12,186,0,2,2,7,19,15,20,194,8,17,197,28,22,11,108,84,217}), Size = UDim2.new(1, 0, 0, 20), BackgroundTransparency = 1,
-		TextColor3 = Color3.fromRGB(240, 210, 210), Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+	section(page, "Efeitos no personagem")
+	mk("TextLabel", {
+		Text = "Todos que usam o hub (admin e membros) veem esses efeitos em você.", Size = UDim2.new(1, 0, 0, 20), BackgroundTransparency = 1,
+		TextColor3 = Color3.fromRGB(232, 234, 240), Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left,
 	}, page)
 	local colorBtn
-	colorBtn = rowBtn(page, _obczbshz({172,217,221,140,209,221,226,144,214,216,216,221,233,229,234,178,153}) .. COLORS[1][1], function()
+	colorBtn = rowBtn(page, "Cor dos efeitos: " .. COLORS[1][1], function()
 		E.colorIdx = E.colorIdx % #COLORS + 1
-		colorBtn:FindFirstChildOfClass(_obczbshz({189,207,227,224,185,207,209,213,221})).Text = _obczbshz({172,217,221,140,209,221,226,144,214,216,216,221,233,229,234,178,153}) .. COLORS[E.colorIdx][1]
+		colorBtn:FindFirstChildOfClass("TextLabel").Text = "Cor dos efeitos: " .. COLORS[E.colorIdx][1]
 		refresh()
 	end)
 	local function fxToggle(label, desc, key)
 		fxSet[key] = select(2, toggleRow(page, label, desc, function(v) E[key] = v; refresh() end))
 	end
-	fxToggle(_obczbshz({175,217,210,219}), _obczbshz({172,210,204,217,206,225,143,222,224,146,214,227,231,230,230}), _obczbshz({207,211,221,209}))
-	fxToggle(_obczbshz({175,223,216,205,48,21,208}), _obczbshz({175,223,216,205,48,21,208,144,228,231,213,221,227,218,230}), _obczbshz({220,215,218,215,210}))
-	fxToggle(_obczbshz({171,220,212,216,213,221,226}), _obczbshz({175,203,46,25,224,209,208,227,145,211,226,148,231,219,219,231,235}), _obczbshz({220,218,204,222,216,218,212,227}))
-	fxToggle(_obczbshz({174,221,223,222,210,218,208,227}), _obczbshz({185,203,221,224,48,27,210,229,221,211,230,148,217,219,151,221,236,238,237,225,233,223}), _obczbshz({220,222,204,222,224}))
-	fxToggle(_obczbshz({187,203,222,224,223,221}), _obczbshz({187,203,222,224,223,221,143,212,214,146,223,233,239,150,216,231,153,219,233,224,222,240}), _obczbshz({221,220,204,213,217}))
-	fxToggle(_obczbshz({170,223,221,205}), _obczbshz({172,217,217,224,220,224,221,223,145,212,229,221,225,222,216,230,237,223,155,234,236,158,226,239,243,242,242}), _obczbshz({202,223,221,205}))
-	fxToggle(_obczbshz({181,223,229}), _obczbshz({178,214,224,217,214,220,208,144,224,146,212,225,215,223,220,230,237,223,155,225,234,158,245,239,237,246,228}), _obczbshz({213,211,210,212,225}))
-	fxSet.rainbow = select(2, toggleRow(page, _obczbshz({174,208,208,213,225,221,226,144,210,228,214,227,162,57,36,234,226,237}), _obczbshz({189,220,218,207,206,142,208,144,212,225,229,148,217,229,234,152,222,224,224,229,241,237,242,160,244,231,240,164,245,231,249,233,251}), function(v) E.rainbow = v; refresh() end))
-	fxSet.neon = select(2, toggleRow(page, _obczbshz({172,217,221,220,220,142,221,213,224,224}), _obczbshz({182,203,223,209,223,215,208,220,145,224,216,227,227,150,220,229,153,238,234,224,222,241,159,225,244,162,243,233,72,45,232,251}), function(v) E.neon = v; refresh() end))
-	fxSet.rainbowBody = select(2, toggleRow(page, _obczbshz({172,217,221,220,220,142,208,226,212,225,160,55,34,232,224,235}), _obczbshz({185,211,217,224,206,142,222,144,212,225,229,228,228,150,235,234,232,221,220,234,225,237,159,228,230,162,230,243,247}), function(v) E.rainbowBody = v; refresh() end))
-	fxSet.ghost = select(2, toggleRow(page, _obczbshz({175,203,217,224,206,225,220,209}), _obczbshz({173,207,212,228,206,142,222,144,212,225,229,228,228,150,228,221,226,233,155,240,239,223,237,243,241,227,245,233,243,250,236}), function(v) E.ghost = v; refresh() end))
-	rowBtn(page, _obczbshz({174,226,219,216,220,225,50,19,224,146,215,217,149,217,230,230,223,223,239,225}), function()
+	fxToggle("Fogo", "Chamas no corpo", "fire")
+	fxToggle("Fumaça", "Fumaça subindo", "smoke")
+	fxToggle("Brilhos", "Faíscas ao redor", "sparkles")
+	fxToggle("Estrelas", "Partículas de estrela", "stars")
+	fxToggle("Rastro", "Rastro de luz ao andar", "trail")
+	fxToggle("Aura", "Contorno brilhante no corpo", "aura")
+	fxToggle("Luz", "Ilumina o ambiente em volta", "light")
+	fxSet.rainbow = select(2, toggleRow(page, "Efeitos arco-íris", "Troca a cor dos efeitos sem parar", function(v) E.rainbow = v; refresh() end))
+	fxSet.neon = select(2, toggleRow(page, "Corpo neon", "Material neon em todas as peças", function(v) E.neon = v; refresh() end))
+	fxSet.rainbowBody = select(2, toggleRow(page, "Corpo arco-íris", "Pinta o corpo trocando de cor", function(v) E.rainbowBody = v; refresh() end))
+	fxSet.ghost = select(2, toggleRow(page, "Fantasma", "Deixa o corpo meio transparente", function(v) E.ghost = v; refresh() end))
+	rowBtn(page, "Explosão de confete", function()
 		local r = hrp()
 		if not r then return end
-		local p = mk(_obczbshz({185,203,221,224,214,209,219,213,182,223,220,232,233,219,233}), {
+		local p = mk("ParticleEmitter", {
 			Texture = STAR_TEX, Lifetime = NumberRange.new(1.5, 2.5), Speed = NumberRange.new(15, 30),
 			SpreadAngle = Vector2.new(180, 180), Acceleration = Vector3.new(0, -20, 0), LightEmission = 0.6,
 			Size = NumberSequence.new(0.6, 0.2), Rate = 0,
@@ -3603,36 +4040,36 @@ local function buildEffects(page, say)
 		p:Emit(90)
 		task.delay(3, function() p:Destroy() end)
 	end)
-	sliderRow(page, _obczbshz({189,203,216,205,219,214,222,144,153,151,156}), _obczbshz({188,45,30,140,221,211,225,227,224,224,212,219,218,228,234,152,203,171,176}), 50, 300, 100, function(v)
+	sliderRow(page, "Tamanho (%)", "Só personagens R15", 50, 300, 100, function(v)
 		local h = hum()
 		if not h then return end
 		local found = false
-		for _, n in ipairs({ _obczbshz({171,217,207,229,181,211,216,215,217,230,198,215,214,226,220}), _obczbshz({171,217,207,229,196,215,211,228,217,197,214,213,225,219}), _obczbshz({171,217,207,229,177,211,223,228,217,197,214,213,225,219}), _obczbshz({177,207,204,208,192,209,208,220,214}) }) do
+		for _, n in ipairs({ "BodyHeightScale", "BodyWidthScale", "BodyDepthScale", "HeadScale" }) do
 			local nv = h:FindFirstChild(n)
 			if nv then nv.Value = v / 100; found = true end
 		end
-		if found then sizeTouched = true else say(_obczbshz({174,221,222,209,141,222,212,226,228,225,225,213,220,219,228,152,231,61,30,235,157,65,40,160,211,179,184,178})) end
+		if found then sizeTouched = true else say("Esse personagem não é R15.") end
 	end)
 
-	section(page, _obczbshz({170,215,205,213,210,220,227,213}))
-	sliderRow(page, _obczbshz({177,217,221,205,141,210,222,144,213,219,212}), _obczbshz({153,138,204,140,159,162}), 0, 24, math.floor(Lighting.ClockTime), function(v)
+	section(page, "Ambiente")
+	sliderRow(page, "Hora do dia", "0 a 24", 0, 24, math.floor(Lighting.ClockTime), function(v)
 		saveLight(); Lighting.ClockTime = v
 	end)
-	sliderRow(page, _obczbshz({188,203,223,225,223,207,50,23,52,21,226}), _obczbshz({150,155,155,156,141,207,143,161,161,162}), -100, 100, 0, function(v)
-		lightFx(_obczbshz({173,221,174,175}), _obczbshz({172,217,215,219,223,177,222,226,227,215,214,232,222,229,229,189,223,224,224,223,241}), {}).Saturation = v / 100
+	sliderRow(page, "Saturação", "-100 a 100", -100, 100, 0, function(v)
+		lightFx("DsCC", "ColorCorrectionEffect", {}).Saturation = v / 100
 	end)
-	sliderRow(page, _obczbshz({172,217,217,224,223,207,226,228,214}), _obczbshz({150,155,155,156,141,207,143,161,161,162}), -100, 100, 0, function(v)
-		lightFx(_obczbshz({173,221,174,175}), _obczbshz({172,217,215,219,223,177,222,226,227,215,214,232,222,229,229,189,223,224,224,223,241}), {}).Contrast = v / 100
+	sliderRow(page, "Contraste", "-100 a 100", -100, 100, 0, function(v)
+		lightFx("DsCC", "ColorCorrectionEffect", {}).Contrast = v / 100
 	end)
-	toggleRow(page, _obczbshz({171,214,218,219,218}), _obczbshz({171,220,212,216,213,221,143,214,224,228,231,217,149,228,216,235,153,230,240,246,226,241}), function(v)
-		local b = lightFx(_obczbshz({173,221,173,216,220,221,220}), _obczbshz({171,214,218,219,218,179,213,214,214,213,231}), { Intensity = 1.2, Size = 40, Threshold = 0.8 })
+	toggleRow(page, "Bloom", "Brilho forte nas luzes", function(v)
+		local b = lightFx("DsBloom", "BloomEffect", { Intensity = 1.2, Size = 40, Threshold = 0.8 })
 		b.Enabled = v
 	end)
-	toggleRow(page, _obczbshz({173,207,222,210,220,223,228,213}), _obczbshz({171,217,221,222,206,142,208,144,229,215,223,213}), function(v)
-		local b = lightFx(_obczbshz({173,221,173,216,226,224}), _obczbshz({171,214,224,222,178,212,213,213,212,230}), { Size = 10 })
+	toggleRow(page, "Desfoque", "Borra a tela", function(v)
+		local b = lightFx("DsBlur", "BlurEffect", { Size = 10 })
 		b.Enabled = v
 	end)
-	toggleRow(page, _obczbshz({183,45,20,226,220,207,143,211,224,222,226,230,222,218,216}), _obczbshz({183,45,20,226,220,207,143,211,224,223,147,213,149,217,230,234,153,223,238,223,236,234,231,233,229,227}), function(v)
+	toggleRow(page, "Névoa colorida", "Névoa com a cor escolhida", function(v)
 		saveLight()
 		if v then Lighting.FogEnd = 140; Lighting.FogColor = col()
 		else Lighting.FogEnd = lightOrig.FogEnd; Lighting.FogColor = lightOrig.FogColor end
@@ -3646,13 +4083,13 @@ local function buildEffects(page, say)
 		if sizeTouched then
 			local h = hum()
 			if h then
-				for _, n in ipairs({ _obczbshz({171,217,207,229,181,211,216,215,217,230,198,215,214,226,220}), _obczbshz({171,217,207,229,196,215,211,228,217,197,214,213,225,219}), _obczbshz({171,217,207,229,177,211,223,228,217,197,214,213,225,219}), _obczbshz({177,207,204,208,192,209,208,220,214}) }) do
+				for _, n in ipairs({ "BodyHeightScale", "BodyWidthScale", "BodyDepthScale", "HeadScale" }) do
 					local nv = h:FindFirstChild(n)
 					if nv then nv.Value = 1 end
 				end
 			end
 		end
-		for _, n in ipairs({ _obczbshz({173,221,174,175}), _obczbshz({173,221,173,216,220,221,220}), _obczbshz({173,221,173,216,226,224}) }) do
+		for _, n in ipairs({ "DsCC", "DsBloom", "DsBlur" }) do
 			local o = Lighting:FindFirstChild(n)
 			if o then o:Destroy() end
 		end
@@ -3663,29 +4100,30 @@ local function buildEffects(page, say)
 	end
 end
 
+-- ===== Seletor em aba (abre/fecha, igual às categorias de música) =====
 local function dropdown(par, title, getItems, onPick, onRefresh)
-	local wrap = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, par)
-	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
-	local head = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), { Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
+	local wrap = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, par)
+	mk("UIListLayout", { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
+	local head = mk("TextButton", { Text = "", Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
 	round(head, 19); stroke(head, 2)
-	local lbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	local lbl = mk("TextLabel", {
 		Text = title, Size = UDim2.new(1, -60, 1, 0), Position = UDim2.fromOffset(16, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left,
 		TextTruncate = Enum.TextTruncate.AtEnd,
 	}, head)
-	local arrow = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({148}), Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
+	local arrow = mk("TextLabel", {
+		Text = "+", Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 20,
 	}, head)
-	local body = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
-	mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
-	mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 14) }, body)
+	local body = mk("Frame", { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
+	mk("UIListLayout", { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
+	mk("UIPadding", { PaddingLeft = UDim.new(0, 14) }, body)
 	local obj = {}
 	function obj.rebuild()
-		for _, c in ipairs(body:GetChildren()) do if c:IsA(_obczbshz({189,207,227,224,175,227,227,228,224,224})) or c:IsA(_obczbshz({189,207,227,224,185,207,209,213,221})) then c:Destroy() end end
-
-		local rf = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
-			Text = _obczbshz({75,240,38,140,174,226,228,209,221,219,237,213,231,150,227,225,236,238,220}), LayoutOrder = 0, Size = UDim2.new(1, 0, 0, 28),
+		for _, c in ipairs(body:GetChildren()) do if c:IsA("TextButton") or c:IsA("TextLabel") then c:Destroy() end end
+		-- botão de atualizar a lista (sempre no topo)
+		local rf = mk("TextButton", {
+			Text = "↻ Atualizar lista", LayoutOrder = 0, Size = UDim2.new(1, 0, 0, 28),
 			BackgroundColor3 = UI.ACTIVE, BackgroundTransparency = 0.2,
 			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12,
 		}, body)
@@ -3696,36 +4134,37 @@ local function dropdown(par, title, getItems, onPick, onRefresh)
 		end)
 		local items = getItems()
 		if #items == 0 then
-			mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-				Text = _obczbshz({183,211,217,211,226,49,24,221,145,214,220,231,229,229,229,59,38,240,224,232,157,223,230,239,243,227,177}), LayoutOrder = 1, Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1,
-				TextColor3 = Color3.fromRGB(170, 130, 130), Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
+			mk("TextLabel", {
+				Text = "Ninguém disponível agora.", LayoutOrder = 1, Size = UDim2.new(1, 0, 0, 26), BackgroundTransparency = 1,
+				TextColor3 = Color3.fromRGB(125, 130, 142), Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 			}, body)
 		end
 		for _, it in ipairs(items) do
-			local row = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), {
+			local row = mk("TextButton", {
 				Text = it.label, LayoutOrder = 2, Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2,
 				TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12,
 			}, body)
 			round(row, 15); stroke(row, 1.2)
 			row.MouseButton1Click:Connect(function()
 				onPick(it)
-				body.Visible = false; arrow.Text = _obczbshz({148})
+				body.Visible = false; arrow.Text = "+"
 			end)
 		end
 	end
 	function obj.setText(t) lbl.Text = t end
-
+	-- se a lista estiver aberta e alguém entrar/sair, atualiza sozinha
 	local function auto() if body.Parent and body.Visible then task.defer(obj.rebuild) end end
 	Players.PlayerAdded:Connect(auto)
 	Players.PlayerRemoving:Connect(auto)
 	head.MouseButton1Click:Connect(function()
 		if not body.Visible then obj.rebuild() end
 		body.Visible = not body.Visible
-		arrow.Text = body.Visible and _obczbshz({75,234,254}) or _obczbshz({148})
+		arrow.Text = body.Visible and "–" or "+"
 	end)
 	return obj
 end
 
+-- ===== Aba Extras (só afetam VOCÊ) =====
 local function buildExtras(page, say)
 	local cs = {}
 	local X = { fov = 70, fovOn = false, fb = false, esp = false, target = nil }
@@ -3735,11 +4174,11 @@ local function buildExtras(page, say)
 	local savedCF
 	local spinBAV
 	local afkConn
-	local VU = game:GetService(_obczbshz({191,211,221,224,226,207,219,197,228,215,229}))
+	local VU = game:GetService("VirtualUser")
 	local function cam() return workspace.CurrentCamera end
 
-	section(page, _obczbshz({190,222,212,216,214,210,208,212,214,229}))
-	toggleRow(page, _obczbshz({170,216,223,213,154,175,181,187}), _obczbshz({174,224,212,224,206,142,226,213,227,146,222,221,216,225,216,220,232,154,235,235,239,158,229,233,228,227,245,164,245,231,249,233,237,249}), function(v)
+	section(page, "Utilidades")
+	toggleRow(page, "Anti-AFK", "Evita ser kickado por ficar parado", function(v)
 		if afkConn then afkConn:Disconnect(); afkConn = nil end
 		if v then
 			afkConn = lp.Idled:Connect(function()
@@ -3747,7 +4186,7 @@ local function buildExtras(page, say)
 			end)
 		end
 	end)
-	toggleRow(page, _obczbshz({181,223,229,140,225,221,227,209,221,146,155,218,234,226,227,218,235,227,226,228,241,167}), _obczbshz({189,211,221,205,141,207,143,213,228,213,232,230,222,218,58,27,232,154,223,235,157,235,224,240,226}), function(v)
+	toggleRow(page, "Luz total (fullbright)", "Tira a escuridão do mapa", function(v)
 		if v and not fbOrig then
 			fbOrig = {
 				Brightness = Lighting.Brightness, Ambient = Lighting.Ambient,
@@ -3759,7 +4198,7 @@ local function buildExtras(page, say)
 			for k, val in pairs(fbOrig) do Lighting[k] = val end
 		end
 	end)
-	toggleRow(page, _obczbshz({174,189,187,140,209,211,143,218,224,217,212,216,228,232,220,235}), _obczbshz({172,217,217,224,220,224,221,223,145,157,147,226,228,227,220,152,222,154,223,229,240,242,66,34,239,229,236,229}), function(v)
+	toggleRow(page, "ESP de jogadores", "Contorno + nome e distância", function(v)
 		X.esp = v
 		if not v then
 			for _, e in pairs(espObjs) do
@@ -3768,43 +4207,43 @@ local function buildExtras(page, say)
 			espObjs = {}
 		end
 	end)
-	toggleRow(page, _obczbshz({176,211,221,205,223,142,223,213,227,229,226,226,214,221,220,229}), _obczbshz({176,211,221,205,141,228,222,211,52,28,147,231,218,227,151,232,218,236,220,238}), function(v)
+	toggleRow(page, "Girar personagem", "Gira você sem parar", function(v)
 		if spinBAV then spinBAV:Destroy(); spinBAV = nil end
 		local r = hrp()
 		if v and r then
-			spinBAV = mk(_obczbshz({171,217,207,229,174,220,214,229,221,211,229,202,218,226,230,219,226,238,244}), { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 10, 0) }, r)
+			spinBAV = mk("BodyAngularVelocity", { MaxTorque = Vector3.new(0, 1e9, 0), AngularVelocity = Vector3.new(0, 10, 0) }, r)
 		end
 	end)
 
 	local origZoom = lp.CameraMaxZoomDistance
 	local fpsLbl
 	local fpsAcc, fpsN = 0, 0
-	toggleRow(page, _obczbshz({182,217,222,224,223,207,225,144,183,194,198}), _obczbshz({172,217,217,224,206,210,222,226,145,224,226,148,216,215,229,236,232,154,223,221,157,242,228,236,226}), function(v)
+	toggleRow(page, "Mostrar FPS", "Contador no canto da tela", function(v)
 		X.fps = v
 		if v and not fpsLbl then
-			fpsLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-				Text = _obczbshz({175,186,190,166,141,155,156}), Size = UDim2.fromOffset(80, 22), Position = UDim2.new(1, -90, 0, 8),
-				BackgroundColor3 = Color3.fromRGB(20, 0, 0), BackgroundTransparency = 0.3, TextColor3 = WHITE,
+			fpsLbl = mk("TextLabel", {
+				Text = "FPS: --", Size = UDim2.fromOffset(80, 22), Position = UDim2.new(1, -90, 0, 8),
+				BackgroundColor3 = Color3.fromRGB(20, 21, 26), BackgroundTransparency = 0.3, TextColor3 = WHITE,
 				Font = Enum.Font.GothamBold, TextSize = 12,
 			}, gui)
 			round(fpsLbl, 8)
 		end
 		if fpsLbl then fpsLbl.Visible = v end
 	end)
-	toggleRow(page, _obczbshz({195,217,218,217,141,215,219,217,222,219,231,213,217,229}), _obczbshz({170,208,204,223,225,207,143,209,145,213,54,22,226,219,233,217,153,219,231,63,38,235,159,228,240,162,239,237,242,239,251,237}), function(v)
+	toggleRow(page, "Zoom ilimitado", "Afasta a câmera além do limite", function(v)
 		lp.CameraMaxZoomDistance = v and 5000 or origZoom
 	end)
 
-	section(page, _obczbshz({172,45,13,217,210,224,208,144,214,146,217,55,34,233,224,219,218}))
-	toggleRow(page, _obczbshz({175,185,193,140,221,211,225,227,224,224,212,224,222,240,216,220,232}), _obczbshz({190,221,204,140,220,142,229,209,221,225,229,148,217,229,151,219,232,232,239,238,236,234,228,160,226,228,228,237,253,245}), function(v)
+	section(page, "Câmera e física")
+	toggleRow(page, "FOV personalizado", "Usa o valor do controle abaixo", function(v)
 		X.fovOn = v
 		if not v and cam() then cam().FieldOfView = 70 end
 	end)
-	sliderRow(page, _obczbshz({175,185,193}), _obczbshz({172,203,216,220,220,142,211,213,145,232,220,231,56,25,230}), 30, 120, 70, function(v) X.fov = v end)
-	sliderRow(page, _obczbshz({176,220,204,226,214,210,208,212,214}), _obczbshz({185,203,207,222,48,17,222,170,145,163,172,170}), 20, 300, math.floor(origGravity), function(v) workspace.Gravity = v end)
-	rowBtn(page, _obczbshz({187,207,222,224,206,227,225,209,227,146,218,230,214,236,224,220,218,222,224}), function() workspace.Gravity = origGravity; say(_obczbshz({176,220,204,226,214,210,208,212,214,146,229,217,232,234,216,237,235,219,223,221,171})) end)
+	sliderRow(page, "FOV", "Campo de visão", 30, 120, 70, function(v) X.fov = v end)
+	sliderRow(page, "Gravidade", "Padrão: 196", 20, 300, math.floor(origGravity), function(v) workspace.Gravity = v end)
+	rowBtn(page, "Restaurar gravidade", function() workspace.Gravity = origGravity; say("Gravidade restaurada.") end)
 
-	section(page, _obczbshz({179,217,210,205,209,221,225,213,228}))
+	section(page, "Jogadores")
 	local function others()
 		local t = {}
 		for _, pl in ipairs(Players:GetPlayers()) do
@@ -3813,47 +4252,47 @@ local function buildExtras(page, say)
 		return t
 	end
 	local tgtDD
-	tgtDD = dropdown(page, _obczbshz({174,221,206,219,217,214,212,226,145,220,226,219,214,218,230,234,153,162,233,225,235,230,244,237,170}), function()
+	tgtDD = dropdown(page, "Escolher jogador (nenhum)", function()
 		local t = {}
 		for _, pl in ipairs(others()) do
-			table.insert(t, { label = pl.DisplayName .. _obczbshz({137,146,171}) .. pl.Name .. _obczbshz({146}), value = pl })
+			table.insert(t, { label = pl.DisplayName .. " (@" .. pl.Name .. ")", value = pl })
 		end
 		return t
 	end, function(it)
 		X.target = it.value
-		tgtDD.setText(_obczbshz({179,217,210,205,209,221,225,170,145}) .. it.value.DisplayName)
+		tgtDD.setText("Jogador: " .. it.value.DisplayName)
 	end)
-	rowBtn(page, _obczbshz({178,220,139,205,225,49,24,144,224,146,221,227,220,215,219,231,235}), function()
+	rowBtn(page, "Ir até o jogador", function()
 		local tc = X.target and X.target.Character
-		local tr = tc and tc:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
+		local tr = tc and tc:FindFirstChild("HumanoidRootPart")
 		local r = hrp()
-		if tr and r then r.CFrame = tr.CFrame * CFrame.new(0, 0, 4); say(_obczbshz({189,207,215,209,221,221,225,228,210,214,226,162})) else say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})) end
+		if tr and r then r.CFrame = tr.CFrame * CFrame.new(0, 0, 4); say("Teleportado.") else say("Escolha um jogador primeiro.") end
 	end)
-	toggleRow(page, _obczbshz({184,204,222,209,223,228,208,226,145,220,226,219,214,218,230,234}), _obczbshz({172,45,13,217,210,224,208,144,228,215,218,233,218,150,230,152,227,233,226,221,225,237,241,160,230,245,230,243,241,238,240,236,248}), function(v)
+	toggleRow(page, "Observar jogador", "Câmera segue o jogador escolhido", function(v)
 		local tc = X.target and X.target.Character
-		local th = tc and tc:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		local th = tc and tc:FindFirstChildOfClass("Humanoid")
 		if v and th then cam().CameraSubject = th
 		else
 			local h = hum()
 			if h then cam().CameraSubject = h end
-			if v then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})) end
+			if v then say("Escolha um jogador primeiro.") end
 		end
 	end)
-	rowBtn(page, _obczbshz({188,203,215,226,206,224,143,221,218,224,219,213,149,230,230,235,226,61,34,63,32,237}), function()
+	rowBtn(page, "Salvar minha posição", function()
 		local r = hrp()
-		if r then savedCF = r.CFrame; say(_obczbshz({185,217,222,213,48,21,50,19,224,146,230,213,225,236,216,166})) end
+		if r then savedCF = r.CFrame; say("Posição salva.") end
 	end)
-	rowBtn(page, _obczbshz({191,217,215,224,206,224,143,51,17,146,227,227,232,223,58,31,60,29,234,156,240,223,235,246,226}), function()
+	rowBtn(page, "Voltar à posição salva", function()
 		local r = hrp()
-		if r and savedCF then r.CFrame = savedCF; say(_obczbshz({191,217,215,224,220,227,157})) else say(_obczbshz({183,207,217,212,226,219,208,144,225,225,230,221,56,29,58,27,232,154,238,221,233,244,224,174})) end
+		if r and savedCF then r.CFrame = savedCF; say("Voltou.") else say("Nenhuma posição salva.") end
 	end)
-	rowBtn(page, _obczbshz({187,207,222,209,225,207,225,144,225,215,229,231,228,228,216,223,222,231}), function()
+	rowBtn(page, "Resetar personagem", function()
 		local h = hum()
 		if h then h.Health = 0 end
 	end)
-	rowBtn(page, _obczbshz({187,207,208,218,225,224,208,226,145,224,226,148,223,229,222,231}), function()
-		say(_obczbshz({187,207,208,218,225,224,208,222,213,225,161,162,163}))
-		pcall(function() game:GetService(_obczbshz({189,207,215,209,221,221,225,228,196,215,229,234,222,217,220})):Teleport(game.PlaceId, lp) end)
+	rowBtn(page, "Reentrar no jogo", function()
+		say("Reentrando...")
+		pcall(function() game:GetService("TeleportService"):Teleport(game.PlaceId, lp) end)
 	end)
 
 	local acc = 0
@@ -3867,21 +4306,21 @@ local function buildExtras(page, say)
 		acc = acc + dt
 		if X.fps and fpsLbl then
 			fpsAcc = fpsAcc + dt; fpsN = fpsN + 1
-			if fpsAcc >= 0.5 then fpsLbl.Text = _obczbshz({175,186,190,166,141}) .. math.floor(fpsN / fpsAcc + 0.5); fpsAcc, fpsN = 0, 0 end
+			if fpsAcc >= 0.5 then fpsLbl.Text = "FPS: " .. math.floor(fpsN / fpsAcc + 0.5); fpsAcc, fpsN = 0, 0 end
 		end
 		if X.esp and acc >= 0.3 then
 			acc = 0
 			local r = hrp()
 			for _, pl in ipairs(others()) do
 				local c = pl.Character
-				local head = c and c:FindFirstChild(_obczbshz({177,207,204,208}))
+				local head = c and c:FindFirstChild("Head")
 				if head then
 					local e = espObjs[pl]
 					if not e or e.hl.Adornee ~= c or not e.hl.Parent then
 						if e then pcall(function() e.hl:Destroy(); e.bb:Destroy() end) end
-						local hl = mk(_obczbshz({177,211,210,212,217,215,214,216,229}), { Adornee = c, FillTransparency = 0.7, FillColor = RED, OutlineColor = WHITE }, gui)
-						local bb = mk(_obczbshz({171,211,215,216,207,221,208,226,213,185,232,221}), { Adornee = head, Size = UDim2.fromOffset(120, 20), StudsOffset = Vector3.new(0, 2.5, 0), AlwaysOnTop = true }, gui)
-						local lbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+						local hl = mk("Highlight", { Adornee = c, FillTransparency = 0.7, FillColor = RED, OutlineColor = WHITE }, gui)
+						local bb = mk("BillboardGui", { Adornee = head, Size = UDim2.fromOffset(120, 20), StudsOffset = Vector3.new(0, 2.5, 0), AlwaysOnTop = true }, gui)
+						local lbl = mk("TextLabel", {
 							Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, TextColor3 = WHITE,
 							TextStrokeTransparency = 0.3, Font = Enum.Font.GothamBold, TextSize = 12,
 						}, bb)
@@ -3889,7 +4328,7 @@ local function buildExtras(page, say)
 						espObjs[pl] = e
 					end
 					local d = r and math.floor((head.Position - r.Position).Magnitude) or 0
-					e.lbl.Text = pl.DisplayName .. _obczbshz({137,197}) .. d .. _obczbshz({198})
+					e.lbl.Text = pl.DisplayName .. " [" .. d .. "]"
 				end
 			end
 		end
@@ -3912,17 +4351,20 @@ local function buildExtras(page, say)
 	end
 end
 
-local MUSIC_CATS = {}
+
+-- ===== aba Brookhaven: nome/bio RP (com RGB) + rádio por ID =====
+-- Os remotes ficam dentro da função (nomes podem mudar se o jogo atualizar).
+local MUSIC_CATS = {} -- lista de músicas (preenchida na aba Música e reaproveitada na aba Car)
 local function buildBrookhaven(pages, say)
-	local page = pages[_obczbshz({183,217,216,209})]
-	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
-	local NAME_REMOTES = { _obczbshz({154,188,187,186,206,219,160,213,197,215,235,165,233}) }
-	local COLOR_REMOTES = { _obczbshz({154,188,187,186,206,219,160,213,180,225,223,227,166,232}) }
+	local page = pages["Nome"]
+	local RS = game:GetService("ReplicatedStorage")
+	local NAME_REMOTES = { "1RPNam1eTex1t" }   -- RolePlayName / RolePlayBio
+	local COLOR_REMOTES = { "1RPNam1eColo1r" } -- PickingRPNameColor / PickingRPBioColor
 	local alive = true
 	local rgbName, rgbBio, speed, hue = false, false, 5, 0
 
 	local function findRE(names)
-		local re = RS:FindFirstChild(_obczbshz({187,175}))
+		local re = RS:FindFirstChild("RE")
 		if not re then return nil end
 		for _, n in ipairs(names) do
 			local r = re:FindFirstChild(n)
@@ -3931,45 +4373,46 @@ local function buildBrookhaven(pages, say)
 		return nil
 	end
 	local function inputRow(placeholder)
-		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obczbshz({189,207,227,224,175,221,231}), {
+		return mk("TextBox", {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function digits(s)
-		local d = (tostring(s or _obczbshz({}))):gsub(_obczbshz({142,174}), _obczbshz({}))
+		local d = (tostring(s or "")):gsub("%D", "")
 		if #d >= 5 then return d end
 		return nil
 	end
 
-	section(page, _obczbshz({183,217,216,209,141,211,143,178,218,225,147,156,199,198,160}))
-	local nameBox = inputRow(_obczbshz({183,217,216,209,141,223,228,213,145,211,227,213,231,219,218,221,153,223,232,156,224,231,236,225,161,230,242,164,245,235,249,251,248,248,236,243,242,251}))
-	rowBtn(page, _obczbshz({170,218,215,213,208,207,225,144,223,225,224,217}), function()
+	-- ===== Nome e Bio =====
+	section(page, "Nome e Bio (RP)")
+	local nameBox = inputRow("Nome que aparece em cima do personagem")
+	rowBtn(page, "Aplicar nome", function()
 		local r = findRE(NAME_REMOTES)
-		if not r then say(_obczbshz({187,207,216,219,225,211,143,212,224,146,225,227,226,219,151,230,60,29,234,156,226,236,226,239,239,246,245,229,233,245,167,176,248,170,245,251,244,253,175,0,0,246,248,180,9,251,9,184,6,15,255,253,1,13,200,206})); return end
-		local ok = pcall(function() r:FireServer(_obczbshz({187,217,215,209,189,218,208,233,191,211,224,217}), nameBox.Text) end)
-		say(ok and _obczbshz({183,217,216,209,141,207,223,220,218,213,212,216,228,164}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,212,228,225,223,218,217,235,154,234,156,235,237,236,229,175}))
+		if not r then say("Remote do nome não encontrado (o jogo pode ter mudado)."); return end
+		local ok = pcall(function() r:FireServer("RolePlayName", nameBox.Text) end)
+		say(ok and "Nome aplicado." or "Falhou ao aplicar o nome.")
 	end, true)
-	local bioBox = inputRow(_obczbshz({171,211,218}))
-	rowBtn(page, _obczbshz({170,218,215,213,208,207,225,144,211,219,226}), function()
+	local bioBox = inputRow("Bio")
+	rowBtn(page, "Aplicar bio", function()
 		local r = findRE(NAME_REMOTES)
-		if not r then say(_obczbshz({187,207,216,219,225,211,143,212,210,146,213,221,228,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,166,175,247,169,244,250,243,252,174,255,255,245,247,179,8,250,8,183,5,14,254,252,0,12,199,205})); return end
-		local ok = pcall(function() r:FireServer(_obczbshz({187,217,215,209,189,218,208,233,179,219,226}), bioBox.Text) end)
-		say(ok and _obczbshz({171,211,218,140,206,222,219,217,212,211,215,213,163}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,212,228,225,223,218,217,235,154,220,156,223,231,238,174}))
+		if not r then say("Remote da bio não encontrado (o jogo pode ter mudado)."); return end
+		local ok = pcall(function() r:FireServer("RolePlayBio", bioBox.Text) end)
+		say(ok and "Bio aplicada." or "Falhou ao aplicar a bio.")
 	end, true)
-	toggleRow(page, _obczbshz({183,217,216,209,141,192,182,178}), _obczbshz({170,138,206,219,223,142,211,223,145,224,226,225,218,150,228,237,221,219,155,239,226,235,159,240,226,244,228,246}), function(v)
+	toggleRow(page, "Nome RGB", "A cor do nome muda sem parar", function(v)
 		rgbName = v
-		if v and not findRE(COLOR_REMOTES) then say(_obczbshz({187,207,216,219,225,211,143,212,214,146,214,227,231,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,180})) end
+		if v and not findRE(COLOR_REMOTES) then say("Remote de cor não encontrado.") end
 	end)
-	toggleRow(page, _obczbshz({171,211,218,140,191,181,177}), _obczbshz({170,138,206,219,223,142,211,209,145,212,220,227,149,227,236,220,218,154,238,225,234,158,239,225,243,227,245}), function(v)
+	toggleRow(page, "Bio RGB", "A cor da bio muda sem parar", function(v)
 		rgbBio = v
-		if v and not findRE(COLOR_REMOTES) then say(_obczbshz({187,207,216,219,225,211,143,212,214,146,214,227,231,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,180})) end
+		if v and not findRE(COLOR_REMOTES) then say("Remote de cor não encontrado.") end
 	end)
-	sliderRow(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,198,188,184}), _obczbshz({154,138,215,209,219,226,222,144,51,41,147,165,165,150,233,59,26,234,228,224,236}), 1, 10, 5, function(v) speed = v end)
+	sliderRow(page, "Velocidade RGB", "1 lento · 10 rápido", 1, 10, 5, function(v) speed = v end)
 
 	task.spawn(function()
 		while alive do
@@ -3978,190 +4421,194 @@ local function buildBrookhaven(pages, say)
 				local col = Color3.fromHSV(hue, 1, 1)
 				local r = findRE(COLOR_REMOTES)
 				if r then
-					if rgbName then pcall(function() r:FireServer(_obczbshz({185,211,206,215,214,220,214,194,193,192,212,225,218,185,230,228,232,236}), col) end) end
-					if rgbBio then pcall(function() r:FireServer(_obczbshz({185,211,206,215,214,220,214,194,193,180,220,227,184,229,227,231,235}), col) end) end
+					if rgbName then pcall(function() r:FireServer("PickingRPNameColor", col) end) end
+					if rgbBio then pcall(function() r:FireServer("PickingRPBioColor", col) end) end
 				end
 			end
 			task.wait(0.25)
 		end
 	end)
 
-	page = pages[_obczbshz({182,45,37,223,214,209,208})]
-	section(page, _obczbshz({182,45,37,223,214,209,208,144,153,228,54,21,217,223,230,152,222,154,227,235,243,227,241,226,240,227,245,232,174}))
-	local idBox = inputRow(_obczbshz({178,174,139,208,206,142,220,51,43,229,220,215,214}))
+	-- ===== Música: rádio e hoverboard (precisa ter o item/gamepass) =====
+	page = pages["Música"]
+	section(page, "Música (rádio e hoverboard)")
+	local idBox = inputRow("ID da música")
 
+	-- os nomes dos remotes têm "1" no meio (ex.: 1NoMoto1rVehicle1s); acha pelo nome sem os "1"
 	local function reByPlain(plain)
-		local re = RS:FindFirstChild(_obczbshz({187,175}))
+		local re = RS:FindFirstChild("RE")
 		if not re then return nil end
 		for _, c in ipairs(re:GetChildren()) do
-			if (c.Name:gsub(_obczbshz({154}), _obczbshz({}))) == plain then return c end
+			if (c.Name:gsub("1", "")) == plain then return c end
 		end
 		return nil
 	end
 	local function send(plain, kind, id, okMsg)
 		local r = reByPlain(plain)
-		if not r then say(_obczbshz({187,207,216,219,225,211,143,222,52,21,226,148,218,228,218,231,231,238,237,221,225,237,159,168,240,162,237,243,236,245,167,248,248,238,240,172,1,243,1,176,254,7,247,245,249,5,192,198})); return end
+		if not r then say("Remote não encontrado (o jogo pode ter mudado)."); return end
 		local ok, err = pcall(function() r:FireServer(kind, id, nil, true) end)
-		say(ok and okMsg or (_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(err):sub(1, 50)))
+		say(ok and okMsg or ("Falhou: " .. tostring(err):sub(1, 50)))
 	end
 
-	rowBtn(page, _obczbshz({189,217,206,205,223,142,221,223,145,228,54,21,217,223,230,152,161,221,234,233,157,237,159,242,68,35,231,237,244,166,245,233,169,247,78,47,252,183}), function()
+	rowBtn(page, "Tocar no rádio (com o rádio na mão)", function()
 		local id = digits(idBox.Text)
-		if not id then say(_obczbshz({173,211,210,213,225,211,143,229,222,146,188,184,149,218,220,152,230,61,53,239,230,225,224,160,247,69,36,240,238,234,246,182})); return end
-		send(_obczbshz({185,214,204,229,210,224,195,223,224,222,184,234,218,228,235}), _obczbshz({189,217,218,216,186,227,226,217,212,198,216,236,233}), id, _obczbshz({189,217,206,205,219,210,222,144}) .. id .. _obczbshz({137,216,218,140,223,49,16,212,218,225,161}))
+		if not id then say("Digite um ID de música válido."); return end
+		send("PlayerToolEvent", "ToolMusicText", id, "Tocando " .. id .. " no rádio.")
 	end, true)
-	rowBtn(page, _obczbshz({185,203,221,205,223,142,225,51,18,214,220,227}), function()
-		send(_obczbshz({185,214,204,229,210,224,195,223,224,222,184,234,218,228,235}), _obczbshz({189,217,218,216,186,227,226,217,212,197,231,227,229}), _obczbshz({}), _obczbshz({185,207,207,213,209,221,143,212,214,146,227,213,231,215,233,152,222,232,241,229,222,226,238,160,169,244,70,37,233,239,246,177,183}))
+	rowBtn(page, "Parar rádio", function()
+		send("PlayerToolEvent", "ToolMusicStop", "", "Pedido de parar enviado (rádio).")
 	end, true)
-	rowBtn(page, _obczbshz({189,217,206,205,223,142,221,223,145,218,226,234,218,232,217,231,218,236,223,156,165,227,236,160,228,235,240,229,165,234,236,244,238,179}), function()
+	rowBtn(page, "Tocar no hoverboard (em cima dele)", function()
 		local id = digits(idBox.Text)
-		if not id then say(_obczbshz({173,211,210,213,225,211,143,229,222,146,188,184,149,218,220,152,230,61,53,239,230,225,224,160,247,69,36,240,238,234,246,182})); return end
-		send(_obczbshz({183,217,184,219,225,221,225,198,214,218,220,215,225,219,234}), _obczbshz({185,211,206,215,214,220,214,195,212,225,226,232,218,232,196,237,236,227,222,208,226,246,243}), id, _obczbshz({189,217,206,205,219,210,222,144}) .. id .. _obczbshz({137,216,218,140,213,221,229,213,227,212,226,213,231,218,165}))
+		if not id then say("Digite um ID de música válido."); return end
+		send("NoMotorVehicles", "PickingScooterMusicText", id, "Tocando " .. id .. " no hoverboard.")
 	end, true)
-	rowBtn(page, _obczbshz({185,203,221,205,223,142,215,223,231,215,229,214,228,215,233,220}), function()
-		send(_obczbshz({183,217,184,219,225,221,225,198,214,218,220,215,225,219,234}), _obczbshz({185,211,206,215,214,220,214,195,212,225,226,232,218,232,196,237,236,227,222,207,241,237,239}), _obczbshz({}), _obczbshz({185,207,207,213,209,221,143,212,214,146,227,213,231,215,233,152,222,232,241,229,222,226,238,160,169,234,242,250,234,248,233,247,234,252,239,181,187}))
+	rowBtn(page, "Parar hoverboard", function()
+		send("NoMotorVehicles", "PickingScooterMusicStop", "", "Pedido de parar enviado (hoverboard).")
 	end, true)
 
+	-- ===== Lista de músicas por categoria: clica na música e já toca (rádio + hoverboard), sem botão de iniciar =====
+	-- Para adicionar mais: { "Nome", "ID" } dentro da categoria. IDs do Roblox podem ser removidos por copyright com o tempo.
 	local CATS = {
-		{ _obczbshz({175,223,217,215}), {
-			{ _obczbshz({181,217,215,219,227,211,160,162}), _obczbshz({161,161,155,160,164,164,168,161,169,165,172,172,166,173}) },
-			{ _obczbshz({185,203,221,229,217,211,208,219}), _obczbshz({154,157,162,157,159,160,168,168,170,163,167,167,168,170,172}) },
-			{ _obczbshz({170,218,215,213,208,221}), _obczbshz({161,160,163,162,163,163,163,165,169,168,164,165,167,171}) },
-			{ _obczbshz({190,216,212,47,16,221}), _obczbshz({154,154,162,165,166,159,161,163,166,171,164,171,174,174,170}) },
-			{ _obczbshz({177,217,222,220,214,226,208,220,210,228}), _obczbshz({162,160,157,161,166,161,164,161,168,164,172,164,169,175}) },
-			{ _obczbshz({185,45,20,140,177,215,225,213,218,230,226}), _obczbshz({154,156,162,164,164,158,165,162,170,171,170,167,165,172,175}) },
-			{ _obczbshz({189,217,224,140,187,207,143,191,223,214,212}), _obczbshz({162,157,159,164,160,165,164,161,163,163,163,170,171,173}) },
-			{ _obczbshz({182,217,217,224,206,213,212,221,145,200,212,228,228}), _obczbshz({154,156,160,162,158,166,166,160,163,165,169,168,170,171,173}) },
-			{ _obczbshz({175,223,217,215,141,176,225,229,233,211,229,221,214}), _obczbshz({154,157,155,164,157,164,166,168,169,162,164,166,173,170,168}) },
-			{ _obczbshz({182,217,217,224,206,213,212,221,145,191,212,224,235,215,219,217}), _obczbshz({162,157,160,157,164,162,168,162,164,168,172,172,170,174}) },
-			{ _obczbshz({179,203,217,224,206,224,143,182,210,223,54,33,225,223,216}), _obczbshz({154,154,158,156,161,161,166,162,168,163,171,172,168,167,176}) },
-			{ _obczbshz({189,217,216,205,141,194,222,221,210}), _obczbshz({154,155,155,160,164,160,161,168,165,167,171,169,168,174,174}) },
-			{ _obczbshz({185,203,215,212,206,49,22,51,20,225}), _obczbshz({161,156,163,162,162,160,166,164,170,170,169,165,166,172}) },
-			{ _obczbshz({189,220,208,217,220,142,188,213,233,219,214,213,227,215}), _obczbshz({154,155,155,159,158,165,168,167,169,171,170,167,174,169,175}) },
-			{ _obczbshz({189,220,208,220,206,142,195,226,214,226,212}), _obczbshz({154,156,162,160,161,167,163,161,167,169,165,170,166,167,170}) },
-			{ _obczbshz({182,207,210,205,141,175,228,228,224,223,226,232,222,236,230}), _obczbshz({154,156,158,158,158,159,161,161,165,166,170,173,173,172,168}) },
-			{ _obczbshz({188,207,139,182,220,213,208}), _obczbshz({161,155,156,156,159,164,162,162,170,171,164,167,167,166}) },
-			{ _obczbshz({173,203,207,208,230,142,187,223,231,215}), _obczbshz({162,160,157,158,160,158,167,166,162,165,168,166,173,174}) },
-			{ _obczbshz({187,217,216,205,219,221,143,189,210,224,215,217,225,215,219,231}), _obczbshz({154,156,163,161,163,160,163,161,170,162,167,165,170,168,168}) },
-			{ _obczbshz({182,217,217,224,206,213,212,221,145,194,212,229,234,223,234,236,60,29,234}), _obczbshz({162,163,163,157,159,162,168,163,170,169,171,170,173,170}) },
-			{ _obczbshz({172,138,194,205,217,217}), _obczbshz({160,156,159,161,158,160,166,161,170,164,171,173,172,171}) },
-			{ _obczbshz({182,211,206,219,141,186,208,222,52,25,212}), _obczbshz({160,162,158,161,159,160,161,160,164,166,164,168,167,170}) },
-			{ _obczbshz({189,220,208,217,141,176,208,220,210}), _obczbshz({154,157,162,164,159,166,165,163,170,166,163,167,171,169,167}) },
-			{ _obczbshz({173,180,139,183,220,207,219,209}), _obczbshz({154,154,159,163,163,165,166,164,165,168,166,166,170,171,172}) },
-			{ _obczbshz({189,220,218,220,206,142,194,213,222,146,180,225,228,232}), _obczbshz({154,156,160,163,165,162,162,166,164,166,169,167,169,172,173}) },
-			{ _obczbshz({175,211,217,219,141,175,214,223,223,219,212,226,233,219}), _obczbshz({154,156,162,158,164,163,161,164,163,167,170,168,169,173,172}) },
-			{ _obczbshz({175,211,220,225,210,215,143,188,224,231,214,213}), _obczbshz({162,158,158,162,162,158,164,160,166,167,167,165,165,167}) },
-			{ _obczbshz({191,207,216,140,179,227,211,213,227}), _obczbshz({154,156,155,164,166,160,165,161,161,164,171,167,174,168,175}) },
-			{ _obczbshz({189,220,218,218,220,142,211,223,145,187,225,218,218,232,229,231}), _obczbshz({160,156,159,157,158,166,161,165,163,170,166,173,166,166}) },
-			{ _obczbshz({191,203,212,140,192,211,221,228,210,224,215,227}), _obczbshz({154,156,160,162,165,159,160,164,164,167,165,168,174,166,167}) },
-			{ _obczbshz({171,220,224,228,206,224,216,209,145,181,212,230,227,223,221,225,220,227,233,221}), _obczbshz({154,157,158,158,162,160,162,167,170,168,164,170,172,169,169}) },
+		{ "Funk", {
+			{ "Lolove12", "87047691839817" },
+			{ "Paryleak", "137122989143345" },
+			{ "Aplico", "86866545861125" },
+			{ "União", "107991235917983" },
+			{ "Hospitalar", "96259351729049" },
+			{ "Pé Direito", "127870629973068" },
+			{ "Tou Na Onda", "93483751210667" },
+			{ "Montagem Vapo", "125618702364556" },
+			{ "Funk Bruxaria", "130806788012841" },
+			{ "Montagem Malvada", "93517492369858" },
+			{ "Jantar Família", "103043727188319" },
+			{ "Toma Toma", "110472284585387" },
+			{ "Palhação", "82865274986116" },
+			{ "Tremo Mexicana", "110317978973938" },
+			{ "Trepa Trepa", "127449416726113" },
+			{ "Mega Automotivo", "123211214479861" },
+			{ "Se Joga", "81102632991320" },
+			{ "Daddy Love", "96223086135288" },
+			{ "Romano Mandelado", "128562419041521" },
+			{ "Montagem Paquistão", "99812493978684" },
+			{ "C Walk", "72451271928975" },
+			{ "Mico Lança", "78352220341424" },
+			{ "Trem Bala", "137828639403630" },
+			{ "DJ Koala", "104767744632555" },
+			{ "Tropa Sem Amor", "125784363463466" },
+			{ "Fino Agoniante", "127275242574475" },
+			{ "Fiquei Louca", "94365050554101" },
+			{ "Vem Fuder", "120892610283928" },
+			{ "Trono do Inferno", "72411825283910" },
+			{ "Vai Sentando", "125681143524900" },
+			{ "Bruxaria Carnificina", "133252379616732" },
 		} },
-		{ _obczbshz({185,210,218,218,216}), {
-			{ _obczbshz({189,217,216,205,141,180,228,222,220,146,195,220,228,228,226}), _obczbshz({154,156,164,156,166,166,160,161,167,171,172,172,169,174,170}) },
-			{ _obczbshz({182,203,217,219,141,187,208,221,210,146,185,233,227,225,151,200,225,233,233,231,157,166,210,236,240,249,232,232,174}), _obczbshz({154,154,157,164,159,165,160,161,165,162,165,171,174,169,167}) },
-			{ _obczbshz({175,223,217,215,141,183,221,214,214,228,225,213,149,204,169,152,161,190,224,225,237,158,210,236,240,249,232,232,174}), _obczbshz({161,160,158,163,162,159,164,161,163,171,169,171,165,172}) },
-			{ _obczbshz({185,210,218,218,216,142,211,223,145,180,229,213,239,223,227,152,161,205,231,235,244,227,227,169}), _obczbshz({154,157,155,165,164,161,164,161,162,171,169,170,171,170,173}) },
-			{ _obczbshz({182,217,217,224,206,213,212,221,145,179,232,230,214}), _obczbshz({154,156,161,157,160,160,159,169,163,165,169,172,174,169,172}) },
-			{ _obczbshz({170,223,221,205,141,150,177,226,210,236,220,224,222,215,229,152,201,226,234,234,232,167}), _obczbshz({162,159,156,159,158,165,166,160,162,166,167,170,170,170}) },
-			{ _obczbshz({155,138,187,212,226,226,143,184,224,224,147,156,183,232,216,242,226,230,228,221,235,158,207,232,240,240,238,173}), _obczbshz({160,158,162,165,160,166,165,160,165,170,164,171,168,168}) },
-			{ _obczbshz({171,223,221,218,214,220,214,144,190,215,224,227,231,239,151,200,225,233,233,231,157,196,244,238,236}), _obczbshz({154,157,163,162,157,166,162,169,166,171,165,173,166,175,168}) },
-			{ _obczbshz({187,217,205,216,220,230,143,192,217,225,225,223}), _obczbshz({154,157,161,165,160,160,160,169,164,165,166,165,172,173,171}) },
-			{ _obczbshz({187,217,205,216,220,230,143,183,218,217,212,215,221,215,219,152,201,226,234,234,232}), _obczbshz({154,157,159,159,163,164,160,168,169,164,171,169,170,167,171}) },
-			{ _obczbshz({202,216,223,222,224,190,221,181,230}), _obczbshz({160,157,159,162,158,167,161,164,165,165,164,166,174,169}) },
-			{ _obczbshz({170,216,212,221,226,215,219,209,52,25,54,23,228}), _obczbshz({154,157,160,163,164,160,168,167,166,162,165,171,168,171,175}) },
-			{ _obczbshz({185,207,207,222,206,142,221,209,145,194,229,213,222,215}), _obczbshz({154,156,162,162,158,163,163,165,165,169,167,167,166,173,170}) },
+		{ "Phonk", {
+			{ "Toma Funk Phonk", "129098116998483" },
+			{ "Mano Mama Funk Phonk (Slowed)", "102827114027930" },
+			{ "Funk Inferna V2 (Deep Slowed)", "86375151296706" },
+			{ "Phonk do Brazil (Slowed)", "130973511966646" },
+			{ "Montagem Aura", "126132092368935" },
+			{ "Aura (Brazilian Phonk)", "95131770144654" },
+			{ "2 Phut Hon (Brazilian Phonk)", "74793860481732" },
+			{ "Burning Memory Phonk Funk", "138608395929191" },
+			{ "Roblox Phonk", "136932193331774" },
+			{ "Roblox Gigachad Phonk", "134366188285514" },
+			{ "antrsPnEu", "73461924431293" },
+			{ "Aniquilação", "135772975027358" },
+			{ "Pedra na Praia", "127615454743173" },
 		} },
-		{ _obczbshz({189,220,204,220}), {
-			{ _obczbshz({195,227,209,222,220,228}), _obczbshz({154,156,161,161,166,166,167,167,162,164,165,165,170,169,173}) },
-			{ _obczbshz({191,223,215,224,220,221,226}), _obczbshz({154,154,157,160,166,164,163,161,168,164,170,164,169,174,168}) },
-			{ _obczbshz({171,217,217,209,224,142,191,213,229,215,229}), _obczbshz({154,157,156,163,160,160,168,162,163,167,165,164,173,167,169}) },
-			{ _obczbshz({173,217,215,216,230,229,222,223,213}), _obczbshz({162,156,164,157,157,165,159,168,162,162,169,171,169,175}) },
-			{ _obczbshz({182,154,225}), _obczbshz({160,157,158,159,158,162,168,164,170,166,168,169,167,173}) },
-			{ _obczbshz({181,211,215,140,193,214,225,209,233,234}), _obczbshz({154,154,158,165,160,165,159,165,165,170,168,170,172,175,172}) },
-			{ _obczbshz({182,45,37,223,214,209,208,144,190,211,225,217,222,232,216}), _obczbshz({154,155,162,164,162,159,168,161,168,164,172,172,168,169,169}) },
-			{ _obczbshz({181,211,215,140,193,214,225,209,233,234,147,166}), _obczbshz({162,161,160,163,166,161,167,165,167,168,171,168,171,172}) },
-			{ _obczbshz({193,227,218,225,141,188,212,226,213}), _obczbshz({161,163,160,156,161,164,161,166,170,166,163,165,171,171}) },
-			{ _obczbshz({189,225,212,215,214,222,50,25,213,219,212}), _obczbshz({154,155,157,163,161,163,162,168,170,169,171,170,173,166,170}) },
-			{ _obczbshz({179,225,221,216,209}), _obczbshz({160,162,156,165,166,165,162,165,166,166,164,171,166,174}) },
-			{ _obczbshz({185,211,216,220,141,194,208,220,220}), _obczbshz({154,157,158,156,159,167,160,162,163,165,170,173,167,173,172}) },
-			{ _obczbshz({171,217,204,224,210,142,176,234,230,222}), _obczbshz({154,154,161,160,158,160,159,167,170,165,166,169,171,172,170}) },
-			{ _obczbshz({172,217,210,225,217,49,17,222,213,219,212}), _obczbshz({154,155,158,156,161,161,167,165,165,165,170,173,172,168,176}) },
-			{ _obczbshz({175,223,227,215,141,182,212,221,214,230}), _obczbshz({154,154,155,164,161,158,159,163,162,167,169,164,166,172,170}) },
-			{ _obczbshz({182,207,207,223}), _obczbshz({154,154,161,165,158,167,166,169,168,170,171,168,168,166,167}) },
-			{ _obczbshz({182,227,139,195,206,231}), _obczbshz({162,161,155,163,163,160,159,160,168,168,168,166,174,166}) },
-			{ _obczbshz({188,207,221,47,14}), _obczbshz({154,155,161,158,163,163,162,167,165,171,163,171,168,171,167}) },
-			{ _obczbshz({172,217,221,205,48,21,50,19,224,146,182,230,222,233,235,217,229}), _obczbshz({154,156,157,164,157,162,163,162,168,166,171,166,168,169,169}) },
-			{ _obczbshz({188,210,212,218,210,142,199,180}), _obczbshz({162,159,162,162,164,159,162,161,166,165,169,172,171,169}) },
-			{ _obczbshz({172,203,221,205,141,189,210,229,225,211,215,227}), _obczbshz({154,155,162,161,165,162,161,161,162,170,172,170,172,171,174}) },
-			{ _obczbshz({177,227,215,205,219,210,212,226}), _obczbshz({161,162,158,156,164,160,167,167,165,170,165,169,172,175}) },
-			{ _obczbshz({184,138,188,225,210,142,176,211,224,224,231,217,216,219,236}), _obczbshz({154,156,157,165,158,158,160,163,169,168,170,165,174,166,167}) },
-			{ _obczbshz({185,212,215}), _obczbshz({160,155,162,162,166,160,161,166,164,167,164,169,172,172}) },
-			{ _obczbshz({170,214,215,205,213,142,185,229,230,217}), _obczbshz({162,161,163,165,162,164,162,166,169,171,167,164,172,171}) },
-			{ _obczbshz({170,214,215,205,213,142,185,229,230,217,147,166}), _obczbshz({154,155,158,157,158,161,168,167,164,163,168,173,170,168,172}) },
-			{ _obczbshz({186,223,204,222,225,221,143,188,224,231,214,227}), _obczbshz({154,156,163,161,159,158,168,168,166,168,167,168,169,170,173}) },
-			{ _obczbshz({172,203,215,213,211,221,225,222,218,211,147,184,231,219,216,229}), _obczbshz({161,157,161,162,165,164,160,162,162,162,168,164,169,168}) },
-			{ _obczbshz({182,203,206,157,157}), _obczbshz({154,154,162,159,162,165,161,165,168,170,170,166,170,170,174}) },
-			{ _obczbshz({172,203,208,216,215,227,214,234}), _obczbshz({154,155,162,165,164,159,164,161,162,164,172,171,168,171,172}) },
-			{ _obczbshz({175,223,216,205,209,221,228,226,224}), _obczbshz({154,157,163,159,163,159,165,162,166,169,164,170,174,174,174}) },
-			{ _obczbshz({175,223,206,215,158,160,181,229,212,221,164,171}), _obczbshz({160,157,156,165,165,166,159,165,166,164,167,169,168,166}) },
-			{ _obczbshz({194,223,217,211,141,179,231,229,145,164}), _obczbshz({154,155,160,156,162,167,168,163,162,164,168,171,166,174,176}) },
-			{ _obczbshz({175,217,221,140,186,231,143,183,218,228,223}), _obczbshz({160,155,158,165,160,166,159,165,170,162,168,164,170,171}) },
-			{ _obczbshz({189,220,224,209,141,185,222,220,224,228,235,236}), _obczbshz({162,160,155,159,164,166,159,167,168,164,167,168,174,174}) },
-			{ _obczbshz({182,207,223,140,181,211,225}), _obczbshz({160,158,158,160,164,160,162,160,169,167,163,166,168,175}) },
-			{ _obczbshz({189,220,208,218,208,214,143,178,224,235}), _obczbshz({162,156,161,160,161,161,167,169,166,166,168,173,165,172}) },
-			{ _obczbshz({181,223,206,205,224,142,179,209,225,222,232,219}), _obczbshz({162,163,158,159,160,162,163,168,167,170,172,169,170,174}) },
-			{ _obczbshz({194,223,217,211,141,179,231,229}), _obczbshz({154,156,157,161,160,160,168,160,161,164,170,173,174,166,174}) },
-			{ _obczbshz({173,217,217,224,208,224,232,214,224,228,219,227,218,233}), _obczbshz({154,154,161,158,160,159,164,160,166,170,167,165,169,172,172}) },
-			{ _obczbshz({181,211,215,140,199,211}), _obczbshz({154,155,159,157,158,160,165,164,169,166,172,173,165,168,175}) },
-			{ _obczbshz({174,214,204,140,177,211,226,220,218,217,226,233}), _obczbshz({162,163,158,161,165,163,167,167,166,171,167,170,168,168}) },
-			{ _obczbshz({175,211,221,209,158,167,159,160}), _obczbshz({154,158,155,158,166,158,165,166,170,168,165,166,173,166,176}) },
-			{ _obczbshz({182,211,215,140,191,211,213,226,52,39,216,231}), _obczbshz({154,156,156,164,159,166,164,168,163,170,163,169,167,172,175}) },
-			{ _obczbshz({176,203,221,219,225,207,143,184,218,159,199,217,216,222}), _obczbshz({160,155,162,161,157,163,161,168,169,165,169,173,171,171}) },
-			{ _obczbshz({187,217,215,47,23,142,181,220,210,213,222,227}), _obczbshz({154,157,161,160,166,160,161,167,164,170,167,165,167,171,170}) },
-			{ _obczbshz({171,217,221,211,210,225,143,162,161,164,163}), _obczbshz({154,155,164,164,159,163,161,165,167,165,164,168,166,171,170}) },
-			{ _obczbshz({172,210,212,207,206,213,222}), _obczbshz({160,156,160,162,162,166,167,161,170,167,165,169,169,169}) },
-			{ _obczbshz({180,223,217,215,141,210,212,144,166,162}), _obczbshz({154,156,164,163,165,165,160,168,161,167,167,165,167,172,173}) },
-			{ _obczbshz({171,203,206,215,224,226,208,215,214}), _obczbshz({154,157,158,159,161,166,167,166,168,163,166,170,169,167,171}) },
-			{ _obczbshz({175,211,221,209,159,158,159,160}), _obczbshz({162,156,159,156,160,163,163,163,169,163,163,173,165,172}) },
-			{ _obczbshz({171,203,215,47,16,221,143,183,210,224,218}), _obczbshz({154,155,157,160,165,163,168,162,163,164,166,170,170,168,175}) },
-			{ _obczbshz({178,218,211,219,219,211,143,178,227,211,225,215,228}), _obczbshz({154,154,158,158,165,166,164,165,169,169,166,166,167,167,176}) },
-			{ _obczbshz({187,151,173,205,207,231}), _obczbshz({154,155,156,165,162,164,167,169,169,169,171,164,171,173,169}) },
-			{ _obczbshz({187,211,219,140,179,224,212,212,224}), _obczbshz({161,156,160,159,160,163,166,166,170,163,168,171,166,172}) },
+		{ "Trap", {
+			{ "Zyfrov", "126598871221536" },
+			{ "Vultoos", "102496417270481" },
+			{ "Bones Peter", "131732922520812" },
+			{ "Dollywood", "92910708106749" },
+			{ "M0v", "73331494945527" },
+			{ "Lil Thraxx", "103937054856795" },
+			{ "Música Maneira", "117851917298332" },
+			{ "Lil Thraxx 2", "97579385668466" },
+			{ "Xyou Nerd", "89504626940165" },
+			{ "Twikipédia", "112745389786803" },
+			{ "Jwrld", "78199735541718" },
+			{ "Pimp Talk", "133029122379275" },
+			{ "Boate Azul", "106412079335663" },
+			{ "Cogulândia", "113043854379729" },
+			{ "Fuxk Hemet", "100840031560163" },
+			{ "Meds", "106919797884300" },
+			{ "My Way", "97076200765290" },
+			{ "Será", "116265374907350" },
+			{ "Coração Cristal", "122804427482332" },
+			{ "Shine XD", "95767131536863" },
+			{ "Cara Ocupado", "117584211896757" },
+			{ "Hylander", "88307287482579" },
+			{ "O Que Aconteceu", "122910138671900" },
+			{ "Pjl", "71769226351576" },
+			{ "Allah Juug", "97895636894075" },
+			{ "Allah Juug 2", "113113973159525" },
+			{ "Quarto Louco", "128520985644446" },
+			{ "California Dream", "83668612105042" },
+			{ "Mac10", "107357257872547" },
+			{ "Caeljugz", "117971511297355" },
+			{ "Fumadouro", "138361625716987" },
+			{ "Fuck12Fuck17", "73198805524530" },
+			{ "Yung Exu 2", "115059931257189" },
+			{ "For My Girl", "71393805905055" },
+			{ "True Kolorxx", "96037807724498" },
+			{ "Met Her", "74347230850239" },
+			{ "Trench Boy", "92644389545906" },
+			{ "Lucas Daplug", "99333448689558" },
+			{ "Yung Exu", "122532900279907" },
+			{ "Dontcryforhoes", "106231505841465" },
+			{ "Lil Ze", "114112648499028" },
+			{ "Ela Desligou", "99358587594632" },
+			{ "Fire1900", "140290669622809" },
+			{ "Mil Refrões", "121828582805268" },
+			{ "Garota Hi-Tech", "71750528836965" },
+			{ "Rolê Flacko", "136492273841253" },
+			{ "Borges 2020", "119825256314153" },
+			{ "Chicago", "72565881952543" },
+			{ "Kunk de 50", "129787180541266" },
+			{ "Backstage", "133348867136414" },
+			{ "Fire2000", "92403543810906" },
+			{ "Balão Gang", "112485922236528" },
+			{ "Iphone Branco", "103288558732219" },
+			{ "R-Baby", "111956898780672" },
+			{ "Rip Fredo", "82533576915716" },
 		} },
-		{ _obczbshz({175,217,221,222,48,33,143,213,145,197,216,230,233,215,229,221,227,233}), {
-			{ _obczbshz({182,45,12,221,226,215,221,209,145,214,226,148,201,219,228,232,232}), _obczbshz({154,157,164,164,157,162,168,162,161,164,167,165,170,171,167}) },
-			{ _obczbshz({183,217,222,223,206,142,189,223,228,229,212}), _obczbshz({154,157,157,163,160,161,160,165,163,163,164,171,173,169,170}) },
-			{ _obczbshz({172,203,207,209,214,224,208,144,213,215,147,181,56,29,230}), _obczbshz({162,160,163,164,165,160,161,168,166,164,168,164,172,169}) },
-			{ _obczbshz({170,215,218,222,141,221,228,144,189,219,231,230,56,25,230}), _obczbshz({154,155,156,161,162,159,162,166,163,168,166,170,165,172,170}) },
-			{ _obczbshz({181,211,223,222,48,17,222,144,163}), _obczbshz({160,159,159,163,161,167,165,164,167,169,165,169,171,171}) },
-			{ _obczbshz({176,207,222,224,48,17,222,144,189,200}), _obczbshz({154,155,156,160,159,163,159,165,164,166,168,171,168,170,169}) },
-			{ _obczbshz({184,210,139,183,206,220,208,220,217,211}), _obczbshz({154,156,158,163,165,163,168,168,166,163,171,164,165,174,173}) },
-			{ _obczbshz({170,215,204,222,141,190,212,211,210,214,226}), _obczbshz({161,163,159,162,157,162,162,168,165,163,169,171,168,166}) },
-			{ _obczbshz({189,223,207,219,141,191,228,213,145,195,232,221,232,219,233}), _obczbshz({160,163,160,159,163,165,164,167,167,163,167,167,168,172}) },
-			{ _obczbshz({172,210,224,226,206,142,211,213,145,179,229,230,228,240}), _obczbshz({154,154,157,157,159,158,159,163,167,169,166,173,170,167,171}) },
-			{ _obczbshz({172,223,215,220,206,142,189,223,228,229,212}), _obczbshz({160,156,157,157,160,160,168,165,168,162,170,166,166,172}) },
-			{ _obczbshz({183,217,223,213,211,215,210,209,52,25,54,23,228}), _obczbshz({162,154,156,159,164,160,167,160,166,165,164,168,172,170}) },
-			{ _obczbshz({171,217,204,224,210,142,176,234,230,222}), _obczbshz({154,154,161,160,158,160,159,167,170,165,166,169,171,172,170}) },
-			{ _obczbshz({170,209,208,218,225,211,143,190,214,217,212}), _obczbshz({154,156,157,164,164,159,161,160,161,164,166,171,170,169,170}) },
-			{ _obczbshz({189,203,225,205,141,190,212,222,228,211,225,216,228}), _obczbshz({161,156,164,158,166,164,164,168,161,163,166,167,173,169}) },
-			{ _obczbshz({184,210,139,188,220,218,50,26,222,219,214,227}), _obczbshz({162,161,163,158,162,161,163,167,164,162,166,168,172,166}) },
-			{ _obczbshz({175,217,212,140,192,49,34,144,198,223,212}), _obczbshz({161,158,161,158,161,161,159,161,165,163,164,173,165,175}) },
+		{ "Forró e Sertanejo", {
+			{ "Máquina do Tempo", "139804920241550" },
+			{ "Nossa Nossa", "132733152117833" },
+			{ "Cadeira de Aço", "96888228525073" },
+			{ "Amor ou Litrão", "111551362636063" },
+			{ "Litrão 2", "75474964672565" },
+			{ "Gestão LV", "111425053457342" },
+			{ "Oh Kanalha", "123785985180086" },
+			{ "Amar Pecado", "89460438416730" },
+			{ "Tudo Que Quiser", "79536757614336" },
+			{ "Chuva de Arroz", "102120036739514" },
+			{ "Culpa Nossa", "72213295707216" },
+			{ "Notificação", "90137280531474" },
+			{ "Boate Azul", "106412079335663" },
+			{ "Agente Nega", "122871200237533" },
+			{ "Tava Pensando", "82929658013383" },
+			{ "Oh Polêmico", "97825347303470" },
+			{ "Foi Só Uma", "84624301411909" },
 		} },
-		{ _obczbshz({182,45,37,223,214,209,208,227,145,215,147,193,218,227,220,235,153,187,231,225,222,242,66,51,243,235,242}), {
-			{ _obczbshz({185,210,218,218,216,142,193,223,211,222,226,236,149,195,220,229,222}), _obczbshz({154,157,160,158,157,167,167,163,168,165,167,164,173,167,173}) },
-			{ _obczbshz({170,138,189,219,207,218,222,232,145,196,212,228}), _obczbshz({154,156,160,165,157,163,159,161,168,170}) },
-			{ _obczbshz({182,211,212,140,176,214,208,222,223,215,223}), _obczbshz({154,158,158,162,163,164,164,164,169}) },
-			{ _obczbshz({192,211,212,140,186,227,226,217,212}), _obczbshz({154,157,155,161,159,163,160,167,168,166}) },
-			{ _obczbshz({174,214,208,226,206,226,222,226,145,191,232,231,222,217}), _obczbshz({154,157,155,163,163,166,161,169,170}) },
-			{ _obczbshz({174,214,208,226,206,226,222,226,145,191,232,231,222,217,151,170}), _obczbshz({162,155,156,165,158,159,168,166,162,171}) },
-			{ _obczbshz({172,210,212,216,217,142,185,209,235,236}), _obczbshz({162,156,161,160,166,161,161,164,163}) },
-			{ _obczbshz({187,207,225,209,219,213,212,144,153,191,220,226,218,217,233,217,223,238,164}), _obczbshz({156,162,155,163,159,161,168,164,163,170}) },
-			{ _obczbshz({170,173,154,176,176,142,156,144,197,218,232,226,217,219,233,235,237,236,240,223,232}), _obczbshz({154,158,161,165,163,159,163,168,168}) },
-			{ _obczbshz({155,186,204,207,141,155,143,188,218,216,216,148,188,229,220,235,153,201,233}), _obczbshz({154,162,161,159,158,165,159,169,170}) },
-			{ _obczbshz({187,203,224,227,141,175,219,213,219,211,225,216,231,229,151,165,153,206,234,224,236,158,195,229,161,214,236}), _obczbshz({159,162,163,163,164,160,167,169,168,162}) },
+		{ "Músicas e Memes Aleatório", {
+			{ "Phonk Roblox Meme", "135209837340816" },
+			{ "A Roblox Rap", "1259050178" },
+			{ "Mii Channel", "143666548" },
+			{ "Wii Music", "1305251774" },
+			{ "Elevator Music", "130768299" },
+			{ "Elevator Music 2", "9119119619" },
+			{ "Chill Jazz", "926493242" },
+			{ "Revenge (Minecraft)", "3807239428" },
+			{ "AC/DC - Thunderstruck", "146961487" },
+			{ "2Pac - Life Goes On", "186317099" },
+			{ "Rauw Alejandro - Todo De Ti", "6887728970" },
 		} },
 	}
-
+	-- "Todas as músicas" = tudo junto, sem repetir ID
 	do
 		local all, seen = {}, {}
 		for _, c in ipairs(CATS) do
@@ -4169,11 +4616,11 @@ local function buildBrookhaven(pages, say)
 				if not seen[s[2]] then seen[s[2]] = true; table.insert(all, s) end
 			end
 		end
-		table.insert(CATS, 1, { _obczbshz({189,217,207,205,224,142,208,227,145,223,54,46,232,223,218,217,236}), all })
+		table.insert(CATS, 1, { "Todas as músicas", all })
 	end
 	MUSIC_CATS = CATS
 
-	local GRAY = Color3.fromRGB(170, 130, 130)
+	local GRAY = Color3.fromRGB(125, 130, 142)
 	local songRows, catUI, nowPlaying = {}, {}, nil
 
 	local function fire(plain, kind, id)
@@ -4181,57 +4628,57 @@ local function buildBrookhaven(pages, say)
 		if not r then return false end
 		return (pcall(function() r:FireServer(kind, id, nil, true) end))
 	end
-
+	-- toca no rádio (caixa) e no hoverboard ao mesmo tempo
 	local function playSong(name, id)
 		idBox.Text = id
-		local a = fire(_obczbshz({185,214,204,229,210,224,195,223,224,222,184,234,218,228,235}), _obczbshz({189,217,218,216,186,227,226,217,212,198,216,236,233}), id)
-		local b = fire(_obczbshz({183,217,184,219,225,221,225,198,214,218,220,215,225,219,234}), _obczbshz({185,211,206,215,214,220,214,195,212,225,226,232,218,232,196,237,236,227,222,208,226,246,243}), id)
+		local a = fire("PlayerToolEvent", "ToolMusicText", id)
+		local b = fire("NoMotorVehicles", "PickingScooterMusicText", id)
 		if a or b then
-			say(_obczbshz({189,217,206,205,219,210,222,170,145}) .. name)
+			say("Tocando: " .. name)
 			nowPlaying = id
 			for _, s in ipairs(songRows) do s.label.TextColor3 = (s.id == id) and RED or WHITE end
 		else
-			say(_obczbshz({187,207,216,219,225,211,143,222,52,21,226,148,218,228,218,231,231,238,237,221,225,237,159,168,240,162,237,243,236,245,167,248,248,238,240,172,1,243,1,176,254,7,247,245,249,5,192,198}))
+			say("Remote não encontrado (o jogo pode ter mudado).")
 		end
 	end
 
-	section(page, _obczbshz({181,211,222,224,206,142,211,213,145,223,54,46,232,223,218,217,236,154,163,223,233,231,226,225,161,231,163,238,72,39,167,252,248,237,236,181}))
-	local searchBox = inputRow(_obczbshz({171,223,222,207,206,224,143,224,224,228,147,226,228,227,220,152,161,223,243,182,157,242,232,235,234,174,163,244,237,245,245,243,181,170,241,251,255,0,82,67,186}))
+	section(page, "Lista de músicas (clica e já toca)")
+	local searchBox = inputRow("Buscar por nome (ex: tiki, phonk, forró)")
 
 	for _, cat in ipairs(CATS) do
-		local wrap = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, page)
-		mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
+		local wrap = mk("Frame", { Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, page)
+		mk("UIListLayout", { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder }, wrap)
 
-		local head = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), { Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
+		local head = mk("TextButton", { Text = "", Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2, LayoutOrder = 1 }, wrap)
 		round(head, 19); stroke(head, 2)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		mk("TextLabel", {
 			Text = cat[1], Size = UDim2.new(1, -90, 0, 22), Position = UDim2.fromOffset(16, 3), BackgroundTransparency = 1,
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left,
 		}, head)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = #cat[2] .. _obczbshz({137,215,46,38,224,215,210,209,228}), Size = UDim2.new(1, -90, 0, 12), Position = UDim2.fromOffset(16, 22), BackgroundTransparency = 1,
+		mk("TextLabel", {
+			Text = #cat[2] .. " músicas", Size = UDim2.new(1, -90, 0, 12), Position = UDim2.fromOffset(16, 22), BackgroundTransparency = 1,
 			TextColor3 = GRAY, Font = Enum.Font.Gotham, TextSize = 9, TextXAlignment = Enum.TextXAlignment.Left,
 		}, head)
-		local arrow = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = _obczbshz({148}), Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
+		local arrow = mk("TextLabel", {
+			Text = "+", Size = UDim2.fromOffset(30, 38), Position = UDim2.new(1, -40, 0, 0), BackgroundTransparency = 1,
 			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 20,
 		}, head)
 
-		local body = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
-		mk(_obczbshz({190,179,183,213,224,226,187,209,234,225,232,232}), { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
-		mk(_obczbshz({190,179,187,205,209,210,216,222,216}), { PaddingLeft = UDim.new(0, 14) }, body)
+		local body = mk("Frame", { Size = UDim2.new(1, -14, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1, Visible = false, LayoutOrder = 2 }, wrap)
+		mk("UIListLayout", { Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder }, body)
+		mk("UIPadding", { PaddingLeft = UDim.new(0, 14) }, body)
 
 		local ui = { wrap = wrap, body = body, arrow = arrow, open = false, songs = {}, cat = cat[1] }
 		for _, s in ipairs(cat[2]) do
-			local row = mk(_obczbshz({189,207,227,224,175,227,227,228,224,224}), { Text = _obczbshz({}), Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, body)
+			local row = mk("TextButton", { Text = "", Size = UDim2.new(1, 0, 0, 30), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, body)
 			round(row, 15); stroke(row, 1.2)
-			local lbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			local lbl = mk("TextLabel", {
 				Text = s[1], Size = UDim2.new(1, -110, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1,
 				TextColor3 = (s[2] == nowPlaying) and RED or WHITE, Font = Enum.Font.Gotham, TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 			}, row)
-			mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-				Text = _obczbshz({75,0,33,140}) .. s[2], Size = UDim2.fromOffset(92, 30), Position = UDim2.new(1, -98, 0, 0), BackgroundTransparency = 1,
+			mk("TextLabel", {
+				Text = "▶ " .. s[2], Size = UDim2.fromOffset(92, 30), Position = UDim2.new(1, -98, 0, 0), BackgroundTransparency = 1,
 				TextColor3 = GRAY, Font = Enum.Font.Gotham, TextSize = 9, TextXAlignment = Enum.TextXAlignment.Right, TextTruncate = Enum.TextTruncate.AtEnd,
 			}, row)
 			row.MouseButton1Click:Connect(function() playSong(s[1], s[2]) end)
@@ -4241,137 +4688,142 @@ local function buildBrookhaven(pages, say)
 		head.MouseButton1Click:Connect(function()
 			ui.open = not ui.open
 			body.Visible = ui.open
-			arrow.Text = ui.open and _obczbshz({75,234,254}) or _obczbshz({148})
+			arrow.Text = ui.open and "–" or "+"
 		end)
 		table.insert(catUI, ui)
 	end
 
+	-- busca por nome: filtra as músicas de todas as categorias e abre as que tiverem resultado
 	local function refresh()
-		local q = (searchBox.Text or _obczbshz({})):lower()
+		local q = (searchBox.Text or ""):lower()
 		for _, c in ipairs(catUI) do
 			local any = false
 			for _, s in ipairs(c.songs) do
-				local show = q == _obczbshz({}) or (s.name:lower():find(q, 1, true) ~= nil) or (c.cat:lower():find(q, 1, true) ~= nil)
+				local show = q == "" or (s.name:lower():find(q, 1, true) ~= nil) or (c.cat:lower():find(q, 1, true) ~= nil)
 				s.row.Visible = show
 				if show then any = true end
 			end
-			c.wrap.Visible = (q == _obczbshz({})) or any
-			c.body.Visible = (q ~= _obczbshz({}) and any) or (q == _obczbshz({}) and c.open)
-			c.arrow.Text = c.body.Visible and _obczbshz({75,234,254}) or _obczbshz({148})
+			c.wrap.Visible = (q == "") or any
+			c.body.Visible = (q ~= "" and any) or (q == "" and c.open)
+			c.arrow.Text = c.body.Visible and "–" or "+"
 		end
 	end
-	searchBox:GetPropertyChangedSignal(_obczbshz({189,207,227,224})):Connect(refresh)
+	searchBox:GetPropertyChangedSignal("Text"):Connect(refresh)
 
+	-- digitar um ID na caixa de cima e apertar Enter também já toca
 	idBox.FocusLost:Connect(function(enter)
 		if enter then
 			local id = digits(idBox.Text)
-			if id then playSong(id, id) else say(_obczbshz({173,211,210,213,225,211,143,229,222,146,188,184,149,218,220,152,230,61,53,239,230,225,224,160,247,69,36,240,238,234,246,182})) end
+			if id then playSong(id, id) else say("Digite um ID de música válido.") end
 		end
 	end)
 
-	page = pages[_obczbshz({189,203,210})]
+	-- ===== Tag em cima da cabeça (só você e o ADM veem) =====
+	page = pages["Tag"]
 	TAG.avail = true
 	TAG.start()
-	section(page, _obczbshz({189,203,210,140,210,219,143,211,218,223,212,148,217,215,151,219,218,220,224,63,36,223}))
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({181,207,223,222,210,215,225,223,145,217,229,213,227,218,220,152,222,231,155,223,230,235,224,160,229,231,163,250,244,233,74,50,183,170,222,241,173,252,82,51,0,178,248,7,248,5,3,0,254,12,187,17,10,190,13,15,14,7,207,196,6,22,8,26,14,13,16,204,28,206,34,21,38,210,33,35,34,27,215,28,30,218,32,52,38,32,40,131,104,133,102,51,229,42,54,232,27,57,45,56,60,70,253,240,32,242,54,53,71,61,70,248,62,71,61,61,70,86,78,0,9,47,72,81,71,88,86,8,24,10,52,90,83,90,100,85,95,85,92,85,89,101,105,24,40,26,78,113,95,30,67,111,111,113,35,51,37,74,118,118,120,51,43,207,182,46,126,48,85,129,129,131,53,135,140,125,134,58,127,129,131,135,141,133,79}),
-		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+	section(page, "Tag em cima da cabeça")
+	mk("TextLabel", {
+		Text = "Letreiro grande em cima de você. Se não escolher um nome, aparece o seu nome de exibição do Roblox. O cargo embaixo (Membro / Influenciador / Sub Dono / Dono) é o Dono quem define.",
+		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	local _, setTagOn = toggleRow(page, _obczbshz({182,217,222,224,223,207,225,144,229,211,218}), _obczbshz({181,211,210,205,156,210,212,227,221,219,218,213,149,229,151,228,222,238,237,225,230,240,238}), function(v)
+	local _, setTagOn = toggleRow(page, "Mostrar tag", "Liga/desliga o letreiro", function(v)
 		TAG.on = v; TAG.refresh()
 		if TAG.push then TAG.push() end
 	end, TAG.on)
-	local tagBox = inputRow(_obczbshz({183,217,216,209,141,210,208,144,229,211,218,148,157,236,216,242,226,233,155,185,157,241,228,245,161,240,242,241,234,166,235,237,169,239,3,245,239,247,82,55,84,53,2,189}))
+	local tagBox = inputRow("Nome da tag (vazio = seu nome de exibição)")
 	tagBox.Text = TAG.text
 	local fontBtn, roleLbl
-	fontBtn = rowBtn(page, _obczbshz({175,217,217,224,210,168,143}) .. TAG.font, function()
+	fontBtn = rowBtn(page, "Fonte: " .. TAG.font, function()
 		local i = table.find(TAG_FONTS, TAG.font) or 1
 		TAG.font = TAG_FONTS[i % #TAG_FONTS + 1]
-		fontBtn:FindFirstChildOfClass(_obczbshz({189,207,227,224,185,207,209,213,221})).Text = _obczbshz({175,217,217,224,210,168,143}) .. TAG.font
+		fontBtn:FindFirstChildOfClass("TextLabel").Text = "Fonte: " .. TAG.font
 		TAG.refresh()
 		if TAG.push then TAG.push() end
 	end, true)
-	rowBtn(page, _obczbshz({170,218,215,213,208,207,225,144,223,225,224,217,149,218,216,152,237,219,226}), function()
-		local t = (tagBox.Text:gsub(_obczbshz({199,143,222,151}), _obczbshz({})))
-		t = (t:gsub(_obczbshz({142,221,150,144}), _obczbshz({})))
+	rowBtn(page, "Aplicar nome da tag", function()
+		local t = (tagBox.Text:gsub("^%s+", ""))
+		t = (t:gsub("%s+$", ""))
 		TAG.text = t:sub(1, 16)
 		TAG.refresh()
 		if TAG.push then TAG.push() end
-		say(_obczbshz({189,203,210,166,141}) .. (TAG.text ~= _obczbshz({}) and TAG.text or lp.DisplayName))
+		say("Tag: " .. (TAG.text ~= "" and TAG.text or lp.DisplayName))
 	end, true)
-	roleLbl = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({172,203,221,211,220,168,143}) .. TAG.role .. _obczbshz({137,146,207,209,211,215,221,217,213,225,147,228,218,226,230,152,189,233,233,235,166}), Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1,
+	roleLbl = mk("TextLabel", {
+		Text = "Cargo: " .. TAG.role .. " (definido pelo Dono)", Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 	}, page)
 	TAG.onChanged = function()
 		tagBox.Text = TAG.text
-		fontBtn:FindFirstChildOfClass(_obczbshz({189,207,227,224,185,207,209,213,221})).Text = _obczbshz({175,217,217,224,210,168,143}) .. TAG.font
-		roleLbl.Text = _obczbshz({172,203,221,211,220,168,143}) .. TAG.role .. _obczbshz({137,146,207,209,211,215,221,217,213,225,147,228,218,226,230,152,189,233,233,235,166})
+		fontBtn:FindFirstChildOfClass("TextLabel").Text = "Fonte: " .. TAG.font
+		roleLbl.Text = "Cargo: " .. TAG.role .. " (definido pelo Dono)"
 		setTagOn(TAG.on)
 	end
 
 	table.insert(conns, { Disconnect = function() alive = false end })
 end
 
+-- ===== Detecta o jogo: cada jogo só mostra as abas dele =====
 local GAMES = {
 	Brookhaven = { 4924922222 },
-	[_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})] = { 189707 },
+	["Natural Disaster"] = { 189707 },
 	Evade = { 9872472334 },
 }
 local function inGame(name)
 	for _, id in ipairs(GAMES[name] or {}) do
 		if game.PlaceId == id then return true end
 	end
-	if name == _obczbshz({174,224,204,208,210}) then
+	if name == "Evade" then -- reserva: outros lugares do Evade pelo nome do jogo
 		local ok, nm = pcall(function() return tostring(game.Name):lower() end)
-		return ok and nm:find(_obczbshz({206,224,204,208,210})) ~= nil
+		return ok and nm:find("evade") ~= nil
 	end
 	return false
 end
-
-local BROOKHAVEN_TABS = { _obczbshz({183,217,216,209}), _obczbshz({182,45,37,223,214,209,208}), _obczbshz({189,203,210}), _obczbshz({185,220,218,224,210,49,22,51,38,215,230}), _obczbshz({182,217,225,213,218,211,221,228,224}), _obczbshz({170,221,204}), _obczbshz({172,203,221}), _obczbshz({170,224,204,224,206,224}) }
+-- abas do Brookhaven: cada função é uma aba normal, só aparecem no jogo Brookhaven
+local BROOKHAVEN_TABS = { "Nome", "Música", "Tag", "Proteções", "Movimento", "Asa", "Car", "Avatar" }
 local function buildTabs(last)
-	local t = { _obczbshz({178,174}), _obczbshz({172,220,46,21,209,215,227,223,228}), _obczbshz({188,205,221,213,221,226,226}) }
-	if inGame(_obczbshz({171,220,218,219,216,214,208,230,214,224})) then
+	local t = { "ID", "Créditos", "Scripts" } -- ID e Créditos ficam no início
+	if inGame("Brookhaven") then
 		for _, n in ipairs(BROOKHAVEN_TABS) do table.insert(t, n) end
 	end
-	if inGame(_obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})) then table.insert(t, _obczbshz({183,203,223,225,223,207,219,144,181,219,230,213,232,234,220,234})) end
-	if inGame(_obczbshz({174,224,204,208,210})) then table.insert(t, _obczbshz({174,224,204,208,210})) end
-	for _, n in ipairs({ _obczbshz({182,217,207}), _obczbshz({174,208,208,213,225,221,226}), _obczbshz({174,226,223,222,206,225}) }) do table.insert(t, n) end
+	if inGame("Natural Disaster") then table.insert(t, "Natural Disaster") end
+	if inGame("Evade") then table.insert(t, "Evade") end
+	for _, n in ipairs({ "Mod", "Efeitos", "Extras" }) do table.insert(t, n) end -- comuns aos dois jogos
 	for _, n in ipairs(last) do table.insert(t, n) end
 	return t
 end
 
+-- ===== Registro compartilhado de remotes (usado pelo turbo da aba Car e pela aba Log) =====
 local HUBLOG = { list = {}, on = false, self = false, hooked = false, t0 = os.clock(), listeners = {} }
 function HUBLOG.ser(v, d)
 	d = d or 0
 	local t = typeof(v)
-	if t == _obczbshz({220,222,221,213,219,213}) then return string.format(_obczbshz({142,219}), v)
-	elseif t == _obczbshz({215,223,216,206,210,224}) or t == _obczbshz({203,217,218,216,210,207,221}) or t == _obczbshz({215,211,215}) then return tostring(v)
-	elseif t == _obczbshz({172,217,215,219,223,161}) then return string.format(_obczbshz({172,217,215,219,223,161,157,214,227,225,224,198,188,184,159,157,221,166,160,224,169,163,227,169}), math.floor(v.R * 255 + 0.5), math.floor(v.G * 255 + 0.5), math.floor(v.B * 255 + 0.5))
-	elseif t == _obczbshz({191,207,206,224,220,224,162}) then return string.format(_obczbshz({191,207,206,224,220,224,162,158,223,215,234,156,154,221,163,157,224,166,160,227,166}), v.X, v.Y, v.Z)
-	elseif t == _obczbshz({172,176,221,205,218,211}) then local p = v.Position; return string.format(_obczbshz({172,176,221,205,218,211,157,222,214,233,155,153,220,162,156,223,165,159,226,165}), p.X, p.Y, p.Z)
-	elseif t == _obczbshz({178,216,222,224,206,220,210,213}) then return _obczbshz({208,203,216,209,155}) .. v:GetFullName()
-	elseif t == _obczbshz({221,203,205,216,210}) then
-		if d >= 4 then return _obczbshz({228,152,153,154,234}) end
+	if t == "string" then return string.format("%q", v)
+	elseif t == "number" or t == "boolean" or t == "nil" then return tostring(v)
+	elseif t == "Color3" then return string.format("Color3.fromRGB(%d,%d,%d)", math.floor(v.R * 255 + 0.5), math.floor(v.G * 255 + 0.5), math.floor(v.B * 255 + 0.5))
+	elseif t == "Vector3" then return string.format("Vector3.new(%g,%g,%g)", v.X, v.Y, v.Z)
+	elseif t == "CFrame" then local p = v.Position; return string.format("CFrame.new(%g,%g,%g)", p.X, p.Y, p.Z)
+	elseif t == "Instance" then return "game." .. v:GetFullName()
+	elseif t == "table" then
+		if d >= 4 then return "{...}" end
 		local out, n = {}, 0
 		for k, x in pairs(v) do
 			n = n + 1
-			if n > 40 then out[#out + 1] = _obczbshz({151,152,153}); break end
-			out[#out + 1] = (type(k) == _obczbshz({215,223,216,206,210,224}) and _obczbshz({}) or (_obczbshz({196}) .. HUBLOG.ser(k, d + 1) .. _obczbshz({198,167}))) .. HUBLOG.ser(x, d + 1)
+			if n > 40 then out[#out + 1] = "..."; break end
+			out[#out + 1] = (type(k) == "number" and "" or ("[" .. HUBLOG.ser(k, d + 1) .. "]=")) .. HUBLOG.ser(x, d + 1)
 		end
-		return _obczbshz({228}) .. table.concat(out, _obczbshz({149,138})) .. _obczbshz({230})
+		return "{" .. table.concat(out, ", ") .. "}"
 	end
-	return _obczbshz({165}) .. t .. _obczbshz({167})
+	return "<" .. t .. ">"
 end
 function HUBLOG.path(inst)
 	local names, p = {}, inst
 	while p and p ~= game do table.insert(names, 1, p.Name); p = p.Parent end
-	local svc = table.remove(names, 1) or _obczbshz({168})
-	local s = _obczbshz({208,203,216,209,167,181,212,228,196,215,229,234,222,217,220,160,155}) .. tostring(svc) .. _obczbshz({139,147})
-	for _, n in ipairs(names) do s = s .. _obczbshz({196}) .. string.format(_obczbshz({142,219}), n) .. _obczbshz({198}) end
+	local svc = table.remove(names, 1) or "?"
+	local s = 'game:GetService("' .. tostring(svc) .. '")'
+	for _, n in ipairs(names) do s = s .. "[" .. string.format("%q", n) .. "]" end
 	return s
 end
 local function hubPush(line)
@@ -4380,26 +4832,26 @@ local function hubPush(line)
 	if last and last.line == line then last.n = last.n + 1; return end
 	list[#list + 1] = { t = os.clock() - HUBLOG.t0, line = line, n = 1 }
 	if #list > 2000 then table.remove(list, 1) end
-	if DSLOG and DSLOG.ev then DSLOG.ev(_obczbshz({178,184,177,187}), _obczbshz({219,207,216,219,225,211}), line) end
+	if DSLOG and DSLOG.ev then DSLOG.ev("INFO", "remote", line) end -- também vai pro arquivo SHIN HUB/log.txt
 end
-
+-- chamada que SAIU pra o servidor (incoming=true: evento que o servidor mandou pra você)
 function HUBLOG.add(remote, method, args, own, _, incoming)
 	local parts = {}
 	for i = 1, args.n do parts[i] = HUBLOG.ser(args[i]) end
-	hubPush((own and _obczbshz({150,151,139,199,181,195,177,205,145}) or _obczbshz({})) .. (incoming and _obczbshz({165,151,152,140}) or _obczbshz({})) .. HUBLOG.path(remote) .. _obczbshz({163}) .. method .. _obczbshz({145}) .. table.concat(parts, _obczbshz({149,138})) .. _obczbshz({146}))
+	hubPush((own and "-- [HUB] " or "") .. (incoming and "<-- " or "") .. HUBLOG.path(remote) .. ":" .. method .. "(" .. table.concat(parts, ", ") .. ")")
 end
-
+-- resposta que o servidor devolveu num InvokeServer (ex.: true/false)
 function HUBLOG.addResult(remote, res, own)
 	local rp = {}
 	for i = 1, res.n do rp[i] = HUBLOG.ser(res[i]) end
-	hubPush((own and _obczbshz({150,151,139,199,181,195,177,205,145}) or _obczbshz({})) .. _obczbshz({137,138,139,78,243,33,143,226,214,229,227,227,232,234,216,152,221,223,155}) .. HUBLOG.path(remote) .. _obczbshz({137,167,139}) .. (res.n > 0 and table.concat(rp, _obczbshz({149,138})) or _obczbshz({145,221,208,217,141,224,212,228,224,228,225,227,158})))
+	hubPush((own and "-- [HUB] " or "") .. "   ↳ resposta de " .. HUBLOG.path(remote) .. " = " .. (res.n > 0 and table.concat(rp, ", ") or "(sem retorno)"))
 end
 function HUBLOG.mark(text)
-	local line = _obczbshz({166,167,168,169,170,142}) .. tostring(text) .. _obczbshz({137}) .. os.date(_obczbshz({142,178,165,145,186,168,148,195})) .. _obczbshz({137,167,168,169,170,171})
+	local line = "===== " .. tostring(text) .. " " .. os.date("%H:%M:%S") .. " ====="
 	table.insert(HUBLOG.list, { t = os.clock() - HUBLOG.t0, line = line, n = 1 })
-	if DSLOG and DSLOG.ev then DSLOG.ev(_obczbshz({178,184,177,187}), _obczbshz({219,207,216,219,225,211}), line) end
+	if DSLOG and DSLOG.ev then DSLOG.ev("INFO", "remote", line) end
 end
-
+-- eventos que o SERVIDOR manda pra você (OnClientEvent) em ReplicatedStorage
 function HUBLOG.watchIncoming(on)
 	for _, c in ipairs(HUBLOG.inConns or {}) do pcall(function() c:Disconnect() end) end
 	HUBLOG.inConns = {}
@@ -4407,13 +4859,13 @@ function HUBLOG.watchIncoming(on)
 	if not on then return end
 	local seen = {}
 	local function hook(r)
-		if seen[r] or not r:IsA(_obczbshz({187,207,216,219,225,211,180,230,214,224,231})) then return end
+		if seen[r] or not r:IsA("RemoteEvent") then return end
 		seen[r] = true
 		table.insert(HUBLOG.inConns, r.OnClientEvent:Connect(function(...)
-			if HUBLOG.on and HUBLOG.incoming then pcall(HUBLOG.add, r, _obczbshz({184,216,174,216,214,211,221,228,182,232,216,226,233}), table.pack(...), false, nil, true) end
+			if HUBLOG.on and HUBLOG.incoming then pcall(HUBLOG.add, r, "OnClientEvent", table.pack(...), false, nil, true) end
 		end))
 	end
-	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
+	local RS = game:GetService("ReplicatedStorage")
 	for _, d in ipairs(RS:GetDescendants()) do pcall(hook, d) end
 	table.insert(HUBLOG.inConns, RS.DescendantAdded:Connect(function(d) pcall(hook, d) end))
 end
@@ -4427,10 +4879,10 @@ function HUBLOG.install()
 	if HUBLOG.hooked then return true end
 	local ok = pcall(function()
 		local old
-		old = hookmetamethod(game, _obczbshz({200,201,217,205,218,211,210,209,221,222}), newcclosure(function(self, ...)
+		old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
 			local m = getnamecallmethod()
 			local own = checkcaller()
-			if (m == _obczbshz({175,211,221,209,192,211,225,230,214,228}) or m == _obczbshz({178,216,225,219,216,211,194,213,227,232,216,230})) and typeof(self) == _obczbshz({178,216,222,224,206,220,210,213}) and (not own or (HUBLOG.self and HUBLOG.on)) then
+			if (m == "FireServer" or m == "InvokeServer") and typeof(self) == "Instance" and (not own or (HUBLOG.self and HUBLOG.on)) then
 				local pk = table.pack(...)
 				task.defer(function()
 					if not own then
@@ -4438,8 +4890,8 @@ function HUBLOG.install()
 					end
 					if HUBLOG.on then pcall(HUBLOG.add, self, m, pk, own) end
 				end)
-				if m == _obczbshz({178,216,225,219,216,211,194,213,227,232,216,230}) and HUBLOG.on then
-
+				if m == "InvokeServer" and HUBLOG.on then
+					-- registra também o que o servidor RESPONDEU (true/false etc.)
 					local res = table.pack(old(self, ...))
 					task.defer(function()
 						if HUBLOG.on then pcall(HUBLOG.addResult, self, res, own) end
@@ -4454,68 +4906,71 @@ function HUBLOG.install()
 	return ok
 end
 
+-- ===== Sub-aba Car (Brookhaven): velocidade, suspensão, música do carro e log de remotes =====
 local function buildCar(page, say)
-	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
+	local RS = game:GetService("ReplicatedStorage")
 	local alive = true
 	local cons = {}
-	local onFire
-
+	local onFire -- preenchido mais abaixo (hook de FireServer)
+	-- o assento fica em um submodelo ("Seats"); o carro de verdade é o modelo mais alto (ex.: Vehicles.NomeCar)
 	local function topModel(part)
-		local m = part and part:FindFirstAncestorOfClass(_obczbshz({182,217,207,209,217}))
-		while m and m.Parent and m.Parent:IsA(_obczbshz({182,217,207,209,217})) do m = m.Parent end
+		local m = part and part:FindFirstAncestorOfClass("Model")
+		while m and m.Parent and m.Parent:IsA("Model") do m = m.Parent end
 		return m
 	end
-
-	local CAR_REMOTE = _obczbshz({185,214,204,229,210,224,226,179,210,228})
+	-- >>> nomes dos remotes do jogo (sem os "1" do meio). Se algo não funcionar, use o Log lá embaixo
+	-- pra ver o nome/argumentos reais e ajuste aqui.
+	local CAR_REMOTE = "PlayersCar" -- RE["1Player1sCa1r"] (confirmado pelo log)
 
 	local function reByPlain(plain)
-		local re = RS:FindFirstChild(_obczbshz({187,175}))
+		local re = RS:FindFirstChild("RE")
 		if not re then return nil end
 		for _, c in ipairs(re:GetChildren()) do
-			if (c.Name:gsub(_obczbshz({154}), _obczbshz({}))) == plain then return c end
+			if (c.Name:gsub("1", "")) == plain then return c end
 		end
 		return nil
 	end
 	local function inputRow(placeholder)
-		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obczbshz({189,207,227,224,175,221,231}), {
+		return mk("TextBox", {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function note(text, h)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		mk("TextLabel", {
+			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 		}, page)
 	end
-
+	-- assento de motorista do carro em que você está sentado
 	local function currentSeat()
 		local h = hum()
 		local s = h and h.SeatPart
-		if s and (s:IsA(_obczbshz({191,207,211,213,208,218,212,195,214,211,231})) or s:IsA(_obczbshz({188,207,204,224}))) then return s end
+		if s and (s:IsA("VehicleSeat") or s:IsA("Seat")) then return s end
 		return nil
 	end
-
-	section(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,216,228,150,218,217,235,236,234}))
-	note(_obczbshz({175,223,217,207,214,221,221,209,145,214,220,230,222,221,224,230,221,233,155,164,243,237,226,67,43,162,230,243,243,250,249,247,245,235,171,237,173,244,82,61,4,251,246,245,181,250,6,184,252,251,13,14,12,202,191,5,15,22,102,71,20,198,27,23,13,25,203,25,34,28,19,31,209,40,118,94,213,27,35,29,217,27,41,32,30,44,35,47,225,35,54,55,46,51,240,246}))
+	-- ===== Velocidade =====
+	section(page, "Velocidade do carro")
+	note("Funciona dirigindo (você controla a física do carro, então todo mundo vê ele andando assim).")
 	local spd = { on = false, val = 120, thr = 0, fwd = nil, fwdSeat = nil, warned = nil }
-	toggleRow(page, _obczbshz({189,223,221,206,220,142,211,223,145,213,212,230,231,229}), _obczbshz({191,203,212,140,206,226,50,25,145,211,147,234,218,226,230,219,226,222,220,224,226,158,228,243,228,241,239,236,238,234,232,168,238,248,252,1,238,252,3,255,177,8,2,247,88,64,183,249,252,255,7,1,15,255}), function(v) spd.on = v end)
-	sliderRow(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,225,56,23,239,225,230,219}), _obczbshz({220,222,224,208,224,142,223,223,227,146,230,217,220,235,229,220,232}), 40, 400, 120, function(v) spd.val = v end)
-
+	toggleRow(page, "Turbo do carro", "Vai até a velocidade escolhida enquanto você acelera", function(v) spd.on = v end)
+	sliderRow(page, "Velocidade máxima", "studs por segundo", 40, 400, 120, function(v) spd.val = v end)
+	-- controles (celular e PC) pra saber se você está acelerando
 	local controls
 	pcall(function()
-		controls = require(lp:WaitForChild(_obczbshz({185,214,204,229,210,224,194,211,227,219,227,232,232})):WaitForChild(_obczbshz({185,214,204,229,210,224,188,223,213,231,223,217}), 5)):GetControls()
+		controls = require(lp:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule", 5)):GetControls()
 	end)
-
+	-- o jogo manda SetThrottleFloat(1 / 0 / -1) pro servidor (hook em onFire grava em spd.thr);
+	-- se o hook não existir, usa ThrottleFloat do assento, os controles ou o teclado
 	local function readThrottle(seat)
 		if spd.thr ~= 0 then return spd.thr end
 		local ok, v = pcall(function() return seat.ThrottleFloat end)
-		if ok and type(v) == _obczbshz({215,223,216,206,210,224}) and v ~= 0 then return v > 0 and 1 or -1 end
+		if ok and type(v) == "number" and v ~= 0 then return v > 0 and 1 or -1 end
 		if controls then
 			local ok2, mv = pcall(function() return controls:GetMoveVector() end)
 			if ok2 and mv and math.abs(mv.Z) > 0.2 then return (-mv.Z) > 0 and 1 or -1 end
@@ -4537,53 +4992,55 @@ local function buildCar(page, say)
 		local v = root.AssemblyLinearVelocity
 		local hv = Vector3.new(v.X, 0, v.Z)
 		local cur = hv.Magnitude
-		if cur < 4 then return end
+		if cur < 4 then return end -- deixa o próprio jogo arrancar o carro
 		local look = seat.CFrame.LookVector
 		local flat = Vector3.new(look.X, 0, look.Z)
 		if flat.Magnitude < 0.01 then return end
 		flat = flat.Unit
-		local along = hv:Dot(flat)
-
+		local along = hv:Dot(flat) -- >0: andando pro lado que o assento aponta
+		-- aprende qual lado é a "frente" na primeira vez que você acelera (t>0) em movimento
 		if t > 0 and spd.fwd == nil and cur > 6 then spd.fwd = along >= 0 and 1 or -1 end
 		if spd.fwd == nil then return end
-		local moving = (along * spd.fwd) >= 0 and 1 or -1
-		if moving ~= (t > 0 and 1 or -1) then return end
+		local moving = (along * spd.fwd) >= 0 and 1 or -1 -- 1 = indo pra frente, -1 = de ré
+		if moving ~= (t > 0 and 1 or -1) then return end -- freando: não empurra
 		if cur >= spd.val then return end
 		if isnetworkowner and spd.warned ~= root then
 			local okN, own = pcall(isnetworkowner, root)
 			if okN and own == false then
 				spd.warned = root
-				say(_obczbshz({189,223,221,206,220,168,143,223,145,229,216,230,235,223,219,231,235,154,222,235,235,242,241,239,237,227,163,229,165,236,74,53,252,243,238,237,173,242,244,3,4,247,179,247,246,8,9,7,197,186,0,10,17,97,66,15,193,17,195,13,18,22,28,20,28,25,203,28,28,18,20,208,31,117,86,35,213,28,44,38,28,35,42,42,30,48,237}))
+				say("Turbo: o servidor controla a física desse carro, então o impulso pode não funcionar.")
 			end
 		end
 		local nxt = cur + (spd.val - cur) * 0.08 + 0.4
 		root.AssemblyLinearVelocity = hv.Unit * nxt + Vector3.new(0, v.Y, 0)
 	end)
 
-	section(page, _obczbshz({188,223,222,220,210,220,226,51,20,225,147,156,214,226,235,237,235,219,155,224,236,158,226,225,243,244,242,173}))
-	note(_obczbshz({190,221,204,140,206,142,226,229,228,226,216,226,232,57,26,231,153,222,234,156,237,240,66,51,241,244,236,243,165,240,246,239,248,170,179,0,252,242,254,176,254,7,1,248,4,182,13,91,67,195,201,188,227,7,16,21,6,194,22,9,19,26,8,12,24,202,25,27,205,17,16,34,35,33,225}))
+	-- ===== Suspensão =====
+	section(page, "Suspensão (altura do carro)")
+	note("Usa a suspensão do próprio jogo (todo mundo vê). Fique sentado no carro.")
 	local function susRemote()
-		local folder = RS:FindFirstChild(_obczbshz({187,207,216,219,225,211,226}))
-		return folder and folder:FindFirstChild(_obczbshz({188,207,223,186,210,230,227,195,230,229,227,217,227,233,224,231,231,194,224,229,228,230,243}))
+		local folder = RS:FindFirstChild("Remotes")
+		return folder and folder:FindFirstChild("SetNextSuspensionHeight")
 	end
 	local function nextHeight(times)
 		local f = susRemote()
-		if not f then say(_obczbshz({187,207,216,219,225,211,143,212,210,146,230,233,232,230,220,230,236,61,30,235,157,236,66,35,240,162,232,242,232,245,245,252,251,235,239,251,187})); return end
+		if not f then say("Remote da suspensão não encontrado."); return end
 		task.spawn(function()
 			local last
 			for i = 1, times do
 				local ok, res = pcall(function() return f:InvokeServer() end)
-				if not ok then say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(res):sub(1, 50)); return end
+				if not ok then say("Falhou: " .. tostring(res):sub(1, 50)); return end
 				last = res
 				if i < times then task.wait(0.25) end
 			end
-			say(_obczbshz({170,214,223,225,223,207,143,228,227,225,214,213,217,215}) .. (last ~= nil and (_obczbshz({137,146}) .. tostring(last) .. _obczbshz({146})) or _obczbshz({})) .. _obczbshz({151}))
+			say("Altura trocada" .. (last ~= nil and (" (" .. tostring(last) .. ")") or "") .. ".")
 		end)
 	end
-	rowBtn(page, _obczbshz({185,220,46,31,229,215,220,209,145,211,223,232,234,232,216,152,221,219,155,239,242,241,239,229,239,245,70,39,244}), function() nextHeight(1) end)
-	rowBtn(page, _obczbshz({185,223,215,205,223,142,161,144,210,222,231,233,231,215,234}), function() nextHeight(2) end, true)
+	rowBtn(page, "Próxima altura da suspensão", function() nextHeight(1) end)
+	rowBtn(page, "Pular 2 alturas", function() nextHeight(2) end, true)
 
-	note(_obczbshz({187,207,205,205,214,230,208,226,145,216,226,230,56,29,216,230,221,233,181,156,226,235,239,245,243,244,228,164,244,166,234,233,251,252,250,172,253,0,240,176,243,243,252,12,4,182,250,7,7,14,13,253,189,255,191,19,22,21,19,9,19,25,106,75,24,214,203,21,27,18,30,208,18,30,118,93,34,214,27,25,217,27,39,48,50,48,32,224,46,35,44,55,229,40,40,49,65,43,235,48,60,238,57,63,56,65,1,244,40,153,138,248,63,79,73,63,70,77,77,65,1,85,72,4,84,6,74,73,91,92,90,12,83,93,97,16,100,91,96,105,97,87,91,103,25,106,106,110,29,116,110,99,196,172,49}), 54)
+	-- rebaixar forçando o carro pra baixo (experimental): empurra o carro contra a suspensão
+	note("Rebaixar forçando: empurra o carro pra baixo contra a suspensão, indo além da altura mais baixa do jogo. Só funciona se o carro for simulado por você.", 54)
 	local low = { on = false, k = 2, vf = nil, root = nil }
 	local function lowClear()
 		if low.vf then
@@ -4592,11 +5049,11 @@ local function buildCar(page, say)
 		end
 		low.vf, low.root = nil, nil
 	end
-	toggleRow(page, _obczbshz({187,207,205,205,214,230,208,226,145,216,226,230,56,29,216,230,221,233,155,235,157,225,224,242,243,241}), _obczbshz({174,215,219,225,223,224,208,144,224,146,214,213,231,232,230,152,233,236,220,156,223,223,232,248,240,162,232,242,246,251,232,246,253,249,171,2,252,241,82,58,177,247,6,8,88,55,183,11,254,8,15,253,1,13}), function(v)
+	toggleRow(page, "Rebaixar forçando o carro", "Empurra o carro pra baixo enquanto você está sentado", function(v)
 		low.on = v
 		if not v then lowClear() end
 	end)
-	sliderRow(page, _obczbshz({175,217,221,47,20,207,143,212,224,146,229,217,215,215,224,240,218,231,224,234,241,237}), _obczbshz({182,45,37,216,225,215,223,220,224,229,147,216,228,150,231,221,236,233,155,224,236,158,226,225,243,244,242,164,173,183,167,233,169,194,180}), 1, 8, 2, function(v) low.k = v end)
+	sliderRow(page, "Força do rebaixamento", "Múltiplos do peso do carro (1 a 8)", 1, 8, 2, function(v) low.k = v end)
 	task.spawn(function()
 		while alive do
 			local h = hum()
@@ -4605,8 +5062,8 @@ local function buildCar(page, say)
 			if low.on and root then
 				if low.root ~= root or not low.vf or not low.vf.Parent then
 					lowClear()
-					local att = mk(_obczbshz({170,222,223,205,208,214,220,213,223,230}), { Name = _obczbshz({188,210,212,218,181,227,209,188,224,233}) }, root)
-					low.vf = mk(_obczbshz({191,207,206,224,220,224,181,223,227,213,216}), {
+					local att = mk("Attachment", { Name = "ShinHubLow" }, root)
+					low.vf = mk("VectorForce", {
 						Attachment0 = att, RelativeTo = Enum.ActuatorRelativeTo.World,
 						ApplyAtCenterOfMass = true, Force = Vector3.zero,
 					}, root)
@@ -4621,14 +5078,15 @@ local function buildCar(page, say)
 		lowClear()
 	end)
 
+	-- o turbo precisa saber quando você acelera: o jogo manda SetThrottleFloat(1 / 0 / -1) pro servidor
 	onFire = function(remote, method, a)
-		if not alive or method ~= _obczbshz({175,211,221,209,192,211,225,230,214,228}) then return end
-		if remote.Name == _obczbshz({188,207,223,192,213,224,222,228,229,222,216,186,225,229,216,236}) then
+		if not alive or method ~= "FireServer" then return end
+		if remote.Name == "SetThrottleFloat" then
 			local tv = tonumber(a[1])
 			if tv then spd.thr = tv end
 		end
 	end
-	HUBLOG.install()
+	HUBLOG.install() -- sempre ligado: o turbo lê o acelerador
 	HUBLOG.listen(onFire)
 
 	return function()
@@ -4639,40 +5097,44 @@ local function buildCar(page, say)
 	end
 end
 
+-- ===== Sub-aba Log: registra o que o jogo e o hub mandam pro servidor (remotes) =====
 local function buildLog(page, say)
-	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
+	local RS = game:GetService("ReplicatedStorage")
 	local function topModel(part)
-		local m = part and part:FindFirstAncestorOfClass(_obczbshz({182,217,207,209,217}))
-		while m and m.Parent and m.Parent:IsA(_obczbshz({182,217,207,209,217})) do m = m.Parent end
+		local m = part and part:FindFirstAncestorOfClass("Model")
+		while m and m.Parent and m.Parent:IsA("Model") do m = m.Parent end
 		return m
 	end
 	local function inputRow(placeholder)
-		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obczbshz({189,207,227,224,175,221,231}), {
+		return mk("TextBox", {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function note(text, h)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		mk("TextLabel", {
+			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 		}, page)
 	end
 	local function copy(txt)
 		local f = setclipboard or toclipboard
-		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185})); return end
+		if not f then say("Seu executor não tem setclipboard."); return end
 		local ok = pcall(f, txt)
-		say(ok and _obczbshz({172,217,219,213,206,210,222,145}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
+		say(ok and "Copiado!" or "Falhou ao copiar.")
 	end
 
 	return function() HUBLOG.on = false end
 end
 
+-- ===== Copiar avatar de outro jogador (só no Brookhaven; todo mundo com o hub vê) =====
+-- Pega os itens do avatar (acessórios, roupas, rosto, partes do corpo) e as cores da pele,
+-- e publica junto com os seus mods.
 local function buildAvatarCopy(page, say)
 	if not page then return end
 	local picked
@@ -4688,151 +5150,157 @@ local function buildAvatarCopy(page, say)
 			end
 		end
 		local okA, acc = pcall(function() return desc:GetAccessories(true) end)
-		if okA and type(acc) == _obczbshz({221,203,205,216,210}) then
+		if okA and type(acc) == "table" then
 			for _, a in ipairs(acc) do add(a.AssetId) end
 		end
-		for _, k in ipairs({ _obczbshz({188,210,212,222,225}), _obczbshz({185,203,217,224,224}), _obczbshz({176,220,204,220,213,215,210,196,196,218,220,230,233}), _obczbshz({175,203,206,209}), _obczbshz({177,207,204,208}), _obczbshz({189,217,221,223,220}), _obczbshz({181,207,209,224,174,224,220}), _obczbshz({187,211,210,212,225,175,225,221}), _obczbshz({181,207,209,224,185,211,214}), _obczbshz({187,211,210,212,225,186,212,215}) }) do
+		for _, k in ipairs({ "Shirt", "Pants", "GraphicTShirt", "Face", "Head", "Torso", "LeftArm", "RightArm", "LeftLeg", "RightLeg" }) do
 			local okP, v = pcall(function() return desc[k] end)
 			if okP then add(v) end
 		end
 		local function hex(c)
-			return string.format(_obczbshz({142,154,157,228,146,158,161,232,150,162,165,236}), math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
+			return string.format("%02x%02x%02x", math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
 		end
 		local bc = table.concat({
 			hex(desc.HeadColor), hex(desc.TorsoColor), hex(desc.LeftArmColor),
 			hex(desc.RightArmColor), hex(desc.LeftLegColor), hex(desc.RightLegColor),
-		}, _obczbshz({149}))
+		}, ",")
 		return ids, bc
 	end
 
-	section(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,159,186,235,233,234,231,229,223,245,229,239,171}))
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({174,221,206,219,217,214,208,144,210,222,218,233,56,31,228,152,234,239,224,156,226,241,243,67,34,162,241,243,165,240,246,239,248,170,240,172,240,253,255,249,246,178,2,180,246,12,248,12,250,12,201,188,241,13,3,15,193,15,24,18,9,21,199,25,30,15,203,33,32,15,207,31,209,26,40,22,213,44,122,98,217,31,40,220,51,45,34,131,107,240}),
-		Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+	section(page, "Copiar avatar (Brookhaven)")
+	mk("TextLabel", {
+		Text = "Escolha alguém que está no jogo e copie o avatar. Todo mundo que usa o hub vê em você.",
+		Size = UDim2.new(1, 0, 0, 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
 	local dd
-	dd = dropdown(page, _obczbshz({174,221,206,219,217,214,212,226,145,220,226,219,214,218,230,234,153,162,233,225,235,230,244,237,170}), function()
+	dd = dropdown(page, "Escolher jogador (nenhum)", function()
 		local t = {}
 		for _, pl in ipairs(Players:GetPlayers()) do
 			if pl ~= lp then
-				table.insert(t, { label = pl.DisplayName .. _obczbshz({137,138,147,172}) .. pl.Name .. _obczbshz({146}), value = pl.UserId, name = pl.DisplayName })
+				table.insert(t, { label = pl.DisplayName .. "  (@" .. pl.Name .. ")", value = pl.UserId, name = pl.DisplayName })
 			end
 		end
 		table.sort(t, function(x, y) return x.label:lower() < y.label:lower() end)
 		return t
 	end, function(it)
 		picked = it
-		dd.setText(_obczbshz({179,217,210,205,209,221,225,170,145}) .. it.name)
+		dd.setText("Jogador: " .. it.name)
 	end)
 	local busy = false
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,219,231,153,228,234,227,222,226,238,242}), function()
-		if not picked then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
+	rowBtn(page, "Copiar avatar do jogador", function()
+		if not picked then say("Escolha um jogador primeiro."); return end
 		if busy then return end
 		busy = true
 		task.spawn(function()
 			local ids, bc = collect(picked.value)
 			busy = false
-			if not ids or #ids == 0 then say(_obczbshz({183,45,14,219,141,209,222,222,228,215,218,233,222,150,227,221,235,154,234,156,222,244,224,244,226,244,163,232,234,166}) .. picked.name .. _obczbshz({151})); return end
+			if not ids or #ids == 0 then say("Não consegui ler o avatar de " .. picked.name .. "."); return end
 			MINE.ids = ids
 			MINE.bc = bc
 			if MINE.onList then MINE.onList() end
 			if publishMods then publishMods() end
-			say(_obczbshz({170,224,204,224,206,224,143,212,214,146}) .. picked.name .. _obczbshz({137,205,218,220,214,207,211,223,145,154}) .. #ids .. _obczbshz({137,211,223,209,219,225,152,158,145,179,227,213,231,219,218,221,153,223,232,156,222,234,230,245,239,245,163,247,234,237,252,246,237,249,254,186}))
+			say("Avatar de " .. picked.name .. " copiado (" .. #ids .. " itens). Aparece em alguns segundos.")
 		end)
 	end)
-	rowBtn(page, _obczbshz({191,217,215,224,206,224,143,209,224,146,224,217,234,150,216,238,218,238,220,238}), function()
+	rowBtn(page, "Voltar ao meu avatar", function()
 		MINE.ids = {}
 		MINE.bc = nil
 		if MINE.onList then MINE.onList() end
 		if publishMods then publishMods() end
-		say(_obczbshz({170,224,204,224,206,224,143,211,224,226,220,213,217,229,151,234,222,231,234,242,230,226,238,174}))
+		say("Avatar copiado removido.")
 	end, true)
 end
 
+-- ===== Sub-aba Asa (Brookhaven): blocos do Prop Maker viram uma asa que bate =====
+-- Fluxo (igual ao log): equipa o Prop Maker, escolhe o bloco, cria os blocos perto de você,
+-- posiciona cada um atrás do personagem e fica atualizando a posição para animar.
+-- v2: acha os remotes do bloco na hora (antes um bloco ficava no chão porque os remotes dele ainda
+--     não tinham replicado), refaz bloco parado, adota bloco criado em dobro e esconde a interface
+--     de edição do Prop Maker (menu e setas).
 local function buildWings(page, say)
 	local rawSay = say
 	local trace, T0 = {}, os.clock()
 	local function say(s)
-		trace[#trace + 1] = string.format(_obczbshz({196,143,153,157,211,225,204,144,150,229}), os.clock() - T0, tostring(s))
+		trace[#trace + 1] = string.format("[%.1fs] %s", os.clock() - T0, tostring(s))
 		if #trace > 60 then table.remove(trace, 1) end
 		rawSay(s)
 	end
-	local RS = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222}))
+	local RS = game:GetService("ReplicatedStorage")
 	local alive, animating, busyBuild = true, false, false
 	local animGen = 0
 	local recs = {}
 	local cfg = { per = 3, scale = 10, speed = 5, interval = 300, full = true, hide = true }
-	local blockName = _obczbshz({171,214,218,207,216,161})
+	local blockName = "Block3"
 	local spacing = 2
 	local t0 = os.clock()
 	local wconns = {}
 
 	local function inputRow(placeholder, text)
-		local row = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
+		local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 34), BackgroundColor3 = PANEL, BackgroundTransparency = 0.2 }, page)
 		round(row, 17); stroke(row, 1.5)
-		return mk(_obczbshz({189,207,227,224,175,221,231}), {
+		return mk("TextBox", {
 			Size = UDim2.new(1, -28, 1, -8), Position = UDim2.fromOffset(14, 4), BackgroundTransparency = 1,
-			Text = text or _obczbshz({}), PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(170, 130, 130),
+			Text = text or "", PlaceholderText = placeholder, PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
 			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false,
 			TextXAlignment = Enum.TextXAlignment.Left, ClipsDescendants = true,
 		}, row)
 	end
 	local function clip(txt)
-		if setclipboard then pcall(setclipboard, txt); say(_obczbshz({172,217,219,213,206,210,222,158})) else say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185})) end
+		if setclipboard then pcall(setclipboard, txt); say("Copiado.") else say("Seu executor não tem setclipboard.") end
 	end
 	local function getRoot()
-		return lp.Character and lp.Character:FindFirstChild(_obczbshz({177,223,216,205,219,221,216,212,195,225,226,232,197,215,233,236}))
+		return lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
 	end
 	local function remoteRE(name)
-		local re = RS:FindFirstChild(_obczbshz({187,175}))
+		local re = RS:FindFirstChild("RE")
 		return re and re:FindFirstChild(name)
 	end
 	local function propTool()
 		local c = lp.Character
-		return c and c:FindFirstChild(_obczbshz({185,220,218,220,186,207,218,213,227}))
+		return c and c:FindFirstChild("PropMaker")
 	end
 	local function findTool(name)
 		local c = lp.Character
 		local t = c and c:FindFirstChild(name)
-		if t then return t, _obczbshz({204,210,204,222,206,209,227,213,227}) end
-		local bp = lp:FindFirstChildOfClass(_obczbshz({171,203,206,215,221,207,210,219}))
+		if t then return t, "character" end
+		local bp = lp:FindFirstChildOfClass("Backpack")
 		t = bp and bp:FindFirstChild(name)
-		if t then return t, _obczbshz({203,203,206,215,221,207,210,219}) end
+		if t then return t, "backpack" end
 		return nil
 	end
 	local function equipPropMaker(re1)
-		local t, where = findTool(_obczbshz({185,220,218,220,186,207,218,213,227}))
-		if t and where == _obczbshz({204,210,204,222,206,209,227,213,227}) then return t end
+		local t, where = findTool("PropMaker")
+		if t and where == "character" then return t end
 		if not t then
-			local ok, res = pcall(function() return re1:InvokeServer(_obczbshz({185,211,206,215,214,220,214,196,224,225,223,231}), _obczbshz({185,220,218,220,186,207,218,213,227})) end)
-			say(_obczbshz({185,211,206,215,214,220,214,196,224,225,223,231,175,150}) .. (ok and (_obczbshz({219,207,222,220,220,225,227,209,174}) .. tostring(res)) or (_obczbshz({206,220,221,219,170}) .. tostring(res):sub(1, 60))))
+			local ok, res = pcall(function() return re1:InvokeServer("PickingTools", "PropMaker") end)
+			say("PickingTools: " .. (ok and ("resposta=" .. tostring(res)) or ("erro=" .. tostring(res):sub(1, 60))))
 			for _ = 1, 30 do
 				task.wait(0.1)
-				t, where = findTool(_obczbshz({185,220,218,220,186,207,218,213,227}))
+				t, where = findTool("PropMaker")
 				if t then break end
 			end
 		end
-		if t and where == _obczbshz({203,203,206,215,221,207,210,219}) then
-			local h = lp.Character and lp.Character:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		if t and where == "backpack" then
+			local h = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
 			if h then pcall(function() h:EquipTool(t) end) end
 			for _ = 1, 20 do
 				task.wait(0.1)
-				if lp.Character and lp.Character:FindFirstChild(_obczbshz({185,220,218,220,186,207,218,213,227})) then break end
+				if lp.Character and lp.Character:FindFirstChild("PropMaker") then break end
 			end
 		end
-		return lp.Character and lp.Character:FindFirstChild(_obczbshz({185,220,218,220,186,207,218,213,227}))
+		return lp.Character and lp.Character:FindFirstChild("PropMaker")
 	end
 	local function scanProps(deep)
 		local out = {}
-		local wc = workspace:FindFirstChild(_obczbshz({192,217,221,215,224,222,208,211,214,181,226,225}))
+		local wc = workspace:FindFirstChild("WorkspaceCom")
 		if not wc then return out end
-		local want = _obczbshz({185,220,218,220}) .. lp.Name
+		local want = "Prop" .. lp.Name
 		local function isMine(n) return n:sub(1, #want) == want end
 		if deep then
 			for _, d in ipairs(wc:GetDescendants()) do
-				if d.Name == _obczbshz({188,207,223,175,226,224,225,213,223,230,182,186,231,215,228,221}) and d.Parent and isMine(d.Parent.Name) then out[d.Parent] = true end
+				if d.Name == "SetCurrentCFrame" and d.Parent and isMine(d.Parent.Name) then out[d.Parent] = true end
 			end
 		else
 			for _, c in ipairs(wc:GetChildren()) do
@@ -4845,7 +5313,8 @@ local function buildWings(page, say)
 		return out
 	end
 
-	local REMOTES = { begin = _obczbshz({171,207,210,213,219,190,225,213,231,219,216,235}), setcf = _obczbshz({188,207,223,175,226,224,225,213,223,230,182,186,231,215,228,221}), setsc = _obczbshz({188,207,223,175,226,224,225,213,223,230,198,215,214,226,220}), endp = _obczbshz({174,216,207,188,223,211,229,217,214,233}), resume = _obczbshz({187,207,222,225,218,211,191,226,224,226,181,217,221,215,237,225,232,236}) }
+	-- ===== bloco: os remotes (Begin/Set/End...) são procurados na hora, não guardados no começo =====
+	local REMOTES = { begin = "BeginPreview", setcf = "SetCurrentCFrame", setsc = "SetCurrentScale", endp = "EndPreview", resume = "ResumePropBehavior" }
 	local function makeRec(model)
 		return { model = model, fails = 0, stuck = 0, heals = 0, busy = false, lastCF = nil, lastP = nil, lastErr = nil }
 	end
@@ -4859,24 +5328,24 @@ local function buildWings(page, say)
 	local function touchOf(rec)
 		local t = rec.touch
 		if t and t.Parent then return t end
-		t = rec.model:FindFirstChild(_obczbshz({189,217,224,207,213}), true)
+		t = rec.model:FindFirstChild("Touch", true)
 		rec.touch = t
 		return t
 	end
 	local function waitRemotes(rec, secs)
 		local t = os.clock()
 		while os.clock() - t < secs do
-			if rem(rec, _obczbshz({203,207,210,213,219})) and rem(rec, _obczbshz({220,207,223,207,211})) and rem(rec, _obczbshz({206,216,207,220})) then return true end
+			if rem(rec, "begin") and rem(rec, "setcf") and rem(rec, "endp") then return true end
 			task.wait(0.1)
 		end
 		return false
 	end
 	local function sizeOf(model)
 		local ok, s = pcall(function()
-			if model:IsA(_obczbshz({182,217,207,209,217})) then return model:GetExtentsSize() end
+			if model:IsA("Model") then return model:GetExtentsSize() end
 			return model.Size
 		end)
-		if ok and typeof(s) == _obczbshz({191,207,206,224,220,224,162}) then return s end
+		if ok and typeof(s) == "Vector3" then return s end
 		return Vector3.new(2, 2, 2)
 	end
 	local function groundAt(x, z, y0)
@@ -4891,6 +5360,10 @@ local function buildWings(page, say)
 		return nil
 	end
 
+	-- ===== esconder a interface de edição do Prop Maker (só visual) =====
+	-- Aprende quais telas/painéis do jogo aparecem por causa da edição do bloco (menu do Prop Maker,
+	-- setas de mover/girar) e mantém eles escondidos enquanto a asa é criada e bate.
+	-- Nunca mexe em algo que já estava visível antes de começar (seu HUD continua normal).
 	local hide = { on = false, learning = false, expect = 0, base = {}, set = {}, names = {}, count = 0 }
 	local ADORN = {
 		Handles = true, ArcHandles = true, SelectionBox = true, SelectionSphere = true, SurfaceSelection = true,
@@ -4898,32 +5371,32 @@ local function buildWings(page, say)
 		SphereHandleAdornment = true, Highlight = true,
 	}
 	local function playerGui()
-		return lp:FindFirstChildOfClass(_obczbshz({185,214,204,229,210,224,182,229,218}))
+		return lp:FindFirstChildOfClass("PlayerGui")
 	end
 	local function guiOn(g)
-		if g:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) then return g.Enabled end
-		if g:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then return g.Visible end
+		if g:IsA("ScreenGui") then return g.Enabled end
+		if g:IsA("GuiObject") then return g.Visible end
 		return false
 	end
 	local function guiOff(g)
 		pcall(function()
-			if g:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) then g.Enabled = false elseif g:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then g.Visible = false end
+			if g:IsA("ScreenGui") then g.Enabled = false elseif g:IsA("GuiObject") then g.Visible = false end
 		end)
 	end
-
+	-- percorre as telas do jogo (tela > filhos > netos), só descendo em quem está visível
 	local function eachGui(fn)
 		local pg = playerGui()
 		if not pg then return end
 		for _, sg in ipairs(pg:GetChildren()) do
-			if sg:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) then
+			if sg:IsA("ScreenGui") then
 				fn(sg, 1)
 				if guiOn(sg) then
 					for _, c in ipairs(sg:GetChildren()) do
-						if c:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then
+						if c:IsA("GuiObject") then
 							fn(c, 2)
 							if c.Visible then
 								for _, d in ipairs(c:GetChildren()) do
-									if d:IsA(_obczbshz({176,223,212,187,207,216,212,211,229})) then fn(d, 3) end
+									if d:IsA("GuiObject") then fn(d, 3) end
 								end
 							end
 						end
@@ -4962,7 +5435,7 @@ local function buildWings(page, say)
 		end)
 	end
 	local function isMine(inst)
-		local want = _obczbshz({185,220,218,220}) .. lp.Name
+		local want = "Prop" .. lp.Name
 		local p = inst
 		while p and p ~= workspace do
 			if p.Name:sub(1, #want) == want then return true end
@@ -4979,7 +5452,7 @@ local function buildWings(page, say)
 		end)
 		if ok and mine then
 			pcall(function()
-				if inst:IsA(_obczbshz({177,211,210,212,217,215,214,216,229})) then inst.Enabled = false else inst.Visible = false end
+				if inst:IsA("Highlight") then inst.Enabled = false else inst.Visible = false end
 			end)
 		end
 	end
@@ -5023,6 +5496,7 @@ local function buildWings(page, say)
 		hide.on, hide.learning = false, false
 	end
 
+	-- posição de cada bloco: i-ésimo bloco da asa (side = 1 direita, -1 esquerda)
 	local function targetCF(root, side, i, n, t)
 		local freq = 0.2 + cfg.speed * 0.1
 		local phase = t * freq * 2 * math.pi - i * 0.45
@@ -5033,29 +5507,30 @@ local function buildWings(page, say)
 			* CFrame.Angles(0, 0, side * flap) * CFrame.new(side * r, 0, 0)
 	end
 
+	-- um ciclo de edição do bloco, como o jogo faz: (clicar) -> Begin -> Set -> End -> (Resume)
 	local function cycle(rec, cf, scale, full)
-		local b, s, e = rem(rec, _obczbshz({203,207,210,213,219})), rem(rec, _obczbshz({220,207,223,207,211})), rem(rec, _obczbshz({206,216,207,220}))
-		if not (b and s and e) then error(_obczbshz({203,214,218,207,220,142,226,213,222,146,229,217,226,229,235,221,236,154,163,221,230,236,227,225,161,244,232,244,241,239,234,233,247,238,250,181}), 0) end
+		local b, s, e = rem(rec, "begin"), rem(rec, "setcf"), rem(rec, "endp")
+		if not (b and s and e) then error("bloco sem remotes (ainda replicando)", 0) end
 		rec.lastCF = cf
 		local tool = propTool()
-		local pm = tool and tool:FindFirstChild(_obczbshz({189,217,218,216,204,190,225,223,225,191,212,223,218}))
+		local pm = tool and tool:FindFirstChild("Tool_PropMake")
 		local touch = touchOf(rec)
 		if full and pm and touch then
 			hide.expect = os.clock() + 1.2
 			pm:FireServer(touch, touch.Position)
 		end
 		b:InvokeServer()
-		local sc = rem(rec, _obczbshz({220,207,223,223,208}))
+		local sc = rem(rec, "setsc")
 		if scale and sc then sc:InvokeServer(scale) end
 		s:InvokeServer(cf)
 		e:InvokeServer()
-		local rs = rem(rec, _obczbshz({219,207,222,225,218,211}))
+		local rs = rem(rec, "resume")
 		if full and rs then rs:InvokeServer() end
 	end
-
+	-- roda um ciclo sem deixar dois ciclos do mesmo bloco se atropelarem
 	local function runCycle(rec, cf, scale, full)
-
-		if rec.busy and os.clock() - (rec.busyAt or 0) < 8 then return false, _obczbshz({216,205,224,220,206,210,222}) end
+		-- se um pedido ao servidor travar por mais de 8s, libera o bloco pra não ficar preso pra sempre
+		if rec.busy and os.clock() - (rec.busyAt or 0) < 8 then return false, "ocupado" end
 		rec.busy, rec.busyAt = true, os.clock()
 		local ok, err = pcall(cycle, rec, cf, scale, full)
 		rec.busy = false
@@ -5090,25 +5565,25 @@ local function buildWings(page, say)
 					if root then
 						local cf = targetCF(root, side, i, per, os.clock() - t0)
 						local ok, err = runCycle(rec, cf, nil, cfg.full or rec.forceFull)
-						if err == _obczbshz({216,205,224,220,206,210,222}) then
-
+						if err == "ocupado" then
+							-- outro ciclo do mesmo bloco ainda está rodando: pula essa batida
 						elseif ok then
 							rec.fails = 0
 						else
 							rec.fails = rec.fails + 1
 							rec.lastErr = tostring(err):sub(1, 80)
 							if rec.fails >= 3 then rec.forceFull = true end
-							if rec.fails == 6 then say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({137,208,204,216,213,207,221,212,224,172,147}) .. rec.lastErr) end
+							if rec.fails == 6 then say("Bloco " .. idx .. " falhando: " .. rec.lastErr) end
 						end
 					end
 					task.wait(cfg.interval / 1000)
 				end
 				if alive and animating and gen == animGen and not rec.model.Parent then
-					say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({137,221,224,217,214,227,143,212,224,146,224,213,229,215,165}))
+					say("Bloco " .. idx .. " sumiu do mapa.")
 				end
 			end)
 		end
-
+		-- fiscal: bloco que não sai do lugar (ficou no chão) é refeito com o ciclo completo
 		task.spawn(function()
 			while alive and animating and gen == animGen do
 				task.wait(1.5)
@@ -5128,7 +5603,7 @@ local function buildWings(page, say)
 								local root = getRoot()
 								if root then
 									local side, i, per = slotOf(idx, #recs)
-									say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({137,218,204,222,206,210,222,158,145,196,216,218,214,240,220,230,221,233,155,164}) .. rec.heals .. _obczbshz({152,160,148,154,155,156}))
+									say("Bloco " .. idx .. " parado. Refazendo (" .. rec.heals .. "/6)...")
 									waitRemotes(rec, 2)
 									runCycle(rec, targetCF(root, side, i, per, os.clock() - t0), nil, true)
 								end
@@ -5138,11 +5613,11 @@ local function buildWings(page, say)
 				end
 			end
 		end)
-		say(_obczbshz({170,221,204,140,207,207,227,213,223,214,226,162}))
+		say("Asa batendo.")
 	end
 
 	local function buildWing()
-		if busyBuild then say(_obczbshz({179,45,12,140,210,225,227,223,230,146,214,230,222,215,229,220,232,154,220,156,222,241,224,174,175,176})); return end
+		if busyBuild then say("Já estou criando a asa..."); return end
 		busyBuild = true
 		task.spawn(function()
 			stopAnim()
@@ -5150,28 +5625,28 @@ local function buildWings(page, say)
 			if cfg.hide then hideStart(true) end
 			local ok, err = pcall(function()
 				local root0 = getRoot()
-				if not root0 then say(_obczbshz({185,207,221,223,220,220,208,215,214,223,147,226,56,25,230,152,222,232,222,235,235,242,241,225,229,241,177})); return end
-				local re1, re2 = remoteRE(_obczbshz({154,190,218,219,158,218})), remoteRE(_obczbshz({154,173,215,209,206,159,225,196,224,225,223,165,232}))
-				if not (re1 and re2) then say(_obczbshz({187,207,216,219,225,211,226,144,213,225,147,196,231,229,231,152,198,219,230,225,239,158,237,67,36,241,163,233,243,233,246,246,253,252,236,240,252,1,189})); return end
-				say(_obczbshz({174,219,224,213,221,207,221,212,224,146,226,148,197,232,230,232,153,199,220,231,226,240,173,174,175}))
+				if not root0 then say("Personagem não encontrado."); return end
+				local re1, re2 = remoteRE("1Too1l"), remoteRE("1Clea1rTool1s")
+				if not (re1 and re2) then say("Remotes do Prop Maker não encontrados."); return end
+				say("Equipando o Prop Maker...")
 				local tool = equipPropMaker(re1)
 				if not tool then
-					say(_obczbshz({185,220,218,220,141,187,208,219,214,228,147,226,56,25,230,152,218,234,220,238,226,225,228,245,175,162,216,247,234,166,174,203,248,250,244,237,255,174,243,249,242,249,1,87,72,9,11,1,252,9,187,0,12,17,191,2,13,17,6,19,24,205,213})); return
+					say("Prop Maker não apareceu. Use 'Copiar diagnóstico dos blocos'."); return
 				end
-				local pm = tool:WaitForChild(_obczbshz({189,217,218,216,204,190,225,223,225,191,212,223,218}), 3)
-				if not pm then say(_obczbshz({189,217,218,216,204,190,225,223,225,191,212,223,218,150,229,59,28,233,155,225,235,225,238,238,245,244,228,232,244,166,235,237,247,254,253,251,173,242,254,176,225,4,2,4,181,227,248,3,254,12,201})); return end
+				local pm = tool:WaitForChild("Tool_PropMake", 3)
+				if not pm then say("Tool_PropMake não encontrado dentro do Prop Maker."); return end
 
 				local total = cfg.per * 2
 				local per = cfg.per
-
+				-- tudo que já existia antes (de asas antigas ou construções suas) fica de fora
 				local known = {}
 				for p in pairs(scanProps(false)) do known[p] = true end
 				for p in pairs(scanProps(true)) do known[p] = true end
 				local scaleF = cfg.scale / 10
 				local function selectBlock()
 					hide.expect = os.clock() + 1.2
-					pcall(function() re2:FireServer(_obczbshz({184,218,208,218,189,224,222,224,190,215,225,233})) end)
-					pcall(function() re2:FireServer(_obczbshz({187,207,220,225,210,225,227,217,223,217,195,230,228,230,197,217,230,223}), blockName, _obczbshz({171,223,212,216,209,215,221,215}), nil) end)
+					pcall(function() re2:FireServer("OpenPropMenu") end)
+					pcall(function() re2:FireServer("RequestingPropName", blockName, "Building", nil) end)
 					task.wait(0.35)
 				end
 				local function waitNew(seconds)
@@ -5189,11 +5664,11 @@ local function buildWings(page, say)
 
 				for i = 1, total do
 					if not alive then return end
-					say(_obczbshz({172,220,212,205,219,210,222,144,211,222,226,215,228,150}) .. i .. _obczbshz({137,206,208,140}) .. total .. _obczbshz({151,152,153}))
+					say("Criando bloco " .. i .. " de " .. total .. "...")
 					local found
 					for attempt = 1, 3 do
 						local r0 = getRoot()
-						if not r0 then say(_obczbshz({185,207,221,223,220,220,208,215,214,223,147,231,234,227,224,237,167})); return end
+						if not r0 then say("Personagem sumiu."); return end
 						local ang = (i / total) * math.pi * 2 + (attempt - 1) * 0.6
 						local dist = 10 + (attempt - 1) * 3
 						local hit, pos = groundAt(r0.Position.X + math.cos(ang) * dist, r0.Position.Z + math.sin(ang) * dist, r0.Position.Y)
@@ -5202,9 +5677,9 @@ local function buildWings(page, say)
 							pm:FireServer(hit, pos)
 							found = waitNew(2.5)
 							if not found and recs[#recs] then
-
+								-- o bloco anterior ainda pode estar "em edição": confirma ele e tenta de novo
 								pcall(function()
-									local rs = rem(recs[#recs], _obczbshz({219,207,222,225,218,211}))
+									local rs = rem(recs[#recs], "resume")
 									if rs then rs:InvokeServer() end
 								end)
 								task.wait(0.4)
@@ -5216,20 +5691,20 @@ local function buildWings(page, say)
 						if found then break end
 					end
 					if not found then
-						say(_obczbshz({171,214,218,207,220,142}) .. i .. _obczbshz({137,216,46,15,220,142,208,224,210,228,216,215,218,235,165,152,204,223,226,241,230,236,227,239,161,229,242,241,165,245,250,168,248,255,255,254,252,1,189}))
+						say("Bloco " .. i .. " não apareceu. Seguindo com os outros.")
 					else
 						known[found] = true
 						local rec = makeRec(found)
 						recs[#recs + 1] = rec
-						pcall(function() re2:FireServer(_obczbshz({172,214,218,223,210,190,225,223,225,191,216,226,234})) end)
-
-						if not waitRemotes(rec, 4) then say(_obczbshz({171,214,218,207,220,142}) .. i .. _obczbshz({163,138,221,209,218,221,227,213,228,146,215,217,226,229,233,217,235,219,232,156,222,158,241,229,241,238,236,231,230,248,181})) end
+						pcall(function() re2:FireServer("ClosePropMenu") end)
+						-- espera os remotes do bloco replicarem (antes isso era ignorado e o bloco ficava no chão)
+						if not waitRemotes(rec, 4) then say("Bloco " .. i .. ": remotes demoraram a replicar.") end
 
 						if #recs == 1 then
 							local base = sizeOf(found).X
 							spacing = math.clamp(base * scaleF * 0.95, 0.5, 12)
 						end
-
+						-- posiciona atrás do personagem e confirma (ResumePropBehavior); tenta até 3 vezes
 						local side = i <= per and 1 or -1
 						local fi = i <= per and i or (i - per)
 						local r1 = getRoot() or root0
@@ -5241,12 +5716,13 @@ local function buildWings(page, say)
 							task.wait(0.5)
 							waitRemotes(rec, 2)
 						end
-						if not okc then say(_obczbshz({171,214,218,207,220,142}) .. i .. _obczbshz({163,138}) .. tostring(e2):sub(1, 60)) end
+						if not okc then say("Bloco " .. i .. ": " .. tostring(e2):sub(1, 60)) end
 						task.wait(0.3)
 					end
 				end
-				pcall(function() re2:FireServer(_obczbshz({172,214,218,223,210,190,225,223,225,191,216,226,234})) end)
+				pcall(function() re2:FireServer("ClosePropMenu") end)
 
+				-- blocos que apareceram mas não foram registrados (ex.: criado em dobro) entram na asa também
 				do
 					local reg = {}
 					for _, r in ipairs(recs) do reg[r.model] = true end
@@ -5261,10 +5737,11 @@ local function buildWings(page, say)
 							end
 						end
 					end
-					if extra > 0 then say(extra .. _obczbshz({137,204,215,219,208,221,151,227,154,146,216,236,233,232,216,152,222,232,239,238,222,240,224,237,161,240,228,164,230,249,232,182})) end
+					if extra > 0 then say(extra .. " bloco(s) extra entraram na asa.") end
 				end
 				if #recs == 0 then return end
 
+				-- confere cada bloco e refaz os que não chegaram no lugar
 				local good = 0
 				for pass = 1, 2 do
 					good = 0
@@ -5285,12 +5762,12 @@ local function buildWings(page, say)
 					if good == #recs then break end
 					task.wait(0.6)
 				end
-				say(good .. _obczbshz({137,206,208,140}) .. #recs .. _obczbshz({137,204,215,219,208,221,226,144,223,225,147,224,234,221,216,234,167}))
+				say(good .. " de " .. #recs .. " blocos no lugar.")
 			end)
 			busyBuild = false
 			hide.learning = false
 			if not ok then
-				say(_obczbshz({174,220,221,219,167,142}) .. tostring(err):sub(1, 70))
+				say("Erro: " .. tostring(err):sub(1, 70))
 				hideStop()
 				return
 			end
@@ -5298,24 +5775,25 @@ local function buildWings(page, say)
 		end)
 	end
 
-	section(page, _obczbshz({170,221,204,140,209,211,143,210,221,225,214,227,232,150,159,200,235,233,235,156,202,223,234,229,243,171}))
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({172,220,212,205,141,208,219,223,212,225,230,148,217,229,151,226,232,225,234,156,222,242,241,67,34,245,163,232,234,166,253,247,236,77,53,172,242,174,245,241,11,178,248,0,250,9,183,250,250,14,0,14,189,1,14,13,16,194,24,17,6,198,8,27,10,216,203,252,31,19,18,25,36,19,211,40,26,40,215,39,217,10,45,43,45,222,12,33,44,39,53,228,42,230,45,49,44,43,61,236,61,51,65,68,64,242,55,67,245,57,63,155,124,73,9,252,49,77,67,79,84,2,89,73,74,83,7,87,92,10,77,88,92,81,94,99,31}),
-		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+	-- ===== interface =====
+	section(page, "Asa de blocos (Prop Maker)")
+	mk("TextLabel", {
+		Text = "Cria blocos do jogo atrás de você e faz eles bater como uma asa. Precisa ter o Prop Maker e ficar perto do chão. Todos veem os blocos.",
+		Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 		Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 	}, page)
-	local nameBox = inputRow(_obczbshz({183,217,216,209,141,210,222,144,211,222,226,215,228,150,159,232,218,222,237,63,32,237,159,194,237,241,230,239,184,175}), blockName)
+	local nameBox = inputRow("Nome do bloco (padrão Block3)", blockName)
 	nameBox.FocusLost:Connect(function()
-		local t = nameBox.Text:gsub(_obczbshz({142,221}), _obczbshz({}))
-		if t ~= _obczbshz({}) then blockName = t end
+		local t = nameBox.Text:gsub("%s", "")
+		if t ~= "" then blockName = t end
 	end)
-	sliderRow(page, _obczbshz({171,214,218,207,220,225,143,224,224,228,147,213,232,215}), _obczbshz({155,138,204,140,162,142,223,223,227,146,223,213,217,229}), 2, 5, 3, function(v) cfg.per = v end)
-	sliderRow(page, _obczbshz({189,203,216,205,219,214,222,144,213,225,147,214,225,229,218,231}), _obczbshz({154,154,139,169,141,220,222,226,222,211,223,148,157,171,151,217,153,172,171,165}), 5, 20, 10, function(v) cfg.scale = v end)
-	sliderRow(page, _obczbshz({191,207,215,219,208,215,211,209,213,215,147,216,214,150,217,217,237,227,223,221}), _obczbshz({154,138,215,209,219,226,222,144,51,41,147,165,165,150,233,59,26,234,228,224,236}), 1, 10, 5, function(v) cfg.speed = v end)
-	sliderRow(page, _obczbshz({178,216,223,209,223,228,208,220,224,146,155,225,232,159}), _obczbshz({214,207,217,219,223,142,172,144,222,211,220,231,149,233,236,217,239,223,155,225,157,235,224,233,244,162,243,233,248,231,235,247}), 150, 600, 300, function(v) cfg.interval = v end)
-	toggleRow(page, _obczbshz({182,217,207,219,141,209,222,221,225,222,216,232,228}), _obczbshz({172,214,212,207,206,142,221,223,145,212,223,227,216,229,151,217,153,221,220,224,222,158,225,225,245,235,231,229,179,166,203,237,252,246,244,243,2,243,175,3,246,178,3,249,8,247,9}), function(v) cfg.full = v end, true)
-	toggleRow(page, _obczbshz({174,221,206,219,219,210,212,226,145,215,215,221,56,29,58,27,232,154,223,235,240,158,225,236,240,229,242,247}), _obczbshz({188,217,216,209,141,209,222,221,145,225,147,225,218,228,236,152,222,154,220,239,157,241,228,244,226,245,163,232,244,166,215,250,248,250,171,217,238,249,244,2}), function(v)
+	sliderRow(page, "Blocos por asa", "2 a 5 por lado", 2, 5, 3, function(v) cfg.per = v end)
+	sliderRow(page, "Tamanho do bloco", "10 = normal (5 a 20)", 5, 20, 10, function(v) cfg.scale = v end)
+	sliderRow(page, "Velocidade da batida", "1 lento · 10 rápido", 1, 10, 5, function(v) cfg.speed = v end)
+	sliderRow(page, "Intervalo (ms)", "menor = mais suave e mais pesado", 150, 600, 300, function(v) cfg.interval = v end)
+	toggleRow(page, "Modo completo", "Clica no bloco a cada batida. Desligue se pesar", function(v) cfg.full = v end, true)
+	toggleRow(page, "Esconder edição dos blocos", "Some com o menu e as setas do Prop Maker", function(v)
 		cfg.hide = v
 		if v then
 			if animating or busyBuild then hideStart(false) end
@@ -5323,13 +5801,13 @@ local function buildWings(page, say)
 			hideStop()
 		end
 	end, true)
-	rowBtn(page, _obczbshz({172,220,212,205,223,142,208,227,210,146,216,148,215,215,235,221,235}), buildWing, true)
-	toggleRow(page, _obczbshz({171,203,223,209,223,142,208,227,210,229}), _obczbshz({181,211,210,205,156,210,212,227,221,219,218,213,149,215,151,217,231,227,232,221,64,37,66,35,240}), function(v)
-		if v then startAnim() else stopAnim(); say(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,228,214,232,216,220,218,168})) end
+	rowBtn(page, "Criar asa e bater", buildWing, true)
+	toggleRow(page, "Bater asas", "Liga/desliga a animação", function(v)
+		if v then startAnim() else stopAnim(); say("Animação parada.") end
 	end, true)
-	rowBtn(page, _obczbshz({187,207,219,205,223,207,225,144,211,222,226,215,228,233,151,160,235,223,225,221,247,158,238,243,161,243,248,233,165,236,240,235,234,252,236,249,173,252,254,176,244,250,86,55,4,191}), function()
-		if #recs == 0 then say(_obczbshz({172,220,212,209,141,207,143,209,228,211,147,228,231,223,228,221,226,236,234,170})); return end
-		if busyBuild then say(_obczbshz({174,221,219,209,223,211,143,209,145,213,229,221,214,57,30,59,28,233,155,240,226,240,236,233,239,227,245,178})); return end
+	rowBtn(page, "Reparar blocos (refaz os que ficaram no chão)", function()
+		if #recs == 0 then say("Crie a asa primeiro."); return end
+		if busyBuild then say("Espere a criação terminar."); return end
 		local was = animating
 		stopAnim()
 		busyBuild = true
@@ -5344,85 +5822,85 @@ local function buildWings(page, say)
 						waitRemotes(rec, 2)
 						rec.heals, rec.fails, rec.stuck, rec.lastP = 0, 0, 0, nil
 						local okc, e = runCycle(rec, targetCF(root, side, i, per, 0), scaleF, true)
-						if not okc then say(_obczbshz({171,214,218,207,220,142}) .. idx .. _obczbshz({163,138}) .. tostring(e):sub(1, 60)) end
+						if not okc then say("Bloco " .. idx .. ": " .. tostring(e):sub(1, 60)) end
 						task.wait(0.2)
 					end
 				end
-				say(_obczbshz({187,207,219,205,223,221,143,214,214,219,231,227,163}))
+				say("Reparo feito.")
 			end
 			busyBuild = false
 			if was and alive then startAnim() else hideStop() end
 		end)
 	end, true)
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,212,218,211,218,226,56,41,234,236,226,221,234,156,225,237,242,160,227,238,242,231,244,249}), function()
-		local L = { _obczbshz({150,151,139,216,220,213,143,212,210,146,212,231,214,176}) }
+	rowBtn(page, "Copiar diagnóstico dos blocos", function()
+		local L = { "-- log da asa:" }
 		for _, s in ipairs(trace) do L[#L + 1] = s end
 		local function names(inst, limit)
 			local out = {}
 			if inst then
 				for _, c in ipairs(inst:GetChildren()) do
-					if #out < (limit or 25) then out[#out + 1] = c.Name .. _obczbshz({196}) .. c.ClassName .. _obczbshz({198}) end
+					if #out < (limit or 25) then out[#out + 1] = c.Name .. "[" .. c.ClassName .. "]" end
 				end
 			end
-			return table.concat(out, _obczbshz({149,138}))
+			return table.concat(out, ", ")
 		end
-		L[#L + 1] = _obczbshz({185,220,218,220,186,207,218,213,227,146,216,229,234,223,231,217,221,233,181,156}) .. tostring(propTool() ~= nil)
-		L[#L + 1] = _obczbshz({172,210,204,222,206,209,227,213,227,172,147}) .. names(lp.Character)
-		L[#L + 1] = _obczbshz({171,203,206,215,221,207,210,219,171,146}) .. names(lp:FindFirstChildOfClass(_obczbshz({171,203,206,215,221,207,210,219})))
-		local wc0 = workspace:FindFirstChild(_obczbshz({192,217,221,215,224,222,208,211,214,181,226,225}))
-		L[#L + 1] = _obczbshz({185,220,218,220,185,221,210,209,229,219,226,226,232,176,151}) .. names(wc0 and wc0:FindFirstChild(_obczbshz({185,220,218,220,185,221,210,209,229,219,226,226,232})), 20)
-		L[#L + 1] = _obczbshz({206,221,206,219,219,210,212,226,145,215,215,221,56,29,58,27,232,180,155}) .. tostring(cfg.hide) .. _obczbshz({137,230,139,213,219,226,212,226,215,211,214,217,232,150,216,232,235,223,233,224,230,226,224,243,187,162}) .. hide.count
+		L[#L + 1] = "PropMaker equipado: " .. tostring(propTool() ~= nil)
+		L[#L + 1] = "Character: " .. names(lp.Character)
+		L[#L + 1] = "Backpack: " .. names(lp:FindFirstChildOfClass("Backpack"))
+		local wc0 = workspace:FindFirstChild("WorkspaceCom")
+		L[#L + 1] = "PropLocations: " .. names(wc0 and wc0:FindFirstChild("PropLocations"), 20)
+		L[#L + 1] = "esconder edição: " .. tostring(cfg.hide) .. " | interfaces aprendidas: " .. hide.count
 		do
 			local nm = {}
 			for g in pairs(hide.set) do
 				if #nm < 15 then
 					local full = g:GetFullName()
-					nm[#nm + 1] = (full:gsub(_obczbshz({199,152,152,188,217,207,232,213,227,185,232,221,154,164}), _obczbshz({})))
+					nm[#nm + 1] = (full:gsub("^.-PlayerGui%.", ""))
 				end
 			end
-			L[#L + 1] = _obczbshz({210,216,223,209,223,212,208,211,214,229,147,217,232,217,230,230,221,227,223,221,240,184,159}) .. table.concat(nm, _obczbshz({137,230,139}))
+			L[#L + 1] = "interfaces escondidas: " .. table.concat(nm, " | ")
 		end
 		do
 			local sgs = {}
 			local pg = playerGui()
 			if pg then
 				for _, sg in ipairs(pg:GetChildren()) do
-					if sg:IsA(_obczbshz({188,205,221,209,210,220,182,229,218})) and #sgs < 70 then sgs[#sgs + 1] = sg.Name .. (sg.Enabled and _obczbshz({}) or _obczbshz({145,217,209,210,150})) end
+					if sg:IsA("ScreenGui") and #sgs < 70 then sgs[#sgs + 1] = sg.Name .. (sg.Enabled and "" or "(off)") end
 				end
 			end
-			L[#L + 1] = _obczbshz({185,214,204,229,210,224,182,229,218,172,147}) .. table.concat(sgs, _obczbshz({149,138}))
+			L[#L + 1] = "PlayerGui: " .. table.concat(sgs, ", ")
 		end
-		L[#L + 1] = _obczbshz({203,214,218,207,220,225,143,226,214,217,220,231,233,232,216,220,232,237,181,156}) .. #recs
+		L[#L + 1] = "blocos registrados: " .. #recs
 		for idx, rec in ipairs(recs) do
 			local kids = {}
-			for _, c in ipairs(rec.model:GetChildren()) do kids[#kids + 1] = c.Name .. _obczbshz({196}) .. c.ClassName .. _obczbshz({198}) end
+			for _, c in ipairs(rec.model:GetChildren()) do kids[#kids + 1] = c.Name .. "[" .. c.ClassName .. "]" end
 			local ok, p = pcall(function() return rec.model:GetPivot().Position end)
-			L[#L + 1] = idx .. _obczbshz({146,138}) .. rec.model:GetFullName() .. _obczbshz({137,218,218,223,170}) .. (ok and tostring(p) or _obczbshz({168}))
-			L[#L + 1] = _obczbshz({137,138,139,222,210,219,222,228,214,229,173,148,215,219,222,225,231,183}) .. tostring(rem(rec, _obczbshz({203,207,210,213,219})) ~= nil) .. _obczbshz({137,221,208,224,170}) .. tostring(rem(rec, _obczbshz({220,207,223,207,211})) ~= nil)
-				.. _obczbshz({137,207,217,208,170}) .. tostring(rem(rec, _obczbshz({206,216,207,220})) ~= nil) .. _obczbshz({137,222,218,225,208,214,172}) .. tostring(touchOf(rec) ~= nil)
-				.. _obczbshz({137,230,139,210,206,218,215,209,228,175}) .. rec.fails .. _obczbshz({137,220,208,210,210,215,227,223,228,175}) .. rec.heals .. _obczbshz({137,207,221,222,220,171}) .. tostring(rec.lastErr)
-			L[#L + 1] = _obczbshz({137,138,139,210,214,218,215,223,228,172,147}) .. table.concat(kids, _obczbshz({149,138}))
+			L[#L + 1] = idx .. ") " .. rec.model:GetFullName() .. " pos=" .. (ok and tostring(p) or "?")
+			L[#L + 1] = "   remotes: begin=" .. tostring(rem(rec, "begin") ~= nil) .. " set=" .. tostring(rem(rec, "setcf") ~= nil)
+				.. " end=" .. tostring(rem(rec, "endp") ~= nil) .. " touch=" .. tostring(touchOf(rec) ~= nil)
+				.. " | falhas=" .. rec.fails .. " refeitos=" .. rec.heals .. " erro=" .. tostring(rec.lastErr)
+			L[#L + 1] = "   filhos: " .. table.concat(kids, ", ")
 		end
-		local wc = workspace:FindFirstChild(_obczbshz({192,217,221,215,224,222,208,211,214,181,226,225}))
+		local wc = workspace:FindFirstChild("WorkspaceCom")
 		if wc then
-			L[#L + 1] = _obczbshz({150,151,139,195,220,224,218,227,225,211,214,217,184,229,228,152,161,227,239,225,235,241,159,227,240,239,163,243,165,249,236,253,169,248,250,249,242,174,254,5,177,185,227,6,4,6,190,193,211})
+			L[#L + 1] = "-- WorkspaceCom (itens com o seu nome ou 'Prop'):"
 			local n = 0
 			for _, c in ipairs(wc:GetChildren()) do
-				if n < 40 and (c.Name:find(lp.Name, 1, true) or c.Name:find(_obczbshz({185,220,218,220}), 1, true)) then
+				if n < 40 and (c.Name:find(lp.Name, 1, true) or c.Name:find("Prop", 1, true)) then
 					n = n + 1
 					local kids = {}
 					for _, k in ipairs(c:GetChildren()) do
-						if #kids < 8 then kids[#kids + 1] = k.Name .. _obczbshz({196}) .. k.ClassName .. _obczbshz({198}) end
+						if #kids < 8 then kids[#kids + 1] = k.Name .. "[" .. k.ClassName .. "]" end
 					end
-					L[#L + 1] = c:GetFullName() .. _obczbshz({137,151,169,140}) .. table.concat(kids, _obczbshz({149,138}))
+					L[#L + 1] = c:GetFullName() .. " -> " .. table.concat(kids, ", ")
 				end
 			end
 		end
-		clip(table.concat(L, _obczbshz({115})))
+		clip(table.concat(L, "\n"))
 	end, true)
-	rowBtn(page, _obczbshz({185,203,221,205,223,142,212,144,228,225,223,232,214,232,151,218,229,233,222,235,240}), function()
+	rowBtn(page, "Parar e soltar blocos", function()
 		stopAnim()
-		say(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,228,214,232,216,220,218,168,155,203,240,158,225,236,240,229,242,247,165,236,240,235,234,247,171,250,252,174,252,241,1,243,179,188,246,6,248,255,14,255,187,12,2,10,14,192,14,7,17,25,197,10,22,200,249,28,26,28,205,251,16,27,22,36,220,226}))
+		say("Animação parada. Os blocos ficam no mapa (apague pelo menu do Prop Maker).")
 	end, true)
 
 	return function()
@@ -5431,17 +5909,18 @@ local function buildWings(page, say)
 	end
 end
 
+-- ===== Aba ID: tempo ativo, nick, executor e ID único por usuário =====
 local HUB_START_T = os.time()
 local function execName()
 	local name, ver
 	pcall(function() name, ver = identifyexecutor() end)
 	if not name then pcall(function() name = getexecutorname() end) end
-	if not name then return _obczbshz({173,207,222,207,220,220,215,213,212,219,215,227}) end
-	return tostring(name) .. (ver and (_obczbshz({137}) .. tostring(ver)) or _obczbshz({}))
+	if not name then return "Desconhecido" end
+	return tostring(name) .. (ver and (" " .. tostring(ver)) or "")
 end
 local function toBase36(n)
-	local chars = _obczbshz({153,155,157,159,161,163,165,167,169,171,180,182,184,186,188,190,192,194,196,198,200,202,204,206,208,210,212,214,216,218,220,222,224,226,228,230})
-	local s = _obczbshz({})
+	local chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	local s = ""
 	repeat
 		local r = n % 36
 		s = chars:sub(r + 1, r + 1) .. s
@@ -5449,27 +5928,27 @@ local function toBase36(n)
 	until n <= 0
 	return s
 end
-
+-- ID único por conta: sempre o mesmo pro mesmo usuário (gerado do UserId, com dígito de conferência)
 local function hubId(uid)
-	return _obczbshz({173,189,152}) .. toBase36(uid) .. _obczbshz({150}) .. toBase36((uid * 31 + 7) % 1296)
+	return "DS-" .. toBase36(uid) .. "-" .. toBase36((uid * 31 + 7) % 1296)
 end
 local function buildId(page, say)
 	local function fmt(sec)
 		sec = math.max(0, math.floor(sec))
-		return string.format(_obczbshz({142,154,157,208,167,147,159,162,213,172,152,164,167,218}), math.floor(sec / 3600), math.floor(sec / 60) % 60, sec % 60)
+		return string.format("%02d:%02d:%02d", math.floor(sec / 3600), math.floor(sec / 60) % 60, sec % 60)
 	end
-	local function esc(s) return (tostring(s):gsub(_obczbshz({143}), _obczbshz({143,203,216,220,168})):gsub(_obczbshz({165}), _obczbshz({143,214,223,167})):gsub(_obczbshz({167}), _obczbshz({143,209,223,167}))) end
-	local DIMC = Color3.fromRGB(205, 168, 171)
-
-	local card = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 64), BackgroundTransparency = 1 }, page)
-	local av = mk(_obczbshz({178,215,204,211,210,186,208,210,214,222}), {
-		Size = UDim2.fromOffset(54, 54), Position = UDim2.fromOffset(4, 5), BackgroundColor3 = Color3.fromRGB(14, 4, 6),
-		Image = _obczbshz({}), ScaleType = Enum.ScaleType.Crop,
+	local function esc(s) return (tostring(s):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")) end
+	local DIMC = Color3.fromRGB(150, 155, 168)
+	-- cartão de perfil compacto: foto + nome, sem caixas
+	local card = mk("Frame", { Size = UDim2.new(1, 0, 0, 64), BackgroundTransparency = 1 }, page)
+	local av = mk("ImageLabel", {
+		Size = UDim2.fromOffset(54, 54), Position = UDim2.fromOffset(4, 5), BackgroundColor3 = Color3.fromRGB(20, 21, 26),
+		Image = "", ScaleType = Enum.ScaleType.Crop,
 	}, card)
-	mk(_obczbshz({190,179,174,219,223,220,212,226}), { CornerRadius = UDim.new(1, 0) }, av)
-	local avs = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 2, Color = WHITE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, av)
-	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), {
-		Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 80, 96)), ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 12, 22)) }),
+	mk("UICorner", { CornerRadius = UDim.new(1, 0) }, av)
+	local avs = mk("UIStroke", { Thickness = 2, Color = WHITE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, av)
+	mk("UIGradient", {
+		Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 80, 96)), ColorSequenceKeypoint.new(1, Color3.fromRGB(60, 62, 74)) }),
 		Rotation = 45,
 	}, avs)
 	task.spawn(function()
@@ -5478,40 +5957,40 @@ local function buildId(page, say)
 		end)
 		if ok and img and av.Parent then av.Image = img end
 	end)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	mk("TextLabel", {
 		Text = lp.DisplayName, Size = UDim2.new(1, -72, 0, 22), Position = UDim2.fromOffset(68, 11), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 16, TextXAlignment = Enum.TextXAlignment.Left,
 		TextTruncate = Enum.TextTruncate.AtEnd,
 	}, card)
-	mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({169}) .. lp.Name, Size = UDim2.new(1, -72, 0, 16), Position = UDim2.fromOffset(68, 33), BackgroundTransparency = 1,
+	mk("TextLabel", {
+		Text = "@" .. lp.Name, Size = UDim2.new(1, -72, 0, 16), Position = UDim2.fromOffset(68, 33), BackgroundTransparency = 1,
 		TextColor3 = DIMC, Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 		TextTruncate = Enum.TextTruncate.AtEnd,
 	}, card)
-	local ln = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, -4, 0, 1), BackgroundColor3 = UI.EDGE, BorderSizePixel = 0, LayoutOrder = 0 }, page)
-	mk(_obczbshz({190,179,178,222,206,210,216,213,223,230}), { Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.1), NumberSequenceKeypoint.new(1, 1) }) }, ln)
-
+	local ln = mk("Frame", { Size = UDim2.new(1, -4, 0, 1), BackgroundColor3 = UI.EDGE, BorderSizePixel = 0, LayoutOrder = 0 }, page)
+	mk("UIGradient", { Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.1), NumberSequenceKeypoint.new(1, 1) }) }, ln)
+	-- linhas pequenas, uma embaixo da outra (rótulo apagado + valor)
 	local function line(title, value)
-		local f = mk(_obczbshz({175,220,204,217,210}), { Size = UDim2.new(1, 0, 0, 18), BackgroundTransparency = 1 }, page)
-		mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		local f = mk("Frame", { Size = UDim2.new(1, 0, 0, 18), BackgroundTransparency = 1 }, page)
+		mk("TextLabel", {
 			Text = title, Size = UDim2.fromOffset(82, 18), Position = UDim2.fromOffset(6, 0), BackgroundTransparency = 1,
 			TextColor3 = DIMC, Font = Enum.Font.Gotham, TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left,
 		}, f)
-		return mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+		return mk("TextLabel", {
 			Text = value, Size = UDim2.new(1, -92, 1, 0), Position = UDim2.fromOffset(88, 0), BackgroundTransparency = 1,
 			TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
 			TextTruncate = Enum.TextTruncate.AtEnd,
 		}, f)
 	end
 	local id = hubId(lp.UserId)
-	local up = line(_obczbshz({189,207,216,220,220,142,208,228,218,232,226}), fmt(0))
-	line(_obczbshz({174,226,208,207,226,226,222,226}), execName())
-	line(_obczbshz({178,174,139,47,39,220,216,211,224}), id)
-	line(_obczbshz({190,221,208,222,182,210}), tostring(lp.UserId))
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,221,214,231,147,189,185}), function()
+	local up = line("Tempo ativo", fmt(0))
+	line("Executor", execName())
+	line("ID único", id)
+	line("UserId", tostring(lp.UserId))
+	rowBtn(page, "Copiar meu ID", function()
 		local f = setclipboard or toclipboard
-		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185,172,224,243,4,176,218,214,205,180}) .. id); return end
-		say(pcall(f, id) and (_obczbshz({178,174,139,207,220,222,216,209,213,225,173,148}) .. id) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
+		if not f then say("Seu executor não tem setclipboard. Seu ID: " .. id); return end
+		say(pcall(f, id) and ("ID copiado: " .. id) or "Falhou ao copiar.")
 	end, true)
 	task.spawn(function()
 		while page.Parent do
@@ -5521,11 +6000,15 @@ local function buildId(page, say)
 	end)
 end
 
+-- ===== Sub-aba Avatar (Brookhaven): copiar o avatar do Brookhaven de outro jogador =====
+-- Como o jogo veste item (log do avatar do Brookhaven): Remotes.Wear:InvokeServer(idDoItem, nil).
+-- Não aparece remote separado pra tirar: chamar Wear num item que já está vestido tira ele.
+-- Item que você não tem não é vestido (o jogo pediria compra; o hub não compra nada).
 local AVATAR = {
 	wear = function(kind, id)
-		local folder = game:GetService(_obczbshz({187,207,219,216,214,209,208,228,214,214,198,232,228,232,216,223,222})):FindFirstChild(_obczbshz({187,207,216,219,225,211,226}))
-		local r = folder and folder:FindFirstChild(_obczbshz({192,207,204,222}))
-		if not r then error(_obczbshz({219,207,216,219,225,211,143,199,214,211,229,148,227,57,26,231,153,223,233,223,236,236,243,242,226,230,242})) end
+		local folder = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes")
+		local r = folder and folder:FindFirstChild("Wear")
+		if not r then error("remote Wear não encontrado") end
 		return r:InvokeServer(id, nil)
 	end,
 }
@@ -5533,25 +6016,26 @@ local function buildAvatar(page, say)
 	local target
 	local items = {}
 	local BODY = { Head = true, Torso = true, LeftArm = true, RightArm = true, LeftLeg = true, RightLeg = true }
-	local COLOR_KEYS = { _obczbshz({177,207,204,208,176,221,219,223,227}), _obczbshz({189,217,221,223,220,177,222,220,224,228}), _obczbshz({181,207,209,224,174,224,220,179,224,222,226,230}), _obczbshz({187,211,210,212,225,175,225,221,180,225,223,227,231}), _obczbshz({181,207,209,224,185,211,214,179,224,222,226,230}), _obczbshz({187,211,210,212,225,186,212,215,180,225,223,227,231}) }
-	local SCALE_KEYS = { _obczbshz({177,207,212,211,213,226,194,211,210,222,216}), _obczbshz({192,211,207,224,213,193,210,209,221,215}), _obczbshz({173,207,219,224,213,193,210,209,221,215}), _obczbshz({177,207,204,208,192,209,208,220,214}), _obczbshz({171,217,207,229,193,231,223,213,196,213,212,224,218}), _obczbshz({185,220,218,220,220,224,227,217,224,224,198,215,214,226,220}) }
-	local targetEx
+	local COLOR_KEYS = { "HeadColor", "TorsoColor", "LeftArmColor", "RightArmColor", "LeftLegColor", "RightLegColor" }
+	local SCALE_KEYS = { "HeightScale", "WidthScale", "DepthScale", "HeadScale", "BodyTypeScale", "ProportionScale" }
+	local targetEx -- cores, proporções e partes padrão do jogador lido
 
+	-- ===== log dos itens: registra tudo que o hub lê, tira e veste (pra ficar fácil de conferir/copiar) =====
 	local alog = { lines = {}, view = nil, t0 = os.clock() }
 	local function logLine(text)
-		local line = string.format(_obczbshz({196,143,160,154,158,212,226,205,145,151,230}), os.clock() - alog.t0, text)
+		local line = string.format("[%5.1fs] %s", os.clock() - alog.t0, text)
 		alog.lines[#alog.lines + 1] = line
 		if #alog.lines > 400 then table.remove(alog.lines, 1) end
 		if alog.view and alog.view.Parent then
-			local bad = text:find(_obczbshz({175,171,183,180,188,195}), 1, true) or text:find(_obczbshz({175,171,183,192,188,195}), 1, true) or text:find(_obczbshz({183,45,238,187,141,193,176,185,198}), 1, true)
-			mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+			local bad = text:find("FALHOU", 1, true) or text:find("FALTOU", 1, true) or text:find("NÃO SAIU", 1, true)
+			mk("TextLabel", {
 				Text = line, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
 				TextColor3 = bad and Color3.fromRGB(255, 140, 140) or WHITE, Font = Enum.Font.Code, TextSize = 11,
 				TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, LayoutOrder = #alog.lines,
 			}, alog.view)
 			local kids = {}
 			for _, c in ipairs(alog.view:GetChildren()) do
-				if c:IsA(_obczbshz({189,207,227,224,185,207,209,213,221})) then kids[#kids + 1] = c end
+				if c:IsA("TextLabel") then kids[#kids + 1] = c end
 			end
 			if #kids > 150 then kids[1]:Destroy() end
 		end
@@ -5562,39 +6046,41 @@ local function buildAvatar(page, say)
 	end
 
 	local function note(text, h)
-		return mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(240, 210, 210),
+		return mk("TextLabel", {
+			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
 			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
 			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
 		}, page)
 	end
-
+	-- lê os itens que o jogador está usando (descrição aplicada no personagem dele)
+	-- 3º retorno: cores, proporções e partes do corpo sem item (padrão do jogo). O Wear só troca itens,
+	-- então isso serve pra conferir (no log) o que a cópia não cobre.
 	local function readAvatar(pl)
-		local h = pl.Character and pl.Character:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
-		if not h then return nil, _obczbshz({216,138,213,219,212,207,211,223,227,146,216,231,233,57,24,152,236,223,232,156,237,227,241,243,240,240,228,235,234,243}) end
+		local h = pl.Character and pl.Character:FindFirstChildOfClass("Humanoid")
+		if not h then return nil, "o jogador está sem personagem" end
 		local ok, d = pcall(function() return h:GetAppliedDescription() end)
-		if not ok or not d then return nil, _obczbshz({215,45,14,219,141,209,222,222,228,215,218,233,222,150,227,221,235,154,234,156,222,244,224,244,226,244,163,232,234,242,236}) end
+		if not ok or not d then return nil, "não consegui ler o avatar dele" end
 		local out = {}
 		local function add(kind, id)
 			id = tonumber(id)
 			if id and id > 0 then out[#out + 1] = { kind = kind, id = math.floor(id) } end
 		end
 		local okA, acc = pcall(function() return d:GetAccessories(true) end)
-		if okA and type(acc) == _obczbshz({221,203,205,216,210}) then
-			for _, a in ipairs(acc) do add((tostring(a.AccessoryType):gsub(_obczbshz({199,175,217,225,218,147,157,177,212,213,216,231,232,229,233,241,205,243,235,225,162,172}), _obczbshz({}))), a.AssetId) end
+		if okA and type(acc) == "table" then
+			for _, a in ipairs(acc) do add((tostring(a.AccessoryType):gsub("^Enum%.AccessoryType%.", "")), a.AssetId) end
 		end
-		for _, k in ipairs({ _obczbshz({188,210,212,222,225}), _obczbshz({185,203,217,224,224}), _obczbshz({176,220,204,220,213,215,210,196,196,218,220,230,233}), _obczbshz({175,203,206,209}), _obczbshz({177,207,204,208}), _obczbshz({189,217,221,223,220}), _obczbshz({181,207,209,224,174,224,220}), _obczbshz({187,211,210,212,225,175,225,221}), _obczbshz({181,207,209,224,185,211,214}), _obczbshz({187,211,210,212,225,186,212,215}) }) do
+		for _, k in ipairs({ "Shirt", "Pants", "GraphicTShirt", "Face", "Head", "Torso", "LeftArm", "RightArm", "LeftLeg", "RightLeg" }) do
 			local okP, v = pcall(function() return d[k] end)
 			if okP then add(k, v) end
 		end
 		local ex = { colors = {}, scales = {}, zero = {} }
 		for _, k in ipairs(COLOR_KEYS) do
 			local okC, c = pcall(function() return d[k] end)
-			if okC and typeof(c) == _obczbshz({172,217,215,219,223,161}) then ex.colors[k] = c end
+			if okC and typeof(c) == "Color3" then ex.colors[k] = c end
 		end
 		for _, k in ipairs(SCALE_KEYS) do
 			local okS, v = pcall(function() return d[k] end)
-			if okS and type(v) == _obczbshz({215,223,216,206,210,224}) then ex.scales[k] = v end
+			if okS and type(v) == "number" then ex.scales[k] = v end
 		end
 		for k in pairs(BODY) do
 			local okZ, v = pcall(function() return d[k] end)
@@ -5604,7 +6090,7 @@ local function buildAvatar(page, say)
 		return out, nil, ex
 	end
 	local function fmtColor(c)
-		return string.format(_obczbshz({219,209,205,148,146,210,155,149,213,158,152,216,158}), math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
+		return string.format("rgb(%d,%d,%d)", math.floor(c.R * 255 + 0.5), math.floor(c.G * 255 + 0.5), math.floor(c.B * 255 + 0.5))
 	end
 	local function sameColor(a, b)
 		return math.abs(a.R - b.R) < 0.012 and math.abs(a.G - b.G) < 0.012 and math.abs(a.B - b.B) < 0.012
@@ -5613,56 +6099,56 @@ local function buildAvatar(page, say)
 		if not ex then return end
 		local cs, ss = {}, {}
 		for _, k in ipairs(COLOR_KEYS) do
-			if ex.colors[k] then cs[#cs + 1] = (k:gsub(_obczbshz({172,217,215,219,223,146}), _obczbshz({}))) .. _obczbshz({166}) .. fmtColor(ex.colors[k]) end
+			if ex.colors[k] then cs[#cs + 1] = (k:gsub("Color$", "")) .. "=" .. fmtColor(ex.colors[k]) end
 		end
 		for _, k in ipairs(SCALE_KEYS) do
-			if ex.scales[k] then ss[#ss + 1] = (k:gsub(_obczbshz({188,205,204,216,210,146}), _obczbshz({}))) .. _obczbshz({166}) .. string.format(_obczbshz({142,152,157,210}), ex.scales[k]) end
+			if ex.scales[k] then ss[#ss + 1] = (k:gsub("Scale$", "")) .. "=" .. string.format("%.2f", ex.scales[k]) end
 		end
-		logLine(prefix .. _obczbshz({172,217,221,209,224,168,143}) .. (#cs > 0 and table.concat(cs, _obczbshz({137})) or _obczbshz({168})))
-		logLine(prefix .. _obczbshz({185,220,218,220,220,224,50,23,52,39,216,231,175,150}) .. (#ss > 0 and table.concat(ss, _obczbshz({137})) or _obczbshz({168})))
-		logLine(prefix .. _obczbshz({185,203,221,224,210,225,143,212,224,146,214,227,231,230,230,152,236,223,232,156,230,242,228,237,161,170,243,229,233,248,74,43,248,170,239,251,173,248,254,247,0,187,205,180}) .. (#ex.zero > 0 and table.concat(ex.zero, _obczbshz({149,138})) or _obczbshz({215,207,217,212,226,219,208})))
+		logLine(prefix .. "Cores: " .. (#cs > 0 and table.concat(cs, " ") or "?"))
+		logLine(prefix .. "Proporções: " .. (#ss > 0 and table.concat(ss, " ") or "?"))
+		logLine(prefix .. "Partes do corpo sem item (padrão do jogo): " .. (#ex.zero > 0 and table.concat(ex.zero, ", ") or "nenhuma"))
 	end
-
+	-- compara cores e proporções dele com as suas e registra o que ficou diferente
 	local function compareExtra(theirs, mine)
 		local n = 0
 		for _, k in ipairs(COLOR_KEYS) do
 			local a, b = theirs.colors[k], mine.colors[k]
 			if a and b and not sameColor(a, b) then
 				n = n + 1
-				logLine(_obczbshz({173,179,177,177,191,179,189,196,182,146}) .. k .. _obczbshz({163,138,207,209,217,211,143}) .. fmtColor(a) .. _obczbshz({137,153,139,223,210,227,143}) .. fmtColor(b))
+				logLine("DIFERENTE " .. k .. ": dele " .. fmtColor(a) .. " / seu " .. fmtColor(b))
 			end
 		end
 		for _, k in ipairs(SCALE_KEYS) do
 			local a, b = theirs.scales[k], mine.scales[k]
 			if a and b and math.abs(a - b) > 0.01 then
 				n = n + 1
-				logLine(string.format(_obczbshz({173,179,177,177,191,179,189,196,182,146,152,231,175,150,219,221,229,223,155,161,171,176,229,160,176,162,246,233,250,166,172,182,187,240}), k, a, b))
+				logLine(string.format("DIFERENTE %s: dele %.2f / seu %.2f", k, a, b))
 			end
 		end
 		return n
 	end
 
-	section(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,219,231,153,188,237,235,236,233,231,225,247,231,241}))
-	note(_obczbshz({172,217,219,213,206,142,222,227,145,219,231,217,227,233,151,233,238,223,155,221,157,238,228,243,244,241,228,164,234,249,251,75,42,170,0,255,238,252,243,255,177,2,5,3,181,9,252,13,185,251,17,253,17,255,17,192,5,17,195,230,23,21,22,19,17,11,33,17,27,220,207,3,116,101,211,42,26,41,43,29,217,41,219,45,50,35,223,54,48,37,134,110,229,48,138,105,233,62,48,57,8,238,62,240,57,71,53,244,67,153,122,71,249,61,74,73,77,80,64,0,79,67,71,69,19}), 44)
+	section(page, "Copiar avatar do Brookhaven")
+	note("Copia os itens que a pessoa está usando pro seu avatar do Brookhaven. Só veste o que você já tem; o hub não compra nada.", 44)
 	local ddA
-	ddA = dropdown(page, _obczbshz({174,221,206,219,217,214,212,226,145,220,226,219,214,218,230,234,153,162,233,225,235,230,244,237,170}), function()
+	ddA = dropdown(page, "Escolher jogador (nenhum)", function()
 		local t = {}
 		for _, pl in ipairs(Players:GetPlayers()) do
 			if pl ~= lp then
-				table.insert(t, { label = pl.DisplayName .. _obczbshz({137,138,147,172}) .. pl.Name .. _obczbshz({146}), value = pl, name = pl.DisplayName })
+				table.insert(t, { label = pl.DisplayName .. "  (@" .. pl.Name .. ")", value = pl, name = pl.DisplayName })
 			end
 		end
 		table.sort(t, function(a, b) return a.label:lower() < b.label:lower() end)
 		return t
 	end, function(it)
 		target = it.value
-		ddA.setText(_obczbshz({179,217,210,205,209,221,225,170,145}) .. it.name)
+		ddA.setText("Jogador: " .. it.name)
 	end)
-	local summary = note(_obczbshz({183,207,217,212,226,219,143,209,231,211,231,213,231,150,227,225,221,233,155,221,230,236,227,225,175}), 34)
-	rowBtn(page, _obczbshz({181,207,221,140,206,228,208,228,210,228,147,216,228,150,225,231,224,219,223,235,239}), function()
-		if not target or not target.Parent then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
+	local summary = note("Nenhum avatar lido ainda.", 34)
+	rowBtn(page, "Ler avatar do jogador", function()
+		if not target or not target.Parent then say("Escolha um jogador primeiro."); return end
 		local list, err, ex = readAvatar(target)
-		if not list then logLine(_obczbshz({175,171,183,180,188,195,143,209,224,146,223,217,231,150}) .. target.Name .. _obczbshz({163,138}) .. tostring(err)); say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(err)); return end
+		if not list then logLine("FALHOU ao ler " .. target.Name .. ": " .. tostring(err)); say("Falhou: " .. tostring(err)); return end
 		items = list
 		local counts, order = {}, {}
 		for _, it in ipairs(items) do
@@ -5670,66 +6156,71 @@ local function buildAvatar(page, say)
 			counts[it.kind] = counts[it.kind] + 1
 		end
 		local parts = {}
-		for _, k in ipairs(order) do parts[#parts + 1] = k .. _obczbshz({137}) .. counts[k] end
-		summary.Text = _obczbshz({178,222,208,218,224,142,219,217,213,225,230,148,217,219,151}) .. target.DisplayName .. _obczbshz({163,138}) .. #items .. (#items > 0 and (_obczbshz({137,146}) .. table.concat(parts, _obczbshz({149,138})) .. _obczbshz({146})) or _obczbshz({}))
-		logLine(_obczbshz({181,179,139,205,227,207,227,209,227,146,215,217,149}) .. target.DisplayName .. _obczbshz({137,146,171}) .. target.Name .. _obczbshz({146,164,139}) .. #items .. _obczbshz({137,211,223,209,219,225}))
-		for _, it in ipairs(items) do logLine(_obczbshz({137,138,139}) .. it.kind .. _obczbshz({163,138}) .. it.id) end
+		for _, k in ipairs(order) do parts[#parts + 1] = k .. " " .. counts[k] end
+		summary.Text = "Itens lidos de " .. target.DisplayName .. ": " .. #items .. (#items > 0 and (" (" .. table.concat(parts, ", ") .. ")") or "")
+		logLine("LI avatar de " .. target.DisplayName .. " (@" .. target.Name .. "): " .. #items .. " itens")
+		for _, it in ipairs(items) do logLine("   " .. it.kind .. ": " .. it.id) end
 		targetEx = ex
-		logExtra(_obczbshz({137,138,139}), ex)
-		say(#items .. _obczbshz({137,211,223,209,219,225,143,220,218,214,226,231,163}))
+		logExtra("   ", ex)
+		say(#items .. " itens lidos.")
 	end)
 
+	-- itens que você está vestindo agora: set[id] = item, e a lista
 	local function wornSet()
 		local set, list = {}, readAvatar(lp) or {}
 		for _, it in ipairs(list) do set[it.id] = it end
 		return set, list
 	end
-	local SLOT = { Shirt = true, Pants = true, GraphicTShirt = true, Face = true }
-
+	local SLOT = { Shirt = true, Pants = true, GraphicTShirt = true, Face = true } -- vestir outro troca o antigo
+	-- roupas padrão do Brookhaven: o jogo recoloca sozinho quando tira (pelo log: tirar volta "true" mas ela continua lá),
+	-- então não adianta ficar tentando. Item que continua depois de 2 tentativas também entra aqui.
 	local fixed = { [8907830203] = true, [88270342307378] = true }
-
+	-- liga/desliga um item (o jogo usa o mesmo remote Wear pros dois). O jogo RECUSA (false) se os pedidos
+	-- vêm rápido demais (visto no log: ~0,7s entre pedidos), então espaça ~1s e tenta de novo se recusar.
 	local lastWear = 0
-	local refusedWhy = {}
+	local refusedWhy = {} -- id -> o que o jogo respondeu quando recusou (ex.: "Invalid ID")
 	local function toggle(it, action)
 		for attempt = 1, 3 do
 			local gap = 1.0 - (os.clock() - lastWear)
 			if gap > 0 then task.wait(gap) end
-
+			-- o Wear devolve (true/false, "mensagem"); no log do jogo: false, "Invalid ID" ou true, "Success"
 			local ok, res, msg = pcall(AVATAR.wear, it.kind, it.id)
 			lastWear = os.clock()
 			local good = ok and res ~= false
-			local shown = (ok and (ser(res) .. (msg ~= nil and (_obczbshz({149,138}) .. ser(msg)) or _obczbshz({}))) or (_obczbshz({206,220,221,219,167,142}) .. tostring(res))):sub(1, 70)
-			logLine((good and _obczbshz({}) or _obczbshz({175,171,183,180,188,195,143})) .. action .. _obczbshz({137}) .. it.kind .. _obczbshz({137}) .. it.id .. _obczbshz({137,151,169,140}) .. shown
-				.. (attempt > 1 and (_obczbshz({137,138,147,224,210,220,227,209,229,219,233,213,149}) .. attempt .. _obczbshz({146})) or _obczbshz({})))
+			local shown = (ok and (ser(res) .. (msg ~= nil and (", " .. ser(msg)) or "")) or ("erro: " .. tostring(res))):sub(1, 70)
+			logLine((good and "" or "FALHOU ") .. action .. " " .. it.kind .. " " .. it.id .. " -> " .. shown
+				.. (attempt > 1 and ("  (tentativa " .. attempt .. ")") or ""))
 			if good then return true end
 			if ok and msg ~= nil then refusedWhy[it.id] = tostring(msg) end
-			if msg == _obczbshz({178,216,225,205,217,215,211,144,186,182}) then break end
+			if msg == "Invalid ID" then break end -- o jogo diz que o ID não vale: repetir não adianta
 		end
 		return false
 	end
-
+	-- tira o que está vestido (partes do corpo ficam; roupa/rosto que o avatar novo vai trocar também ficam)
+	-- cada item é desligado UMA vez só (ler de novo logo depois atrasa e já fez religar item sem querer)
 	local function removeWorn(keep, action, targetKinds)
 		local _, list = wornSet()
 		local n = 0
 		for _, it in ipairs(list) do
 			local replaced = SLOT[it.kind] and targetKinds and targetKinds[it.kind]
 			if not BODY[it.kind] and not replaced and not (keep and keep[it.id]) and not fixed[it.id] then
-				if toggle(it, action or _obczbshz({189,179,189,173,191})) then n = n + 1 end
+				if toggle(it, action or "TIRAR") then n = n + 1 end
 			end
 		end
 		return n
 	end
 	local busy = false
 	local function run(fn)
-		if busy then say(_obczbshz({179,45,12,140,210,225,227,51,18,146,229,227,217,215,229,220,232,166,155,225,240,238,228,242,226,162,247,233,247,243,240,246,234,252,185})); return end
+		if busy then say("Já está rodando, espera terminar."); return end
 		busy = true
 		task.spawn(function()
 			local ok, err = pcall(fn)
 			busy = false
-			if not ok then logLine(_obczbshz({175,171,183,180,188,195,169,144}) .. tostring(err)); say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(err):sub(1, 60)) end
+			if not ok then logLine("FALHOU: " .. tostring(err)); say("Falhou: " .. tostring(err):sub(1, 60)) end
 		end)
 	end
-
+	-- procura a versão "estável" do que está vestido: a leitura do avatar atrasa depois de vestir/tirar,
+	-- então lê duas vezes (1,5s entre elas) e só confia no que as duas leituras concordam
 	local function stableWorn()
 		local a = wornSet()
 		task.wait(1.5)
@@ -5739,9 +6230,9 @@ local function buildAvatar(page, say)
 		for id, it in pairs(b) do either[id] = it end
 		return both, either
 	end
-
+	-- tira tudo (só partes do corpo e o que o avatar novo vai trocar ficam) e CONFERE: o que não saiu, tira de novo (até 2 rodadas)
 	local function strip(keep, targetKinds)
-		local removed = removeWorn(keep, _obczbshz({189,179,189,173,191}), targetKinds)
+		local removed = removeWorn(keep, "TIRAR", targetKinds)
 		for pass = 1, 2 do
 			task.wait(2)
 			local both = stableWorn()
@@ -5754,23 +6245,26 @@ local function buildAvatar(page, say)
 			if pass == 2 then
 				for _, it in ipairs(left) do
 					fixed[it.id] = true
-					logLine(_obczbshz({175,179,195,187,141,150,210,223,223,230,220,226,234,215,151,229,222,237,232,235,157,242,232,242,226,240,231,243,192,166,235,237,255,239,171,255,242,0,175,0,242,246,5,87,56,5,183,252,8,186,5,11,4,13,200,218,193}) .. it.kind .. _obczbshz({137}) .. it.id)
+					logLine("FIXO (continua mesmo tirando; deve ser padrão do jogo): " .. it.kind .. " " .. it.id)
 				end
 				break
 			end
-			logLine(_obczbshz({183,45,238,187,141,193,176,185,198,146}) .. #left .. _obczbshz({137,211,223,209,218,150,221,227,154,158,147,232,218,228,235,217,231,222,234,156,225,227,159,238,240,248,242,164,173,248,246,236,234,238,236,172}) .. pass .. _obczbshz({146}))
+			logLine("NÃO SAIU " .. #left .. " item(ns), tentando de novo (rodada " .. pass .. ")")
 			for _, it in ipairs(left) do
-				if toggle(it, _obczbshz({189,179,189,173,191,142,151,212,214,146,225,227,235,229,160})) then removed = removed + 1 end
+				if toggle(it, "TIRAR (de novo)") then removed = removed + 1 end
 			end
 		end
 		return removed
 	end
 
+	-- ===== animação (parado, andar, correr, pular, cair, escalar, nadar) =====
+	-- Copia os ids de animação do script Animate dele pro seu Animate e reinicia o seu. A animação do seu
+	-- personagem é replicada pro jogo todo, então todo mundo vê. Fica ativa até você voltar ao padrão (reaplica ao renascer).
 	local ANIM = { orig = {}, applied = nil, tested = {} }
-	local function animateOf(char) return char and char:FindFirstChild(_obczbshz({170,216,212,217,206,226,212})) end
-	local function animKey(d) return d.Parent.Name .. _obczbshz({152}) .. d.Name end
+	local function animateOf(char) return char and char:FindFirstChild("Animate") end
+	local function animKey(d) return d.Parent.Name .. "/" .. d.Name end
 	local function rigOf(char)
-		local h = char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		local h = char and char:FindFirstChildOfClass("Humanoid")
 		return h and h.RigType
 	end
 	local function readAnims(pl)
@@ -5779,35 +6273,35 @@ local function buildAvatar(page, say)
 		local an = animateOf(char)
 		if an then
 			for _, d in ipairs(an:GetDescendants()) do
-				if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) and d.AnimationId ~= _obczbshz({}) then ids[animKey(d)] = d.AnimationId; n = n + 1 end
+				if d:IsA("Animation") and d.AnimationId ~= "" then ids[animKey(d)] = d.AnimationId; n = n + 1 end
 			end
 		end
 		if n > 0 then return ids, n end
-
-		local h = char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		-- sem Animate legível: usa as animações da descrição aplicada no avatar dele
+		local h = char and char:FindFirstChildOfClass("Humanoid")
 		local ok, d = pcall(function() return h and h:GetAppliedDescription() end)
-		if not ok or not d then return nil, _obczbshz({215,45,14,219,141,209,222,222,228,215,218,233,222,150,227,221,235,154,220,156,222,236,232,237,226,69,42,71,40,245,167,236,238,246,240}) end
+		if not ok or not d then return nil, "não consegui ler a animação dele" end
 		local map = {
-			IdleAnimation = { _obczbshz({210,206,215,209,156,175,221,217,222,211,231,221,228,228,168}), _obczbshz({210,206,215,209,156,175,221,217,222,211,231,221,228,228,169}) }, WalkAnimation = { _obczbshz({224,203,215,215,156,197,208,220,220,179,225,221,226}) },
-			RunAnimation = { _obczbshz({219,223,217,155,191,227,221,177,223,219,224}) }, JumpAnimation = { _obczbshz({211,223,216,220,156,184,228,221,225,179,225,221,226}) }, FallAnimation = { _obczbshz({207,203,215,216,156,180,208,220,221,179,225,221,226}) },
-			ClimbAnimation = { _obczbshz({204,214,212,217,207,157,178,220,218,223,213,181,227,223,228}) }, SwimAnimation = { _obczbshz({220,225,212,217,156,193,230,217,222}), _obczbshz({220,225,212,217,214,210,219,213,160,197,234,221,226,191,219,228,222}) },
+			IdleAnimation = { "idle/Animation1", "idle/Animation2" }, WalkAnimation = { "walk/WalkAnim" },
+			RunAnimation = { "run/RunAnim" }, JumpAnimation = { "jump/JumpAnim" }, FallAnimation = { "fall/FallAnim" },
+			ClimbAnimation = { "climb/ClimbAnim" }, SwimAnimation = { "swim/Swim", "swimidle/SwimIdle" },
 		}
 		for field, keys in pairs(map) do
 			local okF, v = pcall(function() return d[field] end)
 			v = okF and tonumber(v) or 0
 			if v and v > 0 then
-				for _, k in ipairs(keys) do ids[k] = _obczbshz({209,222,223,220,167,157,158,231,232,233,161,230,228,216,227,231,241,168,222,235,234,173,224,243,244,231,247,179,196,239,235,197}) .. math.floor(v); n = n + 1 end
+				for _, k in ipairs(keys) do ids[k] = "http://www.roblox.com/asset/?id=" .. math.floor(v); n = n + 1 end
 			end
 		end
-		if n == 0 then return nil, _obczbshz({206,214,208,140,210,225,227,51,18,146,214,227,226,150,216,152,218,232,228,233,222,65,38,67,36,241,163,244,230,234,249,75,44,249,171,180,251,239,243,241,177,2,5,245,181,249,6,8,2,251,13,197}) end
+		if n == 0 then return nil, "ele está com a animação padrão (nada pra copiar)" end
 		return ids, n
 	end
 	local function reloadAnimate(char)
-		local an, hum = animateOf(char), char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
+		local an, hum = animateOf(char), char and char:FindFirstChildOfClass("Humanoid")
 		if not (an and hum) then return end
 		pcall(function()
 			an.Disabled = true
-			local animator = hum:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
+			local animator = hum:FindFirstChildOfClass("Animator")
 			for _, tr in ipairs((animator or hum):GetPlayingAnimationTracks()) do tr:Stop(0) end
 			task.wait(0.1)
 		end)
@@ -5816,10 +6310,10 @@ local function buildAvatar(page, say)
 	local function applyAnims(ids)
 		local char = lp.Character
 		local an = animateOf(char)
-		if not an then return false, _obczbshz({220,207,224,140,221,211,225,227,224,224,212,219,218,227,151,221,236,238,62,29,157,241,228,237,161,241,163,247,232,248,240,248,253,170,204,250,246,251,240,4,246}) end
+		if not an then return false, "seu personagem está sem o script Animate" end
 		local n = 0
 		for _, d in ipairs(an:GetDescendants()) do
-			if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) then
+			if d:IsA("Animation") then
 				local key = animKey(d)
 				local id = ids[key]
 				if id and d.AnimationId ~= id then
@@ -5837,7 +6331,7 @@ local function buildAvatar(page, say)
 		local an = animateOf(lp.Character)
 		if an then
 			for _, d in ipairs(an:GetDescendants()) do
-				if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) then
+				if d:IsA("Animation") then
 					local o = ANIM.orig[animKey(d)]
 					if o then d.AnimationId = o end
 				end
@@ -5846,17 +6340,18 @@ local function buildAvatar(page, say)
 		end
 		ANIM.orig = {}
 	end
-
+	-- só o número do asset (o AnimationId vem como "http://www.roblox.com/asset/?id=123")
 	local function assetNum(id)
-		return tostring(id):match(_obczbshz({142,206,150})) or tostring(id)
+		return tostring(id):match("%d+") or tostring(id)
 	end
-
+	-- testa se a animação CARREGA no seu personagem. Animação que o jogo não deixa carregar não toca
+	-- (o personagem fica travado nesse estado); true = carregou, false = não carregou, nil = não deu pra testar
 	local function canLoadAnim(animId)
 		local char = lp.Character
-		local h = char and char:FindFirstChildOfClass(_obczbshz({177,223,216,205,219,221,216,212}))
-		local animator = h and h:FindFirstChildOfClass(_obczbshz({170,216,212,217,206,226,222,226}))
+		local h = char and char:FindFirstChildOfClass("Humanoid")
+		local animator = h and h:FindFirstChildOfClass("Animator")
 		if not animator then return nil end
-		local a = Instance.new(_obczbshz({170,216,212,217,206,226,216,223,223}))
+		local a = Instance.new("Animation")
 		a.AnimationId = animId
 		local ok, track = pcall(function() return animator:LoadAnimation(a) end)
 		local loaded = false
@@ -5873,21 +6368,21 @@ local function buildAvatar(page, say)
 		return loaded
 	end
 	local function copyAnim(pl)
-		if not pl or not pl.Parent then return false, _obczbshz({206,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242}) end
+		if not pl or not pl.Parent then return false, "escolha um jogador primeiro" end
 		local mine, theirs = rigOf(lp.Character), rigOf(pl.Character)
-		if mine and theirs and mine ~= theirs then return false, _obczbshz({219,211,210,140,209,215,213,213,227,215,225,232,218,150,159,202,175,169,205,173,178,167,185,160,226,162,228,242,238,243,232,75,48,77,46,251,173,242,244,252,246,178,1,87,56,5,183,254,14,8,254,5,12,12,0,192,15,17,195,23,10,27}) end
+		if mine and theirs and mine ~= theirs then return false, "rig diferente (R6/R15): a animação dele não funciona no seu" end
 		local ids, n = readAnims(pl)
 		if not ids then return false, n end
 		local an = animateOf(lp.Character)
-		if not an then return false, _obczbshz({220,207,224,140,221,211,225,227,224,224,212,219,218,227,151,221,236,238,62,29,157,241,228,237,161,241,163,247,232,248,240,248,253,170,204,250,246,251,240,4,246}) end
-
+		if not an then return false, "seu personagem está sem o script Animate" end
+		-- 1) identifica: cada animação dele ao lado da sua
 		local keys, mineIds = {}, {}
 		for k in pairs(ids) do keys[#keys + 1] = k end
 		table.sort(keys)
 		for _, d in ipairs(an:GetDescendants()) do
-			if d:IsA(_obczbshz({170,216,212,217,206,226,216,223,223})) then mineIds[animKey(d)] = d.AnimationId end
+			if d:IsA("Animation") then mineIds[animKey(d)] = d.AnimationId end
 		end
-
+		-- 2) testa (cada ID uma vez, em paralelo): só aplica o que carrega no seu personagem
 		local results, started, pending = {}, {}, 0
 		for _, k in ipairs(keys) do
 			local id = ids[k]
@@ -5908,44 +6403,45 @@ local function buildAvatar(page, say)
 		end
 		local t0 = os.clock()
 		while pending > 0 and os.clock() - t0 < 8 do task.wait(0.1) end
-
+		-- 3) aplica só as que funcionam e registra tudo no log
 		local good, bad, same, onlyTheirs = {}, 0, 0, 0
 		for _, k in ipairs(keys) do
 			local id = ids[k]
-			local label = k .. _obczbshz({163,138,207,209,217,211,143}) .. assetNum(id)
+			local label = k .. ": dele " .. assetNum(id)
 			if not mineIds[k] then
 				onlyTheirs = onlyTheirs + 1
-				logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,227,221,210,51,27,146,225,55,24,229,151,236,222,231,155,225,240,241,228,160,230,245,247,229,233,245,167,176,247,77,46,251,173,242,82,49,177,2,5,245,181,247,7,4,2,253,252,14,198}))
+				logLine("ANIM " .. label .. " · você não tem esse estado (não dá pra aplicar)")
 			elseif mineIds[k] == id then
 				same = same + 1
-				logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,214,213,228,209,221,146,54,20,149,233,236,217}))
+				logLine("ANIM " .. label .. " · igual à sua")
 			else
 				local r = results[id]
 				if r == false then
 					bad = bad + 1
-					logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,224,211,228,144}) .. assetNum(mineIds[k]) .. _obczbshz({137,44,34,140,187,49,242,191,145,198,194,183,182,150,159,231,153,228,234,227,236,158,237,67,36,241,163,231,230,248,249,237,240,249,0,181,200,174,252,241,255,6,252,10,250,182,248,184,12,15,252}))
+					logLine("ANIM " .. label .. " · seu " .. assetNum(mineIds[k]) .. " · NÃO TOCA (o jogo não carregou); mantive a sua")
 				else
 					good[k] = id
-					logLine(_obczbshz({170,184,180,185,141}) .. label .. _obczbshz({137,44,34,140,224,211,228,144}) .. assetNum(mineIds[k]) .. _obczbshz({137,44,34,140,193,192,190,179,178,182,180}) .. (r == nil and _obczbshz({137,146,217,47,16,221,143,211,224,224,230,217,220,235,224,152,237,223,238,240,222,240,168}) or _obczbshz({137,146,223,209,224,226,208,212,210,158,147,215,214,232,233,221,224,219,164})))
+					logLine("ANIM " .. label .. " · seu " .. assetNum(mineIds[k]) .. " · TROCADA" .. (r == nil and " (não consegui testar)" or " (testada, carrega)"))
 				end
 			end
 		end
 		local ok, res = applyAnims(good)
 		if not ok then return false, res end
 		ANIM.applied = good
-		logLine(_obczbshz({170,184,180,185,174,49,246,51,244,193,147,216,218,150}) .. pl.DisplayName .. _obczbshz({163,138}) .. n .. _obczbshz({137,211,207,223,141,218,216,212,224,229,147,54,44,150}) .. res .. _obczbshz({137,222,221,219,208,207,211,223,228,146,53,43,149}) .. same .. _obczbshz({137,211,210,225,206,215,226,144,51,41,147}) .. bad .. _obczbshz({137,216,46,15,220,142,227,223,212,211,224,148,55,45,151}) .. onlyTheirs .. _obczbshz({137,221,46,31,141,210,212,220,214}))
-		return true, _obczbshz({202,216,212,217,206,49,22,51,20,225,147,215,228,230,224,217,221,219,155,164}) .. res .. _obczbshz({137,222,221,219,208,207,211,209,228}) .. (bad > 0 and (_obczbshz({149,138}) .. bad .. _obczbshz({137,216,46,15,220,142,227,223,212,211,224,148,218,150,221,225,220,219,237,221,234,158,224,243,161,245,248,229,248})) or _obczbshz({})) .. _obczbshz({146})
+		logLine("ANIMAÇÃO de " .. pl.DisplayName .. ": " .. n .. " ids lidos · " .. res .. " trocados · " .. same .. " iguais · " .. bad .. " não tocam · " .. onlyTheirs .. " só dele")
+		return true, "animação copiada (" .. res .. " trocadas" .. (bad > 0 and (", " .. bad .. " não tocam e ficaram as suas") or "") .. ")"
 	end
-
+	-- ao renascer, aplica de novo a animação copiada
 	table.insert(conns, lp.CharacterAdded:Connect(function(char)
 		if not ANIM.applied then return end
 		task.spawn(function()
-			if not char:WaitForChild(_obczbshz({170,216,212,217,206,226,212}), 10) then return end
+			if not char:WaitForChild("Animate", 10) then return end
 			task.wait(1.5)
 			if ANIM.applied then pcall(applyAnims, ANIM.applied) end
 		end)
 	end))
 
+	-- itens que o jogo recusou (você não tem no Brookhaven) entram pelo hub: aparecem pra você e pra quem usa o hub
 	local viaHub = {}
 	local function hubRemoveAll()
 		if not MINE.ids then return end
@@ -5970,52 +6466,53 @@ local function buildAvatar(page, say)
 	end
 
 	local withAnim = true
-	toggleRow(page, _obczbshz({172,217,219,213,206,224,143,228,210,223,213,55,30,227,151,217,153,219,233,229,234,223,66,39,68,37,242}), _obczbshz({185,203,221,205,209,221,155,144,210,224,215,213,231,162,151,219,232,236,237,225,239,170,159,240,246,238,228,246,177,166,234,233,242,252,183,172,242,1,242,241,253,243,5,180,250,182,5,249,253,251,13}), function(v) withAnim = v end, true)
+	toggleRow(page, "Copiar também a animação", "Parado, andar, correr, pular, cair, escalar e nadar", function(v) withAnim = v end, true)
 	local defaultBody = true
-	toggleRow(page, _obczbshz({178,209,224,205,217,207,225,144,225,211,229,232,218,233,151,220,232,154,222,235,239,238,238,160,241,227,231,246,72,41,246}), _obczbshz({188,207,139,219,141,207,219,230,224,146,232,231,214,150,231,221,235,232,220,171,223,240,224,67,40,241,163,244,230,234,249,75,44,249,183,172,1,247,1,241,177,1,179,7,250,11,183,8,254,12,14,11,11,255,11,9,27,3,7,19}), function(v) defaultBody = v end, true)
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,209,231,211,231,213,231,150,231,234,218,154,232,229,234}), function()
-		if #items == 0 then say(_obczbshz({181,207,212,205,141,221,143,209,231,211,231,213,231,150,219,221,153,239,232,156,231,237,230,225,229,241,245,164,245,248,240,245,238,243,253,251,187})); return end
+	toggleRow(page, "Igualar partes do corpo padrão", "Se o alvo usa perna/braço padrão, tira o seu personalizado", function(v) defaultBody = v end, true)
+	rowBtn(page, "Copiar avatar pra mim", function()
+		if #items == 0 then say("Leia o avatar de um jogador primeiro."); return end
 		run(function()
-			logLine(_obczbshz({166,167,168,140,176,189,191,185,178,196,147,213,235,215,235,217,235,154,223,225,157}) .. (target and target.DisplayName or _obczbshz({168})) .. _obczbshz({137,146}) .. #items .. _obczbshz({137,211,223,209,219,225,152,144,174,175,176}))
+			logLine("=== COPIAR avatar de " .. (target and target.DisplayName or "?") .. " (" .. #items .. " itens) ===")
 			local wornBefore, before = wornSet()
-			logLine(_obczbshz({182,207,224,140,206,228,208,228,210,228,147,213,227,234,220,235,179,154}) .. #before .. _obczbshz({137,211,223,209,219,225}))
-			for _, it in ipairs(before) do logLine(_obczbshz({137,138,139,199,206,220,227,213,228,207,147}) .. it.kind .. _obczbshz({163,138}) .. it.id) end
+			logLine("Meu avatar antes: " .. #before .. " itens")
+			for _, it in ipairs(before) do logLine("   [antes] " .. it.kind .. ": " .. it.id) end
 			local keep, kinds = {}, {}
 			for _, it in ipairs(items) do keep[it.id] = true; kinds[it.kind] = true end
-
-			say(_obczbshz({154,153,158,140,193,215,225,209,223,214,226,148,233,235,219,231,153,235,240,225,157,244,238,227,68,44,163,233,248,250,74,41,169,255,254,237,251,242,254,176,185,254,248,10,246,182,12,6,12,186,14,1,4,19,13,4,16,21,204,210,211,212}))
+			-- 1) tira TUDO antes (e confere se saiu)
+			say("1/3 Tirando tudo que você está usando (leva uns segundos)...")
 			hubRemoveAll()
 			local removed = strip(keep, nil)
-
-			say(_obczbshz({155,153,158,140,195,211,226,228,218,224,215,227,149,229,151,217,239,219,239,221,239,158,226,239,241,235,228,232,244,180,181,182}))
+			-- 2) veste o avatar copiado
+			say("2/3 Vestindo o avatar copiado...")
 			local done, skipped, failed, refused = 0, 0, {}, {}
 			for _, it in ipairs(items) do
 				if wornBefore[it.id] then
 					skipped = skipped + 1
-					logLine(_obczbshz({179,45,236,140,178,193,195,177,199,179,147}) .. it.kind .. _obczbshz({137}) .. it.id)
-				elseif toggle(it, _obczbshz({191,175,190,192,182,192})) then
+					logLine("JÁ ESTAVA " .. it.kind .. " " .. it.id)
+				elseif toggle(it, "VESTIR") then
 					done = done + 1
 				else
 					failed[#failed + 1] = it.kind
 					refused[it.id] = true
 				end
 			end
-
+			-- 2b) parte do corpo que o alvo usa no padrão (sem item) mas você tem personalizada (ex.: pernas):
+			-- o Wear não troca por "nada", então tira a sua (chamar Wear no item vestido tira ele)
 			if defaultBody and targetEx then
 				local isDefault = {}
 				for _, k in ipairs(targetEx.zero) do isDefault[k] = true end
 				local nowWorn = wornSet()
 				for _, it in ipairs(before) do
 					if BODY[it.kind] and isDefault[it.kind] and nowWorn[it.id] then
-						say(_obczbshz({155,153,158,140,193,215,225,209,223,214,226,148,232,235,216,152}) .. it.kind .. _obczbshz({137,146,218,140,206,218,229,223,145,231,230,213,149,215,151,232,218,222,237,63,32,237,168,174,175,176}))
-						if toggle(it, _obczbshz({189,179,189,173,191,142,151,224,210,228,231,217,149,230,216,220,235,61,30,235,157,226,238,160,226,238,249,243,174})) then
-							logLine(_obczbshz({185,171,189,192,178,142,191,177,181,196,54,247,196,150}) .. it.kind .. _obczbshz({163,138,223,213,223,211,216,144,210,146,230,233,214,150}) .. it.id .. _obczbshz({137,218,221,205,141,212,216,211,210,228,147,221,220,235,216,228,153,219,234,156,222,234,245,239}))
+						say("2/3 Tirando sua " .. it.kind .. " (o alvo usa a padrão)...")
+						if toggle(it, "TIRAR (parte padrão do alvo)") then
+							logLine("PARTE PADRÃO " .. it.kind .. ": tirei a sua " .. it.id .. " pra ficar igual ao alvo")
 						end
 					end
 				end
 			end
-
-			say(_obczbshz({156,153,158,140,176,221,221,214,214,228,220,226,217,229,165,166,167}))
+			-- 3) confere e corrige (até 2 rodadas); só mexe no que as duas leituras confirmam
+			say("3/3 Conferindo...")
 			local missing, stuck = 0, 0
 			for pass = 1, 3 do
 				task.wait(2)
@@ -6032,179 +6529,183 @@ local function buildAvatar(page, say)
 				missing, stuck = #miss, #left
 				if missing == 0 and stuck == 0 then break end
 				if pass == 3 then
-					for _, it in ipairs(miss) do logLine(_obczbshz({175,171,183,192,188,195,143}) .. it.kind .. _obczbshz({137}) .. it.id .. (refused[it.id] and (_obczbshz({137,146,218,140,215,221,214,223,145,228,216,231,229,229,229,220,222,239,181,156}) .. tostring(refusedWhy[it.id] or _obczbshz({219,207,206,225,224,221,228})) .. _obczbshz({146})) or _obczbshz({}))) end
-					for _, it in ipairs(left) do logLine(_obczbshz({183,45,238,187,141,193,176,185,198,146}) .. it.kind .. _obczbshz({137}) .. it.id) end
+					for _, it in ipairs(miss) do logLine("FALTOU " .. it.kind .. " " .. it.id .. (refused[it.id] and (" (o jogo respondeu: " .. tostring(refusedWhy[it.id] or "recusou") .. ")") or "")) end
+					for _, it in ipairs(left) do logLine("NÃO SAIU " .. it.kind .. " " .. it.id) end
 					break
 				end
-				say(_obczbshz({156,153,158,140,176,221,225,226,218,217,220,226,217,229,151,231,153,235,240,225,157,228,224,236,245,241,248,164,173,248,246,236,234,238,236,172}) .. pass .. _obczbshz({146,152,153,154}))
-				for _, it in ipairs(left) do toggle(it, _obczbshz({189,179,189,173,191,142,151,211,224,228,229,221,220,223,229,220,232,163})) end
+				say("3/3 Corrigindo o que faltou (rodada " .. pass .. ")...")
+				for _, it in ipairs(left) do toggle(it, "TIRAR (corrigindo)") end
 				for _, it in ipairs(miss) do
 					if not refused[it.id] then
-						if toggle(it, _obczbshz({191,175,190,192,182,192,143,152,212,225,229,230,222,221,224,230,221,233,164})) then done = done + 1 end
+						if toggle(it, "VESTIR (corrigindo)") then done = done + 1 end
 					end
 				end
 			end
-
+			-- 3b) cores e proporções: o Wear não muda isso; só confere e registra no log o que ficou diferente
 			local diffN = 0
 			if targetEx then
 				task.wait(1)
 				local _, _, mineEx = readAvatar(lp)
 				if mineEx then
-					logExtra(_obczbshz({137,138,139,199,224,211,228,144,210,217,226,230,214,211,151}), mineEx)
+					logExtra("   [seu agora] ", mineEx)
 					diffN = compareExtra(targetEx, mineEx)
 				end
 			end
-
+			-- o jogo recusou (provavelmente você não tem o item): põe pelo hub
 			local viaN = 0
 			for _, it in ipairs(items) do
 				if refused[it.id] and not BODY[it.kind] and hubAdd(it) then
 					viaN = viaN + 1
-					logLine(_obczbshz({191,179,172,140,181,195,177,144}) .. it.kind .. _obczbshz({137}) .. it.id)
+					logLine("VIA HUB " .. it.kind .. " " .. it.id)
 				end
 			end
 			if viaN > 0 then
 				if MINE.onList then MINE.onList() end
 				if publishMods then publishMods() end
 			end
-			local msg = _obczbshz({189,211,221,205,209,221,226,170,145}) .. removed .. _obczbshz({137,44,34,140,176,221,219,223,212,211,215,227,232,176,151}) .. done .. _obczbshz({137,44,34,140,215,49,16,144,214,229,231,213,235,215,228,178,153}) .. skipped
+			local msg = "Tirados: " .. removed .. " · Colocados: " .. done .. " · já estavam: " .. skipped
 			if viaN > 0 then
 				local why
 				for _, w in pairs(refusedWhy) do why = w; break end
-				msg = msg .. _obczbshz({137,44,34,140}) .. viaN .. _obczbshz({137,221,46,31,141,222,212,220,224,146,219,233,215,150,159,231,153,228,234,227,236,158,241,229,244,242,242,242,233,235,252,194,169}) .. tostring(why or _obczbshz({219,207,206,225,224,207,211,223})) .. _obczbshz({164,138,222,47,32,142,224,229,214,223,147,233,232,215,151,231,153,226,240,222,157,244,66,42,170})
+				msg = msg .. " · " .. viaN .. " só pelo hub (o jogo respondeu: " .. tostring(why or "recusado") .. "; só quem usa o hub vê)"
 			end
-			if missing - viaN > 0 then msg = msg .. _obczbshz({137,44,34,140,211,207,219,228,210,228,212,225,175,150}) .. (missing - viaN) end
-			if stuck > 0 then msg = msg .. _obczbshz({137,44,34,140}) .. stuck .. _obczbshz({137,221,208,225,149,225,152,144,223,53,22,227,149,233,216,59,38,236,220,233}) end
-			if diffN > 0 then msg = msg .. _obczbshz({137,44,34,140}) .. diffN .. _obczbshz({137,205,218,222,156,222,225,223,225,225,229,55,28,57,26,231,153,222,228,226,226,240,228,238,245,231,163,172,251,235,241,233,169,249,171,248,252,245,202,176,0,178,234,249,246,8,183,6,92,61,10,188,10,19,3,1,193,11,22,23,20,207}) end
-
+			if missing - viaN > 0 then msg = msg .. " · faltaram: " .. (missing - viaN) end
+			if stuck > 0 then msg = msg .. " · " .. stuck .. " seu(s) não saíram" end
+			if diffN > 0 then msg = msg .. " · " .. diffN .. " cor/proporção diferente (veja o log; o Wear não muda isso)" end
+			-- 4) animação
 			if withAnim then
 				local okA, resA = copyAnim(target)
-				msg = msg .. _obczbshz({137,44,34,140}) .. (okA and resA or (_obczbshz({202,216,212,217,206,49,22,51,20,225,147,226,56,25,230,152,220,233,235,229,222,226,224,186,161}) .. tostring(resA)))
-				if not okA then logLine(_obczbshz({175,171,183,180,188,195,143,209,223,219,224,213,56,29,58,27,232,180,155}) .. tostring(resA)) end
+				msg = msg .. " · " .. (okA and resA or ("animação não copiada: " .. tostring(resA)))
+				if not okA then logLine("FALHOU animação: " .. tostring(resA)) end
 			end
-			logLine(_obczbshz({187,175,190,193,186,189,169,144}) .. msg)
+			logLine("RESUMO: " .. msg)
 			say(msg)
 		end)
 	end)
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,227,52,37,147,213,149,215,229,225,230,219,62,35,64,33,238,160,229,241,163,238,244,237,232,236,248,252}), function()
-		if not target or not target.Parent then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
+	rowBtn(page, "Copiar só a animação do jogador", function()
+		if not target or not target.Parent then say("Escolha um jogador primeiro."); return end
 		task.spawn(function()
 			local ok, res = copyAnim(target)
-			if not ok then logLine(_obczbshz({175,171,183,180,188,195,143,209,223,219,224,213,56,29,58,27,232,180,155}) .. tostring(res)) end
-			say(ok and res or (_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(res)))
+			if not ok then logLine("FALHOU animação: " .. tostring(res)) end
+			say(ok and res or ("Falhou: " .. tostring(res)))
 		end)
 	end, true)
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,185,181,229,147,216,214,233,151,217,231,227,232,221,64,37,66,53,230,245,163,232,234,242,236,168,177,254,240,4,1,253,184}), function()
-		if not target or not target.Parent then say(_obczbshz({174,221,206,219,217,214,208,144,230,223,147,222,228,221,216,220,232,236,155,236,239,231,236,229,234,244,242,178})); return end
+	rowBtn(page, "Copiar IDs das animações dele (texto)", function()
+		if not target or not target.Parent then say("Escolha um jogador primeiro."); return end
 		local ids, n = readAnims(target)
-		if not ids then say(_obczbshz({175,203,215,212,220,227,169,144}) .. tostring(n)); return end
+		if not ids then say("Falhou: " .. tostring(n)); return end
 		local keys, lines = {}, {}
 		for k in pairs(ids) do keys[#keys + 1] = k end
 		table.sort(keys)
 		for _, k in ipairs(keys) do
-			lines[#lines + 1] = k .. _obczbshz({163,138}) .. assetNum(ids[k])
-			logLine(_obczbshz({170,184,180,185,141,183,179,144}) .. k .. _obczbshz({163,138}) .. assetNum(ids[k]))
+			lines[#lines + 1] = k .. ": " .. assetNum(ids[k])
+			logLine("ANIM ID " .. k .. ": " .. assetNum(ids[k]))
 		end
 		local f = setclipboard or toclipboard
-		if not f then say(#keys .. _obczbshz({137,179,175,223,141,220,222,144,221,225,218,148,157,233,220,237,153,223,243,225,224,243,243,239,243,162,241,71,40,245,167,252,238,247,171,255,242,2,242,252,250,2,245,3,246,8,251,193,199})); return end
-		say(pcall(f, table.concat(lines, _obczbshz({115}))) and (#keys .. _obczbshz({137,179,175,223,141,209,222,224,218,211,215,227,232,164})) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
+		if not f then say(#keys .. " IDs no log (seu executor não tem setclipboard)."); return end
+		say(pcall(f, table.concat(lines, "\n")) and (#keys .. " IDs copiados.") or "Falhou ao copiar.")
 	end, true)
-	rowBtn(page, _obczbshz({191,217,215,224,206,224,143,209,223,219,224,213,56,29,58,27,232,154,235,221,225,240,66,35,240}), function()
+	rowBtn(page, "Voltar animação padrão", function()
 		restoreAnims()
-		logLine(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,234,228,226,235,231,238,154,220,235,157,238,224,228,243,69,38,243}))
-		say(_obczbshz({170,216,212,217,206,49,22,51,20,225,147,228,214,218,233,59,28,233,155,224,226,158,245,239,237,246,228,178}))
+		logLine("Animação voltou ao padrão")
+		say("Animação padrão de volta.")
 	end, true)
-	rowBtn(page, _obczbshz({189,211,221,205,223,142,227,229,213,225,147,229,234,219,151,221,236,238,234,241,157,243,242,225,239,230,242}), function()
+	rowBtn(page, "Tirar tudo que estou usando", function()
 		run(function()
-			logLine(_obczbshz({166,167,168,140,193,183,193,177,195,146,199,201,185,197,151,181,182,183}))
-			say(_obczbshz({189,211,221,205,219,210,222,144,229,231,215,227,149,158,218,231,231,224,224,238,226,158,228,160,245,231,241,248,230,166,235,237,169,248,250,2,252,174,2,245,177,243,255,251,4,182,5,91,60,9,187,15,254,7,17,201,207,208,209}))
+			logLine("=== TIRAR TUDO ===")
+			say("Tirando tudo (confere e tenta de novo se algo não sair)...")
 			hubRemoveAll()
 			local n = strip(nil, nil)
-			logLine(_obczbshz({187,175,190,193,186,189,169,144,229,219,229,213,217,229,234,152}) .. n)
-			say(_obczbshz({189,211,221,205,209,221,226,170,145}) .. n .. _obczbshz({137,211,223,209,219,225,157}))
+			logLine("RESUMO: tirados " .. n)
+			say("Tirados: " .. n .. " itens.")
 		end)
 	end, true)
-	rowBtn(page, _obczbshz({189,211,221,205,223,142,226,51,36,146,226,231,149,223,235,221,231,237,155,223,236,238,232,225,229,241,246}), function()
-		if #items == 0 then say(_obczbshz({181,207,212,205,141,221,143,209,231,211,231,213,231,150,219,221,153,239,232,156,231,237,230,225,229,241,245,164,245,248,240,245,238,243,253,251,187})); return end
+	rowBtn(page, "Tirar só os itens copiados", function()
+		if #items == 0 then say("Leia o avatar de um jogador primeiro."); return end
 		run(function()
-			logLine(_obczbshz({166,167,168,140,193,183,193,177,195,146,198,55,8,150,198,203,153,189,202,204,198,191,195,207,212,162,192,193,194}))
+			logLine("=== TIRAR SÓ OS COPIADOS ===")
 			local worn = wornSet()
 			local n = 0
 			for _, it in ipairs(items) do
 				if worn[it.id] and not BODY[it.kind] then
-					if toggle(it, _obczbshz({189,179,189,173,191})) then n = n + 1 end
+					if toggle(it, "TIRAR") then n = n + 1 end
 					task.wait(0.3)
 				end
 			end
-			logLine(_obczbshz({187,175,190,193,186,189,169,144,229,219,229,213,217,229,234,152}) .. n)
-			say(_obczbshz({189,211,221,205,209,221,226,170,145}) .. n .. _obczbshz({137,211,223,209,219,225,157}))
+			logLine("RESUMO: tirados " .. n)
+			say("Tirados: " .. n .. " itens.")
 		end)
 	end, true)
-	rowBtn(page, _obczbshz({172,217,219,213,206,224,143,220,218,229,231,213,149,218,220,152,226,238,224,234,240,158,167,244,230,250,247,243,174}), function()
-		if #items == 0 then say(_obczbshz({181,207,212,205,141,221,143,209,231,211,231,213,231,150,219,221,153,239,232,156,231,237,230,225,229,241,245,164,245,248,240,245,238,243,253,251,187})); return end
+	rowBtn(page, "Copiar lista de itens (texto)", function()
+		if #items == 0 then say("Leia o avatar de um jogador primeiro."); return end
 		local lines = {}
-		for _, it in ipairs(items) do lines[#lines + 1] = it.kind .. _obczbshz({163,138}) .. it.id end
+		for _, it in ipairs(items) do lines[#lines + 1] = it.kind .. ": " .. it.id end
 		local f = setclipboard or toclipboard
-		if not f then say(_obczbshz({188,207,224,140,210,230,212,211,230,230,226,230,149,228,58,27,232,154,239,225,234,158,242,229,245,229,239,237,245,232,246,233,251,238,185})); return end
-		say(pcall(f, table.concat(lines, _obczbshz({115}))) and _obczbshz({181,211,222,224,206,142,210,223,225,219,212,216,214,164}) or _obczbshz({175,203,215,212,220,227,143,209,224,146,214,227,229,223,216,234,167}))
+		if not f then say("Seu executor não tem setclipboard."); return end
+		say(pcall(f, table.concat(lines, "\n")) and "Lista copiada." or "Falhou ao copiar.")
 	end, true)
 
+	-- (o log dos itens só aparece no hub de ADM; aqui ele registra em memória, sem tela)
 	return function() if ANIM.applied then pcall(restoreAnims) end end
 end
 
-local win, pages, say = buildWindow(560, 330, _obczbshz({188,210,212,218,141,182,228,210}), _obczbshz({182,207,216,206,223,221}), buildTabs({}))
+local win, pages, say = buildWindow(600, 360, "Shin Hub", "Membro", buildTabs({}))
 selfCleanup = buildSelf(pages, say)
-if pages[_obczbshz({183,217,216,209})] then buildBrookhaven(pages, say) end
-local stopCar = pages[_obczbshz({172,203,221})] and buildCar(pages[_obczbshz({172,203,221})], say)
-AVATAR.stop = pages[_obczbshz({170,224,204,224,206,224})] and buildAvatar(pages[_obczbshz({170,224,204,224,206,224})], say)
-local stopLog = pages[_obczbshz({181,217,210})] and buildLog(pages[_obczbshz({181,217,210})], say)
-local stopWings = pages[_obczbshz({170,221,204})] and buildWings(pages[_obczbshz({170,221,204})], say)
-buildCredits(pages[_obczbshz({172,220,46,21,209,215,227,223,228})])
-if pages[_obczbshz({178,174})] then buildId(pages[_obczbshz({178,174})], say) end
-local stopMods = buildMods(pages[_obczbshz({182,217,207})], say)
-local stopDebug = pages[_obczbshz({173,207,205,225,212})] and buildDebug(pages[_obczbshz({173,207,205,225,212})], say)
-if pages[_obczbshz({183,217,216,209})] then buildAvatarCopy(pages[_obczbshz({182,217,207})], say) end
-local stopFx = buildEffects(pages[_obczbshz({174,208,208,213,225,221,226})], say)
-local stopExtras = buildExtras(pages[_obczbshz({174,226,223,222,206,225})], say)
+if pages["Nome"] then buildBrookhaven(pages, say) end
+local stopCar = pages["Car"] and buildCar(pages["Car"], say)
+AVATAR.stop = pages["Avatar"] and buildAvatar(pages["Avatar"], say)
+local stopLog = pages["Log"] and buildLog(pages["Log"], say)
+local stopWings = pages["Asa"] and buildWings(pages["Asa"], say)
+buildCredits(pages["Créditos"])
+if pages["ID"] then buildId(pages["ID"], say) end
+local stopMods = buildMods(pages["Mod"], say)
+local stopDebug = pages["Debug"] and buildDebug(pages["Debug"], say)
+if pages["Nome"] then buildAvatarCopy(pages["Mod"], say) end
+local stopFx = buildEffects(pages["Efeitos"], say)
+local stopExtras = buildExtras(pages["Extras"], say)
 do
 	local base = selfCleanup
 	selfCleanup = function() if base then base() end; stopMods(); if AVATAR.stop then AVATAR.stop() end; if stopDebug then stopDebug() end; stopFx(); stopExtras(); if stopCar then stopCar() end; if stopLog then stopLog() end; if stopWings then stopWings() end; if TAG.stop then TAG.stop() end end
 end
 
+-- (a aba Conexão saiu do menu; o status continua sendo atualizado num texto interno e o "Desativar" foi pra aba Extras)
 local shutdown
-local info = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), { Text = _obczbshz({172,217,217,209,208,226,208,222,213,225,161,162,163}), Size = UDim2.new(1, 0, 0, 40), BackgroundTransparency = 1 }, nil)
-if pages[_obczbshz({174,226,223,222,206,225})] then
-	rowBtn(pages[_obczbshz({174,226,223,222,206,225})], _obczbshz({173,207,222,205,225,215,229,209,227,146,155,231,214,223,233,152,221,233,155,236,222,231,237,229,237,171}), function() if shutdown then shutdown() end end)
+local info = mk("TextLabel", { Text = "Conectando...", Size = UDim2.new(1, 0, 0, 40), BackgroundTransparency = 1 }, nil)
+if pages["Extras"] then
+	rowBtn(pages["Extras"], "Desativar (sair do painel)", function() if shutdown then shutdown() end end)
 end
 
+-- aviso rápido na tela quando o admin usa um comando
 function toast(t)
-	local l = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
+	local l = mk("TextLabel", {
 		Text = t, Size = UDim2.fromOffset(240, 30), Position = UDim2.new(0.5, -120, 0, 60),
-		BackgroundColor3 = Color3.fromRGB(110, 15, 20), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12,
+		BackgroundColor3 = Color3.fromRGB(46, 48, 58), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12,
 	}, gui)
 	round(l, 10); stroke(l, 1.5)
 	task.delay(4, function() l:Destroy() end)
 end
 
-floatButton(function() win.Visible = not win.Visible end, win)
-
+UI.float = floatButton(function() win.Visible = not win.Visible end, win)
+task.defer(function() if UI.applyCfg then UI.applyCfg() end end)
+-- atalho do teclado (só PC): B minimiza/abre o menu (RightShift também continua funcionando)
 table.insert(conns, UIS.InputBegan:Connect(function(i, gp)
 	if gp or i.UserInputType ~= Enum.UserInputType.Keyboard then return end
-	if UIS:GetFocusedTextBox() then return end
+	if UIS:GetFocusedTextBox() then return end -- digitando em uma caixa de texto: ignora
 	local isPc = UI.pc or (UIS.KeyboardEnabled and UIS.MouseEnabled)
-	if i.KeyCode == Enum.KeyCode.RightShift or (isPc and i.KeyCode == Enum.KeyCode.B) then
+	if i.KeyCode == Enum.KeyCode.RightShift or (isPc and i.KeyCode == UI.key) then
 		win.Visible = not win.Visible
 	end
 end))
-
+-- aviso rápido (só PC) mostrando o atalho
 task.spawn(function()
 	if not UI.pc then return end
-	local hint = mk(_obczbshz({189,207,227,224,185,207,209,213,221}), {
-		Text = _obczbshz({185,173,139,208,210,226,212,211,229,211,215,227,149,150,89,248,27,154,155,240,226,225,235,229,161,196,163,244,247,231,167,245,242,248,244,249,246,8,240,2,177,193,179,245,247,8,0,10,185,9,187,9,2,12,20}), Size = UDim2.fromOffset(320, 26),
-		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 14), BackgroundColor3 = Color3.fromRGB(20, 5, 8),
+	local hint = mk("TextLabel", {
+		Text = "PC detectado  •  tecle " .. UI.keyName() .. " pra minimizar / abrir o menu", Size = UDim2.fromOffset(320, 26),
+		AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 14), BackgroundColor3 = Color3.fromRGB(22, 23, 28),
 		BackgroundTransparency = 0.1, TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 12,
 	}, gui)
 	round(hint, 13)
-	local hs = mk(_obczbshz({190,179,190,224,223,221,218,213}), { Thickness = 1.5, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, hint)
+	local hs = mk("UIStroke", { Thickness = 1.5, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, hint)
 	task.wait(4.5)
 	UI.tween(hint, 0.4, { BackgroundTransparency = 1, TextTransparency = 1 })
 	UI.tween(hs, 0.4, { Transparency = 1 })
@@ -6222,16 +6723,18 @@ function shutdown()
 	if selfCleanup then selfCleanup() end
 	for _, c in ipairs(conns) do c:Disconnect() end
 	local r = hrp(); if r then r.Anchored = false end
-	http(_obczbshz({173,175,183,177,193,179}), _obczbshz({152,215,208,217,207,211,225,227,160}) .. uid .. _obczbshz({151,212,222,219,219}))
+	http("DELETE", "/members/" .. uid .. ".json")
 	gui:Destroy()
 end
 
+-- presença (a cada 5s) + estado dos efeitos do admin (também enviado na hora que muda)
 local beat = 0
 local function presenceBody()
 	local root = hrp()
 	return {
 		name = lp.Name, uid = lp.UserId, place = game.PlaceId, job = game.JobId, beat = beat, t = os.time(),
-		fire = (root and root:FindFirstChild(_obczbshz({188,210,212,218,179,215,225,213})) ~= nil) or nil,
+		o = AUTH.id(), ts = { [".sv"] = "timestamp" },
+		fire = (root and root:FindFirstChild("ShinFire") ~= nil) or nil,
 		rocket = FXS.rocket or nil,
 		jail = FXS.jail,
 		boom = FXS.boom,
@@ -6239,10 +6742,10 @@ local function presenceBody()
 	}
 end
 function pushPresence()
-	if alive then http(_obczbshz({185,191,191}), _obczbshz({152,215,208,217,207,211,225,227,160}) .. uid .. _obczbshz({151,212,222,219,219}), presenceBody()) end
+	if alive then http("PUT", "/members/" .. uid .. ".json", presenceBody()) end
 end
 TAG.push = function()
-
+	-- a tag vai pro /mods (todo mundo que usa o hub vê, inclusive outros membros) e pra presença (ADM)
 	local td = TAG.data()
 	MINE.tag = (TAG.avail and td.on) and { on = true, text = td.text, font = td.font, role = td.role, rgb = td.rgb } or nil
 	if publishMods then task.spawn(publishMods) end
@@ -6253,25 +6756,26 @@ table.insert(conns, lp.CharacterAdded:Connect(function() task.wait(1); pushPrese
 task.spawn(function()
 	while alive do
 		beat = beat + 1
-		local r = http(_obczbshz({185,191,191}), _obczbshz({152,215,208,217,207,211,225,227,160}) .. uid .. _obczbshz({151,212,222,219,219}), presenceBody())
+		local r = http("PUT", "/members/" .. uid .. ".json", presenceBody())
 		if r ~= nil then
-			if not info.Text:find(_obczbshz({170,206,216,213,219,142,228,227,224,231})) then info.Text = _obczbshz({75,1,250,140,176,221,221,213,212,230,212,216,228,150,216,231,153,234,220,229,235,227,235}) end
+			if not info.Text:find("Admin usou") then info.Text = "● Conectado ao painel" end
 		else
-			info.Text = _obczbshz({75,6,1,140,192,211,220,144,212,225,225,217,237,57,26,231,179,154}) .. lastErr
+			info.Text = "✖ Sem conexão: " .. lastErr
 		end
 		task.wait(5)
 	end
 end)
 
+-- recebe comandos (a cada 2s). O primeiro comando lido só marca o ponto de partida.
 task.spawn(function()
 	local lastId, ready = nil, false
 	while alive do
-		local body = http(_obczbshz({176,175,191}), _obczbshz({152,205,216,208,156}) .. uid .. _obczbshz({151,212,222,219,219}))
+		local body = http("GET", "/cmd/" .. uid .. ".json")
 		if body ~= nil then
 			local c
-			if body ~= _obczbshz({215,223,215,216}) and body ~= _obczbshz({}) then
+			if body ~= "null" and body ~= "" then
 				local ok, d = pcall(HttpService.JSONDecode, HttpService, body)
-				if ok and type(d) == _obczbshz({221,203,205,216,210}) then c = d end
+				if ok and type(d) == "table" then c = d end
 			end
 			if not ready then
 				ready = true
@@ -6280,8 +6784,8 @@ task.spawn(function()
 				lastId = c.id
 				local fn = ACTIONS[c.action]
 				if fn and c.job == game.JobId then
-					info.Text = _obczbshz({170,206,216,213,219,142,228,227,224,231,173,148}) .. tostring(c.action)
-					toast(_obczbshz({170,206,216,213,219,142,228,227,224,231,173,148}) .. tostring(c.action))
+					info.Text = "Admin usou: " .. tostring(c.action)
+					toast("Admin usou: " .. tostring(c.action))
 					pcall(fn, c)
 				end
 			end
@@ -6290,19 +6794,20 @@ task.spawn(function()
 	end
 end)
 
+-- tag salva por ID (dada pelo Dono) + ativação automática quando o Dono está neste servidor
 task.spawn(function()
 	local ownerBeat, ownerAt = nil, 0
 	while alive do
 		local changed = false
-		local gb = http(_obczbshz({176,175,191}), _obczbshz({152,205,216,208,156,226,208,215,208}) .. uid .. _obczbshz({151,212,222,219,219}))
+		local gb = http("GET", "/cmd/tag_" .. uid .. ".json")
 		if gb ~= nil then
 			local g
-			if gb ~= _obczbshz({215,223,215,216}) and gb ~= _obczbshz({}) then
+			if gb ~= "null" and gb ~= "" then
 				local ok, d = pcall(HttpService.JSONDecode, HttpService, gb)
-				if ok and type(d) == _obczbshz({221,203,205,216,210}) and type(d.role) == _obczbshz({220,222,221,213,219,213}) and d.role ~= _obczbshz({}) then g = d end
+				if ok and type(d) == "table" and type(d.role) == "string" and d.role ~= "" then g = d end
 			end
-			local sig = g and (g.role .. _obczbshz({229}) .. tostring(g.rgb == true)) or _obczbshz({})
-			if sig ~= (TAG.grantSig or _obczbshz({})) then
+			local sig = g and (g.role .. "|" .. tostring(g.rgb == true)) or ""
+			if sig ~= (TAG.grantSig or "") then
 				TAG.grantSig = sig
 				if g then
 					for _, r in ipairs(TAG_ROLES) do
@@ -6311,17 +6816,17 @@ task.spawn(function()
 					TAG.rgb = (g.rgb == true)
 					TAG.granted = true
 				else
-					TAG.role = _obczbshz({182,207,216,206,223,221}); TAG.rgb = false; TAG.granted = false
+					TAG.role = "Membro"; TAG.rgb = false; TAG.granted = false
 				end
 				changed = true
 			end
 		end
-		local ob = http(_obczbshz({176,175,191}), _obczbshz({152,205,216,208,156,221,230,222,214,228,210}) .. game.JobId .. _obczbshz({151,212,222,219,219}))
+		local ob = http("GET", "/cmd/owner_" .. game.JobId .. ".json")
 		if ob ~= nil then
 			local force = false
-			if ob ~= _obczbshz({215,223,215,216}) and ob ~= _obczbshz({}) then
+			if ob ~= "null" and ob ~= "" then
 				local ok, o = pcall(HttpService.JSONDecode, HttpService, ob)
-				if ok and type(o) == _obczbshz({221,203,205,216,210}) and o.gone ~= true then
+				if ok and type(o) == "table" and o.gone ~= true then
 					if o.beat ~= ownerBeat then
 						ownerBeat = o.beat
 						if math.abs(os.time() - (tonumber(o.t) or 0)) < 300 then ownerAt = os.clock() end
