@@ -1,5 +1,5 @@
--- Shin Hub | MEMBRO  (sem log/debug; aba Itens; proteções extras)
--- Começa com uma tela de carregamento (5s). Os comandos do admin são FIXOS.
+-- Shin Hub | MEMBRO v4 (sem log/debug; aba Itens; proteções extras)
+-- Começa com uma tela de carregamento (5s). Os comandos do admin são FIXOS (lista ACTIONS).
 local DB = "https://site-0ds-default-rtdb.firebaseio.com"
 local API_KEY = "AIzaSyB_-Q7ZI2nxQhpd0z-kxHeg7v5bSL_MBj8" -- a mesma chave de API da Web do admin (não é segredo)
 local ADMIN_EMAIL, ADMIN_PASSWORD = nil, nil -- só o script do admin usa
@@ -327,10 +327,12 @@ end
 
 -- janela com menu lateral (estilo hub): abas à esquerda, conteúdo à direita
 local ICONS = {
+	["Sintonia RP"] = "◎",
 	["Scripts"] = "◆", ["Evade"] = "♦", ["Brookhaven"] = "◇", ["Natural Disaster"] = "▲", ["Mod"] = "★", ["Efeitos"] = "●",
 	["Extras"] = "■", ["Conexão"] = "▼", ["Créditos"] = "☆", ["ID"] = "◉", ["Admin"] = "◀", ["Proteções"] = "◈", ["Movimento"] = "▶",
-	["Itens"] = "✚", ["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
+	["Itens"] = "✚", ["Motos"] = "◆", ["Nome"] = "▣", ["Música"] = "♪", ["Tag"] = "✦",
 }
+UI.gated, UI.open = {}, {} -- abas que só aparecem com liberação (nenhuma por enquanto)
 local function buildWindow(w, h, title, sub, tabNames, onClose)
 	local win = panel(w, h, UDim2.new(0.5, 0, 0.5, 0))
 	win.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -474,6 +476,7 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 		mk("UIListLayout", { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, p)
 		mk("UIPadding", { PaddingTop = UDim.new(0, 2), PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 8), PaddingBottom = UDim.new(0, 8) }, p)
 		pages[name], tabBtns[name], bars[name] = p, b, bar
+		p.Name = name
 		local tp = { hover = false, stroke = bst, ic = ic, lb = lb, badge = badge }
 		parts[name] = tp
 		b.MouseEnter:Connect(function() tp.hover = true; paintTab(name) end)
@@ -487,13 +490,15 @@ local function buildWindow(w, h, title, sub, tabNames, onClose)
 		local q = searchBox.Text:lower():gsub("^%s+", ""):gsub("%s+$", "")
 		local first
 		for _, name in ipairs(tabNames) do
-			local show = (q == "") or (name:lower():find(q, 1, true) ~= nil)
+			local show = ((q == "") or (name:lower():find(q, 1, true) ~= nil)) and not (UI.gated[name] and not UI.open[name])
 			tabBtns[name].Visible = show
 			if show and not first then first = name end
 		end
 		return first
 	end
 	searchBox:GetPropertyChangedSignal("Text"):Connect(applyFilter)
+	UI.refreshTabs, UI.selectTab = applyFilter, selectTab
+	applyFilter()
 	searchBox.FocusLost:Connect(function(enter)
 		if enter then
 			local f = applyFilter()
@@ -776,10 +781,96 @@ local function rowBtn(par, text, cb, compact)
 	b.MouseButton1Click:Connect(cb)
 	return b
 end
+-- ===== Salvar automático: toggles e sliders ficam salvos e voltam sozinhos no próximo início =====
+local AUTO = { file = FOLDER .. "/ativos_membro.json", data = {}, pending = {}, used = {}, saving = false, applied = false }
+pcall(function()
+	if isfile and readfile and isfile(AUTO.file) then
+		local d = HttpService:JSONDecode(readfile(AUTO.file))
+		if type(d) == "table" then AUTO.data = d end
+	end
+end)
+function AUTO.key(par, text) -- aba + nome do controle (repetido ganha #2, #3...)
+	local base = tostring(par and par.Name or "?") .. "|" .. tostring(text)
+	AUTO.used[base] = (AUTO.used[base] or 0) + 1
+	return AUTO.used[base] > 1 and (base .. "#" .. AUTO.used[base]) or base
+end
+function AUTO.save()
+	if AUTO.saving then return end
+	AUTO.saving = true
+	task.delay(1, function()
+		AUTO.saving = false
+		pcall(function()
+			if not writefile then return end
+			if isfolder and not isfolder(FOLDER) and makefolder then makefolder(FOLDER) end
+			writefile(AUTO.file, HttpService:JSONEncode(AUTO.data))
+		end)
+	end)
+end
+function AUTO.set(key, v) AUTO.data[key] = v; AUTO.save() end
+function AUTO.restore(fn) -- roda a ação salva depois que o hub terminou de montar tudo
+	if AUTO.applied then task.defer(pcall, fn) else AUTO.pending[#AUTO.pending + 1] = fn end
+end
+function AUTO.applyAll()
+	AUTO.applied = true
+	local list = AUTO.pending
+	AUTO.pending = {}
+	for _, fn in ipairs(list) do pcall(fn); task.wait() end
+end
+do -- (bloco próprio: não gasta variável local do arquivo)
+-- ===== Posição dos botões flutuantes (Evade, pegar/soltar/lançar veículo): salva ao soltar e volta no próximo início =====
+local BTNPOS = { file = FOLDER .. "/botoes_pos.json", data = {}, saving = false }
+pcall(function()
+	if isfile and readfile and isfile(BTNPOS.file) then
+		local d = HttpService:JSONDecode(readfile(BTNPOS.file))
+		if type(d) == "table" then BTNPOS.data = d end
+	end
+end)
+function BTNPOS.area()
+	local a = gui.AbsoluteSize
+	if a.X < 50 or a.Y < 50 then
+		local cam = workspace.CurrentCamera
+		a = cam and cam.ViewportSize or Vector2.new(800, 600)
+	end
+	return a
+end
+function BTNPOS.save(key, b)
+	pcall(function()
+		local a = BTNPOS.area()
+		local p = b.Position -- vale pra Position com escala + offset
+		BTNPOS.data[key] = { x = (p.X.Scale * a.X + p.X.Offset) / a.X, y = (p.Y.Scale * a.Y + p.Y.Offset) / a.Y }
+	end)
+	if BTNPOS.saving then return end
+	BTNPOS.saving = true
+	task.delay(0.5, function()
+		BTNPOS.saving = false
+		pcall(function()
+			if not writefile then return end
+			if isfolder and not isfolder(FOLDER) and makefolder then makefolder(FOLDER) end
+			writefile(BTNPOS.file, HttpService:JSONEncode(BTNPOS.data))
+		end)
+	end)
+end
+function BTNPOS.load(key, b)
+	pcall(function()
+		local d = BTNPOS.data[key]
+		if type(d) ~= "table" or type(d.x) ~= "number" or type(d.y) ~= "number" then return end
+		local a = BTNPOS.area()
+		local x = math.clamp(d.x * a.X, 0, math.max(0, a.X - 64 - 4))
+		local y = math.clamp(d.y * a.Y, 0, math.max(0, a.Y - 64 - 4))
+		b.Position = UDim2.fromOffset(x, y)
+	end)
+end
+AUTO.btnSave, AUTO.btnLoad = BTNPOS.save, BTNPOS.load
+end
 local DARK = Color3.fromRGB(40, 41, 49)
 local function toggleRow(par, text, desc, onChange, initial)
 	if type(desc) == "function" then initial = onChange; onChange, desc = desc, nil end
-	local state = initial and true or false
+	local key = AUTO.key(par, text)
+	local default = initial and true or false
+	local state = default
+	local saved = AUTO.data[key]
+	if type(saved) == "boolean" then state = saved end
+	if state ~= default then AUTO.restore(function() onChange(state) end) end
 	local b = mk("TextButton", {
 		Text = "", AutoButtonColor = false, Size = UDim2.new(1, 0, 0, desc and 48 or 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
 	}, par)
@@ -818,11 +909,17 @@ local function toggleRow(par, text, desc, onChange, initial)
 	b.MouseButton1Click:Connect(function()
 		state = not state
 		paint(true)
+		AUTO.set(key, state)
 		pcall(onChange, state)
 	end)
-	return b, function(v) state = v and true or false; paint(true) end
+	return b, function(v) state = v and true or false; paint(true); AUTO.set(key, state) end
 end
 local function sliderRow(par, text, desc, minV, maxV, defV, onChange)
+	local key = AUTO.key(par, text)
+	local cur = defV
+	local savedV = AUTO.data[key]
+	if type(savedV) == "number" then cur = math.clamp(math.floor(savedV + 0.5), minV, maxV) end
+	if cur ~= defV then AUTO.restore(function() onChange(cur) end) end
 	local b = mk("Frame", { Size = UDim2.new(1, 0, 0, 48), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25 }, par)
 	round(b, 10)
 	mk("UIStroke", { Thickness = 1.2, Color = UI.EDGE, Transparency = 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
@@ -835,13 +932,13 @@ local function sliderRow(par, text, desc, minV, maxV, defV, onChange)
 		TextColor3 = UI.SOFT, Font = Enum.Font.Gotham, TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
 	}, b)
 	local val = mk("TextLabel", {
-		Text = tostring(defV), Size = UDim2.fromOffset(34, 48), Position = UDim2.new(0.5, 0, 0, 0), BackgroundTransparency = 1,
+		Text = tostring(cur), Size = UDim2.fromOffset(34, 48), Position = UDim2.new(0.5, 0, 0, 0), BackgroundTransparency = 1,
 		TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 13,
 	}, b)
 	local hit = mk("Frame", { Size = UDim2.new(0.5, -58, 0, 28), Position = UDim2.new(0.5, 38, 0.5, -14), BackgroundTransparency = 1 }, b)
 	local bar = mk("Frame", { Size = UDim2.new(1, 0, 0, 6), Position = UDim2.new(0, 0, 0.5, -3), BackgroundColor3 = DARK, BorderSizePixel = 0 }, hit)
 	round(bar, 3)
-	local rel0 = (defV - minV) / (maxV - minV)
+	local rel0 = (cur - minV) / (maxV - minV)
 	local fill = mk("Frame", { Size = UDim2.new(rel0, 0, 1, 0), BackgroundColor3 = RED, BorderSizePixel = 0 }, bar)
 	round(fill, 3)
 	mk("UIGradient", { Color = ColorSequence.new(Color3.fromRGB(255, 90, 105), Color3.fromRGB(190, 25, 38)) }, fill)
@@ -858,6 +955,7 @@ local function sliderRow(par, text, desc, minV, maxV, defV, onChange)
 		fill.Size = UDim2.new(rel, 0, 1, 0)
 		knob.Position = UDim2.new(rel, 0, 0.5, 0)
 		val.Text = tostring(v)
+		AUTO.set(key, v)
 		pcall(onChange, v)
 	end
 	hit.InputBegan:Connect(function(i)
@@ -1245,13 +1343,13 @@ local function buildMods(page, say)
 	local fxConn = RunService.Heartbeat:Connect(fxTick)
 
 	local function publish()
-		if #mine.ids == 0 and not mine.headless and not mine.fx and not mine.tag and not mine.bc then
+		if #mine.ids == 0 and not mine.headless and not mine.fx and not mine.tag and not mine.bc and not mine.inv then
 			http("DELETE", "/mods/" .. uid .. ".json")
 		else
 			mine.beat = (mine.beat or 0) + 1
 			http("PUT", "/mods/" .. uid .. ".json", {
 				name = lp.Name, ids = table.concat(mine.ids, ","), headless = mine.headless,
-				fx = mine.fx or "", fc = mine.fc or 1, tag = mine.tag, bc = mine.bc,
+				fx = mine.fx or "", fc = mine.fc or 1, tag = mine.tag, bc = mine.bc, inv = mine.inv,
 				beat = mine.beat, t = os.time(), o = AUTH.id(), ts = { [".sv"] = "timestamp" },
 			})
 		end
@@ -1740,6 +1838,13 @@ local function buildMods(page, say)
 		for id, rec in pairs(data) do
 			if type(rec) ~= "table" or not isFresh(id, rec) then data[id] = nil end
 		end
+		-- quem está invisível (o Hub de cada um esconde esses jogadores na tela dele; ver aba Sintonia RP)
+		local invSet = {}
+		for id, rec in pairs(data) do
+			if rec.inv == true then invSet[tostring(id)] = true end
+		end
+		if MINE.inv then invSet[uid] = true end
+		UI.invSet = invSet
 		local mineRec = localRecord()
 		if netOk and mineRec and not data[uid] then
 			DSLOG.warn("sync", "seu registro não voltou do Firebase (o PUT falhou ou as regras bloquearam). Você se vê, mas os outros não te veem")
@@ -1853,7 +1958,7 @@ local function buildMods(page, say)
 	task.spawn(function()
 		while alive do
 			task.wait(8)
-			if alive and (#mine.ids > 0 or mine.headless or mine.fx or mine.tag or mine.bc) then pcall(publish) end
+			if alive and (#mine.ids > 0 or mine.headless or mine.fx or mine.tag or mine.bc or mine.inv) then pcall(publish) end
 		end
 	end)
 	local function goodbye() pcall(http, "DELETE", "/mods/" .. uid .. ".json") end
@@ -1958,6 +2063,7 @@ local TAG_ROLES = {
 }
 local TAG = { avail = false, on = false, text = "", font = "GothamBlack", role = "Membro", rgb = false }
 local function tagRoleColor(name)
+	if name == "Painel ADM" then return Color3.fromRGB(90, 200, 255) end
 	for _, r in ipairs(TAG_ROLES) do
 		if r[1] == name then return r[2] end
 	end
@@ -2039,6 +2145,9 @@ function TAG.rgbStart()
 end
 -- dados efetivos da tag: ligada pelo próprio, ou forçada quando o Dono está no servidor (só quem tem tag dada por ID)
 function TAG.data()
+	if TAG.panelLock then -- quem usa o painel ADM por ID: só a tag fixa "Painel ADM" embaixo do nome, sem escolher nada
+		return { on = true, text = "", font = "GothamBlack", role = "Painel ADM", rgb = false }
+	end
 	local on = TAG.on or (TAG.force and TAG.granted and not TAG.forceOff) or false
 	return { on = on, text = TAG.text, font = TAG.font, role = TAG.role, rgb = TAG.rgb == true }
 end
@@ -2716,6 +2825,67 @@ local function buildSelf(pages, say)
 		toggleRow(mp, "Pulo infinito", "Pula no ar quantas vezes quiser", function(v) S.infjump = v end)
 		toggleRow(mp, "Atravessar paredes", "Noclip", function(v) S.noclip = v end)
 	end
+	-- ===== aba Motos (Grau SP): mesmo Voar da aba Movimento (painel de voo + botões ▲ ▼) =====
+	do
+		local mo = pages["Motos"]
+		if mo then
+			section(mo, "Voar")
+			do
+				local _, st = toggleRow(mo, "Voar", "Abre o painel de voo (ON/OFF e velocidade) • olhe pra cima + joystick = sobe", function(v) setFlyPanel(v) end)
+				table.insert(flyToggles, st)
+			end
+			if not flyGui then -- botões ▲ ▼ na tela (segurar): igual aos da aba Movimento
+				flyGui = mk("Frame", { Size = UDim2.fromOffset(60, 124), Position = UDim2.new(0, 24, 0.55, -62), BackgroundTransparency = 1, Visible = false, ZIndex = 20 }, gui)
+				local function holdBtn(txt, y, key)
+					local b = mk("TextButton", {
+						Text = txt, Size = UDim2.fromOffset(60, 56), Position = UDim2.fromOffset(0, y),
+						BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
+						Font = Enum.Font.GothamBold, TextSize = 24, ZIndex = 21,
+					}, flyGui)
+					round(b, 28); stroke(b, 2)
+					local function isHold(i) return i.UserInputType == Enum.UserInputType.Touch or i.UserInputType == Enum.UserInputType.MouseButton1 end
+					b.InputBegan:Connect(function(i) if isHold(i) then S[key] = true end end)
+					b.InputEnded:Connect(function(i) if isHold(i) then S[key] = false end end)
+				end
+				holdBtn("▲", 0, "flyUp")
+				holdBtn("▼", 68, "flyDown")
+			end
+			toggleRow(mo, "Botões de voo (subir/descer)", "Com o Voar ligado, mostra ▲ ▼ na tela: segure pra subir ou descer; solto = fica parado no ar", function(v)
+				S.flyBtns = v
+				if not v then S.flyUp = false; S.flyDown = false end
+			end)
+		end
+	end
+	-- ===== aba Sintonia RP (jogo Sintonia RP): mesmo Voar das outras abas (painel de voo + botões ▲ ▼) =====
+	do
+		local sp = pages["Sintonia RP"]
+		if sp then
+			section(sp, "Voar")
+			local _, st = toggleRow(sp, "Voar", "Abre o painel de voo (ON/OFF e velocidade) • olhe pra cima + joystick = sobe", function(v) setFlyPanel(v) end)
+			table.insert(flyToggles, st)
+			if not flyGui then -- botões ▲ ▼ na tela (segurar): criados aqui quando a aba Motos/Movimento não existe neste jogo
+				flyGui = mk("Frame", { Size = UDim2.fromOffset(60, 124), Position = UDim2.new(0, 24, 0.55, -62), BackgroundTransparency = 1, Visible = false, ZIndex = 20 }, gui)
+				local function holdBtn(txt, y, key)
+					local b = mk("TextButton", {
+						Text = txt, Size = UDim2.fromOffset(60, 56), Position = UDim2.fromOffset(0, y),
+						BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
+						Font = Enum.Font.GothamBold, TextSize = 24, ZIndex = 21,
+					}, flyGui)
+					round(b, 28); stroke(b, 2)
+					local function isHold(i) return i.UserInputType == Enum.UserInputType.Touch or i.UserInputType == Enum.UserInputType.MouseButton1 end
+					b.InputBegan:Connect(function(i) if isHold(i) then S[key] = true end end)
+					b.InputEnded:Connect(function(i) if isHold(i) then S[key] = false end end)
+				end
+				holdBtn("▲", 0, "flyUp")
+				holdBtn("▼", 68, "flyDown")
+			end
+			toggleRow(sp, "Botões de voo (subir/descer)", "Com o Voar ligado, mostra ▲ ▼ na tela: segure pra subir ou descer; solto = fica parado no ar", function(v)
+				S.flyBtns = v
+				if not v then S.flyUp = false; S.flyDown = false end
+			end)
+			UI.sintoniaFlyOff = function() setFlyPanel(false); pcall(st, false) end -- usado quando o cargo é retirado
+		end
+	end
 	-- ===== aba Evade (só aparece no Evade): botões flutuantes de Infinite Slide / Auto Hop + gravador de log =====
 	do
 		local evp = pages["Evade"]
@@ -2843,69 +3013,11 @@ local function buildSelf(pages, say)
 				table.insert(evConns, RS.DescendantAdded:Connect(function(d) task.defer(watchRemote, d) end))
 			end)
 
-			-- remotes que VOCÊ manda pro servidor (usa hook; só liga se você ativar no menu)
-			local spyHooked = false
-			local function installSpy()
-				if spyHooked then return true end
-				if not (hookmetamethod and getnamecallmethod) then return false end
-				local nc = newcclosure or function(f) return f end
-				local ok = pcall(function()
-					local old
-					old = hookmetamethod(game, "__namecall", nc(function(self, ...)
-						local m = getnamecallmethod()
-						if EV.spyOut and (m == "FireServer" or m == "InvokeServer") then
-							local a = table.pack(...)
-							local okn, nm = pcall(function() return self.Name end)
-							task.defer(function()
-								local p = {}
-								for k = 1, math.min(a.n, 6) do p[k] = ser(a[k]) end
-								rec("remote->", (okn and nm or "?") .. ":" .. m .. "(" .. table.concat(p, ", ") .. ")", 15)
-							end)
-						end
-						return old(self, ...)
-					end))
-				end)
-				spyHooked = ok
-				return ok
-			end
-
-			-- lê (só leitura) o estado de movimento que o PRÓPRIO jogo manda pro servidor: "Move", "Air", "Slide", "SlideAir"...
-			-- o Evade não usa atributo nem animação pra isso, por isso o slide nunca era detectado
-			local stateHooked = false
-			local function installStateHook()
-				if stateHooked or not (hookmetamethod and getnamecallmethod) then return stateHooked end
-				local nc = newcclosure or function(f) return f end
-				local ok = pcall(function()
-					local old
-					old = hookmetamethod(game, "__namecall", nc(function(self, ...)
-						local a1, a2, a3 = ...
-						if getnamecallmethod() == "FireServer" then
-							local okn, nm = pcall(function() return self.Name end)
-							if okn and nm == "UpdateCharacterDataRegistry" then
-								pcall(function()
-									-- o jogo manda 1 tabela: {1=buffer, 2="Slide", 3=V3, 4=velocidade} (a ordem varia)
-									local list = (type(a1) == "table") and a1 or { a1, a2, a3 }
-									local st, spd
-									for k = 2, 6 do
-										local x = list[k]
-										if type(x) == "string" and not st then st = x
-										elseif type(x) == "number" and not spd then spd = x end
-									end
-									if st then EV.gState = st; EV.gAt = os.clock(); EV.gSpeed = spd end
-								end)
-							end
-						end
-						return old(self, ...)
-					end))
-				end)
-				stateHooked = ok
-				return ok
-			end
-			local hookOk = installStateHook()
-			rec("evade", "hook do estado do jogo: " .. tostring(hookOk))
+			-- (removido) sem hook de FireServer/InvokeServer: o estado do Evade vem só do que o jogo expõe
 
 			-- ===== botão flutuante redondo: toque = liga/desliga; arrastar = muda de lugar (se não estiver travado) =====
 			local function makeFloat(label, pos, onTap)
+				local PK = "ev|" .. (tostring(label):gsub("%s+", " "))
 				local b = mk("TextButton", {
 					Text = label, Size = UDim2.fromOffset(64, 64), Position = pos, Visible = false,
 					BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
@@ -2932,13 +3044,14 @@ local function buildSelf(pages, say)
 				table.insert(evConns, UIS.InputEnded:Connect(function(i)
 					if dragging and isPress(i) then
 						dragging = false
-						if not moved then onTap() end
+						if not moved then onTap() else AUTO.btnSave(PK, b) end
 					end
 				end))
 				local function paint(on)
 					b.BackgroundColor3 = on and RED or PANEL
 					st.Color = on and WHITE or RED
 				end
+				AUTO.btnLoad(PK, b)
 				table.insert(evButtons, b)
 				return b, paint
 			end
@@ -4505,10 +4618,37 @@ local GAMES = {
 	Brookhaven = { 4924922222 },
 	["Natural Disaster"] = { 189707 },
 	Evade = { 9872472334 },
+	["Grau SP"] = {}, -- coloque o PlaceId aqui se quiser (senão detecta pelo nome do jogo)
+	["Sintonia RP"] = {}, -- coloque o PlaceId aqui se quiser (senão detecta pelo nome do jogo)
 }
+local GRAU_CACHE = nil
 local function inGame(name)
 	for _, id in ipairs(GAMES[name] or {}) do
 		if game.PlaceId == id then return true end
+	end
+	if name == "Grau SP" then -- reserva: pelo nome do lugar, do jogo (página da loja) e do universo
+		if GRAU_CACHE == nil then
+			GRAU_CACHE = false
+			local function hit(s) return type(s) == "string" and s:lower():find("grau") ~= nil end
+			if hit(game.Name) then GRAU_CACHE = true end
+			if not GRAU_CACHE then
+				local ok, info = pcall(function() return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId) end)
+				if ok and type(info) == "table" and (hit(info.Name) or hit(info.Description)) then GRAU_CACHE = true end
+			end
+		end
+		return GRAU_CACHE
+	end
+	if name == "Sintonia RP" then -- jogo Sintonia RP: pelo nome do lugar / do jogo (página da loja)
+		if UI.sintCache == nil then
+			UI.sintCache = false
+			local function hit(s) return type(s) == "string" and s:lower():find("sintonia") ~= nil end
+			if hit(game.Name) then UI.sintCache = true end
+			if not UI.sintCache then
+				local ok, info = pcall(function() return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId) end)
+				if ok and type(info) == "table" and (hit(info.Name) or hit(info.Description)) then UI.sintCache = true end
+			end
+		end
+		return UI.sintCache
 	end
 	if name == "Evade" then -- reserva: outros lugares do Evade pelo nome do jogo
 		local ok, nm = pcall(function() return tostring(game.Name):lower() end)
@@ -4519,12 +4659,15 @@ end
 -- abas do Brookhaven: cada função é uma aba normal, só aparecem no jogo Brookhaven
 local BROOKHAVEN_TABS = { "Nome", "Música", "Tag", "Proteções", "Movimento", "Blocos", "Car", "Avatar" }
 local function buildTabs(last)
-	local t = { "ID", "Créditos", "Scripts", "Itens" } -- ID e Créditos ficam no início
+	local t = { "ID", "Créditos", "Scripts" } -- ID e Créditos ficam no início
 	if inGame("Brookhaven") then
+		table.insert(t, "Itens") -- só no Brookhaven
 		for _, n in ipairs(BROOKHAVEN_TABS) do table.insert(t, n) end
 	end
 	if inGame("Natural Disaster") then table.insert(t, "Natural Disaster") end
 	if inGame("Evade") then table.insert(t, "Evade") end
+	if inGame("Grau SP") then table.insert(t, "Motos") end
+	if inGame("Sintonia RP") then table.insert(t, "Sintonia RP") end
 	for _, n in ipairs({ "Mod", "Efeitos", "Extras" }) do table.insert(t, n) end -- comuns aos dois jogos
 	for _, n in ipairs(last) do table.insert(t, n) end
 	return t
@@ -4560,22 +4703,9 @@ function HUBLOG.unlisten(fn)
 	end
 end
 function HUBLOG.install()
-	if HUBLOG.hooked then return true end
-	local ok = pcall(function()
-		local old
-		old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-			local m = getnamecallmethod()
-			if (m == "FireServer" or m == "InvokeServer") and typeof(self) == "Instance" and not checkcaller() then
-				local pk = table.pack(...)
-				task.defer(function()
-					for _, fn in ipairs(HUBLOG.listeners) do pcall(fn, self, m, pk) end
-				end)
-			end
-			return old(self, ...)
-		end))
-	end)
-	HUBLOG.hooked = ok
-	return ok
+	-- sem hook: não intercepta FireServer/InvokeServer. Só leitura passiva (OnClientEvent e objetos do mapa).
+	HUBLOG.hooked = true
+	return true
 end
 
 -- ===== Sub-aba Car (Brookhaven): velocidade, suspensão, música do carro =====
@@ -4750,6 +4880,317 @@ local function buildCar(page, say)
 		lowClear()
 	end)
 
+	-- ===== Pegar carro (só carro VAZIO): botões flutuantes Pegar / Soltar / Lançar =====
+	section(page, "Pegar carro (vazio)")
+	note("Liga 3 botões flutuantes. Pegar levanta o carro vazio que está bem perto e na sua frente (fique de frente pra ele) e deixa em cima de você; Soltar derruba; Lançar joga pra frente. Só pega carro sem ninguém dentro (se alguém entrar, solta sozinho). O carro fica sob a sua física, então quem está no jogo vê.", 66)
+	local grab = { root = nil, att0 = nil, att1 = nil, ap = nil, ao = nil, seats = nil, parts = nil, locked = false, h = 7, power = 400, btns = {}, skip = {}, reach = 20, cone = 0.5 }
+	local function skipCar(r, secs) if r then grab.skip[r] = os.clock() + (secs or 30) end end -- ignora esse carro por um tempo
+	-- pede pro Roblox deixar o SEU cliente simular a física ao redor (sem isso o servidor fica com o carro)
+	local function claimSim()
+		pcall(function() sethiddenproperty(lp, "SimulationRadius", 1e9) end)
+		pcall(function() lp.SimulationRadius = 1e9 end)
+		pcall(function() lp.MaximumSimulationRadius = 1e9 end)
+		pcall(function() if setsimulationradius then setsimulationradius(1e9, 1e9) end end)
+	end
+	local function rec(msg) if GLOG and GLOG.add then GLOG.add("carro", msg) end end -- aba Atividade (só no adm)
+	local function sayg(msg) rec(msg); say(msg) end
+	local function grabClear()
+		if grab.root then rec("grabClear: soltando o carro") end
+		for _, k in ipairs({ "ap", "ao", "att0", "att1" }) do
+			if grab[k] then pcall(function() grab[k]:Destroy() end); grab[k] = nil end
+		end
+		if grab.parts then -- devolve a colisão do carro
+			for _, d in ipairs(grab.parts) do pcall(function() d.CanCollide = true end) end
+			grab.parts = nil
+		end
+		local r = grab.root
+		grab.root, grab.seats, grab.far = nil, nil, nil
+		return r
+	end
+	local function seatsOf(model)
+		local list = {}
+		if model then
+			for _, d in ipairs(model:GetDescendants()) do
+				if d:IsA("VehicleSeat") or d:IsA("Seat") then list[#list + 1] = d end
+			end
+		end
+		return list
+	end
+	local function anyOccupied(list)
+		for _, s in ipairs(list) do
+			if s.Occupant ~= nil then return true end
+		end
+		return false
+	end
+	local function carModelOf(seat, scope)
+		if scope and seat:IsDescendantOf(scope) then
+			local m = seat
+			while m.Parent and m.Parent ~= scope do m = m.Parent end
+			return m
+		end
+		return topModel(seat)
+	end
+	-- acha o carro vazio mais perto (até 120 studs). Sem achar, devolve nil + uma mensagem explicando
+	-- carro "na frente": perto o bastante e dentro do cone à frente do personagem (ou colado em você)
+	local function inFront(v, look)
+		local flat = Vector3.new(v.X, 0, v.Z)
+		if flat.Magnitude < 5 then return true end
+		return flat.Unit:Dot(look) >= grab.cone
+	end
+	local function findEmptyCar(hrp)
+		local scope = workspace:FindFirstChild("Vehicles")
+		local seen, cars = {}, {}
+		local function collect(className)
+			for _, s in ipairs((scope or workspace):GetDescendants()) do
+				if s:IsA(className) then
+					local m = carModelOf(s, scope)
+					if m and not seen[m] then seen[m] = true; cars[#cars + 1] = m end
+				end
+			end
+		end
+		collect("VehicleSeat")
+		if #cars == 0 and scope then collect("Seat") end
+		local busyN, anchN, skipN, farN, bestD, anyD = 0, 0, 0, 0, grab.reach, math.huge
+		local look = Vector3.new(hrp.CFrame.LookVector.X, 0, hrp.CFrame.LookVector.Z)
+		look = look.Magnitude > 0.01 and look.Unit or Vector3.new(0, 0, -1)
+		local best, bestRoot, bestSeats
+		local dbg = {}
+		for _, m in ipairs(cars) do
+			local seats = seatsOf(m)
+			local root
+			for _, s in ipairs(seats) do
+				if s:IsA("VehicleSeat") then root = s.AssemblyRootPart or s; break end
+			end
+			root = root or (seats[1] and (seats[1].AssemblyRootPart or seats[1])) or (m:IsA("Model") and m.PrimaryPart) or nil
+			if root then
+				local d = (root.Position - hrp.Position).Magnitude
+				if d < anyD then anyD = d end
+				local own = "?"
+				if isnetworkowner then local okO, o = pcall(isnetworkowner, root); own = okO and tostring(o) or "erro" end
+				dbg[#dbg + 1] = { d = d, s = string.format("%s d=%.0f %s anch=%s dono=%s", tostring(m.Name), d, anyOccupied(seats) and "ocupado" or "vazio", tostring(root.Anchored), own) }
+				if anyOccupied(seats) then
+					busyN = busyN + 1
+				elseif root.Anchored then
+					anchN = anchN + 1 -- parado pelo jogo: pula e procura o próximo
+				elseif grab.skip[root] and grab.skip[root] > os.clock() then
+					skipN = skipN + 1 -- falhou há pouco: tenta outro
+				elseif d > grab.reach then
+					farN = farN + 1 -- longe demais
+				elseif not inFront(root.Position - hrp.Position, look) then
+					farN = farN + 1 -- não está na sua frente
+				elseif d < bestD then
+					best, bestRoot, bestSeats, bestD = m, root, seats, d
+				end
+			end
+		end
+		table.sort(dbg, function(a, b) return a.d < b.d end) -- os 8 mais perto primeiro
+		local near = {}
+		for k = 1, math.min(8, #dbg) do near[k] = dbg[k].s end
+		rec("busca em " .. (scope and scope:GetFullName() or "workspace") .. ": " .. #cars .. " carros, mais perto: " .. table.concat(near, " ; "))
+		if best then return best, bestRoot, bestSeats end
+		return nil, string.format("Nenhum carro livre bem na sua frente (achei %d: %d com gente, %d ancorados, %d que o servidor controla, %d longe/fora da frente; mais perto a %s). Fique de frente pro carro, bem perto.",
+			#cars, busyN, anchN, skipN, farN, anyD < math.huge and (math.floor(anyD) .. " studs") or "? studs")
+	end
+	local function isHolding()
+		local r = grab.root
+		if not r then return false end
+		local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+		return r.Parent ~= nil and hrp ~= nil and grab.ap ~= nil and grab.ap.Parent ~= nil
+			and grab.att1 ~= nil and grab.att1.Parent == hrp
+	end
+	local function doGrabInner()
+		if grab.root then
+			if isHolding() then sayg(grab.waiting and "Aguardando o servidor liberar o carro..." or "Você já está segurando um carro."); return end
+			grabClear() -- estado velho: não estava segurando de verdade
+		end
+		local h = hum()
+		local c = lp.Character
+		local hrp = c and c:FindFirstChild("HumanoidRootPart")
+		if not h or not hrp then return end
+		if h.SeatPart then sayg("Saia do carro primeiro."); return end
+		sayg("Procurando carro vazio...")
+		local model, root, seats = findEmptyCar(hrp)
+		if not model then sayg(root); return end
+		if root.Anchored then sayg("Esse carro está ancorado (parado pelo jogo), não dá pra pegar."); return end
+		grab.root = root
+		grab.seats = seats
+		grab.t0, grab.lastLog, grab.waiting = os.clock(), 0, true
+		rec(string.format("escolhido: %s | raiz=%s (%s) anchored=%s | assentos=%d | isnetworkowner=%s",
+			model:GetFullName(), root.Name, root.ClassName, tostring(root.Anchored), #seats, tostring(isnetworkowner ~= nil)))
+		-- sem colisão enquanto segura (o carro não empurra você nem os outros)
+		grab.parts = {}
+		for _, d in ipairs(model:GetDescendants()) do
+			if d:IsA("BasePart") and d.CanCollide then
+				grab.parts[#grab.parts + 1] = d
+				d.CanCollide = false
+			end
+		end
+		claimSim()
+		grab.att0 = mk("Attachment", { Name = "ShinHubGrab0" }, root)
+		grab.att1 = mk("Attachment", { Name = "ShinHubGrab1", Position = Vector3.new(0, grab.h, 0) }, hrp)
+		grab.ap = mk("AlignPosition", {
+			Attachment0 = grab.att0, Attachment1 = grab.att1, MaxForce = math.huge, MaxVelocity = math.huge,
+			Responsiveness = 40, RigidityEnabled = false, ApplyAtCenterOfMass = true,
+		}, root)
+		grab.ao = mk("AlignOrientation", {
+			Attachment0 = grab.att0, Mode = Enum.OrientationAlignmentMode.OneAttachment,
+			CFrame = root.CFrame - root.CFrame.Position, MaxTorque = math.huge, Responsiveness = 30, RigidityEnabled = false,
+		}, root)
+		root.AssemblyAngularVelocity = Vector3.zero
+		sayg("Carro pego: " .. tostring(model.Name):sub(1, 24))
+		-- espera até 3s o servidor passar o controle do carro pra você; se não passar, solta e avisa
+		task.spawn(function()
+			local owned = not isnetworkowner
+			if not isnetworkowner then rec("isnetworkowner indisponível neste executor") end
+			local t0 = os.clock()
+			while grab.root == root and not owned and os.clock() - t0 < 4 do
+				claimSim()
+				local ok, own = pcall(isnetworkowner, root)
+				rec(string.format("dono do carro? ok=%s own=%s (%.1fs)", tostring(ok), tostring(own), os.clock() - t0))
+				if ok and own then owned = true; break end
+				task.wait(0.3)
+			end
+			if grab.root == root then grab.waiting = false end
+			if grab.root == root and not owned then
+				skipCar(root)
+				grabClear()
+				sayg("O servidor controla esse carro (sem controle de física), não deu pra pegar. Toque em Pegar de novo pra tentar outro.")
+			end
+		end)
+	end
+	local function doGrab()
+		local now = os.clock()
+		if now - (grab.lastTap or 0) < 0.35 then return end -- ignora toque duplicado
+		grab.lastTap = now
+		rec("toque em Pegar")
+		local ok, err = pcall(doGrabInner)
+		if not ok then
+			grabClear()
+			sayg("Erro ao pegar: " .. tostring(err):sub(1, 70))
+		end
+	end
+	local function doDrop()
+		if not grabClear() then sayg("Você não está segurando nenhum carro."); return end
+		sayg("Carro solto.")
+	end
+	local function doLaunch()
+		local r = grabClear()
+		if not r or not r.Parent then sayg("Pegue um carro primeiro."); return end
+		local cam = workspace.CurrentCamera
+		local dir = cam and cam.CFrame.LookVector or Vector3.new(0, 0, -1)
+		local vel = (dir + Vector3.new(0, 0.35, 0)).Unit * grab.power
+		task.spawn(function()
+			for _ = 1, 8 do
+				if not r.Parent then break end
+				r.AssemblyLinearVelocity = vel
+				RunService.Heartbeat:Wait()
+			end
+		end)
+		sayg("Carro lançado!")
+	end
+	-- mantém a altura, e solta se alguém entrar, o carro sumir ou você morrer/renascer
+	cons[#cons + 1] = RunService.Heartbeat:Connect(function()
+		local r = grab.root
+		if not r then return end
+		local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+		if not r.Parent or not hrp or not grab.att1 or grab.att1.Parent ~= hrp then grabClear(); return end
+		local hm = hum()
+		if hm and hm.SeatPart then -- você sentou em algum carro: solta o que estava segurando
+			local rr = grabClear()
+			if rr then pcall(function() rr.AssemblyAngularVelocity = Vector3.zero end) end
+			sayg("Você sentou num carro, soltei o que estava segurando.")
+			return
+		end
+		grab.att1.Position = Vector3.new(0, grab.h, 0)
+		if os.clock() - (grab.simT or 0) > 1 then grab.simT = os.clock(); claimSim() end -- mantém o controle da física
+		if os.clock() - (grab.t0 or 0) < 8 and os.clock() - (grab.lastLog or 0) > 0.5 then
+			grab.lastLog = os.clock()
+			local own = "?"
+			if isnetworkowner then local okO, o = pcall(isnetworkowner, r); own = okO and tostring(o) or "erro" end
+			rec(string.format("segurando: dist=%.0f dono=%s anchored=%s vel=%.0f",
+				(r.Position - (hrp.Position + Vector3.new(0, grab.h, 0))).Magnitude, own, tostring(r.Anchored), r.AssemblyLinearVelocity.Magnitude))
+		end
+		-- se o carro não está te seguindo (ex.: servidor controla a física dele), solta depois de 2s
+		if (r.Position - (hrp.Position + Vector3.new(0, grab.h, 0))).Magnitude > 60 then
+			grab.far = grab.far or os.clock()
+			if os.clock() - grab.far > 2 then
+				skipCar(r)
+				grabClear()
+				sayg("O carro não está te seguindo, soltei.")
+				return
+			end
+		else
+			grab.far = nil
+		end
+		if anyOccupied(grab.seats or {}) then
+			grabClear()
+			sayg("Alguém entrou no carro, soltei.")
+		end
+	end)
+	-- braços pra cima enquanto segura o carro (a pose do seu personagem replica, então todo mundo vê)
+	cons[#cons + 1] = RunService.Stepped:Connect(function()
+		if not grab.root then return end
+		local c = lp.Character
+		if not c then return end
+		local function arm(partName, jointName, zr)
+			local p = c:FindFirstChild(partName)
+			local j = p and p:FindFirstChild(jointName)
+			if j and j:IsA("Motor6D") then j.Transform = CFrame.Angles(math.pi * 0.97, 0, zr) end
+		end
+		arm("RightUpperArm", "RightShoulder", math.rad(-10)) -- R15
+		arm("LeftUpperArm", "LeftShoulder", math.rad(10))
+		local torso = c:FindFirstChild("Torso") -- R6
+		if torso then
+			local r, l = torso:FindFirstChild("Right Shoulder"), torso:FindFirstChild("Left Shoulder")
+			if r and r:IsA("Motor6D") then r.Transform = CFrame.Angles(0, 0, math.pi * 0.97) end
+			if l and l:IsA("Motor6D") then l.Transform = CFrame.Angles(0, 0, math.pi * 0.97) end
+		end
+	end)
+	-- botão flutuante redondo: toque = ação; arrastar = muda de lugar
+	local function makeBtn(label, pos, onTap)
+		local PK = "grab|" .. (tostring(label):gsub("%s+", " "))
+		local b = mk("TextButton", {
+			Text = label, Size = UDim2.fromOffset(64, 64), Position = pos, Visible = false,
+			BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
+			Font = Enum.Font.GothamBold, TextSize = 11, TextWrapped = true, AutoButtonColor = false, ZIndex = 25,
+		}, gui)
+		round(b, 32)
+		mk("UIStroke", { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+		local dragging, moved, startPos, startIn = false, false, nil, nil
+		b.InputBegan:Connect(function(i)
+			if isPress(i) then dragging, moved, startPos, startIn = true, false, b.Position, i.Position end
+		end)
+		cons[#cons + 1] = UIS.InputChanged:Connect(function(i)
+			if dragging and not grab.locked and isMove(i) then
+				local d = i.Position - startIn
+				if d.Magnitude > 6 then moved = true end
+				if moved then
+					b.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X, startPos.Y.Scale, startPos.Y.Offset + d.Y)
+				end
+			end
+		end)
+		cons[#cons + 1] = UIS.InputEnded:Connect(function(i)
+			if dragging and isPress(i) then
+				dragging = false
+				if not moved then onTap() else AUTO.btnSave(PK, b) end
+			end
+		end)
+		AUTO.btnLoad(PK, b)
+		grab.btns[#grab.btns + 1] = b
+		return b
+	end
+	makeBtn("Pegar\ncarro", UDim2.new(1, -90, 0.2, 0), doGrab)
+	makeBtn("Soltar\ncarro", UDim2.new(1, -90, 0.2, 76), doDrop)
+	makeBtn("Lançar\ncarro", UDim2.new(1, -90, 0.2, 152), doLaunch)
+	toggleRow(page, "Botões: pegar / soltar / lançar carro", "Mostra os 3 botões flutuantes na tela (arraste pra mover)", function(v)
+		for _, b in ipairs(grab.btns) do b.Visible = v end
+		if not v then grabClear() end
+	end)
+	toggleRow(page, "Travar botões", "Os botões não arrastam (o toque continua funcionando)", function(v) grab.locked = v end)
+	sliderRow(page, "Altura do carro", "studs acima de você", 3, 40, 7, function(v) grab.h = v end)
+	sliderRow(page, "Força do lançamento", "studs por segundo", 100, 1000, 400, function(v) grab.power = v end)
+	sliderRow(page, "Alcance pra pegar", "studs à sua frente", 8, 60, 20, function(v) grab.reach = v end)
+
 	-- o turbo precisa saber quando você acelera: o jogo manda SetThrottleFloat(1 / 0 / -1) pro servidor
 	onFire = function(remote, method, a)
 		if not alive or method ~= "FireServer" then return end
@@ -4765,6 +5206,1084 @@ local function buildCar(page, say)
 		alive = false
 		HUBLOG.unlisten(onFire)
 		lowClear()
+		grabClear()
+		for _, b in ipairs(grab.btns) do pcall(function() b:Destroy() end) end
+		for _, c in ipairs(cons) do c:Disconnect() end
+	end
+end
+
+-- ===== Aba Motos (Grau SP): pegar moto/veículo VAZIO, soltar e lançar (mesma função do Brookhaven) =====
+-- Só mexe em veículo sem ninguém dentro e que o servidor deixa você controlar.
+local function buildMotos(page, say)
+	local alive = true
+	local cons = {}
+	local function topModel(part)
+		local m = part and part:FindFirstAncestorOfClass("Model")
+		while m and m.Parent and m.Parent:IsA("Model") do m = m.Parent end
+		return m
+	end
+	local function note(text, h)
+		mk("TextLabel", {
+			Text = text, Size = UDim2.new(1, 0, 0, h or 34), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(232, 234, 240),
+			Font = Enum.Font.Gotham, TextSize = 11, TextWrapped = true,
+			TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
+		}, page)
+	end
+	-- ===== Pegar carro (só carro VAZIO): botões flutuantes Pegar / Soltar / Lançar =====
+	section(page, "Pegar moto / carro (vazio)")
+	note("Liga 3 botões flutuantes. Pegar levanta o carro ou a moto vazia mais perto de você (dentro do alcance, em qualquer direção) e deixa em cima de você; Soltar derruba; Lançar joga pra frente. Por padrão só pega veículo sem ninguém dentro; ligue a opção Pegar veículo ocupado pra tentar com gente dentro. O carro fica sob a sua física, então quem está no jogo vê.", 66)
+	local grab = { root = nil, att0 = nil, att1 = nil, ap = nil, ao = nil, seats = nil, parts = nil, locked = false, h = 7, power = 400, btns = {}, skip = {}, reach = 30, cone = -1, mounted = false, expel = true, hitPower = 70, hitTime = 1.2 }
+	local function skipCar(r, secs) if r then grab.skip[r] = os.clock() + (secs or 30) end end -- ignora esse carro por um tempo
+	-- pede pro Roblox deixar o SEU cliente simular a física ao redor (sem isso o servidor fica com o carro)
+	local function claimSim()
+		pcall(function() sethiddenproperty(lp, "SimulationRadius", 1e9) end)
+		pcall(function() lp.SimulationRadius = 1e9 end)
+		pcall(function() lp.MaximumSimulationRadius = 1e9 end)
+		pcall(function() if setsimulationradius then setsimulationradius(1e9, 1e9) end end)
+	end
+	local function rec(msg) if GLOG and GLOG.add then GLOG.add("carro", msg) end end -- aba Atividade (só no adm)
+	local function sayg(msg) rec(msg); say(msg) end
+	local function grabClear()
+		if grab.root then rec("grabClear: soltando o carro") end
+		for _, k in ipairs({ "ap", "ao", "att0", "att1" }) do
+			if grab[k] then pcall(function() grab[k]:Destroy() end); grab[k] = nil end
+		end
+		if grab.parts then -- devolve a colisão do carro
+			for _, d in ipairs(grab.parts) do pcall(function() d.CanCollide = true end) end
+			grab.parts = nil
+		end
+		local r = grab.root
+		grab.root, grab.seats, grab.far = nil, nil, nil
+		return r
+	end
+	local function seatsOf(model)
+		local list = {}
+		if model then
+			for _, d in ipairs(model:GetDescendants()) do
+				if d:IsA("VehicleSeat") or d:IsA("Seat") then list[#list + 1] = d end
+			end
+		end
+		return list
+	end
+	-- ocupado = tem um JOGADOR de verdade sentado. Humanoid sem jogador (dummy/trava do jogo) não conta.
+	local PlayersSvc = game:GetService("Players")
+	local function seatedPlayer(s)
+		local o = s.Occupant
+		if o == nil then return nil end
+		local ch = o.Parent
+		local p = ch and PlayersSvc:GetPlayerFromCharacter(ch)
+		if p == lp then return nil end -- você mesmo (garupa) não conta
+		return p
+	end
+	local function anyOccupied(list)
+		for _, s in ipairs(list) do
+			if seatedPlayer(s) then return true end
+		end
+		return false
+	end
+	local function occInfo(list)
+		for _, s in ipairs(list) do
+			local o = s.Occupant
+			if o ~= nil then
+				local p = seatedPlayer(s)
+				return p and ("ocupado:" .. p.Name) or ("trava/NPC:" .. tostring(o.Parent and o.Parent.Name or "?"))
+			end
+		end
+		return "vazio"
+	end
+	local function carModelOf(seat, scope)
+		if scope and seat:IsDescendantOf(scope) then
+			local m = seat
+			while m.Parent and m.Parent ~= scope do m = m.Parent end
+			return m
+		end
+		return topModel(seat)
+	end
+	-- acha o carro vazio mais perto (até 120 studs). Sem achar, devolve nil + uma mensagem explicando
+	-- carro "na frente": perto o bastante e dentro do cone à frente do personagem (ou colado em você)
+	local function inFront(v, look)
+		local flat = Vector3.new(v.X, 0, v.Z)
+		if flat.Magnitude < 5 then return true end
+		return flat.Unit:Dot(look) >= grab.cone
+	end
+	-- partes do veículo: tudo que está soldado na mesma montagem (não depende de pasta/modelo do mapa)
+	local function partsOf(model, root)
+		local ok, cp = pcall(function() return root:GetConnectedParts(true) end)
+		if ok and type(cp) == "table" and #cp > 0 then return cp end
+		return model and model:GetDescendants() or { root }
+	end
+	-- resumo do estado de trava do veículo (pra diagnóstico): assentos desativados + atributos do modelo
+	local function lockInfo(g)
+		local dis = 0
+		for _, s in ipairs(g.seats) do if s.Disabled then dis = dis + 1 end end
+		local at = {}
+		local ok, t = pcall(function() return (g.model or g.root):GetAttributes() end)
+		if ok and type(t) == "table" then for k, v in pairs(t) do at[#at + 1] = tostring(k) .. "=" .. tostring(v):sub(1, 12) end end
+		table.sort(at)
+		return string.format("assentosOff=%d/%d attrs=[%s]", dis, #g.seats, table.concat(at, ","):sub(1, 90))
+	end
+	-- acha o veículo vazio mais perto: procura assentos em workspace.Vehicles e, se não achar, no mapa todo
+	local function findEmptyCar(hrp)
+		local groups, order = {}, {}
+		local function scan(pool, className)
+			for _, s in ipairs(pool) do
+				if s:IsA(className) then
+					local root = s.AssemblyRootPart or s
+					local g = groups[root]
+					if not g then
+						g = { root = root, seats = {}, model = s:FindFirstAncestorOfClass("Model") or s.Parent }
+						groups[root] = g
+						order[#order + 1] = g
+					end
+					g.seats[#g.seats + 1] = s
+				end
+			end
+		end
+		local scope = workspace:FindFirstChild("Vehicles")
+		local pool = (scope or workspace):GetDescendants()
+		scan(pool, "VehicleSeat") -- carros e motos: os dois tipos de assento
+		scan(pool, "Seat")
+		if #order == 0 and scope then
+			pool = workspace:GetDescendants()
+			scan(pool, "VehicleSeat")
+			scan(pool, "Seat")
+		end
+		local busyN, anchN, skipN, farN, bestD, anyD = 0, 0, 0, 0, grab.reach, math.huge
+		local look = Vector3.new(hrp.CFrame.LookVector.X, 0, hrp.CFrame.LookVector.Z)
+		look = look.Magnitude > 0.01 and look.Unit or Vector3.new(0, 0, -1)
+		local best, bestRoot, bestSeats
+		local dbg = {}
+		for _, g in ipairs(order) do
+			local root, seats = g.root, g.seats
+			local d = (root.Position - hrp.Position).Magnitude
+			if d < anyD then anyD = d end
+			local own = "?"
+			if isnetworkowner then local okO, o = pcall(isnetworkowner, root); own = okO and tostring(o) or "erro" end
+			local occ = anyOccupied(seats)
+			dbg[#dbg + 1] = { d = d, s = string.format("%s d=%.0f %s anch=%s dono=%s %s", tostring(g.model and g.model.Name or root.Name), d, occInfo(seats), tostring(root.Anchored), own, lockInfo(g)) }
+			if occ and not grab.allowBusy then
+				busyN = busyN + 1
+			elseif root.Anchored then
+				anchN = anchN + 1
+			elseif grab.skip[root] and grab.skip[root] > os.clock() then
+				skipN = skipN + 1
+			elseif d > grab.reach then
+				farN = farN + 1
+			elseif not inFront(root.Position - hrp.Position, look) then
+				farN = farN + 1
+			elseif d < bestD then
+				best, bestRoot, bestSeats, bestD = g.model or root, root, seats, d
+			end
+		end
+		table.sort(dbg, function(a, b) return a.d < b.d end)
+		local near = {}
+		for k = 1, math.min(8, #dbg) do near[k] = dbg[k].s end
+		rec("busca em " .. (scope and scope:GetFullName() or "workspace") .. ": " .. #order .. " veículos, mais perto: " .. table.concat(near, " ; "))
+		if best then return best, bestRoot, bestSeats end
+		local top = {}
+		for k = 1, math.min(3, #dbg) do top[k] = dbg[k].s end
+		return nil, string.format("Nenhum veículo livre ao alcance (achei %d: %d com gente, %d ancorados, %d que o servidor controla, %d longe; mais perto a %s). Mais perto: %s",
+			#order, busyN, anchN, skipN, farN, anyD < math.huge and (math.floor(anyD) .. " studs") or "? studs", #top > 0 and table.concat(top, " | ") or "nenhum")
+	end
+	local function isHolding()
+		local r = grab.root
+		if not r then return false end
+		local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+		return r.Parent ~= nil and hrp ~= nil and grab.ap ~= nil and grab.ap.Parent ~= nil
+			and grab.att1 ~= nil and grab.att1.Parent == hrp
+	end
+	-- ===== diagnóstico detalhado (vai pro log da aba Atividade, tag "carro"; só o ADM grava) =====
+	local function ownerStr(part)
+		if not isnetworkowner then return "?" end
+		local ok, o = pcall(isnetworkowner, part)
+		return ok and tostring(o) or "erro"
+	end
+	-- ===== Anti-voar: você (e a moto, se a física for sua) não saem voando durante/depois de derrubar o piloto =====
+	-- Fica ligado do começo do impacto até uns segundos depois de assumir a moto. Corta giro/arremesso e
+	-- não deixa o boneco ragdollar. Só mexe em velocidade ANORMAL, então dirigir normal não é afetado.
+	local calmJob = 0
+	local function calmRide(rootPart, secs)
+		calmJob = calmJob + 1
+		local job = calmJob
+		local t0 = os.clock()
+		local NOR = { Enum.HumanoidStateType.FallingDown, Enum.HumanoidStateType.Ragdoll }
+		task.spawn(function()
+			while alive and job == calmJob and os.clock() - t0 < secs do
+				local c = lp.Character
+				local h = c and c:FindFirstChildOfClass("Humanoid")
+				local my = c and c:FindFirstChild("HumanoidRootPart")
+				if h then
+					pcall(function()
+						for _, st in ipairs(NOR) do if h:GetStateEnabled(st) then h:SetStateEnabled(st, false) end end
+						if h.PlatformStand then h.PlatformStand = false end
+					end)
+				end
+				if my then
+					pcall(function() if my.AssemblyAngularVelocity.Magnitude > 12 then my.AssemblyAngularVelocity = Vector3.zero end end)
+				end
+				if rootPart and rootPart.Parent then
+					-- só mexe na moto se a física for sua (senão o dono dela desfaz e só dá tremedeira)
+					local mine = true
+					if isnetworkowner then local okO, o = pcall(isnetworkowner, rootPart); mine = okO and o end
+					if mine then
+						pcall(function()
+							if rootPart.AssemblyAngularVelocity.Magnitude > 10 then rootPart.AssemblyAngularVelocity = Vector3.zero end
+							local v = rootPart.AssemblyLinearVelocity
+							if v.Magnitude > 70 or v.Y > 35 then rootPart.AssemblyLinearVelocity = Vector3.zero end
+						end)
+					end
+				end
+				RunService.Heartbeat:Wait()
+			end
+			if job == calmJob then -- devolve os estados (a não ser que o "Não cair da moto" esteja ligado)
+				local h = hum()
+				if h and not (grab.stay and grab.stay.on) then
+					pcall(function() for _, st in ipairs(NOR) do h:SetStateEnabled(st, true) end end)
+				end
+			end
+		end)
+	end
+	local function seatStr(s)
+		local occ = "vazio"
+		if s.Occupant then
+			local p = PlayersSvc:GetPlayerFromCharacter(s.Occupant.Parent)
+			occ = p and ("jogador:" .. p.Name) or ("NPC:" .. tostring(s.Occupant.Parent and s.Occupant.Parent.Name))
+		end
+		local at = {}
+		pcall(function() for k, v in pairs(s:GetAttributes()) do at[#at + 1] = tostring(k) .. "=" .. tostring(v):sub(1, 10) end end)
+		table.sort(at)
+		return string.format("%s(%s) desativado=%s ocupante=%s SeatWeld=%s attrs=[%s]", s.Name, s.ClassName, tostring(s.Disabled), occ,
+			s:FindFirstChild("SeatWeld") and "sim" or "nao", table.concat(at, ","):sub(1, 70))
+	end
+	local function dumpVeh(tag, model, root, seats)
+		pcall(function()
+			local n, anch = 0, 0
+			for _, d in ipairs(partsOf(model, root)) do
+				if d:IsA("BasePart") then n = n + 1; if d.Anchored then anch = anch + 1 end end
+			end
+			local v, p = root.AssemblyLinearVelocity, root.Position
+			rec(string.format("[%s] veículo=%s | raiz=%s(%s) ancorada=%s | partes=%d (ancoradas=%d) | dono_da_fisica=%s | massa=%.0f vel=%.1f pos=(%.0f,%.0f,%.0f)",
+				tag, tostring(model and model:GetFullName() or "?"), root.Name, root.ClassName, tostring(root.Anchored), n, anch, ownerStr(root),
+				root.AssemblyMass, v.Magnitude, p.X, p.Y, p.Z))
+			for k, s in ipairs(seats or {}) do
+				if k <= 6 then rec("[" .. tag .. "] assento " .. k .. ": " .. seatStr(s)) end
+			end
+			local at = {}
+			for k, val in pairs((model or root):GetAttributes()) do at[#at + 1] = tostring(k) .. "=" .. tostring(val):sub(1, 14) end
+			table.sort(at)
+			rec("[" .. tag .. "] atributos do modelo: [" .. table.concat(at, ","):sub(1, 140) .. "]")
+		end)
+	end
+	local function doGrabInner()
+		if grab.root then
+			if isHolding() then sayg(grab.waiting and "Aguardando o servidor liberar o carro..." or "Você já está segurando um carro."); return end
+			grabClear() -- estado velho: não estava segurando de verdade
+		end
+		local h = hum()
+		local c = lp.Character
+		local hrp = c and c:FindFirstChild("HumanoidRootPart")
+		if not h or not hrp then return end
+		local model, root, seats
+		grab.mounted = false
+		rec(string.format("=== PEGAR === sentado=%s assento=%s | derrubarPiloto=%s pegarOcupado=%s alcance=%s", tostring(h.SeatPart ~= nil),
+			h.SeatPart and (h.SeatPart.Name .. "(" .. h.SeatPart.ClassName .. ")") or "-", tostring(grab.expel), tostring(grab.allowBusy), tostring(grab.reach)))
+		if h.SeatPart then
+			-- você já subiu na garupa sozinho: pega ESSA moto, sem teleportar
+			local sp = h.SeatPart
+			root = sp.AssemblyRootPart or sp
+			model = sp:FindFirstAncestorOfClass("Model") or sp.Parent
+			-- pega TODOS os assentos do veículo (inclusive o do piloto, que costuma estar em outro submodelo)
+			seats = {}
+			local seen = {}
+			local function addSeat(d)
+				if (d:IsA("VehicleSeat") or d:IsA("Seat")) and not seen[d] then seen[d] = true; seats[#seats + 1] = d end
+			end
+			-- sobe até o modelo do veículo, mas NUNCA até o Workspace (ele também é um Model e traria o mapa todo)
+			local tm = sp:FindFirstAncestorOfClass("Model")
+			while tm and tm.Parent and tm.Parent:IsA("Model") and tm.Parent ~= workspace do tm = tm.Parent end
+			if tm and tm ~= workspace then for _, d in ipairs(seatsOf(tm)) do addSeat(d) end end
+			for _, d in ipairs(seatsOf(model)) do addSeat(d) end
+			addSeat(sp)
+			if #seats > 12 then -- segurança: só assentos coladinhos no seu (um veículo nunca é tão grande)
+				local near = {}
+				for _, st in ipairs(seats) do
+					if st == sp or (st.Position - sp.Position).Magnitude <= 12 then near[#near + 1] = st end
+				end
+				seats = near
+			end
+			grab.mounted = true
+			sayg("Pegando a moto em que você está sentado...")
+		else
+			sayg("Procurando carro vazio...")
+			model, root, seats = findEmptyCar(hrp)
+			for _ = 1, 3 do -- veículo trancado/estacionado costuma ficar ancorado e soltar logo depois: tenta de novo
+				if model then break end
+				task.wait(0.4)
+				if not (lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")) then return end
+				model, root, seats = findEmptyCar(hrp)
+			end
+			if not model then sayg(root); return end
+		end
+		dumpVeh("moto escolhida", model, root, seats)
+		if root.Anchored and grab.mounted then
+			-- moto trancada: alguns jogos soltam a moto assim que alguém senta; espera um pouco antes de desistir
+			local tw = os.clock()
+			while root.Anchored and os.clock() - tw < 1.5 do task.wait(0.1) end
+			rec(string.format("espera da moto trancada: %.1fs, ainda ancorada=%s", os.clock() - tw, tostring(root.Anchored)))
+		end
+		if root.Anchored then
+			rec("ancorado: " .. model:GetFullName() .. " raiz=" .. root.Name .. " montado=" .. tostring(grab.mounted))
+			local wasMounted = grab.mounted
+			grab.mounted = false
+			sayg(wasMounted and "A moto está ancorada pelo jogo (trancada): o servidor segura ela no lugar, não dá pra pegar daqui." or "Esse carro está ancorado (parado pelo jogo), não dá pra pegar.")
+			return
+		end
+		grab.root = root
+		grab.seats = seats
+		grab.t0, grab.lastLog, grab.waiting = os.clock(), 0, true
+		rec(string.format("escolhido: %s | raiz=%s (%s) anchored=%s | assentos=%d | isnetworkowner=%s",
+			model:GetFullName(), root.Name, root.ClassName, tostring(root.Anchored), #seats, tostring(isnetworkowner ~= nil)))
+		-- sem colisão enquanto segura (o carro não empurra você nem os outros)
+		grab.parts = {}
+		for _, d in ipairs(partsOf(model, root)) do
+			if d:IsA("BasePart") and d.CanCollide then
+				grab.parts[#grab.parts + 1] = d
+				d.CanCollide = false
+			end
+		end
+		claimSim()
+		grab.att0 = mk("Attachment", { Name = "ShinHubGrab0" }, root)
+		grab.att1 = mk("Attachment", { Name = "ShinHubGrab1", Position = Vector3.new(0, grab.h, 0) }, hrp)
+		grab.ap = mk("AlignPosition", {
+			Attachment0 = grab.att0, Attachment1 = grab.att1, MaxForce = math.huge, MaxVelocity = math.huge,
+			Responsiveness = 40, RigidityEnabled = false, ApplyAtCenterOfMass = true,
+		}, root)
+		grab.ao = mk("AlignOrientation", {
+			Attachment0 = grab.att0, Mode = Enum.OrientationAlignmentMode.OneAttachment,
+			CFrame = root.CFrame - root.CFrame.Position, MaxTorque = math.huge, Responsiveness = 30, RigidityEnabled = false,
+		}, root)
+		root.AssemblyAngularVelocity = Vector3.zero
+		sayg("Veículo pego: " .. tostring(model.Name):sub(1, 24))
+		-- espera até 3s o servidor passar o controle do carro pra você; se não passar, solta e avisa
+		task.spawn(function()
+			local owned = not isnetworkowner
+			if not isnetworkowner then rec("isnetworkowner indisponível neste executor") end
+			local t0 = os.clock()
+			local hmn = hum()
+			local mounted = grab.mounted
+			if mounted then
+				-- sentado na garupa: segura o carro parado (sem puxar) enquanto assume a física
+				grab.assist = true
+				pcall(function() if grab.ap then grab.ap.Enabled = false end; if grab.ao then grab.ao.Enabled = false end end)
+			end
+			local function waitOwn(secs)
+				local tw = os.clock()
+				while grab.root == root and not owned and os.clock() - tw < secs do
+					claimSim()
+					local ok, own = pcall(isnetworkowner, root)
+					rec(string.format("dono do carro? ok=%s own=%s (%.1fs)", tostring(ok), tostring(own), os.clock() - t0))
+					if ok and own then owned = true; break end
+					task.wait(0.3)
+				end
+			end
+			local pilotAboard = false
+			for _, st in ipairs(seats) do if st:IsA("VehicleSeat") and seatedPlayer(st) then pilotAboard = true end end
+			waitOwn((pilotAboard and grab.expel and mounted) and 0.6 or 4)
+			rec(string.format("waitOwn(4) terminou: dono_da_fisica=%s (%.1fs)", tostring(owned), os.clock() - t0))
+			-- Derrubar piloto: você está na garupa e tem alguém dirigindo; balança a moto pra jogar o piloto pra fora
+			if mounted and grab.expel and grab.root == root then
+				local function driverSeat()
+					for _, st in ipairs(seats) do
+						if st:IsA("VehicleSeat") and st.Occupant then
+							local pl = PlayersSvc:GetPlayerFromCharacter(st.Occupant.Parent)
+							if pl and pl ~= lp then return st, pl end
+						end
+					end
+				end
+				local ds, dpl = driverSeat()
+				rec("derrubar piloto: assentos=" .. #seats .. " piloto=" .. tostring(dpl and dpl.Name) .. " dono_da_fisica=" .. tostring(owned))
+				if dpl and not owned then sayg("Aviso: não assumi a física da moto (o piloto é o dono dela), pode não funcionar.") end
+				dumpVeh("antes de derrubar", model, root, seats)
+				if ds then rec("piloto alvo: " .. dpl.Name .. " | assento: " .. seatStr(ds)) end
+				if not ds then sayg("Não achei piloto nessa moto/carro.") end
+				if ds then
+					sayg("Derrubando o piloto " .. tostring(dpl.Name) .. "...")
+					calmRide(root, 12)
+					local aborted = false
+					if owned then
+						-- você tem a física da moto: balança de verdade (raro: quem dirige costuma ser o dono)
+						local t1, tick = os.clock(), 0
+						while grab.root == root and ds.Occupant and os.clock() - t1 < 1.5 do
+							claimSim()
+							tick = tick + 1
+							local side = (math.floor(tick / 6) % 2 == 0) and 1 or -1
+							root.AssemblyLinearVelocity = Vector3.new(0, 20, 0)
+							root.AssemblyAngularVelocity = root.CFrame.LookVector * (28 * side) + Vector3.new(0, 6 * side, 0)
+							RunService.Heartbeat:Wait()
+						end
+						pcall(function() root.AssemblyAngularVelocity = Vector3.zero end)
+					else
+						-- Quem dirige é dono da física da moto: balançar a moto daqui não muda nada (o log mostrou isso).
+						-- Então você sai da garupa e BATE na moto com o próprio corpo: impacto curto e controlado
+						-- (força no slider), sem mexer na velocidade da moto, pro jogo tratar como batida.
+						local pchar = ds.Occupant and ds.Occupant.Parent
+						local phrp = pchar and pchar:FindFirstChild("HumanoidRootPart")
+						if grab.stay then grab.stay.jumpT = os.clock(); grab.stay.crashT = -10 end
+						if hmn then
+							hmn.Sit = false
+							pcall(function() hmn:ChangeState(Enum.HumanoidStateType.Jumping) end)
+						end
+						task.wait(0.2)
+						local myhrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+						local t1, frames = os.clock(), 0
+						local p0 = (phrp and phrp.Parent) and phrp.Position or root.Position
+						rec(string.format("impacto: força=%s duração=%.1fs meu_HRP=%s piloto_HRP=%s", tostring(grab.hitPower), grab.hitTime, tostring(myhrp ~= nil), tostring(phrp ~= nil)))
+						while myhrp and myhrp.Parent and grab.root == root and ds.Occupant and os.clock() - t1 < grab.hitTime do
+							local bv = root.AssemblyLinearVelocity
+							local dirv = Vector3.new(bv.X, 0, bv.Z)
+							if dirv.Magnitude < 3 then dirv = Vector3.new(root.CFrame.LookVector.X, 0, root.CFrame.LookVector.Z) end
+							dirv = dirv.Magnitude > 0.01 and dirv.Unit or Vector3.new(0, 0, -1)
+							local tgt = (phrp and phrp.Parent) and phrp.Position or root.Position
+							-- a moto saiu do lugar (foi arremessada): para de seguir, senão você vai voando junto
+							if (tgt - p0).Magnitude > 22 then rec("impacto: o piloto foi arremessado, parei de seguir"); break end
+							p0 = tgt -- compara com o quadro anterior (antes comparava com o ponto inicial e a moto andando a 50 studs/s sempre "saía do lugar" em 0,3s)
+							myhrp.CFrame = CFrame.new(tgt + dirv * 4 + Vector3.new(0, 0.5, 0))
+							myhrp.AssemblyLinearVelocity = -dirv * grab.hitPower
+							frames = frames + 1
+							if frames % 12 == 1 then
+								rec(string.format("impacto: t=%.2fs piloto_sentado=%s moto_vel=%.0f dist_ate_o_piloto=%.1f", os.clock() - t1, tostring(ds.Occupant ~= nil), bv.Magnitude, (myhrp.Position - tgt).Magnitude))
+								end
+							RunService.Heartbeat:Wait()
+						end
+						pcall(function()
+							if myhrp then
+								myhrp.AssemblyLinearVelocity = Vector3.zero
+								myhrp.AssemblyAngularVelocity = Vector3.zero
+								myhrp.CFrame = CFrame.new(myhrp.Position) -- em pé, sem tombo
+							end
+						end)
+					end
+					-- confirmação: só vale se o SERVIDOR tirou o piloto do assento (espera a replicação)
+					local tw = os.clock()
+					while grab.root == root and ds.Occupant and os.clock() - tw < 1.2 do task.wait(0.1) end
+					rec(string.format("derrubar piloto: resultado piloto_ainda_sentado=%s moto_vel=%.0f", tostring(ds.Occupant ~= nil), root.AssemblyLinearVelocity.Magnitude))
+					if ds.Occupant then
+						sayg("O piloto continua na moto (o impacto não bastou). Aumente a Força do impacto e tente de novo.")
+						aborted = true
+					else
+						sayg("Piloto fora da moto. Assumindo o controle...")
+						-- sentar no assento do piloto é o que passa a física da moto pra você (foi assim que funcionou no log)
+						pcall(function() ds:Sit(hmn) end)
+						owned = false
+						waitOwn(3)
+					end
+					if aborted then
+						pcall(function() if grab.ap then grab.ap.Enabled = false end; if grab.ao then grab.ao.Enabled = false end end)
+						grab.assist, grab.mounted, grab.waiting = false, false, false
+						grabClear()
+						return
+					end
+				end
+			end
+			-- Moto/carro TRANCADO por outro jogador (assento do piloto desativado; a física fica com o dono/servidor):
+			-- só chegar perto não passa a física. Tenta o caminho que já funcionou no log: sentar no assento do piloto.
+			local restoreSeat
+			if grab.root == root and not owned then
+				local dseat
+				for _, st in ipairs(seats) do
+					if st:IsA("VehicleSeat") and not seatedPlayer(st) then dseat = st; break end
+				end
+				if dseat and hmn then
+					local wasDis = dseat.Disabled
+					rec(string.format("trancado: tentando sentar no assento do piloto (desativado=%s)", tostring(wasDis)))
+					sayg("Veículo trancado: tentando assumir o assento do piloto...")
+					grab.assist = true -- segura sem puxar enquanto você senta (senão a proteção solta o carro)
+					pcall(function() if grab.ap then grab.ap.Enabled = false end; if grab.ao then grab.ao.Enabled = false end end)
+					if grab.stay then grab.stay.jumpT = os.clock(); grab.stay.crashT = -10 end
+					if hmn.SeatPart and hmn.SeatPart ~= dseat then
+						hmn.Sit = false
+						task.wait(0.2)
+					end
+					pcall(function() dseat.Disabled = false end)
+					pcall(function() dseat:Sit(hmn) end)
+					owned = false
+					waitOwn(3)
+					rec(string.format("trancado: depois de sentar sentado=%s dono_da_fisica=%s", tostring(hmn.SeatPart == dseat), tostring(owned)))
+					if owned then
+						restoreSeat = { dseat, wasDis }
+						mounted = true -- cai no trecho abaixo: levanta do assento e levanta a moto
+						calmRide(root, 6)
+					else
+						if hmn.SeatPart then
+							hmn.Sit = false
+							pcall(function() hmn:ChangeState(Enum.HumanoidStateType.Jumping) end)
+							local ts = os.clock()
+							while hmn.SeatPart and os.clock() - ts < 1.2 do task.wait(0.1) end
+						end
+						pcall(function() dseat.Disabled = wasDis end)
+						grab.assist = false
+					end
+				end
+			end
+			if mounted then
+				if grab.root == root and hmn then
+					-- levanta do assento no lugar (sem teleportar) pra moto subir
+					if grab.stay then grab.stay.jumpT = os.clock(); grab.stay.crashT = -10 end -- não deixa a proteção te sentar de volta
+					hmn.Sit = false
+					pcall(function() hmn:ChangeState(Enum.HumanoidStateType.Jumping) end)
+					task.wait(0.25)
+					-- espera sair do assento de verdade: puxar a moto pra cima de você ainda sentado leva você junto (sai voando)
+					local ts = os.clock()
+					while grab.root == root and hmn.SeatPart and os.clock() - ts < 1.5 do
+						hmn.Sit = false
+						pcall(function() hmn:ChangeState(Enum.HumanoidStateType.Jumping) end)
+						task.wait(0.1)
+					end
+				end
+				if grab.root == root then
+					if hmn and hmn.SeatPart then
+						rec("não consegui levantar do assento: não puxo a moto pra cima (ela te levaria junto)")
+					else
+						pcall(function() root.AssemblyLinearVelocity = Vector3.zero; root.AssemblyAngularVelocity = Vector3.zero end)
+						pcall(function() if grab.ap then grab.ap.Enabled = true end; if grab.ao then grab.ao.Enabled = true end end)
+					end
+				end
+				grab.assist = false
+				grab.mounted = false
+				if owned and grab.root == root then sayg("Assumi o controle da moto."); calmRide(root, 2.5) end
+			end
+			if restoreSeat then pcall(function() restoreSeat[1].Disabled = restoreSeat[2] end) end
+			if grab.root == root then grab.waiting = false end
+			if grab.root == root and not owned then
+				dumpVeh("sem controle da física", model, root, seats)
+				skipCar(root)
+				grabClear()
+				sayg("Esse veículo está trancado e o servidor/dono segura a física dele: tentei sentar no assento do piloto e não passou o controle. Não deu pra pegar.")
+			end
+		end)
+	end
+	local function doGrab()
+		local now = os.clock()
+		if now - (grab.lastTap or 0) < 0.35 then return end -- ignora toque duplicado
+		grab.lastTap = now
+		rec("toque em Pegar")
+		if grab.busy then return end
+		grab.busy = true
+		local ok, err = pcall(doGrabInner)
+		grab.busy = false
+		if not ok then
+			grabClear()
+			sayg("Erro ao pegar: " .. tostring(err):sub(1, 70))
+		end
+	end
+	local function doDrop()
+		if not grabClear() then sayg("Você não está segurando nenhum veículo."); return end
+		sayg("Veículo solto.")
+	end
+	local function doLaunch()
+		local r = grabClear()
+		if not r or not r.Parent then sayg("Pegue um veículo primeiro."); return end
+		local cam = workspace.CurrentCamera
+		local dir = cam and cam.CFrame.LookVector or Vector3.new(0, 0, -1)
+		local vel = (dir + Vector3.new(0, 0.35, 0)).Unit * grab.power
+		task.spawn(function()
+			for _ = 1, 8 do
+				if not r.Parent then break end
+				r.AssemblyLinearVelocity = vel
+				RunService.Heartbeat:Wait()
+			end
+		end)
+		sayg("Veículo lançado!")
+	end
+	-- mantém a altura, e solta se alguém entrar, o carro sumir ou você morrer/renascer
+	cons[#cons + 1] = RunService.Heartbeat:Connect(function()
+		local r = grab.root
+		if not r then return end
+		local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+		if not r.Parent or not hrp or not grab.att1 or grab.att1.Parent ~= hrp then grabClear(); return end
+		local hm = hum()
+		if hm and hm.SeatPart and not grab.assist then -- você sentou em algum carro: solta o que estava segurando
+			local rr = grabClear()
+			if rr then pcall(function() rr.AssemblyAngularVelocity = Vector3.zero end) end
+			sayg("Você sentou num carro, soltei o que estava segurando.")
+			return
+		end
+		grab.att1.Position = Vector3.new(0, grab.h, 0)
+		if os.clock() - (grab.simT or 0) > 1 then grab.simT = os.clock(); claimSim() end -- mantém o controle da física
+		if os.clock() - (grab.t0 or 0) < 8 and os.clock() - (grab.lastLog or 0) > 0.5 then
+			grab.lastLog = os.clock()
+			local own = "?"
+			if isnetworkowner then local okO, o = pcall(isnetworkowner, r); own = okO and tostring(o) or "erro" end
+			rec(string.format("segurando: dist=%.0f dono=%s anchored=%s vel=%.0f",
+				(r.Position - (hrp.Position + Vector3.new(0, grab.h, 0))).Magnitude, own, tostring(r.Anchored), r.AssemblyLinearVelocity.Magnitude))
+		end
+		-- se o carro não está te seguindo (ex.: servidor controla a física dele), solta depois de 2s
+		if (r.Position - (hrp.Position + Vector3.new(0, grab.h, 0))).Magnitude > 60 then
+			grab.far = grab.far or os.clock()
+			if os.clock() - grab.far > 2 then
+				skipCar(r)
+				grabClear()
+				sayg("O carro não está te seguindo, soltei.")
+				return
+			end
+		else
+			grab.far = nil
+		end
+		if not grab.allowBusy and anyOccupied(grab.seats or {}) then
+			grabClear()
+			sayg("Alguém entrou no carro, soltei.")
+		end
+	end)
+	-- braços pra cima enquanto segura o carro (a pose do seu personagem replica, então todo mundo vê)
+	cons[#cons + 1] = RunService.Stepped:Connect(function()
+		if not grab.root then return end
+		local c = lp.Character
+		if not c then return end
+		local function arm(partName, jointName, zr)
+			local p = c:FindFirstChild(partName)
+			local j = p and p:FindFirstChild(jointName)
+			if j and j:IsA("Motor6D") then j.Transform = CFrame.Angles(math.pi * 0.97, 0, zr) end
+		end
+		arm("RightUpperArm", "RightShoulder", math.rad(-10)) -- R15
+		arm("LeftUpperArm", "LeftShoulder", math.rad(10))
+		local torso = c:FindFirstChild("Torso") -- R6
+		if torso then
+			local r, l = torso:FindFirstChild("Right Shoulder"), torso:FindFirstChild("Left Shoulder")
+			if r and r:IsA("Motor6D") then r.Transform = CFrame.Angles(0, 0, math.pi * 0.97) end
+			if l and l:IsA("Motor6D") then l.Transform = CFrame.Angles(0, 0, math.pi * 0.97) end
+		end
+	end)
+	-- botão flutuante redondo: toque = ação; arrastar = muda de lugar
+	local function makeBtn(label, pos, onTap)
+		local PK = "grab|" .. (tostring(label):gsub("%s+", " "))
+		local b = mk("TextButton", {
+			Text = label, Size = UDim2.fromOffset(64, 64), Position = pos, Visible = false,
+			BackgroundColor3 = PANEL, BackgroundTransparency = 0.15, TextColor3 = WHITE,
+			Font = Enum.Font.GothamBold, TextSize = 11, TextWrapped = true, AutoButtonColor = false, ZIndex = 25,
+		}, gui)
+		round(b, 32)
+		mk("UIStroke", { Thickness = 2, Color = RED, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, b)
+		local dragging, moved, startPos, startIn = false, false, nil, nil
+		b.InputBegan:Connect(function(i)
+			if isPress(i) then dragging, moved, startPos, startIn = true, false, b.Position, i.Position end
+		end)
+		cons[#cons + 1] = UIS.InputChanged:Connect(function(i)
+			if dragging and not grab.locked and isMove(i) then
+				local d = i.Position - startIn
+				if d.Magnitude > 6 then moved = true end
+				if moved then
+					b.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X, startPos.Y.Scale, startPos.Y.Offset + d.Y)
+				end
+			end
+		end)
+		cons[#cons + 1] = UIS.InputEnded:Connect(function(i)
+			if dragging and isPress(i) then
+				dragging = false
+				if not moved then onTap() else AUTO.btnSave(PK, b) end
+			end
+		end)
+		AUTO.btnLoad(PK, b)
+		grab.btns[#grab.btns + 1] = b
+		return b
+	end
+	-- ===== Destravar veículo de outro jogador: usa o prompt "Mixar" (LckPick) do próprio jogo =====
+	local unlockBusy = false
+	local function doUnlock()
+		if unlockBusy then return end -- um toque por vez (o log mostrou dezenas de execuções seguidas)
+		unlockBusy = true
+		task.spawn(function()
+			local okAll, errAll = pcall(function()
+				local c = lp.Character
+				local hrp = c and c:FindFirstChild("HumanoidRootPart")
+				local hmn = hum()
+				if not hrp or not hmn then return end
+				if hmn.SeatPart then sayg("Levante do assento primeiro: o jogo não deixa mixar sentado."); return end
+				local bestP, bestD
+				for _, d in ipairs(workspace:GetDescendants()) do
+					if d:IsA("ProximityPrompt") and d.Parent and d.Parent.Name == "LckPick" then
+						local pr = d.Parent
+						local pos = pr:IsA("BasePart") and pr.Position or (pr:IsA("Attachment") and pr.WorldPosition)
+						if pos then
+							local dist = (pos - hrp.Position).Magnitude
+							if dist <= grab.reach and (not bestD or dist < bestD) then bestP, bestD = d, dist end
+						end
+					end
+				end
+				if not bestP then sayg("Nenhum veículo com trava dentro do alcance."); return end
+				local tm = bestP:FindFirstAncestorOfClass("Model")
+				while tm and tm.Parent and tm.Parent:IsA("Model") and tm.Parent ~= workspace do tm = tm.Parent end
+				local ds
+				for _, s in ipairs(tm and tm:GetDescendants() or {}) do
+					if s:IsA("VehicleSeat") then ds = s; break end
+				end
+				if not ds then sayg("Não achei o assento do piloto desse veículo."); return end
+				if not ds.Disabled then sayg((tm and tm.Name or "Veículo") .. " já está destravado."); return end
+				local name = tm and tm.Name or "veículo"
+				-- 1) Mixar do jeito do jogo: segura o prompt pelo tempo ORIGINAL (não mexe mais no HoldDuration)
+				local hold = bestP.HoldDuration
+				rec(string.format("destravar: %s dist=%.0f HoldDuration=%.1f assentoDesativado=%s", name, bestD, hold, tostring(ds.Disabled)))
+				sayg("Mixando " .. name .. "...")
+				if hold > 0 then
+					pcall(function() bestP:InputHoldBegin() end)
+					task.wait(hold + 0.15)
+					pcall(function() bestP:InputHoldEnd() end)
+				elseif fireproximityprompt then
+					pcall(fireproximityprompt, bestP)
+				end
+				task.wait(1.2)
+				if not ds.Disabled then sayg("Destravado pelo jogo."); return end
+				-- 2) O servidor não destravou: assume o assento do piloto só pra você (foi o que passou a física no log)
+				rec("destravar: Mixar não mudou o assento; sentando no assento do piloto")
+				sayg("O Mixar não destravou. Assumindo o assento do piloto...")
+				pcall(function() ds.Disabled = false end)
+				pcall(function() ds:Sit(hmn) end)
+				task.wait(0.8)
+				rec("destravar: sentado=" .. tostring(hmn.SeatPart == ds) .. " dono_da_fisica=" .. tostring(ownerStr and ownerStr(ds.AssemblyRootPart or ds)))
+				sayg(hmn.SeatPart == ds and "Sentou no assento do piloto." or "Não conseguiu sentar no assento (veja o log).")
+			end)
+			if not okAll then sayg("Erro ao destravar: " .. tostring(errAll):sub(1, 70)) end
+			task.wait(0.8)
+			unlockBusy = false
+		end)
+	end
+	makeBtn("Destravar\nveículo", UDim2.new(1, -90, 0.2, 228), doUnlock)
+	-- ===== Diagnóstico do menu de interação (leitura passiva: não intercepta nenhum envio) =====
+	local function dumpInteractionMenu()
+		local pg = lp:FindFirstChildOfClass("PlayerGui")
+		local gui = pg and pg:FindFirstChild("PlayerInteractionGui")
+		if not gui then sayg("Abra o menu de interação de um jogador (toque nele) e aperte de novo."); return end
+		rec("=== MENU DE INTERAÇÃO ===")
+		local nb = 0
+		for _, d in ipairs(gui:GetDescendants()) do
+			if d:IsA("GuiButton") then
+				nb = nb + 1
+				local txt = d:IsA("TextButton") and d.Text or ""
+				if txt == "" then
+					local tl = d:FindFirstChildWhichIsA("TextLabel", true)
+					txt = tl and tl.Text or ""
+				end
+				rec(string.format("botão: %s | texto=%q | visível=%s", d:GetFullName(), txt, tostring(d.Visible)))
+				if getconnections then
+					for _, sig in ipairs({ "Activated", "MouseButton1Click", "MouseButton1Down" }) do
+						local okc, cons = pcall(function() return getconnections(d[sig]) end)
+						if okc and type(cons) == "table" then
+							for _, cn in ipairs(cons) do
+								local f = cn.Function
+								if f then
+									local src, line = "?", 0
+									pcall(function() src = debug.info(f, "s"); line = debug.info(f, "l") end)
+									rec(string.format("  %s -> %s:%s", sig, tostring(src), tostring(line)))
+									local oku, ups = pcall(debug.getupvalues, f)
+									if oku and type(ups) == "table" then
+										for _, v in pairs(ups) do
+											if typeof(v) == "Instance" and (v:IsA("RemoteEvent") or v:IsA("RemoteFunction")) then
+												rec("  upvalue remote: " .. v:GetFullName())
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+		rec("botões encontrados: " .. nb .. " | getconnections=" .. tostring(getconnections ~= nil) .. " decompile=" .. tostring(decompile ~= nil))
+		-- remotes do jogo (só nomes)
+		local RS = game:GetService("ReplicatedStorage")
+		local rn = 0
+		for _, d in ipairs(RS:GetDescendants()) do
+			if (d:IsA("RemoteEvent") or d:IsA("RemoteFunction")) and rn < 250 then
+				rn = rn + 1
+				rec("remote: " .. d:GetFullName() .. " (" .. d.ClassName .. ")")
+			end
+		end
+		-- código dos scripts do menu (se o executor tiver decompile)
+		if decompile then
+			for _, d in ipairs(gui:GetDescendants()) do
+				if d:IsA("LocalScript") then
+					local okd, code = pcall(decompile, d)
+					rec("--- script " .. d:GetFullName() .. " ok=" .. tostring(okd))
+					if okd and type(code) == "string" then
+						local ln = 0
+						for l in code:gmatch("[^\n]+") do
+							ln = ln + 1
+							if ln > 150 then rec("  ...cortado"); break end
+							rec("  " .. l:sub(1, 160))
+						end
+					end
+				end
+			end
+		end
+		sayg("Menu registrado no log (" .. nb .. " botões). Mande o log.")
+	end
+	makeBtn("Pegar\nveículo", UDim2.new(1, -90, 0.2, 0), doGrab)
+	makeBtn("Soltar\nveículo", UDim2.new(1, -90, 0.2, 76), doDrop)
+	makeBtn("Lançar\nveículo", UDim2.new(1, -90, 0.2, 152), doLaunch)
+	toggleRow(page, "Botões: pegar / soltar / lançar veículo", "Mostra os 3 botões flutuantes na tela (arraste pra mover)", function(v)
+		for _, b in ipairs(grab.btns) do b.Visible = v end
+		if not v then grabClear() end
+	end)
+	toggleRow(page, "Travar botões", "Os botões não arrastam (o toque continua funcionando)", function(v) grab.locked = v end)
+	sliderRow(page, "Altura do veículo", "studs acima de você", 3, 40, 7, function(v) grab.h = v end)
+	sliderRow(page, "Força do lançamento", "studs por segundo", 100, 1000, 400, function(v) grab.power = v end)
+	sliderRow(page, "Alcance pra pegar", "studs ao redor", 8, 80, 30, function(v) grab.reach = v end)
+	toggleRow(page, "Derrubar o piloto (da garupa)", "Quando você está na garupa e tem alguém dirigindo, bate na moto com o seu corpo (impacto curto) pra derrubar o piloto e depois pega a moto. Só no Grau SP, com o aviso do jogo ligado", function(v) grab.expel = v end, true)
+	sliderRow(page, "Força do impacto (derrubar piloto)", "Maior = derruba mais fácil, mas pode empurrar a moto. Comece baixo", 20, 300, 70, function(v) grab.hitPower = v end)
+	rowBtn(page, "Diagnosticar menu de interação (vai pro log)", dumpInteractionMenu)
+	-- ===== Diagnóstico de minigames (só leitura): marca as GUIs atuais e depois lista as NOVAS =====
+	local guiMark = {}
+	local function markGuis()
+		guiMark = {}
+		local pg = lp:FindFirstChildOfClass("PlayerGui")
+		for _, g in ipairs(pg and pg:GetChildren() or {}) do
+			if g:IsA("ScreenGui") then guiMark[g] = g.Enabled end
+		end
+		sayg("GUIs marcadas. Abra o minigame e aperte 'Registrar GUI nova'.")
+	end
+	local function dumpNewGuis()
+		local pg = lp:FindFirstChildOfClass("PlayerGui")
+		local n = 0
+		for _, g in ipairs(pg and pg:GetChildren() or {}) do
+			if g:IsA("ScreenGui") and g.Enabled and not guiMark[g] then
+				n = n + 1
+				local base = #g:GetFullName() + 2
+				rec("=== GUI nova: " .. g.Name)
+				local cnt = 0
+				for _, d in ipairs(g:GetDescendants()) do
+					if d:IsA("GuiObject") then
+						cnt = cnt + 1
+						if cnt > 150 then rec("  ...cortado (150 itens)"); break end
+						local txt = (d:IsA("TextLabel") or d:IsA("TextButton")) and d.Text or ""
+						local p, s = d.Position, d.Size
+						rec(string.format("  %s [%s] pos=(%.2f,%d,%.2f,%d) tam=(%.2f,%d,%.2f,%d) vis=%s %s", d:GetFullName():sub(base), d.ClassName,
+							p.X.Scale, p.X.Offset, p.Y.Scale, p.Y.Offset, s.X.Scale, s.X.Offset, s.Y.Scale, s.Y.Offset, tostring(d.Visible), txt ~= "" and ("texto=" .. txt) or ""))
+						if d:IsA("GuiButton") and getconnections then
+							local okc, cons = pcall(function() return getconnections(d.Activated) end)
+							if okc and type(cons) == "table" then
+								for _, cn in ipairs(cons) do
+									local f = cn.Function
+									if f then
+										local src, line = "?", 0
+										pcall(function() src = debug.info(f, "s"); line = debug.info(f, "l") end)
+										rec("    Activated -> " .. tostring(src) .. ":" .. tostring(line))
+									end
+								end
+							end
+						end
+					end
+				end
+				if decompile then
+					for _, d in ipairs(g:GetDescendants()) do
+						if d:IsA("LocalScript") then
+							local okd, code = pcall(decompile, d)
+							rec("--- script " .. d:GetFullName() .. " ok=" .. tostring(okd))
+							if okd and type(code) == "string" then
+								local ln = 0
+								for l in code:gmatch("[^\n]+") do
+									ln = ln + 1
+									if ln > 150 then rec("  ...cortado"); break end
+									rec("  " .. l:sub(1, 160))
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+		sayg(n == 0 and "Nenhuma GUI nova (marque antes de abrir o minigame)." or (n .. " GUI(s) nova(s) registrada(s) no log."))
+	end
+	rowBtn(page, "Minigame 1/2: marcar GUIs atuais", markGuis, true)
+	rowBtn(page, "Minigame 2/2: registrar GUI nova (vai pro log)", dumpNewGuis, true)
+	-- ===== Gravar GUIs novas automaticamente (abre o minigame durante a janela; não precisa marcar antes) =====
+	local function dumpOneGui(g)
+		local base = #g:GetFullName() + 2
+		rec("=== GUI capturada: " .. g.Name .. " (Enabled=" .. tostring(g.Enabled) .. ")")
+		local cnt = 0
+		for _, d in ipairs(g:GetDescendants()) do
+			if d:IsA("GuiObject") then
+				cnt = cnt + 1
+				if cnt > 200 then rec("  ...cortado (200 itens)"); break end
+				local txt = (d:IsA("TextLabel") or d:IsA("TextButton")) and d.Text or ""
+				local p, s = d.Position, d.Size
+				rec(string.format("  %s [%s] pos=(%.2f,%d,%.2f,%d) tam=(%.2f,%d,%.2f,%d) vis=%s %s", d:GetFullName():sub(base), d.ClassName,
+					p.X.Scale, p.X.Offset, p.Y.Scale, p.Y.Offset, s.X.Scale, s.X.Offset, s.Y.Scale, s.Y.Offset, tostring(d.Visible), txt ~= "" and ("texto=" .. txt) or ""))
+				if d:IsA("GuiButton") and getconnections then
+					for _, sig in ipairs({ "Activated", "MouseButton1Click", "MouseButton1Down" }) do
+						local okc, cons = pcall(function() return getconnections(d[sig]) end)
+						if okc and type(cons) == "table" then
+							for _, cn in ipairs(cons) do
+								local f = cn.Function
+								if f then
+									local src, line = "?", 0
+									pcall(function() src = debug.info(f, "s"); line = debug.info(f, "l") end)
+									rec("    " .. sig .. " -> " .. tostring(src) .. ":" .. tostring(line))
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+		if decompile then
+			for _, d in ipairs(g:GetDescendants()) do
+				if d:IsA("LocalScript") or d:IsA("ModuleScript") then
+					local okd, code = pcall(decompile, d)
+					rec("--- script " .. d:GetFullName() .. " ok=" .. tostring(okd))
+					if okd and type(code) == "string" then
+						local ln = 0
+						for l in code:gmatch("[^\n]+") do
+							ln = ln + 1
+							if ln > 400 then rec("  ...cortado (400 linhas)"); break end
+							rec("  " .. l:sub(1, 180))
+						end
+					end
+				end
+			end
+		end
+	end
+	local capGuiOn = false
+	local function captureGuis()
+		if capGuiOn then sayg("Já está gravando."); return end
+		local pg = lp:FindFirstChildOfClass("PlayerGui")
+		if not pg then return end
+		capGuiOn = true
+		local seen, conns = {}, {}
+		for _, g in ipairs(pg:GetChildren()) do
+			seen[g] = true
+			if g:IsA("ScreenGui") and not g.Enabled then
+				-- GUI que já existe mas está desligada: grava quando ligar
+				conns[#conns + 1] = g:GetPropertyChangedSignal("Enabled"):Connect(function()
+					if g.Enabled then task.delay(0.6, function() dumpOneGui(g) end) end
+				end)
+			end
+		end
+		conns[#conns + 1] = pg.ChildAdded:Connect(function(g)
+			if seen[g] or not g:IsA("ScreenGui") then return end
+			seen[g] = true
+			task.delay(0.6, function() dumpOneGui(g) end)
+		end)
+		sayg("Gravando GUIs novas por 60s. Abra o minigame agora.")
+		task.delay(60, function()
+			for _, c in ipairs(conns) do pcall(function() c:Disconnect() end) end
+			capGuiOn = false
+			sayg("Gravação de GUIs terminou. Copie o log.")
+		end)
+	end
+	rowBtn(page, "Minigame: gravar GUIs novas por 60s (aperte e abra o minigame)", captureGuis, true)
+
+
+
+	toggleRow(page, "Pegar veículo ocupado (RP)", "Também pega veículo com gente dentro. Se o servidor não passar o controle da física, ele solta sozinho", function(v) grab.allowBusy = v end)
+	-- ===== Segurança na moto: não cair na batida (só segura VOCÊ no seu assento) =====
+	section(page, "Segurança na moto")
+	local stay = { on = false, seat = nil, lastV = nil, crashT = -10, jumpT = -10, seatT = -10, busy = false }
+	grab.stay = stay -- o Pegar avisa a proteção quando levanta de propósito
+	local NO_RAG = { Enum.HumanoidStateType.FallingDown, Enum.HumanoidStateType.Ragdoll }
+	table.insert(cons, UIS.JumpRequest:Connect(function() stay.jumpT = os.clock() end))
+	table.insert(cons, RunService.Heartbeat:Connect(function(dt)
+		if not (stay.on and alive) then return end
+		local c = lp.Character
+		local h = c and c:FindFirstChildOfClass("Humanoid")
+		if not h then return end
+		local seat = h.SeatPart
+		if seat then
+			stay.seat = seat
+			stay.seatT = os.clock()
+			for _, st in ipairs(NO_RAG) do
+				if h:GetStateEnabled(st) then h:SetStateEnabled(st, false) end
+			end
+			local root = seat.AssemblyRootPart or seat
+			local v = root.AssemblyLinearVelocity
+			-- empurrão de fora (alguém bate/joga a moto): ela ganha velocidade de uma vez ou começa a girar à toa.
+			-- Se a física é sua (você dirige), desfaz o empurrão pra moto e você não saírem voando.
+			local av = root.AssemblyAngularVelocity
+			if stay.lastV and ((v.Magnitude - stay.lastV.Magnitude) > 35 or av.Magnitude > 22) then
+				stay.crashT = os.clock()
+				local mine = true
+				if isnetworkowner then local okO, o = pcall(isnetworkowner, root); mine = okO and o end
+				if mine then
+					pcall(function()
+						if v.Magnitude - stay.lastV.Magnitude > 35 then root.AssemblyLinearVelocity = stay.lastV; v = stay.lastV end
+						root.AssemblyAngularVelocity = Vector3.zero
+					end)
+				end
+			end
+			-- batida = a velocidade despenca de uma vez (muito mais brusco que frear)
+			if stay.lastV and (v - stay.lastV).Magnitude / math.max(dt, 1 / 120) > 600 then stay.crashT = os.clock() end
+			stay.lastV = v
+		else
+			stay.lastV = nil
+			local s = stay.seat
+			local now = os.clock()
+			-- foi jogado do assento (estado de queda/ragdoll/voo logo depois de estar sentado, sem pulo seu): conta como batida
+			if now - stay.seatT < 1.2 and now - stay.jumpT > 1.5 then
+				local stt = h:GetState()
+				if stt == Enum.HumanoidStateType.FallingDown or stt == Enum.HumanoidStateType.Ragdoll
+					or stt == Enum.HumanoidStateType.PlatformStanding or stt == Enum.HumanoidStateType.Physics
+					or stt == Enum.HumanoidStateType.Freefall then
+					stay.crashT = now
+				end
+			end
+			-- saiu do assento logo depois de uma batida e SEM você ter pulado: volta pro assento
+			if s and s.Parent and not stay.busy and now - stay.crashT < 2.5 and now - stay.seatT < 3 and now - stay.jumpT > 1.5 then
+				local root = c:FindFirstChild("HumanoidRootPart")
+				local occ = s:IsA("Seat") or s:IsA("VehicleSeat")
+				if root and occ and not s.Occupant and (root.Position - s.Position).Magnitude < 200 then
+					stay.busy = true
+					task.spawn(function()
+						for _ = 1, 6 do
+							if not (stay.on and alive) or h.SeatPart == s then break end
+							pcall(function()
+								if (root.Position - s.Position).Magnitude > 6 then
+									root.AssemblyLinearVelocity = Vector3.zero
+									root.AssemblyAngularVelocity = Vector3.zero
+									root.CFrame = s.CFrame * CFrame.new(0, 3, 0)
+								end
+								if h.PlatformStand then h.PlatformStand = false end
+								s:Sit(h)
+							end)
+							task.wait(0.2)
+						end
+						stay.busy = false
+						stay.crashT = -10
+					end)
+				end
+			end
+		end
+	end))
+	toggleRow(page, "Não cair da moto na batida", "Anti-batida: se alguém bater/jogar a moto, cancela o empurrão e o giro (você e a moto não saem voando). Se mesmo assim for jogado do assento (sem ter pulado), volta pro assento sozinho e não ragdolla", function(v)
+		stay.on = v
+		if not v then
+			local c = lp.Character
+			local h = c and c:FindFirstChildOfClass("Humanoid")
+			if h then pcall(function() for _, st in ipairs(NO_RAG) do h:SetStateEnabled(st, true) end end) end
+		end
+		say(v and "Não cair da moto: ligado." or "Não cair da moto: desligado.")
+	end)
+
+	section(page, "Ajuda pra configurar")
+	rowBtn(page, "Copiar script do trancar (pra ajustar o hub)", function()
+		local f = setclipboard or toclipboard
+		if not decompile then say("Seu executor não tem decompile."); return end
+		local out, n = {}, 0
+		for _, d in ipairs(lp:WaitForChild("PlayerGui"):GetDescendants()) do
+			if d:IsA("LocalScript") and (d.Name:lower():find("lock") or d:GetFullName():lower():find("lock")) and n < 6 then
+				n = n + 1
+				local ok, src = pcall(decompile, d)
+				out[#out + 1] = "-- " .. d:GetFullName() .. "\n" .. (ok and tostring(src):sub(1, 6000) or "(falhou ao decompilar)")
+			end
+		end
+		if n == 0 then say("Não achei script de trancar na tela. Sente num veículo e tente de novo."); return end
+		if not f then say("Seu executor não tem setclipboard."); return end
+		say(pcall(f, table.concat(out, "\n\n")) and ("Copiei " .. n .. " script(s). Cole aqui na conversa.") or "Falhou ao copiar.")
+	end, true)
+
+
+	return function()
+		alive = false
+		grabClear()
+		for _, b in ipairs(grab.btns) do pcall(function() b:Destroy() end) end
 		for _, c in ipairs(cons) do c:Disconnect() end
 	end
 end
@@ -6523,12 +8042,195 @@ local function buildProtExtra(page, say)
 	return function() P.antikick, P.antiragdoll, P.antifire, P.antiattach = false, false, false, false; conn:Disconnect() end
 end
 
+-- ===== Aba "Sintonia RP": aparece só no jogo Sintonia RP =====
+-- Tem: FOV da câmera, círculo FOV (tamanho ajustável, opção RGB) e aimbot que gruda na cabeça de quem estiver dentro do círculo.
+-- (fica dentro da tabela UI pra não gastar variável local do arquivo)
+UI.buildSintonia = function(page, say)
+	local NAME = "Sintonia RP"
+	local offAll
+	local S = { alive = true, aim = false, circle = false, rgb = false, fovOn = false, fov = 70, radius = 120, base = nil, open = false }
+	local function cam() return workspace.CurrentCamera end
+	local function hasRole() return true end
+
+	-- círculo no centro da tela
+	local oldCg = parent:FindFirstChild("ShinSintoniaFov")
+	if oldCg then oldCg:Destroy() end
+	local cg = mk("ScreenGui", { Name = "ShinSintoniaFov", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 50 }, parent)
+	local ring = mk("Frame", {
+		AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(S.radius * 2, S.radius * 2),
+		BackgroundTransparency = 1, Visible = false,
+	}, cg)
+	mk("UICorner", { CornerRadius = UDim.new(0.5, 0) }, ring)
+	local ringStroke = mk("UIStroke", { Thickness = 2, Color = WHITE, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, ring)
+
+	-- quem está dentro do círculo (mais perto do centro ganha)
+	local function pickTarget()
+		local c = cam()
+		if not c then return nil end
+		local vs = c.ViewportSize
+		local center = Vector2.new(vs.X / 2, vs.Y / 2)
+		local best, bestD = nil, S.radius
+		for _, pl in ipairs(Players:GetPlayers()) do
+			if pl ~= lp then
+				local ch = pl.Character
+				local head = ch and ch:FindFirstChild("Head")
+				local h = ch and ch:FindFirstChildOfClass("Humanoid")
+				if head and head:IsA("BasePart") and h and h.Health > 0 then
+					local p, on = c:WorldToViewportPoint(head.Position)
+					if on and p.Z > 0 then
+						local d = (Vector2.new(p.X, p.Y) - center).Magnitude
+						if d <= bestD then best, bestD = head, d end
+					end
+				end
+			end
+		end
+		return best
+	end
+
+	local function restoreFov()
+		local c = cam()
+		if c and S.base then c.FieldOfView = S.base end
+		S.base = nil
+	end
+
+	RunService:BindToRenderStep("ShinSintoniaAim", Enum.RenderPriority.Camera.Value + 1, function()
+		if not S.alive then return end
+		local ok = hasRole()
+		local c = cam()
+		ring.Visible = ok and S.circle
+		if ring.Visible then
+			ringStroke.Color = S.rgb and Color3.fromHSV((os.clock() * 0.4) % 1, 1, 1) or WHITE
+		end
+		if not (ok and c) then return end
+		if S.fovOn then c.FieldOfView = S.fov end
+		if S.aim then
+			local head = pickTarget()
+			if head then c.CFrame = CFrame.lookAt(c.CFrame.Position, head.Position) end
+		end
+	end)
+
+	-- libera/esconde a aba conforme o cargo (checa a cada 1s; o cargo vem do Dono)
+	task.spawn(function()
+		while S.alive do
+			local ok = hasRole()
+			if ok ~= S.open then
+				S.open = ok
+				UI.open[NAME] = ok
+				if UI.refreshTabs then pcall(UI.refreshTabs) end
+				if not ok then
+					if offAll then pcall(offAll) end
+					if page.Visible and UI.selectTab then pcall(UI.selectTab, "ID") end
+				end
+			end
+			task.wait(1)
+		end
+	end)
+
+	section(page, "Aimbot")
+	local _, setAim = toggleRow(page, "Aimbot (cabeça)", "Gruda a câmera na cabeça de quem estiver dentro do círculo", function(v) S.aim = v end)
+	section(page, "Círculo FOV")
+	toggleRow(page, "Mostrar círculo", "Círculo no centro da tela (é a área do aimbot)", function(v) S.circle = v end)
+	sliderRow(page, "Tamanho do círculo", "Raio em pixels", 40, 400, 120, function(v)
+		S.radius = v
+		ring.Size = UDim2.fromOffset(v * 2, v * 2)
+	end)
+	toggleRow(page, "Círculo RGB", "A cor do círculo muda sem parar", function(v) S.rgb = v end)
+	section(page, "FOV da câmera")
+	local _, setFovT = toggleRow(page, "Usar FOV", "Liga pra aplicar o valor do slider abaixo", function(v)
+		S.fovOn = v
+		if v then
+			local c = cam()
+			if c and not S.base then S.base = c.FieldOfView end
+		else
+			restoreFov()
+		end
+	end)
+	sliderRow(page, "Campo de visão", "O padrão do Roblox é 70", 30, 120, 70, function(v) S.fov = v end)
+
+	-- ===== Invisível (pra quem usa o hub) =====
+	-- Não dá pra sumir pra todo mundo do lado do cliente: o seu estado vai pro Firebase e o Hub de cada pessoa esconde você na tela dela.
+	section(page, "Invisível")
+	local myId = tostring(lp.UserId)
+	local _, setInvT = toggleRow(page, "Ficar invisível", "Some pra quem usa o hub (você se vê transparente)", function(v)
+		MINE.inv = v and true or nil
+		UI.invSet = UI.invSet or {}
+		UI.invSet[myId] = v and true or nil
+		if publishMods then task.spawn(publishMods) end
+		say(v and "Invisível pra quem usa o hub." or "Visível de novo.")
+	end)
+	local hiddenChars = {}
+	local function applyInv(char, hide, isSelf)
+		local mod = hide and (isSelf and 0.6 or 1) or 0
+		for _, d in ipairs(char:GetDescendants()) do
+			if d:IsA("BasePart") then
+				d.LocalTransparencyModifier = mod
+			elseif not isSelf and (d:IsA("ParticleEmitter") or d:IsA("Trail") or d:IsA("Beam") or d:IsA("BillboardGui")) then
+				if hide then
+					if d:GetAttribute("ShinInvEn") == nil then d:SetAttribute("ShinInvEn", d.Enabled) end
+					d.Enabled = false
+				else
+					local en = d:GetAttribute("ShinInvEn")
+					if en ~= nil then d.Enabled = en; d:SetAttribute("ShinInvEn", nil) end
+				end
+			end
+		end
+	end
+	local acc = 0
+	local invConn = RunService.Heartbeat:Connect(function(dt)
+		acc = acc + dt
+		if acc < 0.1 then return end
+		acc = 0
+		local set = UI.invSet or {}
+		local want = {}
+		for _, pl in ipairs(Players:GetPlayers()) do
+			local ch = pl.Character
+			if ch and set[tostring(pl.UserId)] then want[ch] = (pl == lp) end
+		end
+		for ch, isSelf in pairs(want) do
+			pcall(applyInv, ch, true, isSelf)
+			hiddenChars[ch] = isSelf
+		end
+		for ch, isSelf in pairs(hiddenChars) do
+			if not want[ch] then
+				pcall(applyInv, ch, false, isSelf)
+				hiddenChars[ch] = nil
+			end
+		end
+	end)
+
+	-- cargo retirado: desliga tudo que age sobre os outros
+	offAll = function()
+		S.aim = false; pcall(setAim, false)
+		S.fovOn = false; pcall(setFovT, false); restoreFov()
+		if MINE.inv then
+			MINE.inv = nil
+			UI.invSet = UI.invSet or {}
+			UI.invSet[myId] = nil
+			pcall(setInvT, false)
+			if publishMods then task.spawn(publishMods) end
+		end
+		if UI.sintoniaFlyOff then pcall(UI.sintoniaFlyOff) end
+	end
+
+	return function()
+		S.alive = false
+		pcall(function() invConn:Disconnect() end)
+		for ch, isSelf in pairs(hiddenChars) do pcall(applyInv, ch, false, isSelf) end
+		if MINE.inv then MINE.inv = nil; if publishMods then pcall(publishMods) end end
+		pcall(function() RunService:UnbindFromRenderStep("ShinSintoniaAim") end)
+		pcall(restoreFov)
+		pcall(function() cg:Destroy() end)
+	end
+end
+
 local win, pages, say = buildWindow(600, 360, "Shin Hub", "Membro", buildTabs({}))
 selfCleanup = buildSelf(pages, say)
 if pages["Itens"] then buildItens(pages["Itens"], say) end
 local stopProt = pages["Proteções"] and buildProtExtra(pages["Proteções"], say)
 if pages["Nome"] then buildBrookhaven(pages, say) end
 local stopCar = pages["Car"] and buildCar(pages["Car"], say)
+local stopMotos = pages["Motos"] and buildMotos(pages["Motos"], say)
+UI.stopSintonia = pages["Sintonia RP"] and UI.buildSintonia(pages["Sintonia RP"], say)
 AVATAR.stop = pages["Avatar"] and buildAvatar(pages["Avatar"], say)
 local stopWings = pages["Blocos"] and buildWings(pages["Blocos"], say)
 buildCredits(pages["Créditos"])
@@ -6539,7 +8241,7 @@ local stopFx = buildEffects(pages["Efeitos"], say)
 local stopExtras = buildExtras(pages["Extras"], say)
 do
 	local base = selfCleanup
-	selfCleanup = function() if base then base() end; if stopProt then stopProt() end; stopMods(); if AVATAR.stop then AVATAR.stop() end; stopFx(); stopExtras(); if stopCar then stopCar() end; if stopWings then stopWings() end; if TAG.stop then TAG.stop() end end
+	selfCleanup = function() if base then base() end; if stopProt then stopProt() end; stopMods(); if AVATAR.stop then AVATAR.stop() end; stopFx(); stopExtras(); if stopCar then stopCar() end; if stopMotos then stopMotos() end; if UI.stopSintonia then UI.stopSintonia() end; if stopWings then stopWings() end; if TAG.stop then TAG.stop() end end
 end
 
 -- (a aba Conexão saiu do menu; o status continua sendo atualizado num texto interno e o "Desativar" foi pra aba Extras)
@@ -6552,7 +8254,7 @@ end
 -- aviso rápido na tela quando o admin usa um comando
 function toast(t)
 	local l = mk("TextLabel", {
-		Text = t, Size = UDim2.fromOffset(240, 30), Position = UDim2.new(0.5, -120, 0, 60),
+		Text = t, Size = UDim2.fromOffset(260, 40), Position = UDim2.new(0.5, -130, 0, 60), TextWrapped = true,
 		BackgroundColor3 = Color3.fromRGB(46, 48, 58), TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12,
 	}, gui)
 	round(l, 10); stroke(l, 1.5)
@@ -6718,3 +8420,338 @@ task.spawn(function()
 		task.wait(4)
 	end
 end)
+
+-- ===== PAINEL ADM (mini painel liberado por ID pelo Dono; não é o Hub ADM) =====
+-- O Dono libera o ID no Hub ADM (aba Painel), por tempo. Quem tem a liberação vê "Clique em Open para abrir seu painel"
+-- no popup, abre o painel secundário e também pode usar os comandos pelo chat (/kill nome ou !kill nome).
+-- Sem liberação, o Open só fecha o popup (igual ao Cancelar). Os comandos só valem em membros do hub deste servidor.
+do
+	local TextChatService = game:GetService("TextChatService")
+	local PA = { on = false, exp = 0, skew = 0, last = 0, sel = nil, selName = nil, lastText = "", lastAt = 0 }
+	local baseAvail = TAG.avail
+	local CMD_LIST = {
+		{ "kill", "Matar" }, { "loopkill", "Loop kill" }, { "unloopkill", "Parar loop kill" },
+		{ "fling", "Arremessar" }, { "jail", "Prender" }, { "unjail", "Soltar" },
+		{ "fire", "Fogo" }, { "unfire", "Apagar fogo" }, { "freeze", "Congelar" }, { "unfreeze", "Descongelar" },
+		{ "rocket", "Foguete" }, { "explode", "Explodir" }, { "spin", "Girar" }, { "unspin", "Parar giro" },
+		{ "bounce", "Quicar" }, { "sit", "Sentar" }, { "bring", "Trazer até mim" }, { "loopbring", "Loop trazer" },
+		{ "unloopbring", "Parar trazer" }, { "troll", "Troll" }, { "untroll", "Parar troll" },
+		{ "castigo", "Castigo" }, { "descastigo", "Tirar castigo" }, { "backrooms", "Backrooms" },
+		{ "fly", "Voar" }, { "unfly", "Parar voo" },
+	}
+	-- (de propósito não tem kick: o painel ADM do membro não derruba o jogo de ninguém)
+	local ALLOWED = {}
+	for _, c in ipairs(CMD_LIST) do ALLOWED[c[1]] = true end
+	local ALIAS = {
+		matar = "kill", lkill = "loopkill", unlkill = "unloopkill", prender = "jail", soltar = "unjail",
+		fogo = "fire", apagar = "unfire", congelar = "freeze", descongelar = "unfreeze", foguete = "rocket",
+		explodir = "explode", girar = "spin", parargiro = "unspin", quicar = "bounce", sentar = "sit",
+		trazer = "bring", msg = "message", mensagem = "message", voar = "fly",
+	}
+
+	local function now() return os.time() + PA.skew end
+	local function fmtLeft(s)
+		s = math.max(0, math.floor(s))
+		if s >= 86400 then return string.format("%dd %dh", s // 86400, (s % 86400) // 3600) end
+		if s >= 3600 then return string.format("%dh %dmin", s // 3600, (s % 3600) // 60) end
+		if s >= 60 then return string.format("%dmin", s // 60) end
+		return s .. "s"
+	end
+
+	-- membros do hub que estão NESTE servidor (menos você)
+	local function fetchMembers()
+		-- jogadores deste servidor (não precisa ler /members.json, que só o admin pode ler nas regras)
+		local out = {}
+		for _, pl in ipairs(Players:GetPlayers()) do
+			if tostring(pl.UserId) ~= uid then
+				out[#out + 1] = { id = tostring(pl.UserId), name = pl.Name, disp = pl.DisplayName }
+			end
+		end
+		table.sort(out, function(a, b) return a.name:lower() < b.name:lower() end)
+		return out
+	end
+	local function findTarget(q)
+		q = q:lower()
+		local best
+		for _, m in ipairs(fetchMembers()) do
+			local nm, dn = m.name:lower(), m.disp:lower()
+			if nm == q or dn == q then return m end
+			if not best and (nm:sub(1, #q) == q or dn:sub(1, #q) == q) then best = m end
+		end
+		return best
+	end
+
+	-- manda o comando pelo mesmo caminho do ADM (/cmd/<id>); o alvo executa a mesma lista fixa de ações
+	local function sendTo(tid, action, extra)
+		if not PA.on then return false, "sem painel" end
+		if not (ALLOWED[action] or action == "message") then return false, "comando inválido" end
+		if os.clock() - PA.last < 0.8 then return false, "calma, um de cada vez" end
+		PA.last = os.clock()
+		local body = { id = HttpService:GenerateGUID(false), action = action, job = game.JobId, by = lp.Name, rid = uid }
+		if extra then for k, v in pairs(extra) do body[k] = v end end
+		local r = http("PUT", "/cmd/" .. tid .. ".json", body)
+		if r == nil then return false, lastErr end
+		return true
+	end
+	local function runCmd(action, tid, tname, text)
+		local extra
+		if action == "bring" or action == "loopbring" then
+			local r = hrp()
+			if not r then toast("Seu personagem não foi encontrado."); return end
+			local p = r.Position
+			extra = { pos = { x = p.X, y = p.Y, z = p.Z } }
+		elseif action == "message" then
+			if not text or text == "" then toast("Digite a mensagem."); return end
+			extra = { text = text:sub(1, 80) }
+		end
+		local ok, why = sendTo(tid, action, extra)
+		if ok then toast(action .. " → " .. tname) else toast("Falhou: " .. tostring(why):sub(1, 40)) end
+	end
+
+	-- ===== popup (dentro do painel verdadeiro, fixo) =====
+	local popup, popupMsg
+	local pf, timeLbl, selLbl, listBox
+	local function popupText() return PA.on and "Clique em Open para abrir seu painel" or "Adquira nosso painel ADM no Discord" end
+	local function chip(par, text, cb)
+		local b = mk("TextButton", {
+			Text = text, AutoButtonColor = false, BackgroundColor3 = PANEL, BackgroundTransparency = 0.1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamMedium, TextSize = 11, TextWrapped = true,
+		}, par)
+		round(b, 8); stroke(b, 1.2)
+		b.MouseButton1Click:Connect(cb)
+		return b
+	end
+
+	local function renderList(items)
+		if not listBox then return end
+		for _, c in ipairs(listBox:GetChildren()) do
+			if c:IsA("TextButton") or c:IsA("TextLabel") then c:Destroy() end
+		end
+		if #items == 0 then
+			mk("TextLabel", { Text = "Nenhum membro do hub neste servidor", Size = UDim2.new(1, -6, 0, 26), BackgroundTransparency = 1,
+				TextColor3 = Color3.fromRGB(180, 184, 196), Font = Enum.Font.Gotham, TextSize = 11 }, listBox)
+			return
+		end
+		for _, m in ipairs(items) do
+			local label = m.name .. ((m.disp ~= m.name) and ("  (" .. m.disp .. ")") or "")
+			local b = chip(listBox, label, function()
+				PA.sel, PA.selName = m.id, m.name
+				if selLbl then selLbl.Text = "Alvo: " .. m.name end
+			end)
+			b.Size = UDim2.new(1, -6, 0, 26)
+			b.TextXAlignment = Enum.TextXAlignment.Left
+		end
+	end
+	local function refreshList()
+		task.spawn(function() renderList(fetchMembers()) end)
+	end
+
+	local function buildPanel()
+		if pf then return end
+		pf = panel(380, 356, UDim2.new(0.5, 0, 0.5, 0))
+		pf.AnchorPoint = Vector2.new(0.5, 0.5)
+		pf.Visible = false
+		local top = mk("Frame", {
+			Size = UDim2.new(1, -12, 0, 36), Position = UDim2.fromOffset(6, 6),
+			BackgroundColor3 = Color3.fromRGB(20, 21, 26), BackgroundTransparency = 0.15, BorderSizePixel = 0,
+		}, pf)
+		round(top, 12)
+		mk("TextLabel", { Text = "Painel ADM", Size = UDim2.new(0.5, 0, 1, 0), Position = UDim2.fromOffset(12, 0), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBlack, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left }, top)
+		timeLbl = mk("TextLabel", { Text = "", Size = UDim2.new(0.5, -44, 1, 0), Position = UDim2.new(0.5, 0, 0, 0), BackgroundTransparency = 1,
+			TextColor3 = Color3.fromRGB(255, 120, 125), Font = Enum.Font.GothamMedium, TextSize = 11, TextXAlignment = Enum.TextXAlignment.Right }, top)
+		local x = mk("TextButton", { Text = "✕", Size = UDim2.fromOffset(30, 28), Position = UDim2.new(1, -34, 0, 4), BackgroundColor3 = PANEL,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14, AutoButtonColor = false }, top)
+		round(x, 8)
+		x.MouseButton1Click:Connect(function() pf.Visible = false end)
+		makeDraggable(top, pf, nil, nil, keepBarOnScreen(top))
+
+		selLbl = mk("TextLabel", { Text = "Alvo: (nenhum)", Size = UDim2.new(1, -100, 0, 24), Position = UDim2.fromOffset(12, 48), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd }, pf)
+		local rf = chip(pf, "Atualizar", refreshList)
+		rf.Size = UDim2.fromOffset(78, 24); rf.Position = UDim2.new(1, -90, 0, 48)
+
+		listBox = mk("ScrollingFrame", {
+			Size = UDim2.new(1, -24, 0, 84), Position = UDim2.fromOffset(12, 76), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25,
+			BorderSizePixel = 0, ScrollBarThickness = 3, CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		}, pf)
+		round(listBox, 8)
+		mk("UIListLayout", { Padding = UDim.new(0, 3), SortOrder = Enum.SortOrder.LayoutOrder }, listBox)
+		mk("UIPadding", { PaddingTop = UDim.new(0, 3), PaddingLeft = UDim.new(0, 3) }, listBox)
+
+		local grid = mk("ScrollingFrame", {
+			Size = UDim2.new(1, -24, 0, 124), Position = UDim2.fromOffset(12, 168), BackgroundTransparency = 1,
+			BorderSizePixel = 0, ScrollBarThickness = 3, CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		}, pf)
+		mk("UIGridLayout", { CellSize = UDim2.fromOffset(110, 28), CellPadding = UDim2.fromOffset(6, 6), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
+		for _, c in ipairs(CMD_LIST) do
+			chip(grid, c[2], function()
+				if not PA.on then return end
+				if not PA.sel then toast("Escolha um alvo na lista."); return end
+				local tid, tn = PA.sel, PA.selName
+				task.spawn(runCmd, c[1], tid, tn)
+			end)
+		end
+
+		local msgBox = mk("TextBox", {
+			Size = UDim2.fromOffset(250, 32), Position = UDim2.fromOffset(12, 300), BackgroundColor3 = PANEL, BackgroundTransparency = 0.15,
+			Text = "", PlaceholderText = "Mensagem para a tela dele", PlaceholderColor3 = Color3.fromRGB(125, 130, 142),
+			TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left,
+			ClipsDescendants = true,
+		}, pf)
+		round(msgBox, 8); stroke(msgBox, 1.2)
+		mk("UIPadding", { PaddingLeft = UDim.new(0, 8) }, msgBox)
+		local send = chip(pf, "Enviar", function()
+			if not PA.on then return end
+			if not PA.sel then toast("Escolha um alvo na lista."); return end
+			local tid, tn, tx = PA.sel, PA.selName, msgBox.Text
+			task.spawn(runCmd, "message", tid, tn, tx)
+		end)
+		send.Size = UDim2.fromOffset(96, 32); send.Position = UDim2.fromOffset(272, 300)
+		mk("TextLabel", { Text = "Chat: /kill nome  •  /msg nome texto  •  /cmds", Size = UDim2.new(1, -24, 0, 16), Position = UDim2.fromOffset(12, 336),
+			BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(150, 154, 168), Font = Enum.Font.Gotham, TextSize = 10,
+			TextXAlignment = Enum.TextXAlignment.Left }, pf)
+	end
+
+	local function openPanel()
+		if not PA.on then return end
+		buildPanel()
+		pf.Visible = true
+		if timeLbl then timeLbl.Text = "Expira em " .. fmtLeft(PA.exp - now()) end
+		refreshList()
+	end
+	local function closePopup()
+		if popup then popup:Destroy(); popup, popupMsg = nil, nil end
+	end
+	local function showPopup()
+		closePopup()
+		local ov = mk("Frame", {
+			Name = "PainelAdmPopup", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.45,
+			BorderSizePixel = 0, Active = true, ZIndex = 100,
+		}, win)
+		popup = ov
+		local box = mk("Frame", {
+			Size = UDim2.fromOffset(300, 132), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+			BackgroundColor3 = Color3.fromRGB(20, 21, 26), BorderSizePixel = 0, ZIndex = 101,
+		}, ov)
+		round(box, 14); stroke(box, 1.5, RED)
+		popupMsg = mk("TextLabel", {
+			Text = popupText(), Size = UDim2.new(1, -24, 0, 60), Position = UDim2.fromOffset(12, 12), BackgroundTransparency = 1,
+			TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 14, TextWrapped = true, ZIndex = 102,
+		}, box)
+		local function pbtn(text, x, filled, cb)
+			local b = mk("TextButton", {
+				Text = text, Size = UDim2.fromOffset(130, 34), Position = UDim2.fromOffset(x, 84), AutoButtonColor = false,
+				BackgroundColor3 = filled and RED or PANEL, TextColor3 = WHITE, Font = Enum.Font.GothamBold, TextSize = 13, ZIndex = 102,
+			}, box)
+			round(b, 10); stroke(b, 1.2)
+			b.MouseButton1Click:Connect(cb)
+		end
+		pbtn("Cancelar", 14, false, closePopup)
+		pbtn("Open", 156, true, function()
+			local ok = PA.on
+			closePopup()
+			if ok then openPanel() end -- sem liberação: só fecha, igual ao Cancelar
+		end)
+	end
+
+	-- ===== liberação por ID (o Dono grava em /cmd/panel_<seuID> com a hora de expiração) =====
+	local function setActive(v)
+		if v == PA.on then return end
+		PA.on = v
+		if popupMsg then popupMsg.Text = popupText() end
+		if v then
+			TAG.avail, TAG.panelLock = true, true
+			pcall(TAG.start)
+			toast("Painel ADM liberado")
+		else
+			TAG.panelLock, TAG.avail = false, baseAvail
+			if pf then pf.Visible = false end
+			if not baseAvail then
+				pcall(function()
+					local hd = lp.Character and lp.Character:FindFirstChild("Head")
+					local o = hd and hd:FindFirstChild("DsTag")
+					if o then o:Destroy() end
+				end)
+			end
+			toast("Seu painel ADM expirou")
+		end
+		pcall(TAG.refresh)
+		if TAG.push then TAG.push() end
+	end
+	local function syncClock() -- usa a hora do servidor do Firebase (do seu próprio registro) pra ninguém estender mexendo no relógio
+		local ms = tonumber(http("GET", "/members/" .. uid .. "/ts.json") or "")
+		if ms then PA.skew = ms / 1000 - os.time() end
+	end
+	local function checkGrant()
+		local body = http("GET", "/cmd/panel_" .. uid .. ".json")
+		if body == nil then return end -- sem conexão: mantém como está
+		local g
+		if body ~= "null" and body ~= "" then
+			local ok, d = pcall(HttpService.JSONDecode, HttpService, body)
+			if ok and type(d) == "table" then g = d end
+		end
+		PA.exp = g and tonumber(g.exp) or 0
+		setActive(PA.exp > now())
+	end
+
+	-- ===== comandos pelo chat: /kill nome  (também aceita ! no lugar de /) =====
+	local function onChat(text)
+		if type(text) ~= "string" then return end
+		local c, rest = text:match("^[/!](%a+)%s*(.-)%s*$")
+		if not c then return end
+		if text == PA.lastText and os.clock() - PA.lastAt < 1 then return end -- o mesmo chat avisa por mais de um evento
+		PA.lastText, PA.lastAt = text, os.clock()
+		c = c:lower(); c = ALIAS[c] or c
+		if c == "painel" or c == "panel" then showPopup(); return end
+		if not PA.on then return end -- sem liberação: ignora sem avisar
+		if c == "cmds" or c == "comandos" then
+			toast("Use /comando nome. Ex: /kill joao /bring joao /msg joao oi")
+			return
+		end
+		if not (ALLOWED[c] or c == "message") then return end
+		task.spawn(function()
+			local who, extraText = rest:match("^(%S+)%s*(.*)$")
+			if not who then toast("Falta o nome. Ex: /" .. c .. " nome"); return end
+			local m = findTarget(who)
+			if not m then toast("Não achei '" .. who:sub(1, 16) .. "' no hub deste servidor"); return end
+			runCmd(c, m.id, m.name, extraText)
+		end)
+	end
+	table.insert(conns, lp.Chatted:Connect(onChat))
+	pcall(function()
+		table.insert(conns, TextChatService.MessageReceived:Connect(function(m)
+			if m.TextSource and m.TextSource.UserId == lp.UserId then onChat(m.Text) end
+		end))
+	end)
+	pcall(function()
+		table.insert(conns, TextChatService.SendingMessage:Connect(function(m) onChat(m.Text) end))
+	end)
+
+	if pages["Extras"] then
+		rowBtn(pages["Extras"], "Painel ADM", showPopup)
+	end
+	showPopup()
+	task.spawn(function()
+		local n = 0
+		while alive do
+			if n % 10 == 0 then
+				if n % 30 == 0 then pcall(syncClock) end
+				pcall(checkGrant)
+			end
+			if PA.on then
+				local left = PA.exp - now()
+				if left <= 0 then
+					setActive(false)
+				elseif timeLbl then
+					timeLbl.Text = "Expira em " .. fmtLeft(left)
+				end
+			end
+			n = n + 1
+			task.wait(1)
+		end
+	end)
+end
+
+-- aplica o que estava ativo da última vez (depois do hub montado)
+task.delay(1, AUTO.applyAll)
