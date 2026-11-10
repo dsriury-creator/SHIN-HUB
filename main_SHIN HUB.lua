@@ -233,7 +233,7 @@ local UI = {
 	ACTIVE = Color3.fromRGB(82, 26, 36), HOVER = Color3.fromRGB(36, 37, 45), EDGE = Color3.fromRGB(70, 72, 86),
 	DIM = Color3.fromRGB(150, 155, 168), SOFT = Color3.fromRGB(128, 134, 148), GLOW = Color3.fromRGB(255, 80, 96),
 	pc = false, listeners = {}, scaleFns = {}, bgFns = {}, keyFns = {},
-	cfg = { scale = 1, accent = "Vermelho", bgOpacity = 100, bgImage = true, anim = true, key = "B", floatBtn = true, fps = false },
+	cfg = { scale = 1, accent = "Vermelho", bgOpacity = 100, bgImage = true, anim = true, key = "B", floatBtn = true, fps = false, binds = {} },
 }
 function UI.tween(o, t, props)
 	pcall(function()
@@ -862,6 +862,172 @@ function BTNPOS.load(key, b)
 end
 AUTO.btnSave, AUTO.btnLoad = BTNPOS.save, BTNPOS.load
 end
+
+do -- ===== Teclas dos botões flutuantes (PC): cada botão flutuante ligado pode ter uma tecla; edita em Configurações =====
+	local BIND = { list = {}, capture = nil, capEnd = 0 }
+	UI.binds = BIND
+	local PRETTY = {
+		One = "1", Two = "2", Three = "3", Four = "4", Five = "5", Six = "6", Seven = "7", Eight = "8", Nine = "9", Zero = "0",
+		Space = "Espaço", LeftShift = "LShift", RightShift = "RShift", LeftControl = "LCtrl", RightControl = "RCtrl",
+		LeftAlt = "LAlt", RightAlt = "RAlt", Return = "Enter", Up = "↑", Down = "↓", Left = "←", Right = "→",
+		Backquote = "`", Minus = "-", Equals = "=", LeftBracket = "[", RightBracket = "]", Semicolon = ";", Quote = "'",
+		Comma = ",", Period = ".", Slash = "/", BackSlash = "\\",
+	}
+	local function pretty(nm) return PRETTY[nm] or nm end
+	local function tbl()
+		if type(UI.cfg.binds) ~= "table" then UI.cfg.binds = {} end
+		return UI.cfg.binds
+	end
+	local function alive(e) return e.btn.Parent ~= nil end
+	local function active(e) return alive(e) and e.btn.Visible end
+	local function saveCfg() if UI.saveCfg then UI.saveCfg() end end
+
+	function BIND.paint(e)
+		local nm = tbl()[e.id]
+		e.badge.Text = type(nm) == "string" and pretty(nm) or ""
+		e.badge.Visible = (UI.pc and type(nm) == "string") and true or false
+	end
+	function BIND.repaint()
+		for _, e in ipairs(BIND.list) do pcall(BIND.paint, e) end
+	end
+
+	-- chamado por cada botão flutuante ao ser criado: id estável (o mesmo da posição salva) + a ação do toque
+	function AUTO.bindKey(id, b, fn)
+		for i = #BIND.list, 1, -1 do
+			local o = BIND.list[i]
+			if o.id == id or not alive(o) then table.remove(BIND.list, i) end
+		end
+		local badge = mk("TextLabel", {
+			Text = "", AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 16), AnchorPoint = Vector2.new(0.5, 0),
+			Position = UDim2.new(0.5, 0, 1, -6), BackgroundColor3 = Color3.fromRGB(20, 21, 26), TextColor3 = WHITE,
+			Font = Enum.Font.GothamBold, TextSize = 10, ZIndex = 26, Visible = false,
+		}, b)
+		round(badge, 5)
+		mk("UIPadding", { PaddingLeft = UDim.new(0, 5), PaddingRight = UDim.new(0, 5) }, badge)
+		local e = { id = id, name = tostring(id):match("|(.*)$") or tostring(id), btn = b, fn = fn, badge = badge }
+		BIND.list[#BIND.list + 1] = e
+		BIND.paint(e)
+	end
+	UI.onDevice(BIND.repaint) -- PC: mostra a tecla no botão; celular: esconde
+
+	-- aperta a tecla = toca o botão (só se ele estiver ligado/visível). Ignora digitação em caixa de texto.
+	table.insert(conns, UIS.InputBegan:Connect(function(i, gp)
+		if gp or i.UserInputType ~= Enum.UserInputType.Keyboard then return end
+		if BIND.capture or os.clock() - BIND.capEnd < 0.3 then return end
+		if UIS:GetFocusedTextBox() then return end
+		if i.KeyCode == Enum.KeyCode.Unknown or i.KeyCode == UI.key then return end
+		local nm = i.KeyCode.Name
+		for _, e in ipairs(BIND.list) do
+			if tbl()[e.id] == nm and active(e) then task.spawn(pcall, e.fn) end
+		end
+	end))
+
+	-- espera a próxima tecla: Esc cancela, Backspace/Delete remove, tecla do menu ou já usada = recusa
+	function BIND.startCapture(e, done)
+		if BIND.capture then BIND.capture.stop() end
+		local cap, con = {}, nil
+		local function finish(msg)
+			if con then con:Disconnect(); con = nil end
+			BIND.capEnd = os.clock()
+			if BIND.capture == cap then BIND.capture = nil end
+			pcall(done, msg)
+		end
+		cap.stop = function() finish() end
+		BIND.capture = cap
+		con = UIS.InputBegan:Connect(function(i)
+			if i.UserInputType ~= Enum.UserInputType.Keyboard or i.KeyCode == Enum.KeyCode.Unknown then return end
+			if UIS:GetFocusedTextBox() then return end
+			local nm = i.KeyCode.Name
+			if nm == "Escape" then finish(); return end
+			if nm == "Backspace" or nm == "Delete" then
+				tbl()[e.id] = nil; BIND.repaint(); saveCfg()
+				finish("Tecla removida"); return
+			end
+			if i.KeyCode == UI.key or nm == "RightShift" then finish("Essa é a tecla do menu"); return end
+			for _, o in ipairs(BIND.list) do
+				if o ~= e and alive(o) and tbl()[o.id] == nm then finish("Já usada em " .. o.name); return end
+			end
+			tbl()[e.id] = nm; BIND.repaint(); saveCfg()
+			finish("Tecla definida: " .. pretty(nm))
+		end)
+		task.delay(8, function() if BIND.capture == cap then finish() end end)
+	end
+
+	-- seção dentro de Configurações: lista só os botões flutuantes que estão LIGADOS agora
+	function BIND.buildSection(list)
+		local holder = mk("Frame", { Name = "TeclasBotoes", Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1 }, list)
+		mk("UIListLayout", { Padding = UDim.new(0, 7), SortOrder = Enum.SortOrder.LayoutOrder }, holder)
+		local status, last = "", nil
+		local function z(o)
+			o.ZIndex = 51
+			for _, d in ipairs(o:GetDescendants()) do if d:IsA("GuiObject") then d.ZIndex = 51 end end
+		end
+		local function note(text, h, order)
+			mk("TextLabel", {
+				Text = text, Size = UDim2.new(1, 0, 0, h), BackgroundTransparency = 1, TextColor3 = UI.SOFT, Font = Enum.Font.Gotham,
+				TextSize = 11, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, LayoutOrder = order,
+			}, holder)
+		end
+		local function sig()
+			local t = {}
+			for _, e in ipairs(BIND.list) do
+				if alive(e) then t[#t + 1] = e.id .. "=" .. tostring(tbl()[e.id]) .. (e.btn.Visible and "+" or "-") end
+			end
+			return table.concat(t, ";")
+		end
+		local rebuild
+		function rebuild()
+			for _, c in ipairs(holder:GetChildren()) do if c:IsA("GuiObject") then c:Destroy() end end
+			for i = #BIND.list, 1, -1 do if not alive(BIND.list[i]) then table.remove(BIND.list, i) end end
+			local reg = 0
+			for _, e in ipairs(BIND.list) do if alive(e) then reg = reg + 1 end end
+			holder.Visible = reg > 0 -- sem aba de botões flutuantes neste jogo: a seção nem aparece
+			if reg == 0 then return end
+			section(holder, "Teclas dos botões (PC)")
+			note("Toque na tecla e aperte a nova (Esc cancela, Backspace remove). Só funciona com o botão ligado.", 30, 1)
+			local n = 0
+			for _, e in ipairs(BIND.list) do
+				if active(e) then
+					n = n + 1
+					local row = mk("Frame", { Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = PANEL, BackgroundTransparency = 0.25, LayoutOrder = n + 1 }, holder)
+					round(row, 10); stroke(row, 1.2, UI.EDGE)
+					mk("TextLabel", {
+						Text = e.name, Size = UDim2.new(1, -120, 1, 0), Position = UDim2.fromOffset(14, 0), BackgroundTransparency = 1,
+						TextColor3 = WHITE, Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd,
+					}, row)
+					local nm = tbl()[e.id]
+					local has = type(nm) == "string"
+					local kb = mk("TextButton", {
+						Text = has and pretty(nm) or "Nenhuma", Size = UDim2.fromOffset(88, 24), Position = UDim2.new(1, -98, 0.5, -12), AutoButtonColor = false,
+						BackgroundColor3 = Color3.fromRGB(40, 41, 49), TextColor3 = has and WHITE or UI.SOFT, Font = Enum.Font.GothamBold, TextSize = 11,
+					}, row)
+					round(kb, 7); stroke(kb, 1.2, UI.EDGE)
+					kb.MouseButton1Click:Connect(function()
+						kb.Text = "Aperte..."; kb.TextColor3 = UI.GLOW
+						BIND.startCapture(e, function(msg)
+							status = msg or ""
+							last = sig()
+							rebuild()
+						end)
+					end)
+				end
+			end
+			if n == 0 then note("Nenhum botão flutuante ligado. Ligue um (ex.: Botões: pegar / soltar / lançar veículo) e ele aparece aqui.", 44, 2) end
+			if status ~= "" then note(status, 16, 1000) end
+			for _, c in ipairs(holder:GetChildren()) do if c:IsA("GuiObject") then z(c) end end
+		end
+		rebuild(); last = sig()
+		task.spawn(function()
+			while holder.Parent do
+				if not BIND.capture then
+					local s = sig()
+					if s ~= last then last, status = s, ""; pcall(rebuild) end
+				end
+				task.wait(0.4)
+			end
+		end)
+	end
+end
 local DARK = Color3.fromRGB(40, 41, 49)
 local function toggleRow(par, text, desc, onChange, initial)
 	if type(desc) == "function" then initial = onChange; onChange, desc = desc, nil end
@@ -988,7 +1154,7 @@ end
 -- ===== CONFIGURAÇÕES (engrenagem ⚙): tamanho, cor, fundo, tecla, FPS... Salva em SHIN HUB/config.json =====
 do
 	local CFG_FILE = FOLDER .. "/config.json"
-	local DEFAULT = { scale = 1, accent = "Vermelho", bgOpacity = 100, bgImage = true, anim = true, key = "B", floatBtn = true, fps = false }
+	local DEFAULT = { scale = 1, accent = "Vermelho", bgOpacity = 100, bgImage = true, anim = true, key = "B", floatBtn = true, fps = false, binds = {} }
 	local ACCENTS = {
 		{ "Vermelho", Color3.fromRGB(222, 52, 68) }, { "Laranja", Color3.fromRGB(240, 128, 48) },
 		{ "Amarelo", Color3.fromRGB(235, 190, 50) }, { "Verde", Color3.fromRGB(46, 196, 120) },
@@ -1047,6 +1213,7 @@ do
 		pending = true
 		task.delay(0.6, function() pending = false; save() end)
 	end
+	UI.saveCfg = saveSoon
 
 	-- troca a cor de destaque em tudo que já existe (e nas próximas coisas que forem criadas)
 	function UI.setAccent(c)
@@ -1117,6 +1284,7 @@ do
 		for _, f in ipairs(UI.scaleFns) do pcall(f) end
 		for _, f in ipairs(UI.bgFns) do pcall(f) end
 		for _, f in ipairs(UI.keyFns) do pcall(f) end
+		if UI.binds then pcall(UI.binds.repaint) end
 		if UI.float then UI.float.Visible = c.floatBtn ~= false end
 		pcall(UI.setFps, c.fps == true)
 		if c.accent ~= UI.accentName then
@@ -1204,10 +1372,12 @@ do
 		end, c.floatBtn)
 		toggleRow(list, "Mostrar FPS", "FPS e ping no canto da tela", function(v) c.fps = v; UI.applyCfg(); saveSoon() end, c.fps)
 
+		UI.binds.buildSection(list)
+
 		section(list, "Janela")
 		rowBtn(list, "Centralizar menu", function() win.Position = UDim2.new(0.5, 0, 0.5, 0) end, true)
 		rowBtn(list, "Restaurar padrão", function()
-			for k, v in pairs(DEFAULT) do c[k] = v end
+			for k, v in pairs(DEFAULT) do c[k] = (type(v) == "table") and {} or v end
 			UI.applyCfg(); save()
 			build(win); pop.Visible = true
 		end, true)
@@ -3052,6 +3222,7 @@ local function buildSelf(pages, say)
 					st.Color = on and WHITE or RED
 				end
 				AUTO.btnLoad(PK, b)
+				AUTO.bindKey(PK, b, onTap)
 				table.insert(evButtons, b)
 				return b, paint
 			end
@@ -5176,6 +5347,7 @@ local function buildCar(page, say)
 			end
 		end)
 		AUTO.btnLoad(PK, b)
+		AUTO.bindKey(PK, b, onTap)
 		grab.btns[#grab.btns + 1] = b
 		return b
 	end
@@ -5883,6 +6055,7 @@ local function buildMotos(page, say)
 			end
 		end)
 		AUTO.btnLoad(PK, b)
+		AUTO.bindKey(PK, b, onTap)
 		grab.btns[#grab.btns + 1] = b
 		return b
 	end
